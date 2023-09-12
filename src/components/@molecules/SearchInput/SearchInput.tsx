@@ -47,11 +47,13 @@ const SearchResultsContainer = styled.div<{
     width: 100%;
     height: min-content;
     top: calc(100% + ${theme.space['3']});
-
-    background-color: #f7f7f7;
-    box-shadow: 0 2px 12px ${theme.colors.border};
-    border-radius: ${theme.radii.extraLarge};
-    border: ${theme.borderWidths.px} ${theme.borderStyles.solid} ${theme.colors.border};
+    display: flex;
+    gap: 14px;
+    flex-direction: column;
+    background-color: transparent;
+    /* box-shadow: 0 2px 12px ${theme.colors.border}; */
+    /* border-radius: ${theme.radii.extraLarge}; */
+    /* border: ${theme.borderWidths.px} ${theme.borderStyles.solid} ${theme.colors.border}; */
     &[data-error='true'] {
       border-color: ${theme.colors.red};
     }
