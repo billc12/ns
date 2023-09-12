@@ -1,4 +1,5 @@
-import { Header } from '@app/components/Header'
+// import { Header } from '@app/components/Header'
+import Header from '@app/components/Awns_Header'
 import { TabBar } from '@app/components/TabBar'
 import { useInitial } from '@app/hooks/useInitial'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'

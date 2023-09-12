@@ -2,13 +2,14 @@ import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { Key, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
-import { useDisconnect } from 'wagmi'
+import { useBalance, useDisconnect } from 'wagmi'
 
 import {
   Button,
   CheckSVG,
   CogSVG,
   CopySVG,
+  Dropdown,
   ExitSVG,
   PersonSVG,
   Profile,
@@ -16,6 +17,7 @@ import {
 } from '@ensdomains/thorin'
 import { DropdownItem } from '@ensdomains/thorin/dist/types/components/molecules/Dropdown/Dropdown'
 
+import DefaultUser from '@app/assets/DefaultUser.svg'
 import useHasPendingTransactions from '@app/hooks/transactions/useHasPendingTransactions'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useAvatar } from '@app/hooks/useAvatar'
@@ -27,6 +29,8 @@ import { useBreakpoint } from '@app/utils/BreakpointProvider'
 import { shortenAddress } from '@app/utils/utils'
 
 import BaseLink from './@atoms/BaseLink'
+// eslint-disable-next-line import/no-cycle
+import { InterText } from './Awns_Header'
 
 const StyledButtonWrapper = styled.div<{ $isTabBar?: boolean; $large?: boolean }>(
   ({ theme, $isTabBar, $large }) => [
@@ -88,7 +92,27 @@ const PersonOverlay = styled.div(
     }
   `,
 )
-
+const RoundBox = styled.div`
+  /* padding: 6px 12px; */
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid var(--line, #d4d7e2);
+  background: #fff;
+`
+const UserButton = styled.button`
+  display: flex;
+  padding: 6px 12px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+  border: 1px solid #d4d7e2;
+  background: #fff;
+`
+const RoundProfile = styled(Profile)`
+  &.profile: {
+    background: 'red';
+  }
+`
 type Props = {
   isTabBar?: boolean
   large?: boolean
@@ -135,41 +159,56 @@ const HeaderProfile = ({ address }: { address: string }) => {
   const { disconnect } = useDisconnect()
   const { copy, copied } = useCopied(300)
   const hasPendingTransactions = useHasPendingTransactions()
-
-  return (
-    <Profile
-      address={address}
-      ensName={primary.data?.beautifiedName}
-      dropdownItems={
-        [
-          ...(primary.data?.name
-            ? [
-                {
-                  label: t('wallet.myProfile'),
-                  wrapper: (children: ReactNode, key: Key) => (
-                    <BaseLink href="/my/profile" key={key}>
-                      {children}
-                    </BaseLink>
-                  ),
-                  as: 'a' as 'a',
-                  color: 'text',
-                  icon: <PersonSVG />,
-                },
-              ]
-            : []),
+  const dropdownItems = [
+    ...(primary.data?.name
+      ? [
           {
-            label: t('navigation.settings'),
-            color: 'text',
+            label: t('wallet.myProfile'),
             wrapper: (children: ReactNode, key: Key) => (
-              <BaseLink href="/my/settings" key={key}>
+              <BaseLink href="/my/profile" key={key}>
                 {children}
               </BaseLink>
             ),
-            as: 'a',
-            icon: <CogSVG />,
-            showIndicator: hasPendingTransactions,
+            as: 'a' as 'a',
+            color: 'text',
+            icon: <PersonSVG />,
           },
-          <SectionDivider key="divider" />,
+        ]
+      : []),
+    {
+      label: t('navigation.settings'),
+      color: 'text',
+      wrapper: (children: ReactNode, key: Key) => (
+        <BaseLink href="/my/settings" key={key}>
+          {children}
+        </BaseLink>
+      ),
+      as: 'a',
+      icon: <CogSVG />,
+      showIndicator: hasPendingTransactions,
+    },
+    <SectionDivider key="divider" />,
+    {
+      label: shortenAddress(address),
+      color: 'text',
+      onClick: () => copy(address),
+      icon: copied ? <CheckSVG /> : <CopySVG />,
+    },
+    {
+      label: t('wallet.disconnect'),
+      color: 'red',
+      onClick: () => disconnect(),
+      icon: <ExitSVG />,
+    },
+  ] as DropdownItem[]
+  console.log(dropdownItems)
+  const { data: balance } = useBalance({ address: address as `0x${string}` | undefined, chainId })
+  return (
+    <Dropdown
+      width={170}
+      align="left"
+      items={
+        [
           {
             label: shortenAddress(address),
             color: 'text',
@@ -184,21 +223,52 @@ const HeaderProfile = ({ address }: { address: string }) => {
           },
         ] as DropdownItem[]
       }
-      avatar={{
-        src: avatar || zorb,
-        decoding: 'sync',
-        loading: 'eager',
-        noBorder: true,
-        overlay: avatar ? undefined : (
-          <PersonOverlay>
-            <PersonSVG />
-          </PersonOverlay>
-        ),
-      }}
-      size="medium"
-      alignDropdown="left"
-      data-testid="header-profile"
-    />
+    >
+      <UserButton>
+        <DefaultUser />
+        <InterText style={{ fontWeight: 500 }}>
+          {balance ? `${Number(balance?.formatted).toFixed(4)} ${balance?.symbol}` : '-- --'}
+        </InterText>
+      </UserButton>
+    </Dropdown>
+  )
+  return (
+    <RoundBox>
+      <RoundProfile
+        address={address}
+        ensName={balance ? `${Number(balance?.formatted).toFixed(4)} ${balance?.symbol}` : '-- --'}
+        dropdownItems={
+          [
+            {
+              label: shortenAddress(address),
+              color: 'text',
+              onClick: () => copy(address),
+              icon: copied ? <CheckSVG /> : <CopySVG />,
+            },
+            {
+              label: t('wallet.disconnect'),
+              color: 'red',
+              onClick: () => disconnect(),
+              icon: <ExitSVG />,
+            },
+          ] as DropdownItem[]
+        }
+        avatar={{
+          src: avatar || zorb,
+          decoding: 'sync',
+          loading: 'eager',
+          noBorder: true,
+          overlay: avatar ? undefined : (
+            <PersonOverlay>
+              <PersonSVG />
+            </PersonOverlay>
+          ),
+        }}
+        size="medium"
+        alignDropdown="left"
+        data-testid="header-profile"
+      />
+    </RoundBox>
   )
 }
 

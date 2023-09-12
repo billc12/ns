@@ -15,7 +15,9 @@ import { Navigation } from './Navigation'
 const Container = styled.div(
   ({ theme }) => css`
     --padding-size: ${theme.space['4']};
-    padding: var(--padding-size);
+
+    /* padding: var(--padding-size); */
+    background: #f8fcff;
     display: flex;
     flex-gap: ${theme.space['4']};
     gap: ${theme.space['4']};
