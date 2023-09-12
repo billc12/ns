@@ -9,26 +9,39 @@ import styled, { css } from 'styled-components'
 
 import { Input, MagnifyingGlassSVG } from '@ensdomains/thorin'
 
+import SearchIconSvg from '@app/assets/search-icon.svg'
+
 const SearchInputWrapper = styled.div<{ $size: 'medium' | 'extraLarge' }>(
   ({ theme, $size }) => css`
     z-index: 1;
-    box-shadow: ${theme.boxShadows['0.25']};
-    border-radius: ${theme.radii['2.5xLarge']};
-    border-color: ${theme.colors.border};
+    /* box-shadow: ${theme.boxShadows['0.25']}; */
+    /* border-radius: ${theme.radii['2.5xLarge']}; */
+    /* border-color: ${theme.colors.border}; */
     width: 100%;
-    & input::placeholder {
+    position: relative;
+    &,
+    & div,
+    & div:focus-within {
+      height: 60px;
+      background-color: transparent;
+      border-radius: none;
+      border-color: transparent;
+      border-width: 0;
+    }
+
+    /* & input::placeholder {
       color: ${theme.colors.greyPrimary};
       font-weight: ${theme.fontWeights.bold};
-    }
+    } */
     ${$size === 'medium' &&
     css`
       max-width: ${theme.space['96']};
       box-shadow: none;
       border-radius: ${theme.radii.full};
-      & input::placeholder {
+      /* & input::placeholder {
         color: ${theme.colors.greyPrimary};
         font-weight: ${theme.fontWeights.normal};
-      }
+      } */
     `}
   `,
 )
@@ -47,13 +60,12 @@ const StyledInputParent = (size: 'medium' | 'extraLarge') =>
             padding-left: ${theme.space['12']};
           }
         }
-      `}
-      &:focus-within {
+      `}/* &:focus-within {
         background-color: ${theme.colors.backgroundPrimary};
         & input::placeholder {
           color: transparent;
         }
-      }
+      } */
     `,
   )
 
@@ -63,7 +75,34 @@ const MagnifyingGlassIcon = styled.svg(
     height: ${theme.space['4']};
   `,
 )
-
+const SearchInputStyle = styled(Input)`
+  padding-left: 38px;
+  color: #fff;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  border-radius: 40px;
+  border: 1px solid #97b7ef;
+  background: rgba(7, 17, 40, 0.5);
+  backdrop-filter: blur(7px);
+  caret-color: #fff;
+  &::placeholder {
+    color: #516c9f;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+`
+const SearchIconStyle = styled.div`
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+`
 // const ResetButton = styled.div(
 //   ({ theme }) => css`
 //     display: block;
@@ -95,10 +134,10 @@ export const SearchInputBox = forwardRef(
     },
     ref,
   ) => {
-    const { t } = useTranslation('common')
+    const { t } = useTranslation('awns_common')
     return (
       <SearchInputWrapper ref={containerRef} $size={size}>
-        <Input
+        <SearchInputStyle
           size={size}
           label={t('search.label')}
           hideLabel
@@ -106,7 +145,7 @@ export const SearchInputBox = forwardRef(
           value={input}
           onChange={(e) => setInput(e.target.value)}
           ref={ref as any}
-          clearable
+          // clearable
           autoComplete="off"
           autoCorrect="off"
           parentStyles={StyledInputParent(size)}
@@ -114,6 +153,9 @@ export const SearchInputBox = forwardRef(
           spellCheck="false"
           data-testid="search-input-box"
         />
+        <SearchIconStyle>
+          <SearchIconSvg />
+        </SearchIconStyle>
       </SearchInputWrapper>
     )
   },

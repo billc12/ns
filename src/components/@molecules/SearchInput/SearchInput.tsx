@@ -27,8 +27,10 @@ import { AnyItem, HistoryItem, SearchItem } from './types'
 
 const Container = styled.div<{ $size: 'medium' | 'extraLarge' }>(
   ({ $size }) => css`
-    width: 100%;
+    /* width: 100%; */
+    width: 600px;
     position: relative;
+    margin-top: 20px;
     ${$size === 'extraLarge' &&
     mq.sm.min(css`
       padding-left: 48px;

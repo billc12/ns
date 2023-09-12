@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
 import { Typography } from '@ensdomains/thorin'
@@ -49,17 +50,27 @@ const GWeiBox = styled(Row)`
 `
 const Page = () => {
   const { gasPrice } = useGasPrice()
+  const router = useRouter()
+  const isIndex = router.asPath === '/'
   return (
     <HeaderLayout>
       <HeaderLeft>
         <STPSvg />
         <Line />
-        <InterText style={{ fontWeight: 700 }}>AWNS</InterText>
+        <InterText style={{ fontWeight: 700 }} $textColor={isIndex ? '#fff' : '#3f5170'}>
+          AWNS
+        </InterText>
       </HeaderLeft>
       <HeaderNav>
-        <InterText as="a">Explore</InterText>
-        <InterText as="a">Clique</InterText>
-        <InterText as="a">Help</InterText>
+        <InterText as="a" $textColor={isIndex ? '#fff' : '#3f5170'}>
+          Explore
+        </InterText>
+        <InterText as="a" $textColor={isIndex ? '#fff' : '#3f5170'}>
+          Clique
+        </InterText>
+        <InterText as="a" $textColor={isIndex ? '#fff' : '#3f5170'}>
+          Help
+        </InterText>
       </HeaderNav>
       <HeaderLeft>
         <GWeiBox>
