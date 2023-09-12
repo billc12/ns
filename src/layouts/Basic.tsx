@@ -12,10 +12,22 @@ import ErrorScreen from '@app/components/@atoms/ErrorScreen'
 
 import { Navigation } from './Navigation'
 
-const Container = styled.div(
-  ({ theme }) => css`
+const Container = styled.div<{ $IsIndex?: boolean }>(
+  ({ theme, $IsIndex }) => css`
     --padding-size: ${theme.space['4']};
-    padding: var(--padding-size);
+
+    /* padding: var(--padding-size); */
+
+    ${$IsIndex
+      ? css`
+          background-image: url('IndexBanner.png');
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-position: center center;
+        `
+      : css`
+          background: #f8fcff;
+        `}
     display: flex;
     flex-gap: ${theme.space['4']};
     gap: ${theme.space['4']};
@@ -37,7 +49,8 @@ const Container = styled.div(
 
 const ContentWrapper = styled.div(
   ({ theme }) => css`
-    max-width: ${theme.space['192']};
+    /* max-width: ${theme.space['192']}; */
+    max-width: 840px;
     width: 100%;
     align-self: center;
     flex-grow: 1;
@@ -90,7 +103,7 @@ export const Basic = withErrorBoundary(({ children }: { children: React.ReactNod
   }, [currentChain?.id, router.pathname])
 
   return (
-    <Container className="min-safe">
+    <Container className="min-safe" $IsIndex>
       <Navigation />
       <ContentWrapper>
         {error ? <ErrorScreen errorType="application-error" /> : children}

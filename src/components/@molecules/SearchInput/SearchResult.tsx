@@ -30,42 +30,28 @@ const SearchItem = styled.div<{
     justify-content: space-between;
     gap: ${theme.space['2']};
     height: ${theme.space['14']};
-    padding: 0 ${theme.space['4']};
-    border-bottom: ${theme.borderWidths['0.375']} ${theme.borderStyles.solid} ${theme.colors.border};
-    &:last-of-type {
-      border-bottom: 0;
-    }
+    padding: 20px 24px;
     position: relative;
-    opacity: 0.6;
+    opacity: 1;
+
+    border-radius: 10px;
+
+    border: 1px solid #97b7ef;
+    background: #122861;
+    backdrop-filter: blur(7px);
     ${$clickable &&
     css`
       cursor: pointer;
     `}
     ${$selected &&
     css`
-      background-color: ${theme.colors.background};
+      /* background-color: ${theme.colors.background}; */
       opacity: 1;
     `}
     ${$error &&
     css`
       background-color: ${theme.colors.redSurface};
       color: ${theme.colors.red};
-    `}
-    ${$clickable &&
-    $selected &&
-    css`
-      padding-right: ${theme.space['8']};
-      &::after {
-        content: '';
-        transform: rotate(-90deg);
-        mask-image: url('data:image/svg+xml; utf8, <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.2552 17.8659C11.6526 18.3095 12.3474 18.3095 12.7448 17.8659L22.5063 6.97001C23.0833 6.32597 22.6262 5.30274 21.7615 5.30274H2.2385C1.37381 5.30274 0.916704 6.32597 1.49369 6.97001L11.2552 17.8659Z" fill="currentColor"/></svg>');
-        position: absolute;
-        height: ${theme.space['3']};
-        width: ${theme.space['3']};
-        background-color: ${theme.colors.greyPrimary};
-        opacity: 0.4;
-        right: ${theme.space['3']};
-      }
     `}
   `,
 )
