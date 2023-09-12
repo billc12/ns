@@ -273,6 +273,12 @@
           "earnifi": "Earni.fi 提醒"
         }
       }
+    },
+    "detail":{
+      "name":"详情"
+    },
+    "assets":{
+      "name":"资产"
     }
   },
   "details": {
