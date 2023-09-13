@@ -1,18 +1,18 @@
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
 import dynamic from 'next/dynamic'
-import React, { Fragment, useEffect, useMemo, useState } from 'react'
+import Image from 'next/image'
+import React, { useEffect, useMemo, useState } from 'react'
 import type ConfettiT from 'react-confetti'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
 
 import { ETHRegistrarController__factory } from '@ensdomains/ensjs/generated/factories/ETHRegistrarController__factory'
-import { tokenise } from '@ensdomains/ensjs/utils/normalise'
 import { Button, Typography, mq } from '@ensdomains/thorin'
 
+import UserAvatar from '@app/assets/TestImage.png'
 import { Invoice } from '@app/components/@atoms/Invoice/Invoice'
 import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
-import NFTTemplate from '@app/components/@molecules/NFTTemplate/NFTTemplate'
 import { Card } from '@app/components/Card'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import useWindowSize from '@app/hooks/useWindowSize'
@@ -20,19 +20,20 @@ import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvide
 
 const StyledCard = styled(Card)(
   ({ theme }) => css`
-    max-width: 780px;
+    max-width: 840px;
+    padding-bottom: 50px;
     margin: 0 auto;
     text-align: center;
     flex-direction: column;
     gap: ${theme.space['4']};
-    padding: ${theme.space['4']};
+    /* padding: ${theme.space['4']}; */
     canvas {
       max-width: ${theme.space.full};
     }
 
     ${mq.sm.min(css`
-      padding: ${theme.space['6']} ${theme.space['18']};
-      gap: ${theme.space['6']};
+      /* padding: ${theme.space['6']} ${theme.space['18']};
+      gap: ${theme.space['6']}; */
     `)}
   `,
 )
@@ -45,61 +46,6 @@ const ButtonContainer = styled.div(
     align-items: center;
     justify-content: center;
     gap: ${theme.space['2']};
-  `,
-)
-
-const NFTContainer = styled.div(
-  ({ theme }) => css`
-    width: ${theme.space['56']};
-    height: ${theme.space['56']};
-    border-radius: ${theme.radii['2xLarge']};
-    overflow: hidden;
-
-    ${mq.sm.min(css`
-      width: ${theme.space['80']};
-      height: ${theme.space['80']};
-    `)}
-  `,
-)
-
-const TitleContainer = styled.div(
-  ({ theme }) => css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: ${theme.space['2']};
-  `,
-)
-
-const Title = styled(Typography)(
-  ({ theme }) => css`
-    font-size: ${theme.fontSizes.headingOne};
-    font-weight: 800;
-    line-height: ${theme.lineHeights.headingOne};
-  `,
-)
-
-const SubtitleWithGradient = styled(Typography)(
-  ({ theme }) => css`
-    display: inline;
-
-    font-size: ${theme.fontSizes.headingThree};
-    font-weight: bold;
-
-    background-image: ${theme.colors.gradients.blue};
-    /* stylelint-disable property-no-vendor-prefix */
-    -webkit-background-clip: text;
-    -moz-background-clip: text;
-    background-clip: text;
-    /* stylelint-enable property-no-vendor-prefix */
-
-    b {
-      -webkit-text-fill-color: transparent;
-      -moz-text-fill-color: transparent;
-      color: transparent;
-      line-height: 100%;
-    }
   `,
 )
 
@@ -183,13 +129,50 @@ const useEthInvoice = (
 
   return { InvoiceFilled, avatarSrc }
 }
+console.log('useEthInvoice', useEthInvoice)
 
 type Props = {
   nameDetails: ReturnType<typeof useNameDetails>
   callback: (toProfile: boolean) => void
   isMoonpayFlow: boolean
 }
-
+const CenterBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+const HeadStyle = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  border-bottom: 1px solid #dce6ed;
+`
+const HeadTitle = styled(Typography)<{ $color?: string }>`
+  color: ${(props) => props.$color || '#3f5170'};
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+`
+const Round = styled(CenterBox)`
+  width: 380px;
+  height: 380px;
+  border-radius: 10px;
+  background: #f7fafc;
+  position: relative;
+`
+const UserImg = styled.div`
+  width: 350px;
+  height: 350px;
+`
+const PositionImg = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 37px;
+  transform: translateX(-50%);
+`
 const Complete = ({
   nameDetails: { normalisedName: name, beautifiedName },
   callback,
@@ -197,26 +180,25 @@ const Complete = ({
 }: Props) => {
   const { t } = useTranslation('register')
   const { width, height } = useWindowSize()
-  const { InvoiceFilled, avatarSrc } = useEthInvoice(name, isMoonpayFlow)
-
-  const nameWithColourEmojis = useMemo(() => {
-    const data = tokenise(beautifiedName)
-    return data.map((item, i) => {
-      if (item.type === 'emoji') {
-        const str = String.fromCodePoint(...item.emoji)
-        // eslint-disable-next-line react/no-array-index-key
-        return <Fragment key={`${str}-${i}`}>{str}</Fragment>
-      }
-      let str = '.'
-      if ('cps' in item) str = String.fromCodePoint(...item.cps)
-      if ('cp' in item) str = String.fromCodePoint(item.cp)
-      // eslint-disable-next-line react/no-array-index-key
-      return <b key={`${str}-${i}`}>{str}</b>
-    })
-  }, [beautifiedName])
+  console.log('beautifiedName', beautifiedName)
+  console.log('isMoonpayFlow', isMoonpayFlow)
 
   return (
     <StyledCard>
+      <HeadStyle>
+        <HeadTitle>{`Congratulations! Here's your AWNS`}</HeadTitle>
+      </HeadStyle>
+      <CenterBox>
+        <HeadTitle>{name}</HeadTitle>
+      </CenterBox>
+      <Round>
+        <UserImg>
+          <Image src={UserAvatar} style={{ width: '100%', height: '100%' }} />
+        </UserImg>
+        <PositionImg>
+          <HeadTitle $color="#fff">{name}</HeadTitle>
+        </PositionImg>
+      </Round>
       <Confetti
         width={width}
         height={height}
@@ -238,18 +220,18 @@ const Complete = ({
         gravity={0.25}
         initialVelocityY={20}
       />
-      <NFTContainer>
+      {/* <NFTContainer>
         <NFTTemplate backgroundImage={avatarSrc} isNormalised name={name} />
-      </NFTContainer>
-      <TitleContainer>
+      </NFTContainer> */}
+      {/* <TitleContainer>
         <Title>{t('steps.complete.heading')}</Title>
         <Typography style={{ display: 'inline' }} fontVariant="headingThree" weight="bold">
           {t('steps.complete.subheading')}
           <SubtitleWithGradient>{nameWithColourEmojis}</SubtitleWithGradient>
         </Typography>
-      </TitleContainer>
-      <Typography>{t('steps.complete.description')}</Typography>
-      {InvoiceFilled}
+      </TitleContainer> */}
+      {/* <Typography>{t('steps.complete.description')}</Typography> */}
+      {/* {InvoiceFilled} */}
       <ButtonContainer>
         <MobileFullWidth>
           <Button colorStyle="accentSecondary" onClick={() => callback(false)}>
