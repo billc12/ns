@@ -5,6 +5,8 @@ import { Typography } from '@ensdomains/thorin'
 
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
 
+import { EmptyData } from '../EmptyData'
+
 const TableStyle = styled.table(
   () => css`
     width: 100%;
@@ -15,9 +17,11 @@ const TableStyle = styled.table(
       height: 36px;
       text-align: center;
       color: var(--word-color2, #8d8ea5);
-      font-size: 14px;
-      font-weight: 500;
       line-height: 36px;
+      th {
+        font-weight: 500;
+        font-size: 14px;
+      }
       th:first-child {
         text-align: left !important;
         padding-left: 30px;
@@ -30,13 +34,13 @@ const TableStyle = styled.table(
     tbody tr {
       padding: 0 20px;
       background: var(--bg_light, #fff);
-      height: 58px;
       text-align: center;
       color: var(--word-color2, #8d8ea5);
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 58px;
       border-bottom: 1px solid #dce6ed;
+      td {
+        font-weight: 500;
+        font-size: 14px;
+      }
       td:first-child {
         text-align: left !important;
         padding-left: 30px;
@@ -55,6 +59,7 @@ const Card = styled.div(
     border-radius: 16px;
     padding: 16px;
     width: 100%;
+    background: #fff;
   `,
 )
 
@@ -76,10 +81,10 @@ const CardRow = styled.div(
   `,
 )
 
-function Row({ row }: { row: (string | number | JSX.Element)[] }) {
+function Row({ row, RowHeight }: { row: (string | number | JSX.Element)[]; RowHeight?: number }) {
   return (
     <>
-      <tr>
+      <tr style={{ height: RowHeight || 58, lineHeight: `${RowHeight}px` || '58px' }}>
         {row.map((item) => (
           <td>{item}</td>
         ))}
@@ -89,15 +94,21 @@ function Row({ row }: { row: (string | number | JSX.Element)[] }) {
 }
 
 export const Table = ({
-  label,
+  labels,
   rows,
   hederRow,
-  height,
+  TableHeight,
+  RowHeight,
+  minHeight,
+  noneBorder,
 }: {
-  label: string[]
+  labels: string[]
   rows: (string | number | JSX.Element)[][]
   hederRow?: JSX.Element
-  height?: number
+  TableHeight?: number
+  RowHeight?: number
+  minHeight?: number
+  noneBorder?: boolean
 }) => {
   const breakpoints = useBreakpoint()
   const isSmDown = useMemo(() => {
@@ -106,22 +117,21 @@ export const Table = ({
     }
     return true
   }, [breakpoints.sm])
-  console.log(isSmDown)
 
   return (
     <>
       {isSmDown ? (
         <>
-          {rows.map((data) => (
-            <Card>
+          {rows.map((data, ind) => (
+            <Card key={ind.toLocaleString()}>
               <div
                 style={{
                   display: 'grid',
                   gap: '16px',
                 }}
               >
-                {label.map((headerString, index) => (
-                  <CardRow>
+                {labels.map((headerString, index) => (
+                  <CardRow key={headerString}>
                     <Typography
                       style={{
                         color: '#000000',
@@ -140,30 +150,34 @@ export const Table = ({
         <div
           style={{
             width: 'auto',
-            minHeight: 285,
-            height: height || '100%',
-            borderRadius: '10px',
-            border: ' 1px solid var(--line, #D4D7E2)',
+            minHeight: minHeight || 285,
+            height: TableHeight || '100%',
+            borderRadius: noneBorder ? '0' : '10px',
+            border: noneBorder ? 'none' : '1px solid var(--line, #D4D7E2)',
             background: '#FFF',
-            boxShadow: '0px 4px 14px 0px rgba(40, 79, 115, 0.10)',
+            boxShadow: noneBorder ? 'none' : '0px 4px 14px 0px rgba(40, 79, 115, 0.10)',
             overflow: 'hidden',
           }}
         >
           {hederRow}
-          <TableStyle style={{ width: '100%' }}>
-            <thead>
-              <tr>
-                {label.map((item) => (
-                  <th>{item}</th>
+          {!!rows.length && (
+            <TableStyle style={{ width: '100%' }}>
+              <thead>
+                <tr>
+                  {labels.map((item) => (
+                    <th>{item}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((item) => (
+                  <Row row={item} RowHeight={RowHeight} />
                 ))}
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((item) => (
-                <Row row={item} />
-              ))}
-            </tbody>
-          </TableStyle>
+              </tbody>
+            </TableStyle>
+          )}
+
+          {!rows.length && <EmptyData />}
         </div>
       )}
     </>

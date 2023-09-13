@@ -278,7 +278,17 @@
       "name":"详情"
     },
     "assets":{
-      "name":"资产"
+      "name":"资产",
+      "assets":{
+        "name":"资产"
+      },
+      "nft":{
+        "name":"代币"
+      },
+      "history":
+      {
+        "name":"记录"
+      }
     }
   },
   "details": {
