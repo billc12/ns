@@ -273,6 +273,12 @@
           "earnifi": "Earni.fi Reminders"
         }
       }
+    },
+    "detail":{
+      "name":"Detail"
+    },
+    "assets":{
+      "name":"Assets"
     }
   },
   "details": {
