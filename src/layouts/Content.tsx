@@ -25,7 +25,9 @@ const HeadingItems = styled.div(
   ({ theme }) => css`
     grid-column: span 1;
     width: 100%;
-    max-width: ${theme.space['192']};
+
+    /* max-width: ${theme.space['192']}; */
+    max-width: 840px;
     padding: 0 ${theme.radii.extraLarge};
 
     display: grid;
@@ -206,7 +208,7 @@ const CompactTitle = ({
           <Title
             className="shrinkable-title"
             weight="bold"
-            style={{ maxWidth: titleWidth, overflow: 'hidden' }}
+            style={{ maxWidth: titleWidth, overflow: 'hidden', display: 'none' }}
           >
             {title}
           </Title>

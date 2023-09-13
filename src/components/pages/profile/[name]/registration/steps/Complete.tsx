@@ -20,7 +20,7 @@ import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvide
 
 const StyledCard = styled(Card)(
   ({ theme }) => css`
-    max-width: 780px;
+    max-width: 840px;
     margin: 0 auto;
     text-align: center;
     flex-direction: column;

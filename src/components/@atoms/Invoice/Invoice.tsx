@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
 import styled, { css } from 'styled-components'
 
-import { Colors, Skeleton } from '@ensdomains/thorin'
+import { Colors, Skeleton, Typography } from '@ensdomains/thorin'
 
 import { CurrencyDisplay } from '@app/types'
 
@@ -9,11 +9,12 @@ import { CurrencyText } from '../CurrencyText/CurrencyText'
 
 const Container = styled.div(
   ({ theme }) => css`
-    padding: ${theme.space['4']};
-    background: ${theme.colors.backgroundSecondary};
+    /* padding: ${theme.space['4']}; */
+    /* background: ${theme.colors.backgroundSecondary}; */
     display: flex;
     flex-direction: column;
-    gap: ${theme.space['2']};
+    /* gap: ${theme.space['2']}; */
+    gap: 37px;
     width: 100%;
     border-radius: ${theme.space['2']};
   `,
@@ -33,7 +34,21 @@ const Total = styled(LineItem)(
     color: ${theme.colors.text};
   `,
 )
+const LeftTitle = styled(Typography)`
+  color: #8d8ea5;
 
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+`
+const RightTitle = styled(Typography)<{ $weight?: number }>`
+  color: #3f5170;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: ${(props) => props.$weight || 500};
+  line-height: normal;
+`
 export type InvoiceItem = {
   label: string
   value?: BigNumber
@@ -56,29 +71,36 @@ export const Invoice = ({ totalLabel = 'Estimated total', unit = 'eth', items }:
     .filter((x) => !!x)
   const total = filteredItems.reduce((a, b) => a!.add(b!), BigNumber.from(0))
   const hasEmptyItems = filteredItems.length !== items.length
-
+  console.log('totalLabel', totalLabel)
+  console.log('items', items)
   return (
     <Container>
-      {items.map(({ label, value, bufferPercentage, color }, inx) => (
-        <LineItem data-testid={`invoice-item-${inx}`} $color={color} key={label}>
-          <div>{label}</div>
-          <Skeleton loading={!value}>
-            <div data-testid={`invoice-item-${inx}-amount`}>
-              <CurrencyText
-                bufferPercentage={bufferPercentage}
-                eth={value || BigNumber.from(0)}
-                currency={unit}
-              />
-            </div>
-          </Skeleton>
-        </LineItem>
-      ))}
+      {items
+        .filter((t, i) => i === 1)
+        .map(({ label, value, bufferPercentage, color }, inx) => (
+          <LineItem data-testid={`invoice-item-${inx}`} $color={color} key={label}>
+            <LeftTitle>Estimated Gas</LeftTitle>
+            <Skeleton loading={!value}>
+              {/* <div data-testid={`invoice-item-${inx}-amount`}> */}
+              <RightTitle>
+                <CurrencyText
+                  bufferPercentage={bufferPercentage}
+                  eth={value || BigNumber.from(0)}
+                  currency={unit}
+                />
+              </RightTitle>
+              {/* </div> */}
+            </Skeleton>
+          </LineItem>
+        ))}
       <Total>
-        <div>{totalLabel}</div>
+        <LeftTitle>Estimated Total</LeftTitle>
         <Skeleton loading={hasEmptyItems}>
-          <div data-testid="invoice-total">
+          {/* <div data-testid="invoice-total"> */}
+          <RightTitle $weight={800}>
             <CurrencyText eth={hasEmptyItems ? BigNumber.from(0) : total} currency={unit} />
-          </div>
+          </RightTitle>
+          {/* </div> */}
         </Skeleton>
       </Total>
     </Container>

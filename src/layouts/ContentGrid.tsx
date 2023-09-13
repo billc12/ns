@@ -4,7 +4,8 @@ export const ContentGrid = styled.div(
   ({ theme }) => css`
     flex-grow: 1;
     width: 100%;
-    max-width: ${theme.space['192']};
+    /* max-width: ${theme.space['192']}; */
+    max-width: 840px;
     overflow: hidden;
 
     display: flex;
