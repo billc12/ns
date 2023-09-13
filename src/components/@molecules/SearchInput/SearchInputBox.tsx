@@ -102,6 +102,7 @@ const SearchIconStyle = styled.div`
   transform: translateY(-50%);
   display: flex;
   align-items: center;
+  cursor: pointer;
 `
 // const ResetButton = styled.div(
 //   ({ theme }) => css`
