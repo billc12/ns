@@ -278,7 +278,17 @@
       "name":"Detail"
     },
     "assets":{
-      "name":"Assets"
+      "name":"Assets",
+      "assets":{
+        "name":"Assets"
+      },
+      "nft":{
+        "name":"NFT"
+      },
+      "history":
+      {
+        "name":"History"
+      }
     }
   },
   "details": {

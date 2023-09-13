@@ -5,10 +5,11 @@ import { useAccount } from 'wagmi'
 
 import { Button, Typography } from '@ensdomains/thorin'
 
-import LinkIcon from '@app/assets/Link_icon.svg'
-import TimeIcon from '@app/assets/Time_icon.svg'
-import TransferIcon from '@app/assets/Transfer_icon.svg'
-import testImg from '@app/assets/test_img.svg'
+import LinkIcon from '@app/assets/LinkIcon.svg'
+import TimeIcon from '@app/assets/TimeIcon.svg'
+import TransferIcon from '@app/assets/TransferIcon.svg'
+import TestImg from '@app/assets/testImage.png'
+import { CopyButton } from '@app/components/Copy'
 // import { Outlink } from '@app/components/Outlink'
 import { ProfileSnippet } from '@app/components/ProfileSnippet'
 import { ProfileDetails } from '@app/components/pages/profile/ProfileDetails'
@@ -32,7 +33,7 @@ const DetailsWrapper = styled.div(
     width: 100%;
   `,
 )
-const StyledImg = styled.div(
+const StyledImg = styled.img(
   () => css`
     height: 295px;
     width: 295px;
@@ -67,6 +68,8 @@ const RowValueStyle = styled(Typography)(
     font-weight: 500;
     line-height: normal;
     text-align: right;
+    display: flex;
+    justify-content: end;
   `,
 )
 
@@ -177,14 +180,18 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
               alignItems: 'center',
             }}
           >
-            <StyledImg as={testImg} />
+            <StyledImg src={TestImg.src} />
           </div>
           <ContentStyled>
             <RowNameStyle>Addresses</RowNameStyle>
-            <RowValueStyle>0x6621...2ae908</RowValueStyle>
+            <RowValueStyle>
+              0x6621...2ae908 <CopyButton value="1" />
+            </RowValueStyle>
 
             <RowNameStyle>Owner</RowNameStyle>
-            <RowValueStyle>0x6621...2ae908</RowValueStyle>
+            <RowValueStyle>
+              0x6621...2ae908 <CopyButton value="1" />
+            </RowValueStyle>
 
             <RowNameStyle>Registration Date</RowNameStyle>
             <RowValueStyle>2023.08.26 at 21:45 (UTC+08:00)</RowValueStyle>
@@ -196,10 +203,14 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
             <RowValueStyle>Ethereum</RowValueStyle>
 
             <RowNameStyle>Contract Address</RowNameStyle>
-            <RowValueStyle>0x6621...2ae908</RowValueStyle>
+            <RowValueStyle>
+              0x6621...2ae908 <CopyButton value="1" />
+            </RowValueStyle>
 
             <RowNameStyle>Contract Address</RowNameStyle>
-            <RowValueStyle>0x45678...2aef4</RowValueStyle>
+            <RowValueStyle>
+              0x45678...2aef4 <CopyButton value="1" />
+            </RowValueStyle>
           </ContentStyled>
         </div>
         <div

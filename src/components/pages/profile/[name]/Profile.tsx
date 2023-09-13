@@ -50,7 +50,10 @@ const TabButtonContainer = styled.div(
   `,
 )
 
-/* .eCrFJd {
+const PageButtonsStyle = styled(PageButtons)(
+  () => css`
+    width: auto;
+    & > button {
       width: auto;
       height: auto;
       min-height: auto;
@@ -58,17 +61,6 @@ const TabButtonContainer = styled.div(
       border: none;
       padding: 0;
     }
-    .lYRqR {
-      width: auto;
-      height: auto;
-      min-height: auto;
-      min-width: auto;
-      border: none;
-      padding: 0;
-    } */
-const PageButtonsStyle = styled(PageButtons)(
-  () => css`
-    width: auto;
   `,
 )
 
@@ -95,8 +87,6 @@ const TabButton = styled.button<{ $selected: boolean }>(
     padding: 0;
     margin: 0;
     background: none;
-
-    /* font-size: 16px; */
     font-weight: ${$selected ? 600 : 400};
     color: ${$selected ? '#0049C6' : '#3F5170'};
     font-size: ${theme.fontSizes.body};
@@ -322,7 +312,8 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
       <div
         style={{
           background: '#fff',
-          height: isSmDown ? 'auto' : 500,
+          height: 'auto',
+          minHeight: '500px',
           borderRadius: '10px',
           border: '1px solid var(--line, #D4D7E2)',
           width: isSmDown ? 'auto' : 840,
@@ -418,8 +409,8 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
       {tab === 'detail' && (
         <div style={{ width: isSmDown ? 'auto' : 840 }}>
           <Table
-            height={400}
-            label={['From', 'To', 'Date', 'TXid', ' ']}
+            TableHeight={400}
+            labels={['From', 'To', 'Date', 'TXid', ' ']}
             rows={tableList}
             hederRow={
               <>
