@@ -1,10 +1,13 @@
 import Image from 'next/image'
-import { useState } from 'react'
+// import { useState } from 'react'
 import styled from 'styled-components'
 
 import { Button, Dialog, Typography } from '@ensdomains/thorin'
 
 import UserAvatar from '@app/assets/TestImage.png'
+// eslint-disable-next-line import/no-cycle
+import { formatDateString } from '@app/components/pages/profile/[name]/tabs/ProfileTab'
+import { useNameDetails } from '@app/hooks/useNameDetails'
 
 const InterText = styled(Typography)<{ $size?: string; $color?: string; $weight?: number }>`
   width: max-content;
@@ -123,27 +126,23 @@ const ContentStyle = styled.div`
   height: 100%;
   margin-top: 11px;
 `
-const obj = {
-  name: 'stp.aw',
-  chainName: 'Ethereum',
-  expiresTime: '2029.02.19 at 21:45 (UTC+08:00)',
-}
-const NameInfo = () => {
+
+const NameInfo = ({ name, expiryDate }: { name: string; expiryDate: Date | undefined }) => {
   return (
     <InfoRound>
       <InfoImgRound>
         <Image src={UserAvatar} style={{ width: '100%', height: '100%' }} />
-        <InfoImgText>{obj.name}</InfoImgText>
+        <InfoImgText>{name}</InfoImgText>
       </InfoImgRound>
       <InfoRight>
         <Row style={{ width: '100%' }}>
           <InterText $color="#3F5170" ellipsis>
-            {obj.name}
+            {name}
           </InterText>
-          <ChainRound>{obj.chainName}</ChainRound>
+          <ChainRound>Ethereum</ChainRound>
         </Row>
         <InterText $size="14px" $weight={500} $color="#3F5170">
-          Expires {obj.expiresTime}
+          Expires {expiryDate ? formatDateString(expiryDate) : '--'}
         </InterText>
       </InfoRight>
     </InfoRound>
@@ -155,27 +154,23 @@ const ADialog = ({
   okFn,
   okBtnTitle,
   children,
+  open,
+  handleOpen,
+  nameDetails,
 }: {
+  open: boolean
   children: React.ReactNode
   title: string
   okFn: () => void
   okBtnTitle: string
+  handleOpen: (open: boolean) => void
+  nameDetails: ReturnType<typeof useNameDetails>
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const handleOpen = (open: boolean) => {
-    setIsOpen(open)
-  }
   return (
     <>
-      <Button onClick={() => handleOpen(true)}>Dialog Components</Button>
-      <DialogStyle
-        title={title}
-        open={isOpen}
-        variant="closable"
-        onDismiss={() => handleOpen(false)}
-      >
+      <DialogStyle title={title} open={open} variant="closable" onDismiss={() => handleOpen(false)}>
         <ContainerStyle>
-          <NameInfo />
+          <NameInfo name={nameDetails.normalisedName} expiryDate={nameDetails.expiryDate} />
           <ContentStyle>{children}</ContentStyle>
           <Row style={{ marginTop: 20 }}>
             <CancelButton colorStyle="accentSecondary" onClick={() => handleOpen(false)}>

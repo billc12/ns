@@ -419,6 +419,7 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
             </TabButtonContainer>
           </CardsStyle>
 
+          {/* eslint-disable-next-line no-nested-ternary */}
           {tab === 'detail' ? (
             <ProfileTab name={normalisedName} nameDetails={nameDetails} />
           ) : tab === 'assets' ? (
@@ -428,7 +429,6 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
               <InvitationCode />
             </>
           )}
-
           {/* <Content noTitle title={beautifiedName} loading={isLoading} copyValue={beautifiedName}>
         {{
           info: infoBanner,
