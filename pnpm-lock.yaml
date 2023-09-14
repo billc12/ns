@@ -16,12 +16,12 @@ overrides:
   wagmi: 0.12.13
 
 patchedDependencies:
-  next-dev-https@0.1.2:
-    hash: q5l3x5627ujg3rak6l6v24c2cq
-    path: patches/next-dev-https@0.1.2.patch
   '@rainbow-me/rainbowkit@0.12.15':
     hash: ids4vnpwyenrujupancx6kn4ci
     path: patches/@rainbow-me__rainbowkit@0.12.15.patch
+  next-dev-https@0.1.2:
+    hash: q5l3x5627ujg3rak6l6v24c2cq
+    path: patches/next-dev-https@0.1.2.patch
   react-confetti@6.1.0:
     hash: bbuxkxhxbyez4jmqgptuoucij4
     path: patches/react-confetti@6.1.0.patch
@@ -39,7 +39,6 @@ importers:
       '@ensdomains/ens-contracts': 0.0.16
       '@ensdomains/ens-test-env': ^0.3.8
       '@ensdomains/ens-validation': ^0.1.0
-      '@ensdomains/ensjs': 3.0.0-alpha.66
       '@ensdomains/eth-ens-namehash': ^2.0.15
       '@ensdomains/thorin': 0.6.42
       '@ethersproject/abi': ^5.6.4
@@ -62,6 +61,7 @@ importers:
       '@metamask/inpage-provider': ^8.1.0
       '@metamask/mobile-provider': ^2.1.0
       '@metamask/post-message-stream': ^6.1.2
+      '@myclique/awnsjs': 0.0.2-alpha
       '@next/bundle-analyzer': ^12.2.5
       '@next/swc-linux-x64-gnu': 12.1.4
       '@nomiclabs/hardhat-ethers': npm:hardhat-deploy-ethers@0.3.0-beta.13
@@ -184,7 +184,6 @@ importers:
       '@ensdomains/dnssecoraclejs': 0.2.7_v6aogrdjojfeat5uhab6hyaxg4
       '@ensdomains/ens-contracts': 0.0.16_hardhat@2.11.2
       '@ensdomains/ens-validation': 0.1.0
-      '@ensdomains/ensjs': 3.0.0-alpha.66_4wk6sblqc5kfzwjkcabkhle2du
       '@ensdomains/eth-ens-namehash': 2.0.15
       '@ensdomains/thorin': 0.6.42_6haozuff5ofofiwuoke6ixqiri
       '@ethersproject/abi': 5.7.0
@@ -206,6 +205,7 @@ importers:
       '@metamask/inpage-provider': 8.1.0
       '@metamask/mobile-provider': 2.1.0
       '@metamask/post-message-stream': 6.1.2
+      '@myclique/awnsjs': 0.0.2-alpha_4wk6sblqc5kfzwjkcabkhle2du
       '@rainbow-me/rainbowkit': 0.12.15_ids4vnpwyenrujupancx6kn4ci_uc36ezoirljpcbl3y5tca26rgq
       '@sentry/nextjs': 7.43.0_next@12.1.6+react@17.0.2
       '@svgr/webpack': 6.4.0
@@ -326,6 +326,30 @@ importers:
       wait-on: 6.0.1
       wrangler: 2.16.0
       yalc: 1.0.0-pre.53
+
+  .yalc/@ensdomains/ensjs:
+    specifiers:
+      '@adraffy/ens-normalize': 1.9.0
+      '@ensdomains/address-encoder': ^0.2.18
+      '@ensdomains/content-hash': ^2.5.7
+      '@ensdomains/dnssecoraclejs': ^0.2.8
+      cbor: ^8.1.0
+      dns-packet: ^5.3.1
+      graphql: ^16.3.0
+      graphql-request: 5.1.0
+      pako: ^2.1.0
+      traverse: ^0.6.6
+    dependencies:
+      '@adraffy/ens-normalize': 1.9.0
+      '@ensdomains/address-encoder': 0.2.21
+      '@ensdomains/content-hash': 2.5.7
+      '@ensdomains/dnssecoraclejs': 0.2.8
+      cbor: 8.1.0
+      dns-packet: 5.4.0
+      graphql: 16.6.0
+      graphql-request: 5.1.0_graphql@16.6.0
+      pako: 2.1.0
+      traverse: 0.6.7
 
 packages:
 
@@ -2252,52 +2276,6 @@ packages:
       - bufferutil
       - utf-8-validate
 
-  /@ensdomains/ensjs/3.0.0-alpha.66_4wk6sblqc5kfzwjkcabkhle2du:
-    resolution: {integrity: sha512-bXaKh++A3Ui/JP2xG7mIjrMaEAfONf4lFBz9bEdGImjU/DVd7kdP0jCXH5nMTOKGo3VuvSybWths24aGWIzFLA==}
-    peerDependencies:
-      '@ethersproject/abi': ^5.6.4
-      '@ethersproject/abstract-provider': ^5.7.0
-      '@ethersproject/abstract-signer': ^5.7.0
-      '@ethersproject/address': ^5.7.0
-      '@ethersproject/bignumber': ^5.7.0
-      '@ethersproject/bytes': ^5.7.0
-      '@ethersproject/contracts': ^5.7.0
-      '@ethersproject/keccak256': ^5.7.0
-      '@ethersproject/providers': ^5.6.8
-      '@ethersproject/solidity': ^5.7.0
-      '@ethersproject/strings': ^5.7.0
-      '@ethersproject/transactions': ^5.7.0
-      '@ethersproject/web': ^5.7.1
-    dependencies:
-      '@adraffy/ens-normalize': 1.9.0
-      '@ensdomains/address-encoder': 0.2.21
-      '@ensdomains/content-hash': 2.5.7
-      '@ensdomains/dnssecoraclejs': 0.2.8
-      '@ethersproject/abi': 5.7.0
-      '@ethersproject/abstract-provider': 5.7.0
-      '@ethersproject/abstract-signer': 5.7.0
-      '@ethersproject/address': 5.7.0
-      '@ethersproject/bignumber': 5.7.0
-      '@ethersproject/bytes': 5.7.0
-      '@ethersproject/contracts': 5.7.0
-      '@ethersproject/keccak256': 5.7.0
-      '@ethersproject/providers': 5.7.2
-      '@ethersproject/solidity': 5.7.0
-      '@ethersproject/strings': 5.7.0
-      '@ethersproject/transactions': 5.7.0
-      '@ethersproject/web': 5.7.1
-      cbor: 8.1.0
-      dns-packet: 5.4.0
-      graphql: 16.6.0
-      graphql-request: 5.1.0_graphql@16.6.0
-      pako: 2.1.0
-      traverse: 0.6.7
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - utf-8-validate
-    dev: false
-
   /@ensdomains/eth-ens-namehash/2.0.15:
     resolution: {integrity: sha512-JRDFP6+Hczb1E0/HhIg0PONgBYasfGfDheujmfxaZaAv/NAH4jE6Kf48WbqfRZdxt4IZI3jl3Ri7sZ1nP09lgw==}
     dev: false
@@ -3704,6 +3682,52 @@ packages:
 
   /@multiformats/base-x/4.0.1:
     resolution: {integrity: sha512-eMk0b9ReBbV23xXU693TAIrLyeO5iTgBZGSJfpqriG8UkYvr/hC9u9pyMlAakDNHWmbhMZCDs6KQO0jzKD8OTw==}
+    dev: false
+
+  /@myclique/awnsjs/0.0.2-alpha_4wk6sblqc5kfzwjkcabkhle2du:
+    resolution: {integrity: sha512-k0EpjJg5MhqryyPJckj0mFu+2YkoxpQ4AT+j7+rTZiHWcL4uniHLPnQmAkELA6BWQFGDzkxE0ABQ+wiVuAyx7g==}
+    peerDependencies:
+      '@ethersproject/abi': ^5.6.4
+      '@ethersproject/abstract-provider': ^5.7.0
+      '@ethersproject/abstract-signer': ^5.7.0
+      '@ethersproject/address': ^5.7.0
+      '@ethersproject/bignumber': ^5.7.0
+      '@ethersproject/bytes': ^5.7.0
+      '@ethersproject/contracts': ^5.7.0
+      '@ethersproject/keccak256': ^5.7.0
+      '@ethersproject/providers': ^5.6.8
+      '@ethersproject/solidity': ^5.7.0
+      '@ethersproject/strings': ^5.7.0
+      '@ethersproject/transactions': ^5.7.0
+      '@ethersproject/web': ^5.7.1
+    dependencies:
+      '@adraffy/ens-normalize': 1.9.0
+      '@ensdomains/address-encoder': 0.2.21
+      '@ensdomains/content-hash': 2.5.7
+      '@ensdomains/dnssecoraclejs': 0.2.8
+      '@ethersproject/abi': 5.7.0
+      '@ethersproject/abstract-provider': 5.7.0
+      '@ethersproject/abstract-signer': 5.7.0
+      '@ethersproject/address': 5.7.0
+      '@ethersproject/bignumber': 5.7.0
+      '@ethersproject/bytes': 5.7.0
+      '@ethersproject/contracts': 5.7.0
+      '@ethersproject/keccak256': 5.7.0
+      '@ethersproject/providers': 5.7.2
+      '@ethersproject/solidity': 5.7.0
+      '@ethersproject/strings': 5.7.0
+      '@ethersproject/transactions': 5.7.0
+      '@ethersproject/web': 5.7.1
+      cbor: 8.1.0
+      dns-packet: 5.4.0
+      graphql: 16.6.0
+      graphql-request: 5.1.0_graphql@16.6.0
+      pako: 2.1.0
+      traverse: 0.6.7
+    transitivePeerDependencies:
+      - bufferutil
+      - encoding
+      - utf-8-validate
     dev: false
 
   /@next/bundle-analyzer/12.3.1:
@@ -9403,6 +9427,7 @@ packages:
 
   /eip1193-provider/1.0.1:
     resolution: {integrity: sha512-kSuqwQ26d7CzuS/t3yRXo2Su2cVH0QfvyKbr2H7Be7O5YDyIq4hQGCNTo5wRdP07bt+E2R/8nPCzey4ojBHf7g==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
     dependencies:
       '@json-rpc-tools/provider': 1.7.6
     transitivePeerDependencies:
