@@ -21,6 +21,7 @@ import { useBreakpoint } from '@app/utils/BreakpointProvider'
 import { formatFullExpiry } from '@app/utils/utils'
 
 import { shouldShowSuccessPage } from '../../import/[name]/shared'
+import { AccountHeader } from '../AccountHeader'
 import { AssetsTab } from './tabs/AssetsTab'
 // import MoreTab from './tabs/MoreTab/MoreTab'
 // import { PermissionsTab } from './tabs/PermissionsTab/PermissionsTab'
@@ -71,11 +72,33 @@ const TopRowStyle = styled.div(
     justify-content: space-between;
   `,
 )
+
 const TableContentStyle = styled(Typography)(
   () => css`
     height: 58px;
     display: flex;
     align-items: center;
+  `,
+)
+
+const ContentStyle = styled.div(
+  () => css`
+    background: #fff;
+    height: auto;
+    min-height: 500px;
+    border-radius: 10px;
+    border: 1px solid var(--line, #d4d7e2);
+  `,
+)
+
+const CardsStyle = styled.div(
+  () => css`
+    display: flex;
+    height: 80px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 80px 0 30px;
+    border-bottom: 1px solid #dce6ed;
   `,
 )
 
@@ -110,7 +133,7 @@ const CardTitleStyle = styled(Typography)(
 )
 
 // const tabs = ['profile', 'records', 'subnames', 'permissions', 'more'] as const
-const tabs = ['detail', 'assets'] as const
+const tabs = ['detail', 'assets', 'invitationCode'] as const
 type Tab = typeof tabs[number]
 
 type Props = {
@@ -207,6 +230,14 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
         (isSelf ? address : true) && typeof name === 'string' && name.length > 0,
   )
 
+  const isOwner = useMemo(() => {
+    if (address === nameDetails.ownerData?.owner) {
+      return true
+    }
+    return false
+  }, [address, nameDetails.ownerData?.owner])
+  console.log(isSmDown, isOwner)
+
   const [titleContent, descriptionContent] = useMemo(() => {
     if (isSelf) {
       return [t('yourProfile'), '']
@@ -236,6 +267,7 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
 
   // const [tab, setTab] = useQueryParameterState<Tab>('tab', 'profile')
   const [tab, setTab] = useQueryParameterState<Tab>('tab', 'detail')
+  console.log('tab', tab)
   // const tab = isWrapped ? tabs : tabs.filter((_tab) => _tab !== 'permissions')
 
   // const abilities = useAbilities(normalisedName)
@@ -309,44 +341,55 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
         <title>{titleContent}</title>
         <meta name="description" content={descriptionContent} />
       </Head>
-      <div
-        style={{
-          background: '#fff',
-          height: 'auto',
-          minHeight: '500px',
-          borderRadius: '10px',
-          border: '1px solid var(--line, #D4D7E2)',
-          width: isSmDown ? 'auto' : 840,
-        }}
-      >
-        <div
+      <div style={{ display: 'grid', gap: 20 }}>
+        {typeof window === 'object' && isOwner && (
+          <AccountHeader address={nameDetails.profile?.address} />
+        )}
+
+        <ContentStyle
+          key={0}
           style={{
-            display: 'flex',
-            height: 80,
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '0 80px 0 30px',
-            borderBottom: '1px solid #DCE6ED',
+            width: isSmDown ? 'auto' : 840,
           }}
         >
-          <CardTitleStyle>{beautifiedName}</CardTitleStyle>
-          <TabButtonContainer>
-            {tabs.map((tabItem) => (
-              <TabButton
-                key={tabItem}
-                data-testid={`${tabItem}-tab`}
-                $selected={tabItem === tab}
-                onClick={() => setTab(tabItem)}
-              >
-                {t(`tabs.${tabItem}.name`)}
-              </TabButton>
-            ))}
-          </TabButtonContainer>
-        </div>
+          <CardsStyle>
+            <CardTitleStyle>{beautifiedName}</CardTitleStyle>
+            <TabButtonContainer>
+              {isOwner
+                ? tabs.map((tabItem) => (
+                    <TabButton
+                      key={tabItem}
+                      data-testid={`${tabItem}-tab`}
+                      $selected={tabItem === tab}
+                      onClick={() => setTab(tabItem)}
+                    >
+                      {t(`tabs.${tabItem}.name`)}
+                    </TabButton>
+                  ))
+                : tabs
+                    .filter((item) => item !== 'invitationCode')
+                    .map((tabItem) => (
+                      <TabButton
+                        key={tabItem}
+                        data-testid={`${tabItem}-tab`}
+                        $selected={tabItem === tab}
+                        onClick={() => setTab(tabItem)}
+                      >
+                        {t(`tabs.${tabItem}.name`)}
+                      </TabButton>
+                    ))}
+            </TabButtonContainer>
+          </CardsStyle>
 
-        {tab === 'detail' && <ProfileTab name={normalisedName} nameDetails={nameDetails} />}
-        {tab === 'assets' && <AssetsTab />}
-        {/* <Content noTitle title={beautifiedName} loading={isLoading} copyValue={beautifiedName}>
+          {tab === 'detail' ? (
+            <ProfileTab name={normalisedName} nameDetails={nameDetails} />
+          ) : tab === 'assets' ? (
+            <AssetsTab />
+          ) : (
+            <></>
+          )}
+
+          {/* <Content noTitle title={beautifiedName} loading={isLoading} copyValue={beautifiedName}>
         {{
           info: infoBanner,
           warning,
@@ -405,39 +448,41 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
           }[tab],
         }}
       </Content> */}
+        </ContentStyle>
+
+        {tab === 'detail' && (
+          <div key={1} style={{ width: isSmDown ? 'auto' : 840 }}>
+            <Table
+              TableHeight={400}
+              labels={['From', 'To', 'Date', 'TXid', ' ']}
+              rows={tableList}
+              hederRow={
+                <>
+                  <TopRowStyle>
+                    <Typography
+                      style={{
+                        color: 'var(--word-color, #3F5170)',
+                        fontSize: '16px',
+                        fontWeight: 600,
+                      }}
+                    >
+                      Related Transactions
+                    </Typography>
+                    <PageButtonsStyle
+                      alwaysShowFirst
+                      alwaysShowLast
+                      current={4}
+                      size="small"
+                      total={6}
+                      onChange={(value) => console.log(value)}
+                    />
+                  </TopRowStyle>
+                </>
+              }
+            />
+          </div>
+        )}
       </div>
-      {tab === 'detail' && (
-        <div style={{ width: isSmDown ? 'auto' : 840 }}>
-          <Table
-            TableHeight={400}
-            labels={['From', 'To', 'Date', 'TXid', ' ']}
-            rows={tableList}
-            hederRow={
-              <>
-                <TopRowStyle>
-                  <Typography
-                    style={{
-                      color: 'var(--word-color, #3F5170)',
-                      fontSize: '16px',
-                      fontWeight: 600,
-                    }}
-                  >
-                    Related Transactions
-                  </Typography>
-                  <PageButtonsStyle
-                    alwaysShowFirst
-                    alwaysShowLast
-                    current={4}
-                    size="small"
-                    total={6}
-                    onChange={(value) => console.log(value)}
-                  />
-                </TopRowStyle>
-              </>
-            }
-          />
-        </div>
-      )}
     </>
   )
 }

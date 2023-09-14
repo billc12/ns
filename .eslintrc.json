@@ -87,6 +87,7 @@
     "no-return-assign": "off",
     "react/require-default-props": "off",
     "react/function-component-definition": "off",
+    "no-nested-ternary": "off",
     "react/no-unstable-nested-components": ["off", { "allowAsProps": true }],
     "react/jsx-no-useless-fragment": "off"
   }
