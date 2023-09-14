@@ -23,6 +23,7 @@ const HeaderLayout = styled(Row)`
 `
 const HeaderLeft = styled(Row)`
   gap: 12px;
+  cursor: pointer;
 `
 const Line = styled.div`
   width: 2px;
@@ -54,7 +55,7 @@ const Page = () => {
   const isIndex = router.asPath === '/'
   return (
     <HeaderLayout>
-      <HeaderLeft>
+      <HeaderLeft onClick={() => router.push('/')}>
         <STPSvg />
         <Line />
         <InterText style={{ fontWeight: 700 }} $textColor={isIndex ? '#fff' : '#3f5170'}>
