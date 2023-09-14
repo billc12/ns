@@ -1,6 +1,11 @@
+import { useMemo } from 'react'
 import styled, { css } from 'styled-components'
 
-import ShareIcon from '@app/assets/ShareIcon.svg'
+import { mq } from '@ensdomains/thorin'
+
+import OutRightIcon from '@app/assets/OutRightIcon.svg'
+import { useBreakpoint } from '@app/utils/BreakpointProvider'
+import { shortenAddress } from '@app/utils/utils'
 
 const HederStyle = styled.div(
   () => css`
@@ -16,6 +21,13 @@ const HederStyle = styled.div(
     font-weight: 600;
     display: flex;
     justify-content: space-between;
+    ${mq.sm.max(css`
+      width: 100%;
+      font-size: 22px;
+      padding: 10px 15px;
+      align-items: center;
+      height: auto;
+    `)}
   `,
 )
 const AddressStyle = styled.div(
@@ -32,6 +44,11 @@ const AddressStyle = styled.div(
     display: flex;
     justify-content: space-between;
     align-items: center;
+    ${mq.sm.max(css`
+      height: auto;
+      padding: 5px 10px;
+      font-size: 14px;
+    `)}
   `,
 )
 
@@ -46,14 +63,22 @@ const ShareSvg = styled.svg(
 )
 
 export const AccountHeader = ({ address }: { address?: string }) => {
+  const breakpoints = useBreakpoint()
+
+  const isSmDown = useMemo(() => {
+    if (breakpoints.sm) {
+      return false
+    }
+    return true
+  }, [breakpoints.sm])
   return (
     <>
       <HederStyle>
         MY AWNS
-        <AddressStyle>
-          {address}
+        <AddressStyle style={{ width: isSmDown ? 'auto' : 492, gap: isSmDown ? 6 : 0 }}>
+          {isSmDown ? shortenAddress(address) : address}
           <ShareSvg
-            as={ShareIcon}
+            as={OutRightIcon}
             onClick={() => {
               console.log(1)
             }}

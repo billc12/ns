@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
 
 import { getEncryptedLabelAmount } from '@ensdomains/ensjs/utils/labels'
-import { Banner, CheckCircleSVG, PageButtons, Typography } from '@ensdomains/thorin'
+import { Banner, CheckCircleSVG, PageButtons, Typography, mq } from '@ensdomains/thorin'
 
 import BaseLink from '@app/components/@atoms/BaseLink'
 import { Table } from '@app/components/table'
@@ -23,6 +23,7 @@ import { formatFullExpiry } from '@app/utils/utils'
 import { shouldShowSuccessPage } from '../../import/[name]/shared'
 import { AccountHeader } from '../AccountHeader'
 import { AssetsTab } from './tabs/AssetsTab'
+import { InvitationCode } from './tabs/InvitationCodeTab'
 // import MoreTab from './tabs/MoreTab/MoreTab'
 // import { PermissionsTab } from './tabs/PermissionsTab/PermissionsTab'
 import ProfileTab from './tabs/ProfileTab'
@@ -44,10 +45,13 @@ const TabButtonContainer = styled.div(
     gap: 100px;
     flex-gap: ${theme.space['6']};
     overflow: auto;
-
     &::-webkit-scrollbar {
       display: none;
     }
+    ${mq.sm.max(css`
+      gap: 10px;
+      padding: 0 10px 0 0;
+    `)}
   `,
 )
 
@@ -73,11 +77,24 @@ const TopRowStyle = styled.div(
   `,
 )
 
+const Relateds = styled.div(
+  () => css`
+    width: auto;
+    ${mq.sm.max(css`
+      display: grid;
+      gap: 10px;
+    `)}
+  `,
+)
+
 const TableContentStyle = styled(Typography)(
   () => css`
     height: 58px;
     display: flex;
     align-items: center;
+    ${mq.sm.max(css`
+      height: 36px;
+    `)}
   `,
 )
 
@@ -99,6 +116,10 @@ const CardsStyle = styled.div(
     align-items: center;
     padding: 0 80px 0 30px;
     border-bottom: 1px solid #dce6ed;
+    ${mq.sm.max(css`
+      padding: 0 10px 0;
+      height: 60px;
+    `)}
   `,
 )
 
@@ -115,11 +136,25 @@ const TabButton = styled.button<{ $selected: boolean }>(
     font-size: ${theme.fontSizes.body};
     transition: all 0.15s ease-in-out;
     height: 100%;
-    /* border-bottom: ${$selected ? '4px solid #0049C6' : 'none'}; */
     cursor: pointer;
+    position: relative;
     &:hover {
       color: ${$selected ? theme.colors.accentBright : theme.colors.text};
     }
+    ::before {
+      display: ${$selected ? 'block' : 'none'};
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--main, #0049c6);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      content: ' ';
+    }
+    ${mq.sm.max(css`
+      font-size: 13px;
+    `)}
   `,
 )
 
@@ -129,6 +164,9 @@ const CardTitleStyle = styled(Typography)(
     font-size: 24px;
     font-weight: 600;
     line-height: normal;
+    ${mq.sm.max(css`
+      font-size: 18px;
+    `)}
   `,
 )
 
@@ -341,7 +379,7 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
         <title>{titleContent}</title>
         <meta name="description" content={descriptionContent} />
       </Head>
-      <div style={{ display: 'grid', gap: 20 }}>
+      <div style={{ display: 'grid', gap: 20, padding: isSmDown ? '20px' : 0 }}>
         {typeof window === 'object' && isOwner && (
           <AccountHeader address={nameDetails.profile?.address} />
         )}
@@ -386,7 +424,9 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
           ) : tab === 'assets' ? (
             <AssetsTab />
           ) : (
-            <></>
+            <>
+              <InvitationCode />
+            </>
           )}
 
           {/* <Content noTitle title={beautifiedName} loading={isLoading} copyValue={beautifiedName}>
@@ -451,7 +491,7 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
         </ContentStyle>
 
         {tab === 'detail' && (
-          <div key={1} style={{ width: isSmDown ? 'auto' : 840 }}>
+          <Relateds key={1} style={{ width: isSmDown ? 'auto' : 840 }}>
             <Table
               TableHeight={400}
               labels={['From', 'To', 'Date', 'TXid', ' ']}
@@ -480,7 +520,7 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
                 </>
               }
             />
-          </div>
+          </Relateds>
         )}
       </div>
     </>

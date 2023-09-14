@@ -81,14 +81,20 @@ const CardRow = styled.div(
   `,
 )
 
+const TrStyle = styled.tr(
+  () => css`
+    height: auto;
+  `,
+)
+
 function Row({ row, RowHeight }: { row: (string | number | JSX.Element)[]; RowHeight?: number }) {
   return (
     <>
-      <tr style={{ height: RowHeight || 58, lineHeight: `${RowHeight}px` || '58px' }}>
+      <TrStyle style={{ height: RowHeight || 58, lineHeight: `${RowHeight}px` || '58px' }}>
         {row.map((item) => (
           <td>{item}</td>
         ))}
-      </tr>
+      </TrStyle>
     </>
   )
 }
