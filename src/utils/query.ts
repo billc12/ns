@@ -27,7 +27,7 @@ if (process.env.NEXT_PUBLIC_PROVIDER) {
     // since we don't want to allow all domains to access infura
     providerArray.push(
       infuraProvider({
-        apiKey: process.env.NEXT_PUBLIC_INFURA_KEY || 'cfa6ae2501cc4354a74e20432507317c',
+        apiKey: process.env.NEXT_PUBLIC_INFURA_KEY || '169a2f10743f4afdaa0a17e148552867',
       }),
     )
   }

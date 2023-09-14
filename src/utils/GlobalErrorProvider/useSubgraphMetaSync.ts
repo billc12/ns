@@ -17,7 +17,7 @@ const query = `
         number
       }
     }
-  }  
+  }
 `
 
 export const debugSubgraphIndexingErrors = () => {

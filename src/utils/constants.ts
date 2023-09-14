@@ -44,8 +44,8 @@ export const RESOLVER_ADDRESSES: ResolverAddresses = {
   ],
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '11155111': [
-    '0x8FADE66B79cC9f707aB26799354482EB93a5B7dD',
-    '0x0CeEC524b2807841739D3B5E161F5bf1430FFA48',
+    '0xc83DF738787589D9d31C4736aB10009827b2B954',
+    // '0x0CeEC524b2807841739D3B5E161F5bf1430FFA48',
   ],
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '1337': [
@@ -65,7 +65,7 @@ export const NAMEWRAPPER_AWARE_RESOLVERS: ResolverAddresses = {
     '0x19c2d5D0f035563344dBB7bE5fD09c8dad62b001',
   ],
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  '11155111': ['0x8FADE66B79cC9f707aB26799354482EB93a5B7dD'],
+  '11155111': ['0xc83DF738787589D9d31C4736aB10009827b2B954'],
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '1337': ['0x0E801D84Fa97b50751Dbf25036d067dCf18858bF'],
 }
@@ -87,7 +87,7 @@ export const MOONPAY_WORKER_URL: { [key: number]: string } = {
   1337: 'https://moonpay-goerli.ens-cf.workers.dev',
 }
 
-export const FAUCET_WORKER_URL = 'https://ens-faucet.ens-cf.workers.dev'
+// export const FAUCET_WORKER_URL = 'https://ens-faucet.ens-cf.workers.dev'
 
 export const WC_PROJECT_ID = '9b14144d470af1e03ab9d88aaa127332'
 

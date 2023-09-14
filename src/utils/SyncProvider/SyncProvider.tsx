@@ -157,7 +157,7 @@ export const SyncProvider = ({ children }: { children: React.ReactNode }) => {
 export const useCallbackOnTransaction = (callback: UpdateCallback) => {
   const { addCallback, removeCallback } = useContext(Context)
   useEffect(() => {
-    const key = window.crypto.randomUUID()
+    const key = window.crypto?.randomUUID?.()
     addCallback(key, callback)
     return () => {
       removeCallback(key)
