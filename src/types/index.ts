@@ -1,7 +1,7 @@
-import type { ChildFuses, ENS } from '@awnsdomains/awnsjs'
-import { DecodedContentHash } from '@awnsdomains/awnsjs/utils/contentHash'
 import type { PopulatedTransaction } from '@ethersproject/contracts'
 import type { JsonRpcSigner, TransactionReceipt } from '@ethersproject/providers'
+import type { ChildFuses, ENS } from '@myclique/awnsjs'
+import { DecodedContentHash } from '@myclique/awnsjs/utils/contentHash'
 import { ComponentProps } from 'react'
 import type { TFunction } from 'react-i18next'
 

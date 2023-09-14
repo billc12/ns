@@ -1,4 +1,4 @@
-import { RecordOptions } from '@awnsdomains/awnsjs/utils/recordHelpers'
+import { RecordOptions } from '@myclique/awnsjs/utils/recordHelpers'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'

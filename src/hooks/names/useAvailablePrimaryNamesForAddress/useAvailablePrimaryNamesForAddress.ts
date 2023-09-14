@@ -1,4 +1,4 @@
-import { Name as BaseName } from '@awnsdomains/awnsjs/functions/getNames'
+import { Name as BaseName } from '@myclique/awnsjs/functions/getNames'
 import { useCallback, useMemo, useState } from 'react'
 
 import { useNamesFromAddress } from '@app/hooks/names/useNamesFromAddress/useNamesFromAddress'

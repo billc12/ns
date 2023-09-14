@@ -1,4 +1,4 @@
-import { RecordOptions } from '@awnsdomains/awnsjs/utils/recordHelpers'
+import { RecordOptions } from '@myclique/awnsjs/utils/recordHelpers'
 
 import { ProfileRecord, ProfileRecordGroup, sortValues } from '@app/constants/profileRecordOptions'
 import supportedGeneralRecordKeys from '@app/constants/supportedGeneralRecordKeys.json'

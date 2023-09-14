@@ -1,4 +1,4 @@
-import { ParsedInputResult, parseInput } from '@awnsdomains/awnsjs/utils/validation'
+import { ParsedInputResult, parseInput } from '@myclique/awnsjs/utils/validation'
 import { useQuery } from 'wagmi'
 
 import { Prettify } from '@app/types'

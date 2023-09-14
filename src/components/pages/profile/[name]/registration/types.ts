@@ -1,4 +1,4 @@
-import { ChildFuses } from '@awnsdomains/awnsjs'
+import { ChildFuses } from '@myclique/awnsjs'
 
 import { ProfileRecord } from '@app/constants/profileRecordOptions'
 

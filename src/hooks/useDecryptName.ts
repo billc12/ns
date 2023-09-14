@@ -1,4 +1,4 @@
-import { checkIsDecrypted } from '@awnsdomains/awnsjs/utils/labels'
+import { checkIsDecrypted } from '@myclique/awnsjs/utils/labels'
 import { useMemo } from 'react'
 import { useQuery } from 'wagmi'
 

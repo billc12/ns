@@ -1,6 +1,6 @@
 import { render, screen, userEvent, waitFor } from '@app/test-utils'
 
-import { decodeLabelhash, labelhash } from '@awnsdomains/awnsjs/utils/labels'
+import { decodeLabelhash, labelhash } from '@myclique/awnsjs/utils/labels'
 
 import { makeTransactionItem } from '@app/transaction-flow/transaction'
 

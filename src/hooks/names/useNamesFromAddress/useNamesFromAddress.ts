@@ -1,4 +1,4 @@
-import type { Name } from '@awnsdomains/awnsjs/functions/getNames'
+import type { Name } from '@myclique/awnsjs/functions/getNames'
 import { useMemo } from 'react'
 import { useQuery } from 'wagmi'
 

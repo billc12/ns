@@ -1,4 +1,4 @@
-import { saveName } from '@awnsdomains/awnsjs/utils/labels'
+import { saveName } from '@myclique/awnsjs/utils/labels'
 import { useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { useQueryClient } from 'wagmi'

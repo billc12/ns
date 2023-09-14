@@ -1,5 +1,5 @@
-import { BaseRegistrationParams } from '@awnsdomains/awnsjs/utils/registerHelpers'
 import type { JsonRpcSigner } from '@ethersproject/providers'
+import { BaseRegistrationParams } from '@myclique/awnsjs/utils/registerHelpers'
 import type { TFunction } from 'react-i18next'
 
 import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'

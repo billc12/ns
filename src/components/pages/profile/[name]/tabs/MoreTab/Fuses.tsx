@@ -1,4 +1,4 @@
-import { ChildFuses, ParentFuses, userSettableFuseEnum } from '@awnsdomains/awnsjs/utils/fuses'
+import { ChildFuses, ParentFuses, userSettableFuseEnum } from '@myclique/awnsjs/utils/fuses'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 

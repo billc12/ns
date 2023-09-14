@@ -1,4 +1,4 @@
-import { namehash } from '@awnsdomains/awnsjs/utils/normalise'
+import { namehash } from '@myclique/awnsjs/utils/normalise'
 import { useQuery } from 'wagmi'
 
 import { useEns } from '@app/utils/EnsProvider'

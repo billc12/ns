@@ -1,9 +1,9 @@
+import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
+import { toUtf8Bytes } from '@ethersproject/strings/lib/utf8'
 import {
   BaseRegistrationParams,
   makeRegistrationData,
-} from '@awnsdomains/awnsjs/utils/registerHelpers'
-import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
-import { toUtf8Bytes } from '@ethersproject/strings/lib/utf8'
+} from '@myclique/awnsjs/utils/registerHelpers'
 import { useMemo } from 'react'
 import { useQuery } from 'wagmi'
 

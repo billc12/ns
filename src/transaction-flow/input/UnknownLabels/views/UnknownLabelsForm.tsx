@@ -1,5 +1,5 @@
-import { decodeLabelhash, isEncodedLabelhash, labelhash } from '@awnsdomains/awnsjs/utils/labels'
-import { validateName } from '@awnsdomains/awnsjs/utils/validation'
+import { decodeLabelhash, isEncodedLabelhash, labelhash } from '@myclique/awnsjs/utils/labels'
+import { validateName } from '@myclique/awnsjs/utils/validation'
 import { forwardRef } from 'react'
 import { UseFormReturn, useFieldArray } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'

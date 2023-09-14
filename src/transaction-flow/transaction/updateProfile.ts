@@ -1,5 +1,5 @@
-import { RecordOptions } from '@awnsdomains/awnsjs/utils/recordHelpers'
 import type { JsonRpcSigner } from '@ethersproject/providers'
+import { RecordOptions } from '@myclique/awnsjs/utils/recordHelpers'
 import { TFunction } from 'i18next'
 
 import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'

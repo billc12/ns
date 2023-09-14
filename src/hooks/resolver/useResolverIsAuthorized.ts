@@ -1,6 +1,6 @@
-import { namehash } from '@awnsdomains/awnsjs/utils/normalise'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
+import { namehash } from '@myclique/awnsjs/utils/normalise'
 import { useQuery, useSigner } from 'wagmi'
 
 import { useChainId } from '@app/hooks/useChainId'

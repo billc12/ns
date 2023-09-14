@@ -1,4 +1,4 @@
-import type { ChildFuses } from '@awnsdomains/awnsjs'
+import type { ChildFuses } from '@myclique/awnsjs'
 import { Dispatch } from 'react'
 
 import BurnFusesContent from '@app/components/@molecules/BurnFuses/BurnFusesContent'

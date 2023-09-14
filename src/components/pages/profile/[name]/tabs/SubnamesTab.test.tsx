@@ -3,8 +3,8 @@ import { mockFunction, render, screen } from '@app/test-utils'
 import { useRouter } from 'next/router'
 import { useAccount } from 'wagmi'
 
-import { labelhash } from '@awnsdomains/awnsjs/utils/labels'
-import { namehash } from '@awnsdomains/awnsjs/utils/normalise'
+import { labelhash } from '@myclique/awnsjs/utils/labels'
+import { namehash } from '@myclique/awnsjs/utils/normalise'
 
 import { useAvatar } from '@app/hooks/useAvatar'
 import { useSubnameInfiniteQuery } from '@app/hooks/useSubnameInfiniteQuery'

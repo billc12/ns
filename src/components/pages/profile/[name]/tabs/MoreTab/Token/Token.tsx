@@ -1,6 +1,6 @@
-import { labelhash } from '@awnsdomains/awnsjs/utils/labels'
-import { namehash } from '@awnsdomains/awnsjs/utils/normalise'
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
+import { labelhash } from '@myclique/awnsjs/utils/labels'
+import { namehash } from '@myclique/awnsjs/utils/normalise'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 

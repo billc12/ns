@@ -1,5 +1,5 @@
-import type { ChildFuses } from '@awnsdomains/awnsjs'
-import { childFuseKeys } from '@awnsdomains/awnsjs/utils/fuses'
+import type { ChildFuses } from '@myclique/awnsjs'
+import { childFuseKeys } from '@myclique/awnsjs/utils/fuses'
 import isEqual from 'lodash/isEqual'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'

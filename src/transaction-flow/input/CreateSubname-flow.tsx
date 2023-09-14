@@ -1,4 +1,4 @@
-import { validateName } from '@awnsdomains/awnsjs/utils/validation'
+import { validateName } from '@myclique/awnsjs/utils/validation'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'

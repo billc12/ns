@@ -1,8 +1,8 @@
+import type { JsonRpcSigner } from '@ethersproject/providers'
 import {
   ChildFuses as ENSJSChildFuses,
   ParentFuses as ENSJSParentFuses,
-} from '@awnsdomains/awnsjs/utils/fuses'
-import type { JsonRpcSigner } from '@ethersproject/providers'
+} from '@myclique/awnsjs/utils/fuses'
 import type { TFunction } from 'react-i18next'
 
 import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'

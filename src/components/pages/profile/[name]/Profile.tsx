@@ -1,4 +1,4 @@
-import { getEncryptedLabelAmount } from '@awnsdomains/awnsjs/utils/labels'
+import { getEncryptedLabelAmount } from '@myclique/awnsjs/utils/labels'
 import Head from 'next/head'
 import { useEffect, useMemo } from 'react'
 import { Trans, useTranslation } from 'react-i18next'

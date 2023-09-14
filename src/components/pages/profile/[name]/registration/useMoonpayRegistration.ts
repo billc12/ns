@@ -1,4 +1,4 @@
-import { labelhash } from '@awnsdomains/awnsjs/utils/labels'
+import { labelhash } from '@myclique/awnsjs/utils/labels'
 import { useState } from 'react'
 import { useMutation, useQuery } from 'wagmi'
 

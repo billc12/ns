@@ -1,4 +1,4 @@
-import { decodeFuses } from '@awnsdomains/awnsjs/utils/fuses'
+import { decodeFuses } from '@myclique/awnsjs/utils/fuses'
 import { useEffect, useState } from 'react'
 import { useProvider } from 'wagmi'
 

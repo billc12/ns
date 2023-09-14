@@ -1,4 +1,4 @@
-import { truncateFormat } from '@awnsdomains/awnsjs/utils/format'
+import { truncateFormat } from '@myclique/awnsjs/utils/format'
 import { useMemo } from 'react'
 import { useQuery } from 'wagmi'
 

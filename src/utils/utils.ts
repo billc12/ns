@@ -1,6 +1,6 @@
-import { AllCurrentFuses } from '@awnsdomains/awnsjs/utils/fuses'
 import { BigNumber } from '@ethersproject/bignumber'
 import { toUtf8Bytes } from '@ethersproject/strings/lib/utf8'
+import { AllCurrentFuses } from '@myclique/awnsjs/utils/fuses'
 
 import {
   CURRENCY_FLUCTUATION_BUFFER_PERCENTAGE,

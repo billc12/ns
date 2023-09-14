@@ -1,4 +1,4 @@
-import { RecordOptions } from '@awnsdomains/awnsjs/utils/recordHelpers'
+import { RecordOptions } from '@myclique/awnsjs/utils/recordHelpers'
 
 import { ContentHash, Profile, RecordItem } from '@app/types'
 

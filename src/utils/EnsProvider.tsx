@@ -1,5 +1,5 @@
-import { ENS } from '@awnsdomains/awnsjs'
-import type { ContractName } from '@awnsdomains/awnsjs/contracts/types'
+import { ENS } from '@myclique/awnsjs'
+import type { ContractName } from '@myclique/awnsjs/contracts/types'
 import { getProvider } from '@wagmi/core'
 import React, { createContext, useContext, useMemo, useRef, useState } from 'react'
 

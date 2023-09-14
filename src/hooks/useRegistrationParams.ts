@@ -1,5 +1,5 @@
-import { ChildFuses } from '@awnsdomains/awnsjs'
-import { BaseRegistrationParams } from '@awnsdomains/awnsjs/utils/registerHelpers'
+import { ChildFuses } from '@myclique/awnsjs'
+import { BaseRegistrationParams } from '@myclique/awnsjs/utils/registerHelpers'
 import { useMemo } from 'react'
 
 import { profileRecordsToRecordOptions } from '@app/components/pages/profile/[name]/registration/steps/Profile/profileRecordUtils'

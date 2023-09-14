@@ -1,4 +1,4 @@
-import { ContractName } from '@awnsdomains/awnsjs/contracts/types'
+import { ContractName } from '@myclique/awnsjs/contracts/types'
 
 import { useEns } from '@app/utils/EnsProvider'
 

@@ -1,4 +1,4 @@
-import { labelhash } from '@awnsdomains/awnsjs/utils/labels'
+import { labelhash } from '@myclique/awnsjs/utils/labels'
 import { useQuery } from 'wagmi'
 
 import { useEns } from '@app/utils/EnsProvider'

@@ -1,4 +1,4 @@
-import { ENSJSError } from '@awnsdomains/awnsjs/utils/errors'
+import { ENSJSError } from '@myclique/awnsjs/utils/errors'
 import { QueryKey, hashQueryKey } from '@tanstack/react-query'
 import { useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'

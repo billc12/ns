@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from '@app/test-utils'
 
-import { labelhash } from '@awnsdomains/awnsjs/utils/labels'
+import { labelhash } from '@myclique/awnsjs/utils/labels'
 
 import { MOONPAY_WORKER_URL } from '@app/utils/constants'
 

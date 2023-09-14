@@ -2,7 +2,7 @@ import { render, screen, userEvent } from '@app/test-utils'
 
 import { ComponentProps } from 'react'
 
-import { encodeLabel } from '@awnsdomains/awnsjs/utils/labels'
+import { encodeLabel } from '@myclique/awnsjs/utils/labels'
 
 import UnknownLabels from './UnknownLabels-flow'
 

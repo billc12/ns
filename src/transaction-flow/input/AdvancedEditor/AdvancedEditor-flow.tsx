@@ -1,4 +1,4 @@
-import { RecordOptions } from '@awnsdomains/awnsjs/utils/recordHelpers'
+import { RecordOptions } from '@myclique/awnsjs/utils/recordHelpers'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'

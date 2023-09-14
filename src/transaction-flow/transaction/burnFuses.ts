@@ -1,5 +1,5 @@
-import type { ChildFuses } from '@awnsdomains/awnsjs'
 import type { JsonRpcSigner } from '@ethersproject/providers'
+import type { ChildFuses } from '@myclique/awnsjs'
 import type { TFunction } from 'react-i18next'
 
 import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'

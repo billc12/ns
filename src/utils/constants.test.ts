@@ -1,4 +1,4 @@
-import { getContractAddress } from '@awnsdomains/awnsjs/contracts/getContractAddress'
+import { getContractAddress } from '@myclique/awnsjs/contracts/getContractAddress'
 
 import { RESOLVER_ADDRESSES } from './constants'
 

@@ -1,4 +1,4 @@
-import type { Name } from '@awnsdomains/awnsjs/functions/getNames'
+import type { Name } from '@myclique/awnsjs/functions/getNames'
 import { match } from 'ts-pattern'
 
 import { GRACE_PERIOD } from '@app/utils/constants'

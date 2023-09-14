@@ -1,6 +1,6 @@
-import { ETHRegistrarController__factory } from '@awnsdomains/awnsjs/generated/factories/ETHRegistrarController__factory'
-import { tokenise } from '@awnsdomains/awnsjs/utils/normalise'
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
+import { ETHRegistrarController__factory } from '@myclique/awnsjs/generated/factories/ETHRegistrarController__factory'
+import { tokenise } from '@myclique/awnsjs/utils/normalise'
 import dynamic from 'next/dynamic'
 import React, { Fragment, useEffect, useMemo, useState } from 'react'
 import type ConfettiT from 'react-confetti'

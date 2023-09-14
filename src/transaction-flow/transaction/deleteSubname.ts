@@ -1,5 +1,5 @@
-import { namehash } from '@awnsdomains/awnsjs/utils/normalise'
 import type { JsonRpcSigner } from '@ethersproject/providers'
+import { namehash } from '@myclique/awnsjs/utils/normalise'
 import type { TFunction } from 'react-i18next'
 
 import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'

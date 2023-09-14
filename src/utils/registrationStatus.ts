@@ -1,5 +1,5 @@
-import { ParsedInputResult } from '@awnsdomains/awnsjs/utils/validation'
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
+import { ParsedInputResult } from '@myclique/awnsjs/utils/validation'
 
 import type { ReturnedENS } from '@app/types/index'
 
