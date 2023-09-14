@@ -10,6 +10,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 
+import Add from '@app/assets/Add.svg'
 import MinusIcon from '@app/assets/Minus.svg'
 import PlusIcon from '@app/assets/Plus.svg'
 import { useDefaultRef } from '@app/hooks/useDefaultRef'
@@ -17,56 +18,63 @@ import { createChangeEvent } from '@app/utils/syntheticEvent'
 
 const Container = styled.div<{ $highlighted?: boolean }>(
   ({ theme, $highlighted }) => css`
-    width: 100%;
-    padding: ${$highlighted ? theme.space['4'] : theme.space['1']};
+    width: 112px;
+    height: 32px;
+    /* padding: ${$highlighted ? theme.space['4'] : theme.space['1']}; */
+    padding: 3px;
     border: 1px solid ${theme.colors.border};
-    border-radius: ${theme.radii.full};
+    /* border-radius: ${theme.radii.full}; */
     display: flex;
     align-items: center;
     gap: ${theme.space['4']};
+    border-radius: 6px;
+    background: #dae4f0;
   `,
 )
 
 const Button = styled.button(
   ({ theme }) => css`
-    height: ${theme.space['11']};
-    width: ${theme.space['11']};
-    border-radius: 50%;
-    cursor: pointer;
-    background: ${theme.colors.accent};
     display: flex;
     justify-content: center;
     align-items: center;
     transition: background-color 150ms ease-in-out;
+    width: 24px;
+    height: 25px;
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
 
     svg {
       display: block;
       transform: scale(0.67);
       pointer-events: none;
-      path {
-        fill: ${theme.colors.backgroundPrimary};
-      }
     }
 
     &:disabled {
-      background-color: ${theme.colors.greyBright};
+      /* background-color: ${theme.colors.greyBright}; */
+      background: #fff;
       cursor: not-allowed;
     }
   `,
 )
-
+const Minus = styled.div`
+  width: 10px;
+  height: 2px;
+  border-radius: 3px;
+  background: #97b7ef;
+`
 const LabelContainer = styled.div(
   ({ theme }) => css`
     position: relative;
     flex: 1;
-    height: ${theme.space['11']};
+    /* height: ${theme.space['11']}; */
     border-radius: ${theme.radii.full};
     background-color: transparent;
     transition: background-color 150ms ease-in-out;
     overflow: hidden;
 
     :hover {
-      background-color: ${theme.colors.accentSurface};
+      /* background-color: ${theme.colors.accentSurface}; */
     }
 
     :focus-within label {
@@ -84,20 +92,26 @@ const Label = styled.label<{ $highlighted?: boolean }>(
     top: 0;
     left: 0;
     width: 100%;
-    height: ${theme.space['11']};
+    /* height: ${theme.space['11']}; */
     display: block;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    font-style: normal;
-    font-weight: ${theme.fontWeights.bold};
-    font-size: ${$highlighted ? theme.fontSizes.headingTwo : theme.fontSizes.large};
-    line-height: ${theme.space['11']};
+
+    /* font-style: normal; */
+    /* font-weight: ${theme.fontWeights.bold}; */
+    /* font-size: ${$highlighted ? theme.fontSizes.headingTwo : theme.fontSizes.large}; */
+    /* line-height: ${theme.space['11']}; */
     text-align: center;
-    color: ${$highlighted ? theme.colors.accent : theme.colors.text};
+    /* color: ${$highlighted ? theme.colors.accent : theme.colors.text}; */
     pointer-events: none;
     opacity: 1;
     transition: opacity 150ms ease-in-out;
+    color: #3f5170;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
   `,
 )
 
@@ -106,15 +120,17 @@ const LabelInput = styled.input<{ $highlighted?: boolean }>(
     width: 100%;
     height: 100%;
     text-align: center;
-    font-style: normal;
-    font-weight: ${theme.fontWeights.bold};
-    font-size: ${$highlighted ? theme.fontSizes.headingTwo : theme.fontSizes.large};
-    line-height: ${$highlighted ? theme.lineHeights.headingTwo : theme.lineHeights.large};
-    color: ${$highlighted ? theme.colors.accent : theme.colors.text};
+
+    /* font-style: normal; */
+    /* font-weight: ${theme.fontWeights.bold}; */
+    /* font-size: ${$highlighted ? theme.fontSizes.headingTwo : theme.fontSizes.large}; */
+    /* line-height: ${$highlighted ? theme.lineHeights.headingTwo : theme.lineHeights.large}; */
+    /* color: ${$highlighted ? theme.colors.accent : theme.colors.text}; */
+
     opacity: 0;
     transition: opacity 150ms ease-in-out;
-    background-color: ${theme.colors.accentSurface};
-
+    /* background-color: ${theme.colors.accentSurface}; */
+    background-color: transparent;
     /* stylelint-disable property-no-vendor-prefix */
     ::-webkit-outer-spin-button,
     ::-webkit-inner-spin-button {
@@ -123,6 +139,12 @@ const LabelInput = styled.input<{ $highlighted?: boolean }>(
     }
     -moz-appearance: textfield;
     /* stylelint-enable property-no-vendor-prefix */
+
+    color: #3f5170;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
   `,
 )
 
@@ -218,6 +240,53 @@ export const PlusMinusControl = forwardRef(
       onBlur?.(e)
     }
 
+    return (
+      <Container $highlighted={highlighted}>
+        <Button
+          type="button"
+          onClick={incrementHandler(1)}
+          data-testid="plus-minus-control-minus"
+          disabled={focused || plusDisabled}
+        >
+          <Add />
+        </Button>
+        <LabelContainer>
+          <LabelInput
+            data-testid="plus-minus-control-input"
+            $highlighted={highlighted}
+            type="number"
+            {...props}
+            ref={inputRef}
+            value={inputValue}
+            onChange={handleChange}
+            min={minValue}
+            max={maxValue}
+            readOnly
+            inputMode="numeric"
+            pattern="[0-9]*"
+            onKeyDown={(e) => {
+              // rely on type="number" to prevent non-numeric input
+              // additionally prevent . and -
+              if (['.', '-'].includes(e.key)) e.preventDefault()
+            }}
+            onFocus={(e) => {
+              e.target.select()
+              setFocused(true)
+            }}
+            onBlur={handleBlur}
+          />
+          <Label $highlighted={highlighted}>{value}</Label>
+        </LabelContainer>
+        <Button
+          type="button"
+          onClick={incrementHandler(-1)}
+          data-testid="plus-minus-control-plus"
+          disabled={focused || minusDisabled}
+        >
+          <Minus />
+        </Button>
+      </Container>
+    )
     return (
       <Container $highlighted={highlighted}>
         <Button

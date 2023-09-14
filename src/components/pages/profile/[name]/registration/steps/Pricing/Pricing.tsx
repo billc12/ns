@@ -1,4 +1,5 @@
 import type { BigNumber } from 'ethers'
+import Image from 'next/image'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import usePrevious from 'react-use/lib/usePrevious'
@@ -7,8 +8,8 @@ import { useBalance } from 'wagmi'
 
 import {
   Button,
-  Field,
-  Heading,
+  Input as EInput,
+  Field, // Heading,
   Helper,
   RadioButton,
   RadioButtonGroup,
@@ -18,9 +19,10 @@ import {
 } from '@ensdomains/thorin'
 
 import MoonpayLogo from '@app/assets/MoonpayLogo.svg'
+import UserAvatar from '@app/assets/TestImage.png'
 import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
 import { PlusMinusControl } from '@app/components/@atoms/PlusMinusControl/PlusMinusControl'
-import { RegistrationTimeComparisonBanner } from '@app/components/@atoms/RegistrationTimeComparisonBanner/RegistrationTimeComparisonBanner'
+// import { RegistrationTimeComparisonBanner } from '@app/components/@atoms/RegistrationTimeComparisonBanner/RegistrationTimeComparisonBanner'
 import { Spacer } from '@app/components/@atoms/Spacer'
 import { Card } from '@app/components/Card'
 import { ConnectButton } from '@app/components/ConnectButton'
@@ -38,18 +40,19 @@ import {
   RegistrationStepData,
 } from '../../types'
 import { useMoonpayRegistration } from '../../useMoonpayRegistration'
-import TemporaryPremium from './TemporaryPremium'
+
+// import TemporaryPremium from './TemporaryPremium'
 
 const StyledCard = styled(Card)(
   ({ theme }) => css`
-    max-width: 780px;
+    max-width: 840px;
     margin: 0 auto;
     flex-direction: column;
     gap: ${theme.space['4']};
-    padding: ${theme.space['4']};
-
+    /* padding: ${theme.space['4']}; */
+    padding-bottom: 32px;
     ${mq.sm.min(css`
-      padding: ${theme.space['6']} ${theme.space['18']};
+      /* padding: ${theme.space['6']} ${theme.space['18']}; */
       gap: ${theme.space['6']};
     `)}
   `,
@@ -73,17 +76,17 @@ const OutlinedContainer = styled.div(
   `,
 )
 
-const StyledHeading = styled(Heading)(
-  () => css`
-    width: 100%;
-    word-break: break-all;
+// const StyledHeading = styled(Heading)(
+//   () => css`
+//     width: 100%;
+//     word-break: break-all;
 
-    @supports (overflow-wrap: anywhere) {
-      overflow-wrap: anywhere;
-      word-break: normal;
-    }
-  `,
-)
+//     @supports (overflow-wrap: anywhere) {
+//       overflow-wrap: anywhere;
+//       word-break: normal;
+//     }
+//   `,
+// )
 
 const gridAreaStyle = ({ $name }: { $name: string }) => css`
   grid-area: ${$name};
@@ -363,6 +366,7 @@ const PaymentChoice = ({
     </PaymentChoiceContainer>
   )
 }
+console.log('PaymentChoice', PaymentChoice)
 
 interface ActionButtonProps {
   address?: string
@@ -392,7 +396,6 @@ export const ActionButton = ({
   totalRequiredBalance,
 }: ActionButtonProps) => {
   const { t } = useTranslation('register')
-
   if (!address) {
     return <ConnectButton large />
   }
@@ -445,7 +448,8 @@ export const ActionButton = ({
       onClick={() => callback({ reverseRecord, years, paymentMethodChoice })}
       disabled={!paymentMethodChoice}
     >
-      {t('action.next', { ns: 'common' })}
+      {/* {t('action.next', { ns: 'common' })} */}
+      Register
     </Button>
   )
 }
@@ -463,6 +467,91 @@ type Props = {
   >['initiateMoonpayRegistrationMutation']
 }
 
+const InterText = styled(Typography)<{ $size?: string; $color?: string; $weight?: number }>`
+  width: max-content;
+  height: max-content;
+  color: ${(props) => props.$color || '#3F5170'};
+  font-size: ${(props) => props.$size || '24px'};
+  font-style: normal;
+  font-weight: ${(props) => props.$weight || 600};
+  line-height: normal;
+  white-space: pre-wrap;
+`
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+const CenterRow = styled(Row)`
+  justify-content: space-between;
+  align-items: center;
+`
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+`
+const HeadName = styled(Row)`
+  width: 100%;
+  justify-content: space-between;
+  padding: 23px 30px;
+  border-bottom: 1px solid #dce6ed;
+`
+const GrayRoundRow = styled(Row)<{ $p: string }>`
+  width: 380px;
+  height: max-content;
+  padding: ${(props) => props.$p};
+  border-radius: 10px;
+  background: #f7fafc;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+`
+const GrayRoundColumn = styled(Column)`
+  width: 380px;
+  height: max-content;
+  border-radius: 10px;
+  background: #f7fafc;
+  gap: 30px;
+  padding-top: 19px;
+`
+const ContentStyle = styled(Row)`
+  justify-content: space-between;
+  padding: 0 30px;
+  gap: 20px;
+`
+const InitCodeRound = styled.div`
+  width: 380px;
+  border-radius: 10px;
+  background: #f0f8fd;
+  padding: 17px 36px;
+`
+const UpButton = styled(Button)`
+  width: 150px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1px solid #d4d7e2;
+  background: #fff;
+  opacity: 0.8;
+  &:hover {
+    opacity: 1;
+    background: #fff;
+  }
+`
+const MAX_YEAR = 5
+const UpImage = () => {
+  return (
+    <Column>
+      <GrayRoundRow $p="15px">
+        <Image style={{ width: '100%', height: '100%' }} src={UserAvatar} />
+      </GrayRoundRow>
+      <UpButton>
+        <InterText $size="14px" $weight={500}>
+          + Upload image
+        </InterText>
+      </UpButton>
+    </Column>
+  )
+}
 const Pricing = ({
   nameDetails,
   callback,
@@ -473,16 +562,18 @@ const Pricing = ({
   moonpayTransactionStatus,
   initiateMoonpayRegistrationMutation,
 }: Props) => {
-  const { t } = useTranslation('register')
+  // const { t } = useTranslation('register')
+  console.log('isPrimaryLoading', isPrimaryLoading)
 
-  const { normalisedName, gracePeriodEndDate, beautifiedName } = nameDetails
+  const [initCode, setInitCode] = useState('')
+  const { normalisedName, beautifiedName, registrationStatus } = nameDetails
 
   const { address } = useAccountSafely()
   const { data: balance } = useBalance({ address: address as `0x${string}` | undefined })
   const resolverAddress = useContractAddress('PublicResolver')
 
   const [years, setYears] = useState(registrationData.years)
-  const [reverseRecord, setReverseRecord] = useState(() =>
+  const [reverseRecord] = useState(() =>
     registrationData.started ? registrationData.reverseRecord : !hasPrimaryName,
   )
 
@@ -524,71 +615,103 @@ const Pricing = ({
     },
     price: nameDetails.priceData,
   })
-  const { hasPremium, premiumFee, gasPrice, yearlyFee, totalYearlyFee, estimatedGasFee } =
-    fullEstimate
+  const { premiumFee, totalYearlyFee, estimatedGasFee } = fullEstimate
 
   const yearlyRequiredBalance = totalYearlyFee?.mul(110).div(100)
   const totalRequiredBalance = yearlyRequiredBalance?.add(premiumFee || 0).add(estimatedGasFee || 0)
 
-  const showPaymentChoice = !isPrimaryLoading && address
+  // const showPaymentChoice = !isPrimaryLoading && address
+  const nameLength = beautifiedName.split('.')[0].length
   return (
     <StyledCard>
-      <StyledHeading>{t('heading', { name: beautifiedName })}</StyledHeading>
-      <PlusMinusControl
-        minValue={1}
-        value={years}
-        onChange={(e) => {
-          const newYears = parseInt(e.target.value)
-          if (!Number.isNaN(newYears)) setYears(newYears)
-        }}
-        highlighted
-      />
-      <FullInvoice {...fullEstimate} />
-      {hasPremium && gracePeriodEndDate ? (
-        <TemporaryPremium startDate={gracePeriodEndDate} name={normalisedName} />
-      ) : (
-        yearlyFee &&
-        estimatedGasFee &&
-        gasPrice && (
-          <RegistrationTimeComparisonBanner
-            rentFee={yearlyFee}
-            transactionFee={estimatedGasFee}
-            message={t('steps.pricing.multipleYearsMessage')}
-          />
-        )
-      )}
-      {showPaymentChoice && (
-        <PaymentChoice
-          {...{
-            paymentMethodChoice,
-            setPaymentMethodChoice,
-            hasEnoughEth: true,
-            hasPendingMoonpayTransaction,
-            hasFailedMoonpayTransaction,
-            hasPrimaryName,
-            address,
-            reverseRecord,
-            setReverseRecord,
-            started: registrationData.started,
-          }}
-        />
-      )}
-      <MobileFullWidth>
-        <ActionButton
-          {...{
-            address,
-            hasPendingMoonpayTransaction,
-            hasFailedMoonpayTransaction,
-            paymentMethodChoice,
-            reverseRecord,
-            callback,
-            initiateMoonpayRegistrationMutation,
-            years,
-            balance,
-            totalRequiredBalance,
-          }}
-        />
-      </MobileFullWidth>
+      <HeadName>
+        <InterText>{beautifiedName}</InterText>
+        {registrationStatus && (
+          <InterText $color="#21C331" $size="16px">
+            Available for registration
+          </InterText>
+        )}
+      </HeadName>
+      <ContentStyle>
+        <GrayRoundRow $p="20px 36px">
+          <InterText $color="#8D8EA5" $size="16px" $weight={500}>
+            length
+          </InterText>
+          <InterText $color="#3F5170" $size="16px" $weight={500}>
+            {nameLength} characters
+          </InterText>
+        </GrayRoundRow>
+        <GrayRoundRow $p="20px 36px">
+          <InterText $color="#8D8EA5" $size="16px" $weight={500}>
+            Max Period
+          </InterText>
+          <InterText $color="#3F5170" $size="16px" $weight={500}>
+            {MAX_YEAR} years
+          </InterText>
+        </GrayRoundRow>
+      </ContentStyle>
+      <ContentStyle>
+        <UpImage />
+        <Column>
+          <GrayRoundColumn>
+            <CenterRow style={{ padding: '0 38px' }}>
+              <InterText $color="#8D8EA5" $size="16px" $weight={500}>
+                Chain
+              </InterText>
+              <InterText $color="#3F5170" $size="16px" $weight={500}>
+                Ethereum
+              </InterText>
+            </CenterRow>
+            <CenterRow style={{ padding: '0 38px' }}>
+              <InterText $color="#8D8EA5" $size="16px" $weight={500}>
+                Registration Year
+              </InterText>
+              <PlusMinusControl
+                minValue={1}
+                maxValue={MAX_YEAR}
+                value={years}
+                onChange={(e) => {
+                  const newYears = parseInt(e.target.value)
+                  if (!Number.isNaN(newYears)) setYears(newYears)
+                }}
+                highlighted
+              />
+            </CenterRow>
+            <div style={{ padding: '0 38px' }}>
+              <FullInvoice {...fullEstimate} />
+            </div>
+
+            <InitCodeRound>
+              <InterText $color="#8D8EA5" $size="14px" $weight={500} style={{ width: '100%' }}>
+                Currently only available for whitelisted users, please enter the invitation code,
+                you will get 3 invitation codes after successful registration.
+              </InterText>
+              <EInput
+                placeholder="Invitation Code"
+                value={initCode}
+                label=""
+                onChange={(e) => setInitCode(e.target.value)}
+              />
+            </InitCodeRound>
+          </GrayRoundColumn>
+          <MobileFullWidth>
+            <ActionButton
+              {...{
+                address,
+                hasPendingMoonpayTransaction,
+                hasFailedMoonpayTransaction,
+                paymentMethodChoice,
+                reverseRecord,
+                callback,
+                initiateMoonpayRegistrationMutation,
+                years,
+                balance,
+                totalRequiredBalance,
+              }}
+            />
+          </MobileFullWidth>
+        </Column>
+      </ContentStyle>
     </StyledCard>
   )
 }
