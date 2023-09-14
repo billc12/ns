@@ -1,29 +1,41 @@
 import styled, { css } from 'styled-components'
 
-import { CheckSVG, CopySVG } from '@ensdomains/thorin'
+import { CheckSVG } from '@ensdomains/thorin'
 
+import CopyIcon from '@app/assets/CopyIcon.svg'
 import { useCopied } from '@app/hooks/useCopied'
 
 const CopyStyle = styled.div(
   () => css`
     width: auto;
     height: auto;
-    margin-left: 8px;
+
     :hover {
       cursor: pointer;
     }
   `,
 )
 
-export const CopyButton = ({ value }: { value: string }) => {
+const IconStyle = styled.svg(
+  () => css`
+    height: 12px;
+    width: 12px;
+    font-size: 12px;
+  `,
+)
+
+export const CopyButton = ({ value, noneMargin }: { value: string; noneMargin?: boolean }) => {
   const { copy, copied } = useCopied(300)
   return (
     <CopyStyle
+      style={{
+        marginLeft: noneMargin ? 0 : '8px',
+      }}
       onClick={() => {
         copy(value)
       }}
     >
-      {copied ? <CheckSVG /> : <CopySVG />}
+      {copied ? <IconStyle as={CheckSVG} /> : <IconStyle as={CopyIcon} />}
     </CopyStyle>
   )
 }

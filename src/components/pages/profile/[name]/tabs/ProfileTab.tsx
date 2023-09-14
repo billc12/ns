@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
 
-import { Button, Typography } from '@ensdomains/thorin'
+import { Button, Typography, mq } from '@ensdomains/thorin'
 
 import LinkIcon from '@app/assets/LinkIcon.svg'
 import TimeIcon from '@app/assets/TimeIcon.svg'
@@ -21,7 +21,7 @@ import { usePrimary } from '@app/hooks/usePrimary'
 import { useProfileActions } from '@app/hooks/useProfileActions'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
 // import { getSupportLink } from '@app/utils/supportLinks'
-import { validateExpiry } from '@app/utils/utils'
+import { shortenAddress, validateExpiry } from '@app/utils/utils'
 
 const DetailsWrapper = styled.div(
   ({ theme }) => css`
@@ -33,13 +33,33 @@ const DetailsWrapper = styled.div(
     width: 100%;
   `,
 )
+
+const StyleBg = styled.div(
+  () => css`
+    height: 321px;
+    width: 321px;
+    background: var(--bg_light, #f7fafc);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    align-items: center;
+    padding: 13px;
+    ${mq.sm.max(css`
+      height: 290px;
+      width: 290px;
+    `)}
+  `,
+)
+
 const StyledImg = styled.img(
   () => css`
-    height: 295px;
-    width: 295px;
+    width: 100%;
+    height: 100%;
     border-radius: 8px;
   `,
 )
+
 const ContentStyled = styled.div(
   () => css`
     padding: 30px;
@@ -50,6 +70,10 @@ const ContentStyled = styled.div(
     display: grid;
     justify-content: space-between;
     grid-template-columns: auto 1fr;
+    ${mq.sm.max(css`
+      width: auto;
+      column-gap: 10px;
+    `)}
   `,
 )
 
@@ -87,6 +111,16 @@ const ButtonStyle = styled(Button)(
       width: auto;
       height: auto;
     }
+    ${mq.sm.max(css`
+      width: auto;
+      gap: 6px;
+      padding: 0 6px;
+      height: 32px;
+      svg {
+        width: 12px;
+        height: 12px;
+      }
+    `)}
   `,
 )
 
@@ -153,6 +187,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
     }
     return true
   }, [breakpoints.sm])
+  console.log(nameDetails.expiryDate)
 
   return (
     <DetailsWrapper>
@@ -168,33 +203,24 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
             justifyContent: isSmDown ? 'center' : 'normal',
           }}
         >
-          <div
-            style={{
-              height: '321px',
-              width: '321px',
-              background: 'var(--bg_light, #f7fafc)',
-              borderRadius: '8px',
-              display: 'flex',
-              justifyContent: 'center',
-              margin: 'auto',
-              alignItems: 'center',
-            }}
-          >
+          <StyleBg>
             <StyledImg src={TestImg.src} />
-          </div>
+          </StyleBg>
           <ContentStyled>
             <RowNameStyle>Addresses</RowNameStyle>
             <RowValueStyle>
-              0x6621...2ae908 <CopyButton value="1" />
+              {nameDetails?.ownerData?.owner ? shortenAddress(nameDetails?.ownerData?.owner) : '--'}{' '}
+              <CopyButton value="1" />
             </RowValueStyle>
 
             <RowNameStyle>Owner</RowNameStyle>
             <RowValueStyle>
-              0x6621...2ae908 <CopyButton value="1" />
+              {nameDetails?.ownerData?.owner ? shortenAddress(nameDetails?.ownerData?.owner) : '--'}{' '}
+              <CopyButton value="1" />
             </RowValueStyle>
 
             <RowNameStyle>Registration Date</RowNameStyle>
-            <RowValueStyle>2023.08.26 at 21:45 (UTC+08:00)</RowValueStyle>
+            <RowValueStyle>{nameDetails.expiryDate?.toString() || '--'} </RowValueStyle>
 
             <RowNameStyle>Expiration Date</RowNameStyle>
             <RowValueStyle>2023.08.26 at 21:45 (UTC+08:00)</RowValueStyle>
@@ -217,7 +243,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
           style={{
             display: 'flex',
             gap: 10,
-            justifyContent: isSmDown ? 'center' : 'end',
+            justifyContent: 'end',
             marginTop: 20,
           }}
         >

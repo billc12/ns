@@ -8,8 +8,11 @@ import { Button, Spinner } from '@ensdomains/thorin'
 import FastForwardSVG from '@app/assets/FastForward.svg'
 import { TaggedNameItem } from '@app/components/@atoms/NameDetailItem/TaggedNameItem'
 import { NameTableFooter } from '@app/components/@molecules/NameTableFooter/NameTableFooter'
+import { AddressItem } from '@app/components/AddressItem'
+import { EmptyData } from '@app/components/EmptyData'
 import { ProfileSnippet } from '@app/components/ProfileSnippet'
 import NoProfileSnippet from '@app/components/address/NoProfileSnippet'
+import { AccountHeader } from '@app/components/pages/profile/AccountHeader'
 import { TabWrapper } from '@app/components/pages/profile/TabWrapper'
 import {
   ReturnedName,
@@ -17,7 +20,7 @@ import {
 } from '@app/hooks/names/useNamesFromAddress/useNamesFromAddress'
 import { usePrimaryProfile } from '@app/hooks/usePrimaryProfile'
 import { Content } from '@app/layouts/Content'
-import { ContentGrid } from '@app/layouts/ContentGrid'
+// import { ContentGrid } from '@app/layouts/ContentGrid'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { shortenAddress } from '@app/utils/utils'
 
@@ -57,6 +60,16 @@ const EmptyDetailContainer = styled.div(
     display: flex;
     justify-content: center;
     align-items: center;
+  `,
+)
+
+const AddressList = styled.div(
+  () => css`
+    width: 840px;
+    height: 561px;
+    border-radius: 10px;
+    border: 1px solid var(--line, #d4d7e2);
+    background: #fff;
   `,
 )
 
@@ -145,96 +158,114 @@ const Page = () => {
   const error = hasErrors ? t('errors.names') : ''
 
   return (
-    <Content title={shortenAddress(address)} copyValue={address} loading={loading}>
-      {{
-        warning: error
-          ? {
-              type: 'warning',
-              message: error,
-            }
-          : undefined,
-        leading: (
-          <DetailsContainer>
-            {primaryProfile?.name ? (
-              <ProfileSnippet
-                name={primaryProfile.name}
-                network={chainId}
-                button="viewProfile"
-                getTextRecord={getTextRecord}
-              />
-            ) : (
-              <NoProfileSnippet />
-            )}
-          </DetailsContainer>
-        ),
-        trailing: (
-          <TabWrapperWithButtons>
-            <NameTableHeader
-              selectable={!!_address}
-              mode={mode}
-              sortType={sortType}
-              sortTypeOptionValues={['expiryDate', 'labelName', 'creationDate']}
-              sortDirection={sortDirection}
-              searchQuery={searchQuery}
-              selectedCount={selectedNames.length}
-              onModeChange={(m) => {
-                setMode(m)
-                setSelectedNames([])
-              }}
-              onSortTypeChange={setSortType}
-              onSortDirectionChange={setSortDirection}
-              onSearchChange={setSearchQuery}
-            >
-              {mode === 'select' && (
-                <Button
-                  size="small"
-                  onClick={handleExtend}
-                  data-testid="extend-names-button"
-                  prefix={<FastForwardSVG />}
-                  disabled={selectedNames.length === 0}
-                >
-                  {t('action.extend', { ns: 'common' })}
-                </Button>
-              )}
-            </NameTableHeader>
-            <div>
-              {/* eslint-disable no-nested-ternary */}
-              {loading ? (
-                <EmptyDetailContainer>
-                  <Spinner color="accent" />
-                </EmptyDetailContainer>
-              ) : namesData.nameCount === 0 ? (
-                <EmptyDetailContainer>{t('noResults')}</EmptyDetailContainer>
-              ) : namesData ? (
-                namesData.names.map((name) => (
-                  <TaggedNameItem
-                    key={name.id}
-                    {...name}
+    <>
+      {false ? (
+        <Content title={shortenAddress(address)} copyValue={address} loading={loading}>
+          {{
+            warning: error
+              ? {
+                  type: 'warning',
+                  message: error,
+                }
+              : undefined,
+            leading: (
+              <DetailsContainer>
+                {primaryProfile?.name ? (
+                  <ProfileSnippet
+                    name={primaryProfile?.name || ''}
                     network={chainId}
-                    mode={mode}
-                    selected={selectedNames?.includes(name.name)}
-                    disabled={isNameDisabled(name)}
-                    onClick={handleClickName(name.name)}
+                    button="viewProfile"
+                    getTextRecord={getTextRecord}
                   />
-                ))
-              ) : null}
-            </div>
-            <NameTableFooter
-              current={page}
-              onChange={setPage}
-              total={namesData?.nameCount ? namesData.pageCount : 0}
-              pageSize={pageSize}
-              onPageSizeChange={setPageSize}
-            />
-          </TabWrapperWithButtons>
-        ),
-      }}
-    </Content>
+                ) : (
+                  <NoProfileSnippet />
+                )}
+              </DetailsContainer>
+            ),
+            trailing: (
+              <TabWrapperWithButtons>
+                <NameTableHeader
+                  selectable={!!_address}
+                  mode={mode}
+                  sortType={sortType}
+                  sortTypeOptionValues={['expiryDate', 'labelName', 'creationDate']}
+                  sortDirection={sortDirection}
+                  searchQuery={searchQuery}
+                  selectedCount={selectedNames.length}
+                  onModeChange={(m) => {
+                    setMode(m)
+                    setSelectedNames([])
+                  }}
+                  onSortTypeChange={setSortType}
+                  onSortDirectionChange={setSortDirection}
+                  onSearchChange={setSearchQuery}
+                >
+                  {mode === 'select' && (
+                    <Button
+                      size="small"
+                      onClick={handleExtend}
+                      data-testid="extend-names-button"
+                      prefix={<FastForwardSVG />}
+                      disabled={selectedNames.length === 0}
+                    >
+                      {t('action.extend', { ns: 'common' })}
+                    </Button>
+                  )}
+                </NameTableHeader>
+                <div>
+                  {/* eslint-disable no-nested-ternary */}
+                  {loading ? (
+                    <EmptyDetailContainer>
+                      <Spinner color="accent" />
+                    </EmptyDetailContainer>
+                  ) : namesData?.nameCount === 0 ? (
+                    <EmptyDetailContainer>{t('noResults')}</EmptyDetailContainer>
+                  ) : namesData ? (
+                    namesData?.names.map((name) => (
+                      <TaggedNameItem
+                        key={name.id}
+                        {...name}
+                        network={chainId}
+                        mode={mode}
+                        selected={selectedNames?.includes(name.name)}
+                        disabled={isNameDisabled(name)}
+                        onClick={handleClickName(name.name)}
+                      />
+                    ))
+                  ) : null}
+                </div>
+                <NameTableFooter
+                  current={page}
+                  onChange={setPage}
+                  total={namesData?.nameCount ? namesData?.pageCount || 1 : 0}
+                  pageSize={pageSize}
+                  onPageSizeChange={setPageSize}
+                />
+              </TabWrapperWithButtons>
+            ),
+          }}
+        </Content>
+      ) : (
+        <>
+          <AccountHeader address={address} />
+          <AddressList>
+            {namesData?.names.map((item) => (
+              <AddressItem AddressRow={item} />
+            ))}
+            {!namesData?.names.length && (
+              <div style={{ height: '100%' }}>
+                <EmptyData />
+              </div>
+            )}
+          </AddressList>
+        </>
+      )}
+    </>
   )
 }
 
 Page.getLayout = function getLayout(page: ReactElement) {
-  return <ContentGrid>{page}</ContentGrid>
+  return <>{page}</>
 }
 
 export default Page

@@ -289,6 +289,9 @@
       {
         "name":"History"
       }
+    },
+    "invitationCode":{
+      "name":"Invitation Code"
     }
   },
   "details": {

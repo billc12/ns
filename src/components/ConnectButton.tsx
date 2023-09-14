@@ -109,7 +109,7 @@ const UserButton = styled.button`
   background: #fff;
 `
 const RoundProfile = styled(Profile)`
-  &.profile: {
+  &.profile {
     background: 'red';
   }
 `

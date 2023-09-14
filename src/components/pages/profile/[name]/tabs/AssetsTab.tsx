@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 
-import { Typography } from '@ensdomains/thorin'
+import { Typography, mq } from '@ensdomains/thorin'
 
 import NftETHIcon from '@app/assets/ETH.svg'
 import NftBreakIcon from '@app/assets/NftBreakIcon.svg'
@@ -29,6 +29,9 @@ const TabButtonContainer = styled.div(
     &::-webkit-scrollbar {
       display: none;
     }
+    ${mq.sm.max(css`
+      width: auto;
+    `)}
   `,
 )
 
@@ -51,6 +54,9 @@ const TabButton = styled.button<{ $selected: boolean }>(
     &:hover {
       color: ${$selected ? theme.colors.accentBright : '#0049C6'};
     }
+    ${mq.sm.max(css`
+      width: 80px;
+    `)}
   `,
 )
 
@@ -59,6 +65,9 @@ const TableContentStyle = styled.div(
     height: 58px;
     display: flex;
     align-items: center;
+    ${mq.sm.max(css`
+      height: 36px;
+    `)}
   `,
 )
 
@@ -124,6 +133,32 @@ const HistoryTokenList = [
   },
 ]
 
+const AssetsTokens = styled.div(
+  () => css`
+    padding-bottom: 150px;
+    ${mq.sm.max(css`
+      padding: 0 20px 100px;
+      display: grid;
+      gap: 10px;
+    `)}
+  `,
+)
+
+const NFTsCard = styled.div(
+  () => css`
+    padding: 0 64px 100px;
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    ${mq.sm.max(css`
+      padding: 0;
+      gap: 10px;
+      justify-content: space-evenly;
+    `)}
+  `,
+)
+
 const NFTCardStyle = styled.div(
   () => css`
     width: 164px;
@@ -142,6 +177,10 @@ const NFTCardStyle = styled.div(
         display: flex;
       }
     }
+    ${mq.sm.max(css`
+      width: 40vw;
+      height: 45vw;
+    `)}
   `,
 )
 
@@ -202,7 +241,7 @@ const NftBottomStyle = styled.div(
   `,
 )
 
-function NftCards() {
+function NftCardItem() {
   const testArr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
   console.log(TestImg)
 
@@ -267,27 +306,19 @@ export const AssetsTab = () => {
         </TabButtonContainer>
       </div>
       {tab === 'assets' && (
-        <div style={{ paddingBottom: 150 }}>
+        <AssetsTokens>
           <Table labels={['Token', 'Balance', 'USD Value']} rows={AssetsTableList} noneBorder />
-        </div>
+        </AssetsTokens>
       )}
       {tab === 'nft' && (
-        <div
-          style={{
-            padding: '0 64px 100px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            gap: 18,
-            flexWrap: 'wrap',
-          }}
-        >
-          <NftCards />
-        </div>
+        <NFTsCard>
+          <NftCardItem />
+        </NFTsCard>
       )}
       {tab === 'history' && (
-        <div style={{ paddingBottom: 150 }}>
+        <AssetsTokens>
           <Table labels={['Type', 'Token', 'Amount', 'TxID']} rows={HistoryTableList} noneBorder />
-        </div>
+        </AssetsTokens>
       )}
     </>
   )

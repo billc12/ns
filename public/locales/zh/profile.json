@@ -289,6 +289,9 @@
       {
         "name":"记录"
       }
+    },    
+    "invitationCode":{
+      "name":"邀请码"
     }
   },
   "details": {
