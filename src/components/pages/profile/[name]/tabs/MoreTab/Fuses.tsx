@@ -1,7 +1,7 @@
+import { ChildFuses, ParentFuses, userSettableFuseEnum } from '@awnsdomains/awnsjs/utils/fuses'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 
-import { ChildFuses, ParentFuses, userSettableFuseEnum } from '@ensdomains/ensjs/utils/fuses'
 import { Helper, Typography, mq } from '@ensdomains/thorin'
 
 import { cacheableComponentStyles } from '@app/components/@atoms/CacheableComponent'

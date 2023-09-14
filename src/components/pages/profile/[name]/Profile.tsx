@@ -1,10 +1,10 @@
+import { getEncryptedLabelAmount } from '@awnsdomains/awnsjs/utils/labels'
 import Head from 'next/head'
 import { useEffect, useMemo } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
 
-import { getEncryptedLabelAmount } from '@ensdomains/ensjs/utils/labels'
 import { Banner, CheckCircleSVG, Typography } from '@ensdomains/thorin'
 
 import BaseLink from '@app/components/@atoms/BaseLink'

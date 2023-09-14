@@ -1,10 +1,9 @@
-import type { JsonRpcSigner } from '@ethersproject/providers'
-import type { TFunction } from 'react-i18next'
-
 import {
   ChildFuses as ENSJSChildFuses,
   ParentFuses as ENSJSParentFuses,
-} from '@ensdomains/ensjs/utils/fuses'
+} from '@awnsdomains/awnsjs/utils/fuses'
+import type { JsonRpcSigner } from '@ethersproject/providers'
+import type { TFunction } from 'react-i18next'
 
 import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
 

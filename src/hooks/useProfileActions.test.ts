@@ -1,6 +1,6 @@
 import { mockFunction, renderHook } from '@app/test-utils'
 
-import { labelhash } from '@ensdomains/ensjs/utils/labels'
+import { labelhash } from '@awnsdomains/awnsjs/utils/labels'
 
 import { usePrimary } from '@app/hooks/usePrimary'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'

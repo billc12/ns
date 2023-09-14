@@ -1,7 +1,6 @@
+import { truncateFormat } from '@awnsdomains/awnsjs/utils/format'
 import { useMemo } from 'react'
 import { useQuery } from 'wagmi'
-
-import { truncateFormat } from '@ensdomains/ensjs/utils/format'
 
 import { ReturnedENS } from '@app/types'
 import { useEns } from '@app/utils/EnsProvider'

@@ -1,7 +1,6 @@
+import { labelhash } from '@awnsdomains/awnsjs/utils/labels'
 import { useState } from 'react'
 import { useMutation, useQuery } from 'wagmi'
-
-import { labelhash } from '@ensdomains/ensjs/utils/labels'
 
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useChainId } from '@app/hooks/useChainId'

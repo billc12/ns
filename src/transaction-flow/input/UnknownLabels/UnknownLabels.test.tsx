@@ -2,7 +2,7 @@ import { render, screen, userEvent } from '@app/test-utils'
 
 import { ComponentProps } from 'react'
 
-import { encodeLabel } from '@ensdomains/ensjs/utils/labels'
+import { encodeLabel } from '@awnsdomains/awnsjs/utils/labels'
 
 import UnknownLabels from './UnknownLabels-flow'
 

@@ -1,9 +1,9 @@
+import { labelhash } from '@awnsdomains/awnsjs/utils/labels'
+import { namehash } from '@awnsdomains/awnsjs/utils/normalise'
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 
-import { labelhash } from '@ensdomains/ensjs/utils/labels'
-import { namehash } from '@ensdomains/ensjs/utils/normalise'
 import { Tag, Typography, mq } from '@ensdomains/thorin'
 
 import { CacheableComponent } from '@app/components/@atoms/CacheableComponent'

@@ -1,15 +1,15 @@
+import {
+  decodeLabelhash,
+  isEncodedLabelhash,
+  labelhash,
+  saveName,
+} from '@awnsdomains/awnsjs/utils/labels'
 import { useRef, useState } from 'react'
 import { UseFormReturn, useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useMutation, useQueryClient } from 'wagmi'
 
-import {
-  decodeLabelhash,
-  isEncodedLabelhash,
-  labelhash,
-  saveName,
-} from '@ensdomains/ensjs/utils/labels'
 import { Button, Dialog, Heading, Typography, mq } from '@ensdomains/thorin'
 
 import { InnerDialog } from '@app/components/@atoms/InnerDialog'

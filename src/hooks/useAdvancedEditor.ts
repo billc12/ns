@@ -1,9 +1,8 @@
+import { RecordOptions } from '@awnsdomains/awnsjs/utils/recordHelpers'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Pattern, match } from 'ts-pattern'
-
-import { RecordOptions } from '@ensdomains/ensjs/utils/recordHelpers'
 
 import { textOptions } from '@app/components/@molecules/AdvancedEditor/textOptions'
 import addressOptions from '@app/components/@molecules/ProfileEditor/options/addressOptions'

@@ -1,7 +1,6 @@
+import { checkIsDecrypted } from '@awnsdomains/awnsjs/utils/labels'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-
-import { checkIsDecrypted } from '@ensdomains/ensjs/utils/labels'
 
 import { usePrimary } from '@app/hooks/usePrimary'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'

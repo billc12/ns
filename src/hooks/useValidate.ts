@@ -1,6 +1,5 @@
+import { ParsedInputResult, parseInput } from '@awnsdomains/awnsjs/utils/validation'
 import { useQuery } from 'wagmi'
-
-import { ParsedInputResult, parseInput } from '@ensdomains/ensjs/utils/validation'
 
 import { Prettify } from '@app/types'
 import { tryBeautify } from '@app/utils/beautify'

@@ -1,10 +1,10 @@
+import type { ChildFuses, ENS } from '@awnsdomains/awnsjs'
+import { DecodedContentHash } from '@awnsdomains/awnsjs/utils/contentHash'
 import type { PopulatedTransaction } from '@ethersproject/contracts'
 import type { JsonRpcSigner, TransactionReceipt } from '@ethersproject/providers'
 import { ComponentProps } from 'react'
 import type { TFunction } from 'react-i18next'
 
-import type { ChildFuses, ENS } from '@ensdomains/ensjs'
-import { DecodedContentHash } from '@ensdomains/ensjs/utils/contentHash'
 import { Helper, Space } from '@ensdomains/thorin'
 
 export type Profile = NonNullable<Awaited<ReturnType<ENS['getProfile']>>>

@@ -1,7 +1,6 @@
+import { namehash } from '@awnsdomains/awnsjs/utils/normalise'
 import type { JsonRpcSigner } from '@ethersproject/providers'
 import type { TFunction } from 'react-i18next'
-
-import { namehash } from '@ensdomains/ensjs/utils/normalise'
 
 import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
 import { emptyAddress } from '@app/utils/constants'

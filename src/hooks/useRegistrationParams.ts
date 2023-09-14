@@ -1,7 +1,6 @@
+import { ChildFuses } from '@awnsdomains/awnsjs'
+import { BaseRegistrationParams } from '@awnsdomains/awnsjs/utils/registerHelpers'
 import { useMemo } from 'react'
-
-import { ChildFuses } from '@ensdomains/ensjs'
-import { BaseRegistrationParams } from '@ensdomains/ensjs/utils/registerHelpers'
 
 import { profileRecordsToRecordOptions } from '@app/components/pages/profile/[name]/registration/steps/Profile/profileRecordUtils'
 import { RegistrationReducerDataItem } from '@app/components/pages/profile/[name]/registration/types'

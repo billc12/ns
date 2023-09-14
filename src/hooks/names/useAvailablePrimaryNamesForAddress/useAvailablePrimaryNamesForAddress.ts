@@ -1,6 +1,5 @@
+import { Name as BaseName } from '@awnsdomains/awnsjs/functions/getNames'
 import { useCallback, useMemo, useState } from 'react'
-
-import { Name as BaseName } from '@ensdomains/ensjs/functions/getNames'
 
 import { useNamesFromAddress } from '@app/hooks/names/useNamesFromAddress/useNamesFromAddress'
 import { chunkArr } from '@app/utils/array'

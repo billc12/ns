@@ -1,10 +1,10 @@
+import { decodeLabelhash, isEncodedLabelhash, labelhash } from '@awnsdomains/awnsjs/utils/labels'
+import { validateName } from '@awnsdomains/awnsjs/utils/validation'
 import { forwardRef } from 'react'
 import { UseFormReturn, useFieldArray } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 
-import { decodeLabelhash, isEncodedLabelhash, labelhash } from '@ensdomains/ensjs/utils/labels'
-import { validateName } from '@ensdomains/ensjs/utils/validation'
 import { Button, Dialog, Input, Typography, mq } from '@ensdomains/thorin'
 
 import { isLabelTooLong } from '@app/utils/utils'

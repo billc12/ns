@@ -1,8 +1,7 @@
+import { saveName } from '@awnsdomains/awnsjs/utils/labels'
 import { useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { useQueryClient } from 'wagmi'
-
-import { saveName } from '@ensdomains/ensjs/utils/labels'
 
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 

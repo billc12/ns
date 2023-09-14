@@ -1,7 +1,6 @@
+import { BaseRegistrationParams } from '@awnsdomains/awnsjs/utils/registerHelpers'
 import type { JsonRpcSigner } from '@ethersproject/providers'
 import type { TFunction } from 'react-i18next'
-
-import { BaseRegistrationParams } from '@ensdomains/ensjs/utils/registerHelpers'
 
 import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
 

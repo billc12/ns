@@ -1,9 +1,8 @@
+import { ENSJSErrorName } from '@awnsdomains/awnsjs/utils/errors'
 import { QueryKey, hashQueryKey } from '@tanstack/react-query'
 import { Dispatch, Reducer, createContext, useContext, useReducer } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useQueryClient } from 'wagmi'
-
-import { ENSJSErrorName } from '@ensdomains/ensjs/utils/errors'
 
 import { useSubgraphMetaSync } from './useSubgraphMetaSync'
 

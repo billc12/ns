@@ -1,4 +1,4 @@
-import { ContractName } from '@ensdomains/ensjs/contracts/types'
+import { ContractName } from '@awnsdomains/awnsjs/contracts/types'
 
 import { useEns } from '@app/utils/EnsProvider'
 

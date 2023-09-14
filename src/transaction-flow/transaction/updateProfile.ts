@@ -1,7 +1,6 @@
+import { RecordOptions } from '@awnsdomains/awnsjs/utils/recordHelpers'
 import type { JsonRpcSigner } from '@ethersproject/providers'
 import { TFunction } from 'i18next'
-
-import { RecordOptions } from '@ensdomains/ensjs/utils/recordHelpers'
 
 import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
 

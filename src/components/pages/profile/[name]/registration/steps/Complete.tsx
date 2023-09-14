@@ -1,3 +1,5 @@
+import { ETHRegistrarController__factory } from '@awnsdomains/awnsjs/generated/factories/ETHRegistrarController__factory'
+import { tokenise } from '@awnsdomains/awnsjs/utils/normalise'
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
 import dynamic from 'next/dynamic'
 import React, { Fragment, useEffect, useMemo, useState } from 'react'
@@ -6,8 +8,6 @@ import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
 
-import { ETHRegistrarController__factory } from '@ensdomains/ensjs/generated/factories/ETHRegistrarController__factory'
-import { tokenise } from '@ensdomains/ensjs/utils/normalise'
 import { Button, Typography, mq } from '@ensdomains/thorin'
 
 import { Invoice } from '@app/components/@atoms/Invoice/Invoice'

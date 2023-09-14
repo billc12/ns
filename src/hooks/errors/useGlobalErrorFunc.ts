@@ -1,8 +1,7 @@
+import { ENSJSError } from '@awnsdomains/awnsjs/utils/errors'
 import { QueryKey, hashQueryKey } from '@tanstack/react-query'
 import { useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-
-import { ENSJSError } from '@ensdomains/ensjs/utils/errors'
 
 import { useGlobalErrorDispatch } from '@app/utils/GlobalErrorProvider/GlobalErrorProvider'
 

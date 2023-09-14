@@ -1,8 +1,7 @@
+import { namehash } from '@awnsdomains/awnsjs/utils/normalise'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { useQuery, useSigner } from 'wagmi'
-
-import { namehash } from '@ensdomains/ensjs/utils/normalise'
 
 import { useChainId } from '@app/hooks/useChainId'
 import { useProfile } from '@app/hooks/useProfile'

@@ -2,8 +2,8 @@ import { mockFunction, render, screen } from '@app/test-utils'
 
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
 
-import { labelhash } from '@ensdomains/ensjs/utils/labels'
-import { namehash } from '@ensdomains/ensjs/utils/normalise'
+import { labelhash } from '@awnsdomains/awnsjs/utils/labels'
+import { namehash } from '@awnsdomains/awnsjs/utils/normalise'
 
 import { useFusesStates } from '@app/hooks/fuses/useFusesStates'
 import { useContractAddress } from '@app/hooks/useContractAddress'

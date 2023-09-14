@@ -1,10 +1,10 @@
+import type { ChildFuses } from '@awnsdomains/awnsjs'
+import { childFuseKeys } from '@awnsdomains/awnsjs/utils/fuses'
 import isEqual from 'lodash/isEqual'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 
-import type { ChildFuses } from '@ensdomains/ensjs'
-import { childFuseKeys } from '@ensdomains/ensjs/utils/fuses'
 import { Button, FlameSVG, Helper, Typography, mq } from '@ensdomains/thorin'
 
 import { Spacer } from '@app/components/@atoms/Spacer'
@@ -61,7 +61,7 @@ const BurnedFlameContainer = styled.div<{ $isBurned: boolean }>(
     ${$isBurned &&
     `
       position: absolute;
-      right: ${theme.space['1.5']};  
+      right: ${theme.space['1.5']};
       z-index: 1;
     `}
   `,

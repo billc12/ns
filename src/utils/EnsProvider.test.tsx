@@ -18,7 +18,7 @@ const mockEns = {
 }
 
 jest.mock('@wagmi/core')
-jest.mock('@ensdomains/ensjs', () => {
+jest.mock('@awnsdomains/awnsjs', () => {
   return {
     ENS: jest.fn().mockImplementation(() => {
       return mockEns

@@ -16,7 +16,7 @@ import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 import ProfileEditor from './ProfileEditor-flow'
 
 const appPackage = require('@app/../package.json')
-const ensjsPackage = require('@app/../node_modules/@ensdomains/ensjs/package.json')
+const ensjsPackage = require('@app/../node_modules/@awnsdomains/awnsjs/package.json')
 
 const mockProfileData = {
   profile: {

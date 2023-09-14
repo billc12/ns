@@ -2,7 +2,7 @@ import { mockFunction, render } from '@app/test-utils'
 
 import { ReactNode } from 'react'
 
-import { decodeFuses, encodeFuses } from '@ensdomains/ensjs/utils/fuses'
+import { decodeFuses, encodeFuses } from '@awnsdomains/awnsjs/utils/fuses'
 
 import { NameDetailItem } from './NameDetailItem'
 import { TaggedNameItem } from './TaggedNameItem'

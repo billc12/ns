@@ -1,6 +1,5 @@
+import { namehash } from '@awnsdomains/awnsjs/utils/normalise'
 import { useQuery } from 'wagmi'
-
-import { namehash } from '@ensdomains/ensjs/utils/normalise'
 
 import { useEns } from '@app/utils/EnsProvider'
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'

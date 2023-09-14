@@ -1,7 +1,6 @@
+import { namehash } from '@awnsdomains/awnsjs/utils/normalise'
 import { UseQueryOptions } from '@tanstack/react-query'
 import { useQuery } from 'wagmi'
-
-import { namehash } from '@ensdomains/ensjs/utils/normalise'
 
 import { useEns } from '@app/utils/EnsProvider'
 

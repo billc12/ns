@@ -1,6 +1,5 @@
+import { checkIsDecrypted } from '@awnsdomains/awnsjs/utils/labels'
 import { useTranslation } from 'react-i18next'
-
-import { checkIsDecrypted } from '@ensdomains/ensjs/utils/labels'
 
 import { useHasGlobalError } from '@app/hooks/errors/useHasGlobalError'
 import { useResolverStatus } from '@app/hooks/resolver/useResolverStatus'

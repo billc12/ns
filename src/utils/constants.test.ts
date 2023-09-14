@@ -1,4 +1,4 @@
-import { getContractAddress } from '@ensdomains/ensjs/contracts/getContractAddress'
+import { getContractAddress } from '@awnsdomains/awnsjs/contracts/getContractAddress'
 
 import { RESOLVER_ADDRESSES } from './constants'
 
