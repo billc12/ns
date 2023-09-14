@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
@@ -8,6 +8,7 @@ import { getEncryptedLabelAmount } from '@ensdomains/ensjs/utils/labels'
 import { Banner, CheckCircleSVG, PageButtons, Typography, mq } from '@ensdomains/thorin'
 
 import BaseLink from '@app/components/@atoms/BaseLink'
+import { LoadingOverlay } from '@app/components/LoadingOverlay'
 import { Table } from '@app/components/table'
 // import { useAbilities } from '@app/hooks/abilities/useAbilities'
 import { useRecentTransactions } from '@app/hooks/transactions/useRecentTransactions'
@@ -77,10 +78,11 @@ const TopRowStyle = styled.div(
   `,
 )
 
-const Relateds = styled.div(
+const Relates = styled.div(
   () => css`
-    width: auto;
+    width: 840px;
     ${mq.sm.max(css`
+      width: auto;
       display: grid;
       gap: 10px;
     `)}
@@ -231,7 +233,7 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
   const { address } = useAccount()
   const transactions = useRecentTransactions()
   const breakpoints = useBreakpoint()
-
+  const [current, setCurrent] = useState<number>(1)
   const nameDetails = useNameDetails(name)
   const {
     // error,
@@ -371,7 +373,6 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
   //     }
   //   return undefined
   // }, [error, errorTitle])
-  console.log(titleContent)
 
   return (
     <>
@@ -379,34 +380,21 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
         <title>{titleContent}</title>
         <meta name="description" content={descriptionContent} />
       </Head>
-      <div style={{ display: 'grid', gap: 20, padding: isSmDown ? '20px' : 0 }}>
-        {typeof window === 'object' && isOwner && (
-          <AccountHeader address={nameDetails.profile?.address} />
-        )}
+      {!isLoading ? (
+        <div style={{ display: 'grid', gap: 20, padding: isSmDown ? '20px' : 0 }}>
+          {typeof window === 'object' && isOwner && <AccountHeader />}
 
-        <ContentStyle
-          key={0}
-          style={{
-            width: isSmDown ? 'auto' : 840,
-          }}
-        >
-          <CardsStyle>
-            <CardTitleStyle>{beautifiedName}</CardTitleStyle>
-            <TabButtonContainer>
-              {isOwner
-                ? tabs.map((tabItem) => (
-                    <TabButton
-                      key={tabItem}
-                      data-testid={`${tabItem}-tab`}
-                      $selected={tabItem === tab}
-                      onClick={() => setTab(tabItem)}
-                    >
-                      {t(`tabs.${tabItem}.name`)}
-                    </TabButton>
-                  ))
-                : tabs
-                    .filter((item) => item !== 'invitationCode')
-                    .map((tabItem) => (
+          <ContentStyle
+            key={0}
+            style={{
+              width: isSmDown ? 'auto' : 840,
+            }}
+          >
+            <CardsStyle>
+              <CardTitleStyle>{beautifiedName}</CardTitleStyle>
+              <TabButtonContainer>
+                {isOwner
+                  ? tabs.map((tabItem) => (
                       <TabButton
                         key={tabItem}
                         data-testid={`${tabItem}-tab`}
@@ -415,21 +403,33 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
                       >
                         {t(`tabs.${tabItem}.name`)}
                       </TabButton>
-                    ))}
-            </TabButtonContainer>
-          </CardsStyle>
+                    ))
+                  : tabs
+                      .filter((item) => item !== 'invitationCode')
+                      .map((tabItem) => (
+                        <TabButton
+                          key={tabItem}
+                          data-testid={`${tabItem}-tab`}
+                          $selected={tabItem === tab}
+                          onClick={() => setTab(tabItem)}
+                        >
+                          {t(`tabs.${tabItem}.name`)}
+                        </TabButton>
+                      ))}
+              </TabButtonContainer>
+            </CardsStyle>
 
-          {tab === 'detail' ? (
-            <ProfileTab name={normalisedName} nameDetails={nameDetails} />
-          ) : tab === 'assets' ? (
-            <AssetsTab />
-          ) : (
-            <>
-              <InvitationCode />
-            </>
-          )}
+            {tab === 'detail' ? (
+              <ProfileTab name={normalisedName} nameDetails={nameDetails} />
+            ) : tab === 'assets' ? (
+              <AssetsTab />
+            ) : (
+              <>
+                <InvitationCode />
+              </>
+            )}
 
-          {/* <Content noTitle title={beautifiedName} loading={isLoading} copyValue={beautifiedName}>
+            {/* <Content noTitle title={beautifiedName} loading={isLoading} copyValue={beautifiedName}>
         {{
           info: infoBanner,
           warning,
@@ -488,41 +488,46 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
           }[tab],
         }}
       </Content> */}
-        </ContentStyle>
+          </ContentStyle>
 
-        {tab === 'detail' && (
-          <Relateds key={1} style={{ width: isSmDown ? 'auto' : 840 }}>
-            <Table
-              TableHeight={400}
-              labels={['From', 'To', 'Date', 'TXid', ' ']}
-              rows={tableList}
-              hederRow={
-                <>
-                  <TopRowStyle>
-                    <Typography
-                      style={{
-                        color: 'var(--word-color, #3F5170)',
-                        fontSize: '16px',
-                        fontWeight: 600,
-                      }}
-                    >
-                      Related Transactions
-                    </Typography>
-                    <PageButtonsStyle
-                      alwaysShowFirst
-                      alwaysShowLast
-                      current={4}
-                      size="small"
-                      total={6}
-                      onChange={(value) => console.log(value)}
-                    />
-                  </TopRowStyle>
-                </>
-              }
-            />
-          </Relateds>
-        )}
-      </div>
+          {tab === 'detail' && (
+            <Relates>
+              <Table
+                TableHeight={400}
+                labels={['From', 'To', 'Date', 'TXid', ' ']}
+                rows={tableList}
+                hederRow={
+                  <>
+                    <TopRowStyle>
+                      <Typography
+                        style={{
+                          color: 'var(--word-color, #3F5170)',
+                          fontSize: '16px',
+                          fontWeight: 600,
+                        }}
+                      >
+                        Related Transactions
+                      </Typography>
+                      <PageButtonsStyle
+                        alwaysShowFirst
+                        alwaysShowLast
+                        current={current}
+                        size="small"
+                        total={6}
+                        onChange={(value) => setCurrent(value)}
+                      />
+                    </TopRowStyle>
+                  </>
+                }
+              />
+            </Relates>
+          )}
+        </div>
+      ) : (
+        <>
+          <LoadingOverlay />
+        </>
+      )}
     </>
   )
 }

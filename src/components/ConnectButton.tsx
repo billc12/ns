@@ -1,4 +1,5 @@
 import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { useRouter } from 'next/router'
 import { Key, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
@@ -18,6 +19,7 @@ import {
 import { DropdownItem } from '@ensdomains/thorin/dist/types/components/molecules/Dropdown/Dropdown'
 
 import DefaultUser from '@app/assets/DefaultUser.svg'
+import InfoSVG from '@app/assets/Info.svg'
 import useHasPendingTransactions from '@app/hooks/transactions/useHasPendingTransactions'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useAvatar } from '@app/hooks/useAvatar'
@@ -107,6 +109,7 @@ const UserButton = styled.button`
   border-radius: 8px;
   border: 1px solid #d4d7e2;
   background: #fff;
+  cursor: pointer;
 `
 const RoundProfile = styled(Profile)`
   &.profile {
@@ -151,7 +154,7 @@ export const ConnectButton = ({ isTabBar, large, inHeader }: Props) => {
 
 const HeaderProfile = ({ address }: { address: string }) => {
   const { t } = useTranslation('common')
-
+  const router = useRouter()
   const primary = usePrimary(address!, !address)
   const chainId = useChainId()
   const { avatar } = useAvatar(primary.data?.name, chainId)
@@ -212,8 +215,10 @@ const HeaderProfile = ({ address }: { address: string }) => {
           {
             label: shortenAddress(address),
             color: 'text',
-            onClick: () => copy(address),
-            icon: copied ? <CheckSVG /> : <CopySVG />,
+            onClick: () => {
+              router.push(`/my/names`)
+            },
+            icon: <InfoSVG />,
           },
           {
             label: t('wallet.disconnect'),

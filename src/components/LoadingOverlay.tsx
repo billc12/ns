@@ -7,8 +7,8 @@ const Container = styled.div(
   ({ theme }) => css`
     flex-grow: 1;
     display: flex;
-    align-items: center;
     justify-content: center;
+    margin-top: 30%;
     flex-direction: row;
     flex-gap: ${theme.space['4']};
     gap: ${theme.space['4']};

@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 // import { Trans, useTranslation } from 'react-i18next' Helper
 import styled, { css } from 'styled-components'
-import { useAccount } from 'wagmi'
+import { useAccount, useNetwork } from 'wagmi'
 
 import { Button, Typography, mq } from '@ensdomains/thorin'
 
@@ -19,6 +19,7 @@ import { useNameDetails } from '@app/hooks/useNameDetails'
 import useOwners from '@app/hooks/useOwners'
 import { usePrimary } from '@app/hooks/usePrimary'
 import { useProfileActions } from '@app/hooks/useProfileActions'
+import useRegistrationDate from '@app/hooks/useRegistrationData'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
 // import { getSupportLink } from '@app/utils/supportLinks'
 import { shortenAddress, validateExpiry } from '@app/utils/utils'
@@ -68,11 +69,11 @@ const ContentStyled = styled.div(
     border-radius: 8px;
     background: var(--bg_light, #f7fafc);
     display: grid;
+    column-gap: 10px;
     justify-content: space-between;
     grid-template-columns: auto 1fr;
     ${mq.sm.max(css`
       width: auto;
-      column-gap: 10px;
     `)}
   `,
 )
@@ -94,6 +95,15 @@ const RowValueStyle = styled(Typography)(
     text-align: right;
     display: flex;
     justify-content: end;
+  `,
+)
+
+const ButtonsStyle = styled.div(
+  () => css`
+    display: flex;
+    gap: 10px;
+    justify-content: end;
+    margin-top: 20px;
   `,
 )
 
@@ -135,6 +145,8 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
   const chainId = useChainId()
   const { address } = useAccount()
   const breakpoints = useBreakpoint()
+  const { data: registrationData } = useRegistrationDate(name)
+  const { chain: currentChain } = useNetwork()
   const {
     profile,
     normalisedName,
@@ -170,6 +182,13 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
     expiryDate,
   })
 
+  const IsOwner = useMemo(() => {
+    if (address === ownerData?.owner) {
+      return true
+    }
+    return false
+  }, [address, ownerData?.owner])
+
   const isExpired = useMemo(
     () => gracePeriodEndDate && gracePeriodEndDate < new Date(),
     [gracePeriodEndDate],
@@ -187,7 +206,6 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
     }
     return true
   }, [breakpoints.sm])
-  console.log(nameDetails.expiryDate)
 
   return (
     <DetailsWrapper>
@@ -210,23 +228,23 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
             <RowNameStyle>Addresses</RowNameStyle>
             <RowValueStyle>
               {nameDetails?.ownerData?.owner ? shortenAddress(nameDetails?.ownerData?.owner) : '--'}{' '}
-              <CopyButton value="1" />
+              <CopyButton value={nameDetails?.ownerData?.owner} />
             </RowValueStyle>
 
             <RowNameStyle>Owner</RowNameStyle>
             <RowValueStyle>
               {nameDetails?.ownerData?.owner ? shortenAddress(nameDetails?.ownerData?.owner) : '--'}{' '}
-              <CopyButton value="1" />
+              <CopyButton value={nameDetails?.ownerData?.owner} />
             </RowValueStyle>
 
             <RowNameStyle>Registration Date</RowNameStyle>
-            <RowValueStyle>{nameDetails.expiryDate?.toString() || '--'} </RowValueStyle>
+            <RowValueStyle>{registrationData?.registrationDate?.toString() || '--'}</RowValueStyle>
 
             <RowNameStyle>Expiration Date</RowNameStyle>
-            <RowValueStyle>2023.08.26 at 21:45 (UTC+08:00)</RowValueStyle>
+            <RowValueStyle>{nameDetails.expiryDate?.toString() || '--'} </RowValueStyle>
 
             <RowNameStyle>Chain</RowNameStyle>
-            <RowValueStyle>Ethereum</RowValueStyle>
+            <RowValueStyle>{currentChain?.name || '--'}</RowValueStyle>
 
             <RowNameStyle>Contract Address</RowNameStyle>
             <RowValueStyle>
@@ -239,24 +257,19 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
             </RowValueStyle>
           </ContentStyled>
         </div>
-        <div
-          style={{
-            display: 'flex',
-            gap: 10,
-            justifyContent: 'end',
-            marginTop: 20,
-          }}
-        >
-          <ButtonStyle colorStyle="background" prefix={<LinkIcon />}>
-            Set Address
-          </ButtonStyle>
-          <ButtonStyle colorStyle="background" prefix={<TimeIcon />}>
-            Extend
-          </ButtonStyle>
-          <ButtonStyle colorStyle="background" prefix={<TransferIcon />}>
-            Transfer
-          </ButtonStyle>
-        </div>
+        {IsOwner && (
+          <ButtonsStyle>
+            <ButtonStyle colorStyle="background" prefix={<LinkIcon />}>
+              Set Address
+            </ButtonStyle>
+            <ButtonStyle colorStyle="background" prefix={<TimeIcon />}>
+              Extend
+            </ButtonStyle>
+            <ButtonStyle colorStyle="background" prefix={<TransferIcon />}>
+              Transfer
+            </ButtonStyle>
+          </ButtonsStyle>
+        )}
       </div>
 
       {false && (

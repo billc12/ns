@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import styled, { css } from 'styled-components'
+import { useAccount, useDisconnect } from 'wagmi'
 
 import { mq } from '@ensdomains/thorin'
 
@@ -62,8 +63,10 @@ const ShareSvg = styled.svg(
   `,
 )
 
-export const AccountHeader = ({ address }: { address?: string }) => {
+export const AccountHeader = () => {
   const breakpoints = useBreakpoint()
+  const { disconnect } = useDisconnect()
+  const { address: _address } = useAccount()
 
   const isSmDown = useMemo(() => {
     if (breakpoints.sm) {
@@ -73,18 +76,20 @@ export const AccountHeader = ({ address }: { address?: string }) => {
   }, [breakpoints.sm])
   return (
     <>
-      <HederStyle>
-        MY AWNS
-        <AddressStyle style={{ width: isSmDown ? 'auto' : 492, gap: isSmDown ? 6 : 0 }}>
-          {isSmDown ? shortenAddress(address) : address}
-          <ShareSvg
-            as={OutRightIcon}
-            onClick={() => {
-              console.log(1)
-            }}
-          />
-        </AddressStyle>
-      </HederStyle>
+      {_address && (
+        <HederStyle>
+          MY AWNS
+          <AddressStyle style={{ width: isSmDown ? 'auto' : 492, gap: isSmDown ? 6 : 0 }}>
+            {isSmDown ? shortenAddress(_address) : _address}
+            <ShareSvg
+              as={OutRightIcon}
+              onClick={() => {
+                disconnect()
+              }}
+            />
+          </AddressStyle>
+        </HederStyle>
+      )}
     </>
   )
 }
