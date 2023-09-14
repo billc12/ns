@@ -4,7 +4,6 @@ import styled, { css } from 'styled-components'
 
 import { Typography, mq } from '@ensdomains/thorin'
 
-import FaucetBanner from '@app/components/@molecules/FaucetBanner'
 import Hamburger from '@app/components/@molecules/Hamburger/Hamburger'
 import { SearchInput } from '@app/components/@molecules/SearchInput/SearchInput'
 import { LeadingHeading } from '@app/components/LeadingHeading'
@@ -102,7 +101,6 @@ export default function Page() {
         </LogoAndLanguage>
         <Hamburger />
       </StyledLeadingHeading>
-      <FaucetBanner />
       <Container>
         <Stack>
           <GradientTitle>{t('title')}</GradientTitle>

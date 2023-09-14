@@ -1,20 +1,19 @@
-import { BigNumber } from '@ethersproject/bignumber'
+// import { BigNumber } from '@ethersproject/bignumber'
 import type { JsonRpcSigner } from '@ethersproject/providers'
 import { formatEther } from '@ethersproject/units'
 import { useMemo } from 'react'
 import { useQuery, useSigner } from 'wagmi'
 
 import {
-  Transaction,
-  TransactionData,
+  Transaction, // TransactionData,
   TransactionName,
   transactions as _transactions,
   makeTransactionItem,
 } from '@app/transaction-flow/transaction'
 import { useEns } from '@app/utils/EnsProvider'
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
-import { fetchTenderlyEstimate } from '@app/utils/tenderly'
 
+// import { fetchTenderlyEstimate } from '@app/utils/tenderly'
 import { useChainId } from './useChainId'
 import useGasPrice from './useGasPrice'
 
@@ -31,34 +30,38 @@ export const fetchEstimateWithConfig =
       transaction.data,
     )
 
-    let gasLimit: BigNumber
-
-    try {
-      gasLimit = await signer!.estimateGas(populatedTransaction)
-      return {
-        name: transactionName,
-        gasLimit,
-      }
-    } catch (e) {
-      if (transactionName !== 'extendNames') {
-        throw e
-      }
-      const { names, duration } = transaction.data as TransactionData<'extendNames'>
-      const fetchedEstimate = await fetchTenderlyEstimate({
-        type: 'extension',
-        networkId: chainId,
-        labels: names.map((name) => name.split('.')[0]),
-        duration,
-        from: await signer.getAddress(),
-      })
-
-      gasLimit = BigNumber.from(fetchedEstimate)
-    }
-
+    const gasLimit = await signer!.estimateGas(populatedTransaction)
     return {
       name: transactionName,
       gasLimit,
     }
+
+    // try {
+    //   gasLimit = await signer!.estimateGas(populatedTransaction)
+    //   return {
+    //     name: transactionName,
+    //     gasLimit,
+    //   }
+    // } catch (e) {
+    //   if (transactionName !== 'extendNames') {
+    //     throw e
+    //   }
+    //   const { names, duration } = transaction.data as TransactionData<'extendNames'>
+    //   const fetchedEstimate = await fetchTenderlyEstimate({
+    //     type: 'extension',
+    //     networkId: chainId,
+    //     labels: names.map((name) => name.split('.')[0]),
+    //     duration,
+    //     from: await signer.getAddress(),
+    //   })
+
+    //   gasLimit = BigNumber.from(fetchedEstimate)
+    // }
+
+    // return {
+    //   name: transactionName,
+    //   gasLimit,
+    // }
   }
 
 export const useEstimateGasLimitForTransactions = (
