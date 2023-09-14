@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components'
 import { Button, Typography, mq } from '@ensdomains/thorin'
 
 import ArrowRightSvg from '@app/assets/ArrowRightIcon.svg'
-import TestImg from '@app/assets/testImage.png'
+import TestImg from '@app/assets/TestImage.png'
 import BaseLink from '@app/components/@atoms/BaseLink'
 import { ReturnedName } from '@app/hooks/names/useNamesFromAddress/useNamesFromAddress'
 import { formatFullExpiry } from '@app/utils/utils'

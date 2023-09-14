@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 // import { Trans, useTranslation } from 'react-i18next' Helper
 import styled, { css } from 'styled-components'
 import { useAccount, useNetwork } from 'wagmi'
@@ -6,9 +6,11 @@ import { useAccount, useNetwork } from 'wagmi'
 import { Button, Typography, mq } from '@ensdomains/thorin'
 
 import LinkIcon from '@app/assets/LinkIcon.svg'
+import TestImg from '@app/assets/TestImage.png'
 import TimeIcon from '@app/assets/TimeIcon.svg'
 import TransferIcon from '@app/assets/TransferIcon.svg'
-import TestImg from '@app/assets/testImage.png'
+// eslint-disable-next-line import/no-cycle
+import TransferDialog from '@app/components/Awns/Dialog/TransferDialog'
 import { CopyButton } from '@app/components/Copy'
 // import { Outlink } from '@app/components/Outlink'
 import { ProfileSnippet } from '@app/components/ProfileSnippet'
@@ -138,7 +140,30 @@ type Props = {
   nameDetails: ReturnType<typeof useNameDetails>
   name: string
 }
+export function formatDateString(originalDateString: any) {
+  const originalDate = new Date(originalDateString)
+  const timestamp = originalDate.getTime()
+  const targetDate = new Date(timestamp + originalDate.getTimezoneOffset() * 60000)
 
+  const year = targetDate.getFullYear()
+  const month = String(targetDate.getMonth() + 1).padStart(2, '0')
+  const day = String(targetDate.getDate()).padStart(2, '0')
+  const hours = String(targetDate.getHours()).padStart(2, '0')
+  const minutes = String(targetDate.getMinutes()).padStart(2, '0')
+
+  const timezoneOffsetMinutes = targetDate.getTimezoneOffset()
+  const timezoneOffsetHours = Math.abs(Math.floor(timezoneOffsetMinutes / 60))
+  const timezoneOffsetMinutesRemainder = Math.abs(timezoneOffsetMinutes % 60)
+  const timezoneOffsetSign = timezoneOffsetMinutes < 0 ? '+' : '-'
+  const timezoneOffsetString = `${timezoneOffsetSign}${String(timezoneOffsetHours).padStart(
+    2,
+    '0',
+  )}:${String(timezoneOffsetMinutesRemainder).padStart(2, '0')}`
+
+  const formattedDate = `${year}.${month}.${day} at ${hours}:${minutes} (UTC${timezoneOffsetString})`
+
+  return formattedDate
+}
 const ProfileTab = ({ nameDetails, name }: Props) => {
   // const { t } = useTranslation('profile')
 
@@ -147,6 +172,10 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
   const breakpoints = useBreakpoint()
   const { data: registrationData } = useRegistrationDate(name)
   const { chain: currentChain } = useNetwork()
+  const [openTransferDialog, setOpenTransferDialog] = useState(false)
+  const transferHandleDialog = (open: boolean) => {
+    setOpenTransferDialog(open)
+  }
   const {
     profile,
     normalisedName,
@@ -265,7 +294,11 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
             <ButtonStyle colorStyle="background" prefix={<TimeIcon />}>
               Extend
             </ButtonStyle>
-            <ButtonStyle colorStyle="background" prefix={<TransferIcon />}>
+            <ButtonStyle
+              onClick={() => transferHandleDialog(true)}
+              colorStyle="background"
+              prefix={<TransferIcon />}
+            >
               Transfer
             </ButtonStyle>
           </ButtonsStyle>
@@ -322,6 +355,11 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
           gracePeriodEndDate={gracePeriodEndDate}
         />
       )}
+      <TransferDialog
+        open={openTransferDialog}
+        handleOpen={transferHandleDialog}
+        nameDetails={nameDetails}
+      />
     </DetailsWrapper>
   )
 }

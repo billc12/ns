@@ -93,6 +93,10 @@ export const useProfileActions = ({
 
   const isLoading =
     primary.isLoading || resolverStatus.isLoading || getPrimaryNameTransactionFlowItem.isLoading
+  const canSetMainName = useMemo(() => {
+    const transactionFlowItem = getPrimaryNameTransactionFlowItem?.callBack?.(name)
+    return isAvailablePrimaryName && !!transactionFlowItem
+  }, [getPrimaryNameTransactionFlowItem, isAvailablePrimaryName, name])
 
   const profileActions = useMemo(() => {
     const actions: Action[] = []
@@ -268,5 +272,6 @@ export const useProfileActions = ({
   return {
     profileActions,
     loading: isLoading,
+    canSetMainName,
   }
 }

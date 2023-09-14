@@ -103,7 +103,7 @@ export const Basic = withErrorBoundary(({ children }: { children: React.ReactNod
   }, [currentChain?.id, router.pathname])
 
   return (
-    <Container className="min-safe" $IsIndex>
+    <Container className="min-safe" $IsIndex={router.pathname === '/'}>
       <Navigation />
       <ContentWrapper>
         {error ? <ErrorScreen errorType="application-error" /> : children}
