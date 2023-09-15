@@ -10,6 +10,8 @@ import TestImg from '@app/assets/TestImage.png'
 import TimeIcon from '@app/assets/TimeIcon.svg'
 import TransferIcon from '@app/assets/TransferIcon.svg'
 // eslint-disable-next-line import/no-cycle
+import SetAddressDialog from '@app/components/Awns/Dialog/SetAddressDialog'
+// eslint-disable-next-line import/no-cycle
 import TransferDialog from '@app/components/Awns/Dialog/TransferDialog'
 import { CopyButton } from '@app/components/Copy'
 // import { Outlink } from '@app/components/Outlink'
@@ -82,6 +84,7 @@ const ContentStyled = styled.div(
     grid-template-columns: auto 1fr;
     ${mq.sm.max(css`
       width: auto;
+      padding: 15px;
     `)}
   `,
 )
@@ -179,8 +182,12 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
   const { data: registrationData } = useRegistrationDate(name)
   const { chain: currentChain } = useNetwork()
   const [openTransferDialog, setOpenTransferDialog] = useState(false)
+  const [openAddressDialog, setOpenAddressDialog] = useState<boolean>(false)
   const transferHandleDialog = (open: boolean) => {
     setOpenTransferDialog(open)
+  }
+  const addressHandleDialog = (open: boolean) => {
+    setOpenAddressDialog(open)
   }
   const {
     profile,
@@ -315,9 +322,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
             <ButtonStyle
               colorStyle="background"
               onClick={() => {
-                if (PrimaryNameAuction) {
-                  PrimaryNameAuction.onClick()
-                }
+                addressHandleDialog(true)
               }}
               prefix={<LinkIcon />}
             >
@@ -397,6 +402,15 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
         open={openTransferDialog}
         handleOpen={transferHandleDialog}
         nameDetails={nameDetails}
+      />
+      <SetAddressDialog
+        open={openAddressDialog}
+        handleOpen={addressHandleDialog}
+        nameDetails={nameDetails}
+        address={address}
+        submit={() => {
+          PrimaryNameAuction?.onClick()
+        }}
       />
     </DetailsWrapper>
   )

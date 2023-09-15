@@ -232,7 +232,7 @@ const MyNames = () => {
               <AccountHeader />
               <AddressList>
                 {namesData?.names.map((item) => (
-                  <AddressItem AddressRow={item} />
+                  <AddressItem AddressRow={item} key={item.name} />
                 ))}
                 {!namesData?.names.length && (
                   <div style={{ height: '100%' }}>
