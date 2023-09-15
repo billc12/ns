@@ -10,6 +10,7 @@ import useBeautifiedName from '@app/hooks/useBeautifiedName'
 import { useRouterWithHistory } from '@app/hooks/useRouterWithHistory'
 import { shouldShowExtendWarning } from '@app/utils/abilities/shouldShowExtendWarning'
 
+// eslint-disable-next-line import/no-cycle
 import { useTransactionFlow } from '../transaction-flow/TransactionFlowProvider'
 import { NameAvatar } from './AvatarWithZorb'
 

@@ -157,10 +157,10 @@ const MyNames = () => {
   const loading = namesLoading || namesStatus === 'loading' || !router.isReady || !namesData
 
   useProtectedRoute('/', loading ? true : address && address !== '')
-
+  const show = false
   return (
     <>
-      {false ? (
+      {show ? (
         <Content title={t('title')} singleColumnContent loading={loading}>
           {{
             trailing: (

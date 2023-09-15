@@ -248,7 +248,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
   }, [breakpoints.sm])
   console.log(nameDetails.expiryDate)
   const { prepareDataInput } = useTransactionFlow()
-  const showSendNameInput = prepareDataInput('SendName')
+  const showSendNameInput = prepareDataInput('AwnsSendName')
   const handleSend = () => {
     showSendNameInput(`send-name-${name}`, {
       name,
