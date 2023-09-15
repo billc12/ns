@@ -24,7 +24,7 @@ const IconStyle = styled.svg(
   `,
 )
 
-export const CopyButton = ({ value, noneMargin }: { value: string; noneMargin?: boolean }) => {
+export const CopyButton = ({ value, noneMargin }: { value?: string; noneMargin?: boolean }) => {
   const { copy, copied } = useCopied(300)
   return (
     <CopyStyle
@@ -32,7 +32,7 @@ export const CopyButton = ({ value, noneMargin }: { value: string; noneMargin?: 
         marginLeft: noneMargin ? 0 : '8px',
       }}
       onClick={() => {
-        copy(value)
+        copy(value || '')
       }}
     >
       {copied ? <IconStyle as={CheckSVG} /> : <IconStyle as={CopyIcon} />}

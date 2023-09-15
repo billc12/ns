@@ -12,7 +12,6 @@ const EmptyDataStyle = styled.div(
     justify-content: center;
     display: grid;
     gap: 11px;
-    margin-top: 50px;
   `,
 )
 const SvgStyle = styled.svg(
@@ -31,10 +30,20 @@ export const EmptyData = ({
 }) => {
   return (
     <>
-      <EmptyDataStyle style={{ ...sx }}>
-        <SvgStyle as={BoxIcon} />
-        {children || 'No Data'}
-      </EmptyDataStyle>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%',
+          width: '100%',
+        }}
+      >
+        <EmptyDataStyle style={{ ...sx }}>
+          <SvgStyle as={BoxIcon} />
+          {children || 'No Data'}
+        </EmptyDataStyle>
+      </div>
     </>
   )
 }

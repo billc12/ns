@@ -1,14 +1,14 @@
 import { useMemo, useState } from 'react'
 // import { Trans, useTranslation } from 'react-i18next' Helper
 import styled, { css } from 'styled-components'
-import { useAccount } from 'wagmi'
+import { useAccount, useNetwork } from 'wagmi'
 
 import { Button, Typography, mq } from '@ensdomains/thorin'
 
 import LinkIcon from '@app/assets/LinkIcon.svg'
+import TestImg from '@app/assets/TestImage.png'
 import TimeIcon from '@app/assets/TimeIcon.svg'
 import TransferIcon from '@app/assets/TransferIcon.svg'
-import TestImg from '@app/assets/testImage.png'
 // eslint-disable-next-line import/no-cycle
 import TransferDialog from '@app/components/Awns/Dialog/TransferDialog'
 import { CopyButton } from '@app/components/Copy'
@@ -24,6 +24,7 @@ import useOwners from '@app/hooks/useOwners'
 import { usePrimary } from '@app/hooks/usePrimary'
 // eslint-disable-next-line import/no-cycle
 import { AuctionType, useProfileActions } from '@app/hooks/useProfileActions'
+import useRegistrationDate from '@app/hooks/useRegistrationData'
 // eslint-disable-next-line import/no-cycle
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
@@ -76,11 +77,11 @@ const ContentStyled = styled.div(
     border-radius: 8px;
     background: var(--bg_light, #f7fafc);
     display: grid;
+    column-gap: 10px;
     justify-content: space-between;
     grid-template-columns: auto 1fr;
     ${mq.sm.max(css`
       width: auto;
-      column-gap: 10px;
     `)}
   `,
 )
@@ -102,6 +103,15 @@ const RowValueStyle = styled(Typography)(
     text-align: right;
     display: flex;
     justify-content: end;
+  `,
+)
+
+const ButtonsStyle = styled.div(
+  () => css`
+    display: flex;
+    gap: 10px;
+    justify-content: end;
+    margin-top: 20px;
   `,
 )
 
@@ -166,6 +176,8 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
   const chainId = useChainId()
   const { address } = useAccount()
   const breakpoints = useBreakpoint()
+  const { data: registrationData } = useRegistrationDate(name)
+  const { chain: currentChain } = useNetwork()
   const [openTransferDialog, setOpenTransferDialog] = useState(false)
   const transferHandleDialog = (open: boolean) => {
     setOpenTransferDialog(open)
@@ -204,6 +216,15 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
     wrapperData,
     expiryDate,
   })
+
+  const IsOwner = useMemo(() => {
+    if (address === ownerData?.owner) {
+      return true
+    }
+    return false
+  }, [address, ownerData?.owner])
+  console.log(IsOwner)
+
   const PrimaryNameAuction = profileActions.profileActions?.filter(
     (item) => !!item.type && item.type === AuctionType.PrimaryName,
   )[0]
@@ -260,23 +281,23 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
             <RowNameStyle>Addresses</RowNameStyle>
             <RowValueStyle>
               {nameDetails?.ownerData?.owner ? shortenAddress(nameDetails?.ownerData?.owner) : '--'}{' '}
-              <CopyButton value="1" />
+              <CopyButton value={nameDetails?.ownerData?.owner} />
             </RowValueStyle>
 
             <RowNameStyle>Owner</RowNameStyle>
             <RowValueStyle>
               {nameDetails?.ownerData?.owner ? shortenAddress(nameDetails?.ownerData?.owner) : '--'}{' '}
-              <CopyButton value="1" />
+              <CopyButton value={nameDetails?.ownerData?.owner} />
             </RowValueStyle>
 
             <RowNameStyle>Registration Date</RowNameStyle>
-            <RowValueStyle>{nameDetails.expiryDate?.toString() || '--'} </RowValueStyle>
+            <RowValueStyle>{registrationData?.registrationDate?.toString() || '--'}</RowValueStyle>
 
             <RowNameStyle>Expiration Date</RowNameStyle>
-            <RowValueStyle>2023.08.26 at 21:45 (UTC+08:00)</RowValueStyle>
+            <RowValueStyle>{nameDetails.expiryDate?.toString() || '--'} </RowValueStyle>
 
             <RowNameStyle>Chain</RowNameStyle>
-            <RowValueStyle>Ethereum</RowValueStyle>
+            <RowValueStyle>{currentChain?.name || '--'}</RowValueStyle>
 
             <RowNameStyle>Contract Address</RowNameStyle>
             <RowValueStyle>
@@ -289,14 +310,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
             </RowValueStyle>
           </ContentStyled>
         </div>
-        <div
-          style={{
-            display: 'flex',
-            gap: 10,
-            justifyContent: 'end',
-            marginTop: 20,
-          }}
-        >
+        <ButtonsStyle>
           {profileActions.canSetMainName && (
             <ButtonStyle
               colorStyle="background"
@@ -326,7 +340,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
               Transfer
             </ButtonStyle>
           )}
-        </div>
+        </ButtonsStyle>
       </div>
 
       {false && (

@@ -3,13 +3,14 @@ import { ReactElement, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 
-import { Button, Spinner } from '@ensdomains/thorin'
+import { Button, Spinner, mq } from '@ensdomains/thorin'
 
 import FastForwardSVG from '@app/assets/FastForward.svg'
 import { TaggedNameItem } from '@app/components/@atoms/NameDetailItem/TaggedNameItem'
 import { NameTableFooter } from '@app/components/@molecules/NameTableFooter/NameTableFooter'
 import { AddressItem } from '@app/components/AddressItem'
 import { EmptyData } from '@app/components/EmptyData'
+import { LoadingOverlay } from '@app/components/LoadingOverlay'
 import { ProfileSnippet } from '@app/components/ProfileSnippet'
 import NoProfileSnippet from '@app/components/address/NoProfileSnippet'
 import { AccountHeader } from '@app/components/pages/profile/AccountHeader'
@@ -63,6 +64,15 @@ const EmptyDetailContainer = styled.div(
   `,
 )
 
+const AccountsLayout = styled.div`
+  width: auto;
+  display: grid;
+  gap: 20px;
+  ${mq.sm.max(css`
+    padding: 50px 20px;
+  `)}
+`
+
 const AddressList = styled.div(
   () => css`
     width: 840px;
@@ -70,6 +80,11 @@ const AddressList = styled.div(
     border-radius: 10px;
     border: 1px solid var(--line, #d4d7e2);
     background: #fff;
+    ${mq.sm.max(css`
+      width: auto;
+      height: auto;
+      min-height: 400px;
+    `)}
   `,
 )
 
@@ -159,7 +174,7 @@ const Page = () => {
 
   return (
     <>
-      {false ? (
+      {true ? (
         <Content title={shortenAddress(address)} copyValue={address} loading={loading}>
           {{
             warning: error
@@ -247,17 +262,23 @@ const Page = () => {
         </Content>
       ) : (
         <>
-          <AccountHeader address={address} />
-          <AddressList>
-            {namesData?.names.map((item) => (
-              <AddressItem AddressRow={item} />
-            ))}
-            {!namesData?.names.length && (
-              <div style={{ height: '100%' }}>
-                <EmptyData />
-              </div>
-            )}
-          </AddressList>
+          {!loading ? (
+            <AccountsLayout>
+              <AccountHeader />
+              <AddressList>
+                {namesData?.names.map((item) => (
+                  <AddressItem AddressRow={item} />
+                ))}
+                {!namesData?.names.length && (
+                  <div style={{ height: '100%' }}>
+                    <EmptyData />
+                  </div>
+                )}
+              </AddressList>
+            </AccountsLayout>
+          ) : (
+            <LoadingOverlay />
+          )}
         </>
       )}
     </>
