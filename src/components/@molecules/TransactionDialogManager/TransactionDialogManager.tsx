@@ -8,6 +8,8 @@ import { WagmiConfig, useAccount } from 'wagmi'
 
 import { Dialog } from '@ensdomains/thorin'
 
+// eslint-disable-next-line import/no-cycle
+import { DialogStyle } from '@app/components/Awns/Dialog'
 import { useChainId } from '@app/hooks/useChainId'
 import { transactions } from '@app/transaction-flow/transaction'
 import { wagmiClientWithRefetch } from '@app/utils/query'
@@ -132,7 +134,18 @@ export const TransactionDialogManager = ({
       name: 'stopFlow',
     })
   }, [dispatch, selectedItem?.disableBackgroundClick, selectedItem?.currentFlowStage])
-
+  if (selectedItem?.input?.name === 'SendName') {
+    return (
+      <DialogStyle
+        variant="blank"
+        open={!!state.selectedKey}
+        onDismiss={onDismissDialog}
+        onClose={onDismiss}
+      >
+        {InnerComponent}
+      </DialogStyle>
+    )
+  }
   return (
     <Dialog
       variant="blank"

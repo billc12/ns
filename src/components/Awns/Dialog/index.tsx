@@ -41,7 +41,7 @@ const AuctionButton = styled(Button)`
   border-radius: 8px;
   background: #0049c6;
 `
-const DialogStyle = styled(Dialog)`
+export const DialogStyle = styled(Dialog)`
   width: 480px;
 
   /* height: 488px; */

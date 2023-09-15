@@ -21,7 +21,7 @@ import {
 import MoonpayLogo from '@app/assets/MoonpayLogo.svg'
 import UserAvatar from '@app/assets/TestImage.png'
 import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
-import { PlusMinusControl } from '@app/components/@atoms/PlusMinusControl/PlusMinusControl'
+import { PlusMinusControl } from '@app/components/@atoms/PlusMinusControl/Awns_PlusMinusControl'
 // import { RegistrationTimeComparisonBanner } from '@app/components/@atoms/RegistrationTimeComparisonBanner/RegistrationTimeComparisonBanner'
 import { Spacer } from '@app/components/@atoms/Spacer'
 import { Card } from '@app/components/Card'

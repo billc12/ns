@@ -13,16 +13,22 @@ import TransferIcon from '@app/assets/TransferIcon.svg'
 import TransferDialog from '@app/components/Awns/Dialog/TransferDialog'
 import { CopyButton } from '@app/components/Copy'
 // import { Outlink } from '@app/components/Outlink'
+// eslint-disable-next-line import/no-cycle
 import { ProfileSnippet } from '@app/components/ProfileSnippet'
+// eslint-disable-next-line import/no-cycle
 import { ProfileDetails } from '@app/components/pages/profile/ProfileDetails'
 import { useAbilities } from '@app/hooks/abilities/useAbilities'
 import { useChainId } from '@app/hooks/useChainId'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import useOwners from '@app/hooks/useOwners'
 import { usePrimary } from '@app/hooks/usePrimary'
-import { useProfileActions } from '@app/hooks/useProfileActions'
+// eslint-disable-next-line import/no-cycle
+import { AuctionType, useProfileActions } from '@app/hooks/useProfileActions'
 import useRegistrationDate from '@app/hooks/useRegistrationData'
+// eslint-disable-next-line import/no-cycle
+import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
+import { shouldShowExtendWarning } from '@app/utils/abilities/shouldShowExtendWarning'
 // import { getSupportLink } from '@app/utils/supportLinks'
 import { shortenAddress, validateExpiry } from '@app/utils/utils'
 
@@ -217,7 +223,11 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
     }
     return false
   }, [address, ownerData?.owner])
+  console.log(IsOwner)
 
+  const PrimaryNameAuction = profileActions.profileActions?.filter(
+    (item) => !!item.type && item.type === AuctionType.PrimaryName,
+  )[0]
   const isExpired = useMemo(
     () => gracePeriodEndDate && gracePeriodEndDate < new Date(),
     [gracePeriodEndDate],
@@ -235,7 +245,21 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
     }
     return true
   }, [breakpoints.sm])
-
+  console.log(nameDetails.expiryDate)
+  const { prepareDataInput } = useTransactionFlow()
+  const showSendNameInput = prepareDataInput('SendName')
+  const handleSend = () => {
+    showSendNameInput(`send-name-${name}`, {
+      name,
+    })
+  }
+  const showExtendNamesInput = prepareDataInput('ExtendNames')
+  const handleExtend = () => {
+    showExtendNamesInput(`extend-names-${name}`, {
+      names: [name],
+      isSelf: shouldShowExtendWarning(abilities.data),
+    })
+  }
   return (
     <DetailsWrapper>
       <div
@@ -286,23 +310,37 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
             </RowValueStyle>
           </ContentStyled>
         </div>
-        {IsOwner && (
-          <ButtonsStyle>
-            <ButtonStyle colorStyle="background" prefix={<LinkIcon />}>
+        <ButtonsStyle>
+          {profileActions.canSetMainName && (
+            <ButtonStyle
+              colorStyle="background"
+              onClick={() => {
+                if (PrimaryNameAuction) {
+                  PrimaryNameAuction.onClick()
+                }
+              }}
+              prefix={<LinkIcon />}
+            >
               Set Address
             </ButtonStyle>
-            <ButtonStyle colorStyle="background" prefix={<TimeIcon />}>
+          )}
+
+          {abilities.data.canExtend && (
+            <ButtonStyle onClick={handleExtend} colorStyle="background" prefix={<TimeIcon />}>
               Extend
             </ButtonStyle>
+          )}
+
+          {abilities.data.canSend && (
             <ButtonStyle
-              onClick={() => transferHandleDialog(true)}
+              onClick={() => handleSend()}
               colorStyle="background"
               prefix={<TransferIcon />}
             >
               Transfer
             </ButtonStyle>
-          </ButtonsStyle>
-        )}
+          )}
+        </ButtonsStyle>
       </div>
 
       {false && (

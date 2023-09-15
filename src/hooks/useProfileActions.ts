@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { checkIsDecrypted } from '@ensdomains/ensjs/utils/labels'
 
 import { usePrimary } from '@app/hooks/usePrimary'
+// eslint-disable-next-line import/no-cycle
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { makeIntroItem } from '@app/transaction-flow/intro'
 import { makeTransactionItem } from '@app/transaction-flow/transaction'
@@ -18,6 +19,9 @@ import { useGetPrimaryNameTransactionFlowItem } from './primary/useGetPrimaryNam
 import { useResolverStatus } from './resolver/useResolverStatus'
 import { useNameDetails } from './useNameDetails'
 
+export enum AuctionType {
+  'PrimaryName' = 'PrimaryName',
+}
 type Action = {
   onClick: () => void
   label: string
@@ -28,6 +32,7 @@ type Action = {
   skip2LDEth?: boolean
   warning?: string
   fullMobileWidth?: boolean
+  type?: AuctionType
 }
 
 type Props = {
@@ -119,6 +124,7 @@ export const useProfileActions = ({
                 transactionFlowItem,
               })
           : () => createTransactionFlow(key, transactionFlowItem),
+        type: AuctionType.PrimaryName,
       })
     }
 
