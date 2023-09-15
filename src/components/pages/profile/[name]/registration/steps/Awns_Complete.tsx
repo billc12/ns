@@ -1,4 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
+import { ETHRegistrarController__factory } from '@myclique/awnsjs/generated/factories/ETHRegistrarController__factory'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -7,7 +8,6 @@ import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
 
-import { ETHRegistrarController__factory } from '@ensdomains/ensjs/generated/factories/ETHRegistrarController__factory'
 import { Button, Typography, mq } from '@ensdomains/thorin'
 
 import UserAvatar from '@app/assets/TestImage.png'
