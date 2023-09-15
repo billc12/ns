@@ -9,6 +9,7 @@ import coinsWithIcons from '@app/constants/coinsWithIcons.json'
 import supportedProfileItems from '@app/constants/supportedGeneralRecordKeys.json'
 import supportedTexts from '@app/constants/supportedSocialRecordKeys.json'
 import useOwners from '@app/hooks/useOwners'
+// eslint-disable-next-line import/no-cycle
 import { useProfileActions } from '@app/hooks/useProfileActions'
 import { ContentHash } from '@app/types'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'

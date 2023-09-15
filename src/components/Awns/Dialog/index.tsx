@@ -1,8 +1,8 @@
 import Image from 'next/image'
 // import { useState } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-import { Button, Dialog, Typography } from '@ensdomains/thorin'
+import { Button, Dialog, Typography, mq } from '@ensdomains/thorin'
 
 import UserAvatar from '@app/assets/TestImage.png'
 // eslint-disable-next-line import/no-cycle
@@ -17,11 +17,20 @@ const InterText = styled(Typography)<{ $size?: string; $color?: string; $weight?
   font-style: normal;
   font-weight: ${(props) => props.$weight || 600};
   line-height: normal;
+  ${mq.sm.max(css`
+    width: auto;
+    text-align: left;
+  `)}
 `
 export const Row = styled.div`
   display: flex;
   flex-direction: row;
   gap: 24px;
+  ${mq.sm.max(css`
+    display: grid;
+    width: 100%;
+    gap: 10px;
+  `)}
 `
 const CancelButton = styled(Button)`
   width: 200px;
@@ -34,18 +43,29 @@ const CancelButton = styled(Button)`
   font-style: normal;
   font-weight: 500;
   line-height: 20px;
+  ${mq.sm.max(css`
+    width: 100%;
+  `)}
 `
 const AuctionButton = styled(Button)`
   width: 200px;
   height: 40px;
   border-radius: 8px;
   background: #0049c6;
+  ${mq.sm.max(css`
+    width: 100%;
+  `)}
 `
+
+const TagRowStyle = styled.div`
+  height: auto;
+  width: 100%;
+  display: flex;
+  gap: 10px;
+`
+
 export const DialogStyle = styled(Dialog)`
   width: 480px;
-
-  /* height: 488px; */
-
   border-radius: 10px;
   border: 1px solid #d4d7e2;
   background: #fff;
@@ -70,6 +90,9 @@ export const DialogStyle = styled(Dialog)`
       height: 20px;
     }
   }
+  ${mq.sm.max(css`
+    width: 100%;
+  `)}
 `
 export const ContainerStyle = styled.div`
   width: 100%;
@@ -79,12 +102,19 @@ export const ContainerStyle = styled.div`
   justify-content: space-between;
   align-items: center;
 `
-const InfoRound = styled(Row)`
+const InfoRound = styled.div`
   width: 100%;
   padding: 20px 24px;
   border-radius: 10px;
   background: #f7fafc;
   align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  ${mq.sm.max(css`
+    display: grid;
+    gap: 10px;
+  `)}
 `
 const InfoImgRound = styled.div`
   position: relative;
@@ -110,6 +140,10 @@ const InfoRight = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  ${mq.sm.max(css`
+    gap: 10px;
+    text-align: left;
+  `)}
 `
 const ChainRound = styled.div`
   padding: 4px 12px;
@@ -120,6 +154,7 @@ const ChainRound = styled.div`
   font-weight: 600;
   line-height: normal;
   color: #fff;
+  max-width: 90px;
 `
 export const ContentStyle = styled.div`
   width: 100%;
@@ -135,17 +170,17 @@ export const NameInfo = ({ name, expiryDate }: { name: string; expiryDate: Date 
         <InfoImgText>{name}</InfoImgText>
       </InfoImgRound>
       <InfoRight>
-        <Row style={{ width: '100%' }}>
+        <TagRowStyle>
           <InterText $color="#3F5170" ellipsis>
             {name}
           </InterText>
           <ChainRound>Ethereum</ChainRound>
-        </Row>
-        {expiryDate && (
-          <InterText $size="14px" $weight={500} $color="#3F5170">
-            Expires {formatDateString(expiryDate)}
-          </InterText>
-        )}
+          {expiryDate && (
+            <InterText $size="14px" $weight={500} $color="#3F5170">
+              Expires {formatDateString(expiryDate)}
+            </InterText>
+          )}
+        </TagRowStyle>
       </InfoRight>
     </InfoRound>
   )
