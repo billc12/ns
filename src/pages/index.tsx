@@ -10,53 +10,54 @@ import { LeadingHeading } from '@app/components/LeadingHeading'
 
 import ENSFull from '../assets/ENSFull.svg'
 
-const GradientTitle = styled.h1(
-  ({ theme }) => css`
-    font-size: ${theme.fontSizes.headingTwo};
-    text-align: center;
-    font-weight: 800;
-    background-image: ${theme.colors.gradients.accent};
-    background-repeat: no-repeat;
-    background-size: 110%;
-    /* stylelint-disable-next-line property-no-vendor-prefix */
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    margin: 0;
+// const GradientTitle = styled.h1(
+//   ({ theme }) => css`
+//     font-size: ${theme.fontSizes.headingTwo};
+//     text-align: center;
+//     font-weight: 800;
+//     background-image: ${theme.colors.gradients.accent};
+//     background-repeat: no-repeat;
+//     background-size: 110%;
+//     /* stylelint-disable-next-line property-no-vendor-prefix */
+//     -webkit-background-clip: text;
+//     background-clip: text;
+//     color: transparent;
+//     margin: 0;
 
-    ${mq.sm.min(css`
-      font-size: ${theme.fontSizes.headingOne};
-    `)}
-  `,
-)
+//     ${mq.sm.min(css`
+//       font-size: ${theme.fontSizes.headingOne};
+//     `)}
+//   `,
+// )
 
-const SubtitleWrapper = styled.div(
-  ({ theme }) => css`
-    max-width: calc(${theme.space['72']} * 2 - ${theme.space['4']});
-    line-height: 150%;
-    text-align: center;
-    margin-bottom: ${theme.space['3']};
-  `,
-)
+// const SubtitleWrapper = styled.div(
+//   ({ theme }) => css`
+//     max-width: calc(${theme.space['72']} * 2 - ${theme.space['4']});
+//     line-height: 150%;
+//     text-align: center;
+//     margin-bottom: ${theme.space['3']};
+//   `,
+// )
 
 const Container = styled.div(
   () => css`
+    margin-top: 60px;
     flex-grow: 1;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     width: 100%;
   `,
 )
 
 const Stack = styled.div(
-  ({ theme }) => css`
+  () => css`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-gap: ${theme.space['3']};
-    gap: ${theme.space['3']};
+    flex-gap: 16;
+    gap: 16;
   `,
 )
 
@@ -86,9 +87,16 @@ const StyledLeadingHeading = styled(LeadingHeading)(
     )}
   `,
 )
-
+const BoldTitle = styled(Typography)<{ $size?: number; $fontW?: number }>`
+  color: #fff;
+  font-size: ${(props) => props.$size || '60px'};
+  font-style: normal;
+  font-weight: ${(props) => props.$fontW || 400};
+  line-height: 67px;
+  white-space: nowrap;
+`
 export default function Page() {
-  const { t } = useTranslation('common')
+  const { t } = useTranslation('awns_common')
 
   return (
     <>
@@ -103,12 +111,17 @@ export default function Page() {
       </StyledLeadingHeading>
       <Container>
         <Stack>
-          <GradientTitle>{t('title')}</GradientTitle>
+          <BoldTitle>{t('title')}</BoldTitle>
+          <BoldTitle>{t('title_name')}</BoldTitle>
+          <BoldTitle $size={24} $fontW={500}>
+            {t('business')}
+          </BoldTitle>
+          {/* <GradientTitle>{t('title')}</GradientTitle>
           <SubtitleWrapper>
             <Typography fontVariant="large" color="grey">
               {t('description')}
             </Typography>
-          </SubtitleWrapper>
+          </SubtitleWrapper> */}
           <SearchInput />
         </Stack>
       </Container>

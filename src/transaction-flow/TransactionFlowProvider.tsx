@@ -12,6 +12,7 @@ import { useLocalStorageReducer } from '@app/hooks/useLocalStorage'
 import { useRouterWithHistory } from '@app/hooks/useRouterWithHistory'
 import { UpdateCallback, useCallbackOnTransaction } from '@app/utils/SyncProvider/SyncProvider'
 
+// eslint-disable-next-line import/no-cycle
 import { TransactionDialogManager } from '../components/@molecules/TransactionDialogManager/TransactionDialogManager'
 import { DataInputComponent, DataInputComponents } from './input'
 import { helpers, initialState, reducer } from './reducer'

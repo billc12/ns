@@ -273,6 +273,25 @@
           "earnifi": "Earni.fi Reminders"
         }
       }
+    },
+    "detail":{
+      "name":"Detail"
+    },
+    "assets":{
+      "name":"Assets",
+      "assets":{
+        "name":"Assets"
+      },
+      "nft":{
+        "name":"NFT"
+      },
+      "history":
+      {
+        "name":"History"
+      }
+    },
+    "invitationCode":{
+      "name":"Invitation Code"
     }
   },
   "details": {

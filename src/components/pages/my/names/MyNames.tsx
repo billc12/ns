@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
 
-import { Button, Spinner } from '@ensdomains/thorin'
+import { Button, Spinner, mq } from '@ensdomains/thorin'
 
 import FastForwardSVG from '@app/assets/FastForward.svg'
 import { TaggedNameItem } from '@app/components/@atoms/NameDetailItem/TaggedNameItem'
@@ -15,6 +15,10 @@ import {
   SortDirection,
   SortType,
 } from '@app/components/@molecules/NameTableHeader/NameTableHeader'
+import { AddressItem } from '@app/components/AddressItem'
+import { EmptyData } from '@app/components/EmptyData'
+import { LoadingOverlay } from '@app/components/LoadingOverlay'
+import { AccountHeader } from '@app/components/pages/profile/AccountHeader'
 import { TabWrapper } from '@app/components/pages/profile/TabWrapper'
 import {
   ReturnedName,
@@ -48,6 +52,31 @@ const TabWrapperWithButtons = styled(TabWrapper)(
   `,
 )
 
+const AccountsLayout = styled.div`
+  width: auto;
+  display: grid;
+  gap: 20px;
+  ${mq.sm.max(css`
+    width: 100%;
+    padding: 50px 20px;
+  `)}
+`
+
+const AddressList = styled.div(
+  () => css`
+    width: 840px;
+    height: 561px;
+    border-radius: 10px;
+    border: 1px solid var(--line, #d4d7e2);
+    background: #fff;
+    ${mq.sm.max(css`
+      width: auto;
+      height: auto;
+      min-height: 400px;
+    `)}
+  `,
+)
+
 const MyNames = () => {
   const { t } = useTranslation('names')
   const router = useRouter()
@@ -55,6 +84,7 @@ const MyNames = () => {
   const address = (router.query.address as string) || (_address as string)
   const isSelf = true
   const chainId = useChainId()
+  console.log(_address, address)
 
   const [mode, setMode] = useState<NameTableMode>('view')
   const [selectedNames, setSelectedNames] = useState<string[]>([])
@@ -129,70 +159,94 @@ const MyNames = () => {
   useProtectedRoute('/', loading ? true : address && address !== '')
 
   return (
-    <Content title={t('title')} singleColumnContent loading={loading}>
-      {{
-        trailing: (
-          <TabWrapperWithButtons>
-            <NameTableHeader
-              mode={mode}
-              sortType={sortType}
-              sortTypeOptionValues={['expiryDate', 'labelName', 'creationDate']}
-              sortDirection={sortDirection}
-              searchQuery={searchQuery}
-              selectedCount={selectedNames.length}
-              onModeChange={(m) => {
-                setMode(m)
-                setSelectedNames([])
-              }}
-              onSortDirectionChange={setSortDirection}
-              onSortTypeChange={setSortType}
-              onSearchChange={setSearchQuery}
-            >
-              {mode === 'select' && (
-                <Button
-                  size="small"
-                  onClick={handleExtend}
-                  data-testid="extend-names-button"
-                  prefix={<FastForwardSVG />}
-                  disabled={selectedNames.length === 0}
+    <>
+      {false ? (
+        <Content title={t('title')} singleColumnContent loading={loading}>
+          {{
+            trailing: (
+              <TabWrapperWithButtons>
+                <NameTableHeader
+                  mode={mode}
+                  sortType={sortType}
+                  sortTypeOptionValues={['expiryDate', 'labelName', 'creationDate']}
+                  sortDirection={sortDirection}
+                  searchQuery={searchQuery}
+                  selectedCount={selectedNames.length}
+                  onModeChange={(m) => {
+                    setMode(m)
+                    setSelectedNames([])
+                  }}
+                  onSortDirectionChange={setSortDirection}
+                  onSortTypeChange={setSortType}
+                  onSearchChange={setSearchQuery}
                 >
-                  {t('action.extend', { ns: 'common' })}
-                </Button>
-              )}
-            </NameTableHeader>
-            <div data-testid="names-list">
-              {/* eslint-disable no-nested-ternary */}
-              {loading ? (
-                <EmptyDetailContainer>
-                  <Spinner color="accent" />
-                </EmptyDetailContainer>
-              ) : namesData.nameCount === 0 ? (
-                <EmptyDetailContainer>{t('empty')}</EmptyDetailContainer>
-              ) : namesData.names ? (
-                namesData.names.map((name) => (
-                  <TaggedNameItem
-                    key={name.id}
-                    {...name}
-                    network={chainId}
-                    mode={mode}
-                    selected={selectedNames?.includes(name.name)}
-                    disabled={isNameDisabled(name)}
-                    onClick={handleClickName(name.name)}
-                  />
-                ))
-              ) : null}
-            </div>
-            <NameTableFooter
-              current={page}
-              onChange={(value) => setPage(value)}
-              total={namesData?.nameCount ? namesData?.pageCount : 0}
-              pageSize={pageSize}
-              onPageSizeChange={setPageSize}
-            />
-          </TabWrapperWithButtons>
-        ),
-      }}
-    </Content>
+                  {mode === 'select' && (
+                    <Button
+                      size="small"
+                      onClick={handleExtend}
+                      data-testid="extend-names-button"
+                      prefix={<FastForwardSVG />}
+                      disabled={selectedNames.length === 0}
+                    >
+                      {t('action.extend', { ns: 'common' })}
+                    </Button>
+                  )}
+                </NameTableHeader>
+                <div data-testid="names-list">
+                  {/* eslint-disable no-nested-ternary */}
+                  {loading ? (
+                    <EmptyDetailContainer>
+                      <Spinner color="accent" />
+                    </EmptyDetailContainer>
+                  ) : namesData?.nameCount === 0 ? (
+                    <EmptyDetailContainer>{t('empty')}</EmptyDetailContainer>
+                  ) : namesData?.names ? (
+                    namesData?.names.map((name) => (
+                      <TaggedNameItem
+                        key={name.id}
+                        {...name}
+                        network={chainId}
+                        mode={mode}
+                        selected={selectedNames?.includes(name.name)}
+                        disabled={isNameDisabled(name)}
+                        onClick={handleClickName(name.name)}
+                      />
+                    ))
+                  ) : null}
+                </div>
+                <NameTableFooter
+                  current={page}
+                  onChange={(value) => setPage(value)}
+                  total={namesData?.nameCount ? namesData?.pageCount || 0 : 0}
+                  pageSize={pageSize}
+                  onPageSizeChange={setPageSize}
+                />
+              </TabWrapperWithButtons>
+            ),
+          }}
+        </Content>
+      ) : (
+        <>
+          {!loading ? (
+            <AccountsLayout>
+              <AccountHeader />
+              <AddressList>
+                {namesData?.names.map((item) => (
+                  <AddressItem AddressRow={item} key={item.name} />
+                ))}
+                {!namesData?.names.length && (
+                  <div style={{ height: '100%' }}>
+                    <EmptyData />
+                  </div>
+                )}
+              </AddressList>
+            </AccountsLayout>
+          ) : (
+            <LoadingOverlay />
+          )}
+        </>
+      )}
+    </>
   )
 }
 

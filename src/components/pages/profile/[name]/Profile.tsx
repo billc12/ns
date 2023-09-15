@@ -1,32 +1,41 @@
 import { getEncryptedLabelAmount } from '@myclique/awnsjs/utils/labels'
 import Head from 'next/head'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
 
-import { Banner, CheckCircleSVG, Typography } from '@ensdomains/thorin'
+import { Banner, CheckCircleSVG, PageButtons, Typography, mq } from '@ensdomains/thorin'
 
 import BaseLink from '@app/components/@atoms/BaseLink'
-import { useAbilities } from '@app/hooks/abilities/useAbilities'
+import { LoadingOverlay } from '@app/components/LoadingOverlay'
+import { Table } from '@app/components/table'
+// import { useAbilities } from '@app/hooks/abilities/useAbilities'
 import { useRecentTransactions } from '@app/hooks/transactions/useRecentTransactions'
-import { useChainId } from '@app/hooks/useChainId'
+// import { useChainId } from '@app/hooks/useChainId'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import { useProtectedRoute } from '@app/hooks/useProtectedRoute'
 import { useQueryParameterState } from '@app/hooks/useQueryParameterState'
 import { useRouterWithHistory } from '@app/hooks/useRouterWithHistory'
-import { Content, ContentWarning } from '@app/layouts/Content'
+import { useBreakpoint } from '@app/utils/BreakpointProvider'
+// import { Content, ContentWarning } from '@app/layouts/Content'
 import { formatFullExpiry } from '@app/utils/utils'
 
 import { shouldShowSuccessPage } from '../../import/[name]/shared'
-import MoreTab from './tabs/MoreTab/MoreTab'
-import { PermissionsTab } from './tabs/PermissionsTab/PermissionsTab'
+import { AccountHeader } from '../AccountHeader'
+import { AssetsTab } from './tabs/AssetsTab'
+import { InvitationCode } from './tabs/InvitationCodeTab'
+// import MoreTab from './tabs/MoreTab/MoreTab'
+// import { PermissionsTab } from './tabs/PermissionsTab/PermissionsTab'
 import ProfileTab from './tabs/ProfileTab'
-import { RecordsTab } from './tabs/RecordsTab'
-import { SubnamesTab } from './tabs/SubnamesTab'
+
+// import { RecordsTab } from './tabs/RecordsTab'
+
+// import { SubnamesTab } from './tabs/SubnamesTab'
 
 const TabButtonContainer = styled.div(
   ({ theme }) => css`
+    height: 100%;
     margin-left: -${theme.radii.extraLarge};
     margin-right: -${theme.radii.extraLarge};
     padding: 0 calc(${theme.radii.extraLarge} * 2);
@@ -34,13 +43,85 @@ const TabButtonContainer = styled.div(
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    gap: ${theme.space['6']};
+    gap: 100px;
     flex-gap: ${theme.space['6']};
     overflow: auto;
-
     &::-webkit-scrollbar {
       display: none;
     }
+    ${mq.sm.max(css`
+      gap: 10px;
+      padding: 0 10px 0 0;
+    `)}
+  `,
+)
+
+const PageButtonsStyle = styled(PageButtons)(
+  () => css`
+    width: auto;
+    & > button {
+      width: auto;
+      height: auto;
+      min-height: auto;
+      min-width: auto;
+      border: none;
+      padding: 0;
+    }
+  `,
+)
+
+const TopRowStyle = styled.div(
+  () => css`
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+  `,
+)
+
+const Relates = styled.div(
+  () => css`
+    width: 840px;
+    ${mq.sm.max(css`
+      width: auto;
+      display: grid;
+      gap: 10px;
+    `)}
+  `,
+)
+
+const TableContentStyle = styled(Typography)(
+  () => css`
+    height: 58px;
+    display: flex;
+    align-items: center;
+    ${mq.sm.max(css`
+      height: 36px;
+    `)}
+  `,
+)
+
+const ContentStyle = styled.div(
+  () => css`
+    background: #fff;
+    height: auto;
+    min-height: 500px;
+    border-radius: 10px;
+    border: 1px solid var(--line, #d4d7e2);
+  `,
+)
+
+const CardsStyle = styled.div(
+  () => css`
+    display: flex;
+    height: 80px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 80px 0 30px;
+    border-bottom: 1px solid #dce6ed;
+    ${mq.sm.max(css`
+      padding: 0 10px 0;
+      height: 60px;
+    `)}
   `,
 )
 
@@ -52,18 +133,47 @@ const TabButton = styled.button<{ $selected: boolean }>(
     padding: 0;
     margin: 0;
     background: none;
-    color: ${$selected ? theme.colors.accent : theme.colors.greyPrimary};
-    font-size: ${theme.fontSizes.extraLarge};
+    font-weight: ${$selected ? 600 : 400};
+    color: ${$selected ? '#0049C6' : '#3F5170'};
+    font-size: ${theme.fontSizes.body};
     transition: all 0.15s ease-in-out;
+    height: 100%;
     cursor: pointer;
-
+    position: relative;
     &:hover {
       color: ${$selected ? theme.colors.accentBright : theme.colors.text};
     }
+    ::before {
+      display: ${$selected ? 'block' : 'none'};
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--main, #0049c6);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      content: ' ';
+    }
+    ${mq.sm.max(css`
+      font-size: 13px;
+    `)}
   `,
 )
 
-const tabs = ['profile', 'records', 'subnames', 'permissions', 'more'] as const
+const CardTitleStyle = styled(Typography)(
+  () => css`
+    color: var(--word-color, #3f5170);
+    font-size: 24px;
+    font-weight: 600;
+    line-height: normal;
+    ${mq.sm.max(css`
+      font-size: 18px;
+    `)}
+  `,
+)
+
+// const tabs = ['profile', 'records', 'subnames', 'permissions', 'more'] as const
+const tabs = ['detail', 'assets', 'invitationCode'] as const
 type Tab = typeof tabs[number]
 
 type Props = {
@@ -100,33 +210,56 @@ export const NameAvailableBanner = ({
     </BaseLink>
   )
 }
-
+const arr = [
+  { a: '0x6621...2ae908', b: '0x6621...2ae908', c: '2023.08.26 21:45:21', d: '0x6621...2ae908' },
+  { a: '0x6621...2ae908', b: '0x6621...2ae908', c: '2023.08.26 21:45:21', d: '0x6621...2ae908' },
+  { a: '0x6621...2ae908', b: '0x6621...2ae908', c: '2023.08.26 21:45:21', d: '0x6621...2ae908' },
+  { a: '0x6621...2ae908', b: '0x6621...2ae908', c: '2023.08.26 21:45:21', d: '0x6621...2ae908' },
+]
 const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
+  const tableList = useMemo(() => {
+    return arr.map(({ a, b, c, d }) => [
+      <TableContentStyle>{a}</TableContentStyle>,
+      <TableContentStyle>{b}</TableContentStyle>,
+      <TableContentStyle>{c}</TableContentStyle>,
+      <TableContentStyle>{d}</TableContentStyle>,
+      <TableContentStyle>{d}</TableContentStyle>,
+    ])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const router = useRouterWithHistory()
   const { t } = useTranslation('profile')
-  const chainId = useChainId()
+  // const chainId = useChainId()
   const { address } = useAccount()
   const transactions = useRecentTransactions()
-
+  const breakpoints = useBreakpoint()
+  const [current, setCurrent] = useState<number>(1)
   const nameDetails = useNameDetails(name)
   const {
-    error,
-    errorTitle,
+    // error,
+    // errorTitle,
     profile,
-    gracePeriodEndDate,
-    expiryDate,
+    // gracePeriodEndDate,
+    // expiryDate,
     normalisedName,
     beautifiedName,
     isValid,
-    profileIsCachedData,
-    basicIsCachedData,
-    isWrapped,
+    // profileIsCachedData,
+    // basicIsCachedData,
+    // isWrapped,
     isLoading: detailsLoading,
-    wrapperData,
-    registrationStatus,
+    // wrapperData,
+    // registrationStatus,
   } = nameDetails
 
   const isLoading = _isLoading || detailsLoading
+
+  const isSmDown = useMemo(() => {
+    if (breakpoints.sm) {
+      return false
+    }
+    return true
+  }, [breakpoints.sm])
 
   useProtectedRoute(
     '/',
@@ -136,6 +269,14 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
       : // if is self, user must be connected
         (isSelf ? address : true) && typeof name === 'string' && name.length > 0,
   )
+
+  const isOwner = useMemo(() => {
+    if (address === nameDetails.ownerData?.owner) {
+      return true
+    }
+    return false
+  }, [address, nameDetails.ownerData?.owner])
+  console.log(isSmDown, isOwner)
 
   const [titleContent, descriptionContent] = useMemo(() => {
     if (isSelf) {
@@ -164,10 +305,12 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
     ]
   }, [isSelf, beautifiedName, isValid, name, t])
 
-  const [tab, setTab] = useQueryParameterState<Tab>('tab', 'profile')
-  const visibileTabs = isWrapped ? tabs : tabs.filter((_tab) => _tab !== 'permissions')
+  // const [tab, setTab] = useQueryParameterState<Tab>('tab', 'profile')
+  const [tab, setTab] = useQueryParameterState<Tab>('tab', 'detail')
+  console.log('tab', tab)
+  // const tab = isWrapped ? tabs : tabs.filter((_tab) => _tab !== 'permissions')
 
-  const abilities = useAbilities(normalisedName)
+  // const abilities = useAbilities(normalisedName)
 
   // hook for redirecting to the correct profile url
   // profile.decryptedName fetches labels from NW/subgraph
@@ -210,26 +353,26 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
     }
   }, [name, router, transactions])
 
-  const infoBanner = useMemo(() => {
-    if (
-      registrationStatus !== 'gracePeriod' &&
-      gracePeriodEndDate &&
-      gracePeriodEndDate < new Date()
-    ) {
-      return <NameAvailableBanner {...{ normalisedName, expiryDate }} />
-    }
-    return undefined
-  }, [registrationStatus, gracePeriodEndDate, normalisedName, expiryDate])
+  // const infoBanner = useMemo(() => {
+  //   if (
+  //     registrationStatus !== 'gracePeriod' &&
+  //     gracePeriodEndDate &&
+  //     gracePeriodEndDate < new Date()
+  //   ) {
+  //     return <NameAvailableBanner {...{ normalisedName, expiryDate }} />
+  //   }
+  //   return undefined
+  // }, [registrationStatus, gracePeriodEndDate, normalisedName, expiryDate])
 
-  const warning: ContentWarning = useMemo(() => {
-    if (error)
-      return {
-        type: 'warning',
-        message: error,
-        title: errorTitle,
-      }
-    return undefined
-  }, [error, errorTitle])
+  // const warning: ContentWarning = useMemo(() => {
+  //   if (error)
+  //     return {
+  //       type: 'warning',
+  //       message: error,
+  //       title: errorTitle,
+  //     }
+  //   return undefined
+  // }, [error, errorTitle])
 
   return (
     <>
@@ -237,13 +380,62 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
         <title>{titleContent}</title>
         <meta name="description" content={descriptionContent} />
       </Head>
-      <Content noTitle title={beautifiedName} loading={isLoading} copyValue={beautifiedName}>
+      {!isLoading ? (
+        <div style={{ display: 'grid', gap: 20, padding: isSmDown ? '20px' : 0 }}>
+          {typeof window === 'object' && isOwner && <AccountHeader />}
+
+          <ContentStyle
+            key={0}
+            style={{
+              width: isSmDown ? 'auto' : 840,
+            }}
+          >
+            <CardsStyle>
+              <CardTitleStyle>{beautifiedName}</CardTitleStyle>
+              <TabButtonContainer>
+                {isOwner
+                  ? tabs.map((tabItem) => (
+                      <TabButton
+                        key={tabItem}
+                        data-testid={`${tabItem}-tab`}
+                        $selected={tabItem === tab}
+                        onClick={() => setTab(tabItem)}
+                      >
+                        {t(`tabs.${tabItem}.name`)}
+                      </TabButton>
+                    ))
+                  : tabs
+                      .filter((item) => item !== 'invitationCode')
+                      .map((tabItem) => (
+                        <TabButton
+                          key={tabItem}
+                          data-testid={`${tabItem}-tab`}
+                          $selected={tabItem === tab}
+                          onClick={() => setTab(tabItem)}
+                        >
+                          {t(`tabs.${tabItem}.name`)}
+                        </TabButton>
+                      ))}
+              </TabButtonContainer>
+            </CardsStyle>
+
+            {tab === 'detail' ? (
+              <ProfileTab name={normalisedName} nameDetails={nameDetails} />
+            ) : tab === 'assets' ? (
+              <AssetsTab />
+            ) : (
+              <>
+                <InvitationCode />
+              </>
+            )}
+
+            {/* <Content noTitle title={beautifiedName} loading={isLoading} copyValue={beautifiedName}>
         {{
           info: infoBanner,
           warning,
           header: (
             <TabButtonContainer>
-              {visibileTabs.map((tabItem) => (
+              {tabs.map((tabItem) => (
                 <TabButton
                   key={tabItem}
                   data-testid={`${tabItem}-tab`}
@@ -258,43 +450,84 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
             </TabButtonContainer>
           ),
           trailing: {
-            profile: <ProfileTab name={normalisedName} nameDetails={nameDetails} />,
-            records: (
-              <RecordsTab
-                network={chainId}
-                name={normalisedName}
-                texts={(profile?.records?.texts as any) || []}
-                addresses={(profile?.records?.coinTypes as any) || []}
-                contentHash={profile?.records?.contentHash}
-                abi={profile?.records?.abi}
-                resolverAddress={profile?.resolverAddress}
-                canEdit={abilities.data?.canEdit}
-                canEditRecords={abilities.data?.canEditRecords}
-                isCached={profileIsCachedData}
-              />
+            detail: <ProfileTab name={normalisedName} nameDetails={nameDetails} />,
+            assets: (
+              <AssetsTab />
+              // <RecordsTab
+              //   network={chainId}
+              //   name={normalisedName}
+              //   texts={(profile?.records?.texts as any) || []}
+              //   addresses={(profile?.records?.coinTypes as any) || []}
+              //   contentHash={profile?.records?.contentHash}
+              //   abi={profile?.records?.abi}
+              //   resolverAddress={profile?.resolverAddress}
+              //   canEdit={abilities.data?.canEdit}
+              //   canEditRecords={abilities.data?.canEditRecords}
+              //   isCached={profileIsCachedData}
+              // />
             ),
-            subnames: (
-              <SubnamesTab
-                name={normalisedName}
-                isWrapped={isWrapped}
-                canEdit={!!abilities.data?.canEdit}
-                canCreateSubdomains={!!abilities.data?.canCreateSubdomains}
-                network={chainId}
-              />
-            ),
-            permissions: (
-              <PermissionsTab
-                name={normalisedName}
-                wrapperData={wrapperData}
-                isCached={basicIsCachedData}
-              />
-            ),
-            more: (
-              <MoreTab name={normalisedName} nameDetails={nameDetails} abilities={abilities.data} />
-            ),
+            // subnames: (
+            //   <SubnamesTab
+            //     name={normalisedName}
+            //     isWrapped={isWrapped}
+            //     canEdit={!!abilities.data?.canEdit}
+            //     canCreateSubdomains={!!abilities.data?.canCreateSubdomains}
+            //     network={chainId}
+            //   />
+            // ),
+            // permissions: (
+            //   <PermissionsTab
+            //     name={normalisedName}
+            //     wrapperData={wrapperData}
+            //     isCached={basicIsCachedData}
+            //   />
+            // ),
+            // more: (
+            //   <MoreTab name={normalisedName} nameDetails={nameDetails} abilities={abilities.data} />
+            // ),
           }[tab],
         }}
-      </Content>
+      </Content> */}
+          </ContentStyle>
+
+          {tab === 'detail' && (
+            <Relates>
+              <Table
+                TableHeight={400}
+                labels={['From', 'To', 'Date', 'TXid', ' ']}
+                rows={tableList}
+                hederRow={
+                  <>
+                    <TopRowStyle>
+                      <Typography
+                        style={{
+                          color: 'var(--word-color, #3F5170)',
+                          fontSize: '16px',
+                          fontWeight: 600,
+                        }}
+                      >
+                        Related Transactions
+                      </Typography>
+                      <PageButtonsStyle
+                        alwaysShowFirst
+                        alwaysShowLast
+                        current={current}
+                        size="small"
+                        total={6}
+                        onChange={(value) => setCurrent(value)}
+                      />
+                    </TopRowStyle>
+                  </>
+                }
+              />
+            </Relates>
+          )}
+        </div>
+      ) : (
+        <>
+          <LoadingOverlay />
+        </>
+      )}
     </>
   )
 }

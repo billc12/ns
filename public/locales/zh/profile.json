@@ -273,6 +273,25 @@
           "earnifi": "Earni.fi 提醒"
         }
       }
+    },
+    "detail":{
+      "name":"详情"
+    },
+    "assets":{
+      "name":"资产",
+      "assets":{
+        "name":"资产"
+      },
+      "nft":{
+        "name":"代币"
+      },
+      "history":
+      {
+        "name":"记录"
+      }
+    },    
+    "invitationCode":{
+      "name":"邀请码"
     }
   },
   "details": {

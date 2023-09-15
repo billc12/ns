@@ -22,50 +22,39 @@ const SearchItem = styled.div<{
   $selected?: boolean
   $clickable?: boolean
   $error?: boolean
+  $gridTemplateColumns?: string
 }>(
-  ({ theme, $selected, $clickable, $error }) => css`
+  ({ theme, $selected, $clickable, $error, $gridTemplateColumns }) => css`
+    height: max-content;
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: ${() => $gridTemplateColumns || 'auto 1fr'};
     align-items: center;
     justify-content: space-between;
     gap: ${theme.space['2']};
-    height: ${theme.space['14']};
-    padding: 0 ${theme.space['4']};
-    border-bottom: ${theme.borderWidths['0.375']} ${theme.borderStyles.solid} ${theme.colors.border};
-    &:last-of-type {
-      border-bottom: 0;
-    }
+    padding: 20px 34px;
     position: relative;
-    opacity: 0.6;
+    opacity: 0.8;
+    border-radius: 10px;
+    border: 1px solid #97b7ef;
+    background: #122861;
+    backdrop-filter: blur(7px);
     ${$clickable &&
     css`
       cursor: pointer;
     `}
+    &:hover {
+      /* cursor: pointer; */
+      opacity: 1;
+    }
     ${$selected &&
     css`
-      background-color: ${theme.colors.background};
+      /* background-color: ${theme.colors.background}; */
       opacity: 1;
     `}
     ${$error &&
     css`
-      background-color: ${theme.colors.redSurface};
-      color: ${theme.colors.red};
-    `}
-    ${$clickable &&
-    $selected &&
-    css`
-      padding-right: ${theme.space['8']};
-      &::after {
-        content: '';
-        transform: rotate(-90deg);
-        mask-image: url('data:image/svg+xml; utf8, <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.2552 17.8659C11.6526 18.3095 12.3474 18.3095 12.7448 17.8659L22.5063 6.97001C23.0833 6.32597 22.6262 5.30274 21.7615 5.30274H2.2385C1.37381 5.30274 0.916704 6.32597 1.49369 6.97001L11.2552 17.8659Z" fill="currentColor"/></svg>');
-        position: absolute;
-        height: ${theme.space['3']};
-        width: ${theme.space['3']};
-        background-color: ${theme.colors.greyPrimary};
-        opacity: 0.4;
-        right: ${theme.space['3']};
-      }
+      /* background-color: ${theme.colors.redSurface};
+      color: ${theme.colors.red}; */
     `}
   `,
 )
@@ -146,7 +135,59 @@ const SpinnerWrapper = styled.div(
     justify-self: flex-end;
   `,
 )
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+`
 
+const InterText = styled(Typography)<{ $size?: string; $color?: string; $weight?: number }>`
+  width: max-content;
+  height: max-content;
+  color: ${(props) => props.$color || '#fff'};
+  font-size: ${(props) => props.$size || '20px'};
+  font-style: normal;
+  font-weight: ${(props) => props.$weight || 600};
+  line-height: normal;
+`
+const ChainRound = styled.div`
+  width: max-content;
+  height: max-content;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: #7187d4;
+`
+const ViewRound = styled(Row)`
+  width: 142px;
+  height: 40px;
+  border-radius: 38px;
+  border: 1px solid #97b7ef;
+  box-shadow: 0 4px 44px 0 rgba(2, 26, 98, 0.52);
+  justify-content: center;
+  align-items: center;
+`
+const ComingSoonRound = styled(Row)`
+  justify-content: center;
+  align-items: center;
+  width: 142px;
+  height: 40px;
+  border-radius: 38px;
+  background: #1a3372;
+  box-shadow: 0 4px 44px 0 rgba(2, 26, 98, 0.52);
+`
+const ComingSonText = styled(Typography)`
+  color: #465d97;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+`
 const AddressResultItem = ({ address }: { address: string }) => {
   const { t } = useTranslation('common')
   const primary = usePrimary(address)
@@ -154,6 +195,28 @@ const AddressResultItem = ({ address }: { address: string }) => {
   const { avatar } = useAvatar(primary.data?.name, network)
   const zorb = useZorb(address, 'address')
 
+  return (
+    <>
+      <LeadingSearchItem>
+        <Column>
+          <Row>
+            <InterText>{shortenAddress(address, undefined, 8, 6)}</InterText>
+            <ChainRound>
+              <InterText $size="14px">Ethereum</InterText>
+            </ChainRound>
+          </Row>
+          <InterText $size="14px" $color="#A7F46A">
+            Address
+          </InterText>
+        </Column>
+      </LeadingSearchItem>
+      <ViewRound>
+        <InterText $size="16px" $weight={500} $color="#97B7EF">
+          VIew
+        </InterText>
+      </ViewRound>
+    </>
+  )
   return (
     <>
       <LeadingSearchItem>
@@ -183,7 +246,15 @@ const PremiumTag = styled(StyledTag)(
     background-color: ${theme.colors.purpleSurface};
   `,
 )
-
+const RegisterTag = styled(Row)`
+  width: 142px;
+  height: 40px;
+  border-radius: 38px;
+  background: linear-gradient(180deg, #2265d8 0%, #012eac 81.25%, #0150ac 100%);
+  box-shadow: 0 4px 44px 0 rgba(2, 26, 98, 0.52);
+  justify-content: center;
+  align-items: center;
+`
 const StatusTag = ({ status }: { status: RegistrationStatus }) => {
   const { t } = useTranslation('common')
   switch (status) {
@@ -205,7 +276,105 @@ const StatusTag = ({ status }: { status: RegistrationStatus }) => {
       return <StyledTag colorStyle="redSecondary">{t(`search.status.${status}`)}</StyledTag>
   }
 }
+console.log('StatusTag', StatusTag)
 
+const AwnsStatusTag = ({ status }: { status: RegistrationStatus }) => {
+  // const { t } = useTranslation('common')
+  switch (status) {
+    case 'owned':
+    case 'imported':
+    case 'registered':
+      return (
+        <ViewRound>
+          <InterText $size="16px" $weight={500} $color="#97B7EF">
+            VIew
+          </InterText>
+        </ViewRound>
+      )
+    // return  <StyledTag>{t(`search.status.${status}`)}</StyledTag>
+    case 'gracePeriod':
+      return (
+        <ComingSoonRound>
+          <ComingSonText>Coming Soon </ComingSonText>
+        </ComingSoonRound>
+      )
+    case 'premium':
+      return (
+        <ComingSoonRound>
+          <ComingSonText>Coming Soon </ComingSonText>
+        </ComingSoonRound>
+      )
+    case 'available':
+      return (
+        <RegisterTag>
+          <InterText $size="16px" $weight={700}>
+            Register Now
+          </InterText>
+        </RegisterTag>
+      )
+    // return <StyledTag colorStyle="greenSecondary">{t(`search.status.${status}`)}</StyledTag>
+    case 'notOwned':
+    case 'notImported':
+      return (
+        <ComingSoonRound>
+          <ComingSonText>Coming Soon </ComingSonText>
+        </ComingSoonRound>
+      )
+    case 'short':
+    default:
+      return (
+        <ComingSoonRound>
+          <ComingSonText>Coming Soon </ComingSonText>
+        </ComingSoonRound>
+      )
+  }
+}
+const AwnsStatusText = ({ status }: { status: RegistrationStatus }) => {
+  const { t } = useTranslation('common')
+  switch (status) {
+    case 'owned':
+    case 'imported':
+    case 'registered':
+      return (
+        <InterText $size="14px" $color="#F4C56A" $weight={500}>
+          {t(`search.status.${status}`)}
+        </InterText>
+      )
+    case 'gracePeriod':
+      return (
+        <InterText $size="14px" $color="#fff" $weight={500}>
+          {t(`search.status.${status}`)}
+        </InterText>
+      )
+    case 'premium':
+      return (
+        <InterText $size="14px" $color="#fff" $weight={500}>
+          {t(`search.status.${status}`)}
+        </InterText>
+      )
+    case 'available':
+      return (
+        <InterText $size="14px" $color="#A7F46A" $weight={500}>
+          {t(`search.status.${status}`)}
+        </InterText>
+      )
+    case 'notOwned':
+    case 'notImported':
+      return (
+        <InterText $size="14px" $color="#fff" $weight={500}>
+          {t(`search.status.${status}`)}
+        </InterText>
+      )
+    case 'short':
+    default:
+      return (
+        <InterText $size="14px" $color="#E46767" $weight={500}>
+          {t(`search.status.${status}`)}
+        </InterText>
+      )
+  }
+}
+// E46767
 const TextWrapper = styled.div(
   () => css`
     overflow: hidden;
@@ -230,6 +399,26 @@ const PlaceholderResultItem = ({ input }: { input: string }) => {
   return (
     <>
       <LeadingSearchItem>
+        <Column>
+          <Row>
+            <InterText>{beautifiedName}</InterText>
+            <ChainRound>
+              <InterText $size="14px">Ethereum</InterText>
+            </ChainRound>
+          </Row>
+          <InterText $size="14px" $color="#A7F46A">
+            -- --
+          </InterText>
+        </Column>
+      </LeadingSearchItem>
+      <SpinnerWrapper>
+        <Spinner color="accent" />
+      </SpinnerWrapper>
+    </>
+  )
+  return (
+    <>
+      <LeadingSearchItem>
         <AvatarWrapper $isPlaceholder>
           <Avatar src={zorb} label="name" />
         </AvatarWrapper>
@@ -246,28 +435,31 @@ const PlaceholderResultItem = ({ input }: { input: string }) => {
 
 const NameResultItem = forwardRef<HTMLDivElement, { name: string; $selected: boolean }>(
   ({ name, ...props }, ref) => {
-    const network = useChainId()
-    const { avatar } = useAvatar(name, network)
-    const zorb = useZorb(name, 'name')
+    // const network = useChainId()
+    // const { avatar } = useAvatar(name, network)
+    // const zorb = useZorb(name, 'name')
     const { registrationStatus, isLoading, beautifiedName } = useBasicName(name)
-
     return (
       <SearchItem
         data-testid="search-result-name"
         {...props}
         $clickable={registrationStatus !== 'short'}
         ref={ref}
+        $gridTemplateColumns="auto auto"
       >
         <LeadingSearchItem>
-          <AvatarWrapper>
-            <Avatar src={avatar || zorb} label="name" />
-          </AvatarWrapper>
-          <TextWrapper>
-            <Typography weight="bold">{beautifiedName}</Typography>
-          </TextWrapper>
+          <Column>
+            <Row>
+              <InterText>{beautifiedName}</InterText>
+              <ChainRound>
+                <InterText $size="14px">Ethereum</InterText>
+              </ChainRound>
+            </Row>
+            {registrationStatus ? <AwnsStatusText status={registrationStatus} /> : '-- --'}
+          </Column>
         </LeadingSearchItem>
         {!isLoading && registrationStatus ? (
-          <StatusTag status={registrationStatus} />
+          <AwnsStatusTag status={registrationStatus} />
         ) : (
           <SpinnerWrapper>
             <Spinner color="accent" />
@@ -352,9 +544,13 @@ export const SearchResult = ({
   }
 
   if (type === 'error') {
+    console.log('error')
+
     return (
       <SearchItem data-testid="search-result-error" $selected $error>
-        <Typography weight="bold">{value}</Typography>
+        <InterText $color="#97B7EF" $size="14px">
+          {value}
+        </InterText>
       </SearchItem>
     )
   }
