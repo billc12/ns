@@ -54,6 +54,7 @@ const TransferProfile = dynamicHelper<TransferProfileProps>('TransferProfile/Tra
 const ExtendNames = dynamicHelper<ExtendNamesProps>('ExtendNames/ExtendNames')
 const BurnFuses = dynamicHelper<BurnFusesProps>('BurnFuses/BurnFuses')
 const SendName = dynamicHelper<SendNameProps>('SendName')
+const AwnsSendName = dynamicHelper<SendNameProps>('Awns_SendName')
 const RevokePermissions = dynamicHelper<RevokePermissionsProps>(
   'RevokePermissions/RevokePermissions',
 )
@@ -80,6 +81,7 @@ export const DataInputComponents = {
   UnknownLabels,
   DeleteEmancipatedSubnameWarning,
   DeleteSubnameNotParentWarning,
+  AwnsSendName,
 }
 
 export type DataInputName = keyof typeof DataInputComponents

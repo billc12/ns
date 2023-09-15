@@ -137,10 +137,10 @@ export const TransactionDialogManager = ({
   if (selectedItem?.input?.name === 'SendName') {
     return (
       <DialogStyle
-        variant="blank"
+        title="Transfer AWNS"
+        variant="closable"
         open={!!state.selectedKey}
         onDismiss={onDismissDialog}
-        onClose={onDismiss}
       >
         {InnerComponent}
       </DialogStyle>

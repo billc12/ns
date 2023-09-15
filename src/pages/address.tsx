@@ -171,10 +171,10 @@ const Page = () => {
   const hasErrors = namesStatus === 'error'
 
   const error = hasErrors ? t('errors.names') : ''
-
+  const show = false
   return (
     <>
-      {true ? (
+      {show ? (
         <Content title={shortenAddress(address)} copyValue={address} loading={loading}>
           {{
             warning: error

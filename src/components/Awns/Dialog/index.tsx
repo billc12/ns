@@ -22,7 +22,7 @@ const InterText = styled(Typography)<{ $size?: string; $color?: string; $weight?
     text-align: left;
   `)}
 `
-const Row = styled.div`
+export const Row = styled.div`
   display: flex;
   flex-direction: row;
   gap: 24px;
@@ -94,7 +94,7 @@ export const DialogStyle = styled(Dialog)`
     width: 100%;
   `)}
 `
-const ContainerStyle = styled.div`
+export const ContainerStyle = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -156,13 +156,13 @@ const ChainRound = styled.div`
   color: #fff;
   max-width: 90px;
 `
-const ContentStyle = styled.div`
+export const ContentStyle = styled.div`
   width: 100%;
   height: 100%;
   margin-top: 11px;
 `
 
-const NameInfo = ({ name, expiryDate }: { name: string; expiryDate: Date | undefined }) => {
+export const NameInfo = ({ name, expiryDate }: { name: string; expiryDate: Date | undefined }) => {
   return (
     <InfoRound>
       <InfoImgRound>
@@ -175,10 +175,12 @@ const NameInfo = ({ name, expiryDate }: { name: string; expiryDate: Date | undef
             {name}
           </InterText>
           <ChainRound>Ethereum</ChainRound>
+          {expiryDate && (
+            <InterText $size="14px" $weight={500} $color="#3F5170">
+              Expires {formatDateString(expiryDate)}
+            </InterText>
+          )}
         </TagRowStyle>
-        <InterText $size="14px" $weight={500} $color="#3F5170">
-          Expires {expiryDate ? formatDateString(expiryDate) : '--'}
-        </InterText>
       </InfoRight>
     </InfoRound>
   )
