@@ -73,26 +73,28 @@ export const Invoice = ({ totalLabel = 'Estimated total', unit = 'eth', items }:
   const hasEmptyItems = filteredItems.length !== items.length
   console.log('totalLabel', totalLabel)
   console.log('items', items)
+  const show = false
   return (
     <Container>
-      {items
-        .filter((t, i) => i === 1)
-        .map(({ label, value, bufferPercentage, color }, inx) => (
-          <LineItem data-testid={`invoice-item-${inx}`} $color={color} key={label}>
-            <LeftTitle>Estimated Gas</LeftTitle>
-            <Skeleton loading={!value}>
-              {/* <div data-testid={`invoice-item-${inx}-amount`}> */}
-              <RightTitle>
-                <CurrencyText
-                  bufferPercentage={bufferPercentage}
-                  eth={value || BigNumber.from(0)}
-                  currency={unit}
-                />
-              </RightTitle>
-              {/* </div> */}
-            </Skeleton>
-          </LineItem>
-        ))}
+      {show &&
+        items
+          .filter((t, i) => i === 1)
+          .map(({ label, value, bufferPercentage, color }, inx) => (
+            <LineItem data-testid={`invoice-item-${inx}`} $color={color} key={label}>
+              <LeftTitle>Estimated Gas</LeftTitle>
+              <Skeleton loading={!value}>
+                {/* <div data-testid={`invoice-item-${inx}-amount`}> */}
+                <RightTitle>
+                  <CurrencyText
+                    bufferPercentage={bufferPercentage}
+                    eth={value || BigNumber.from(0)}
+                    currency={unit}
+                  />
+                </RightTitle>
+                {/* </div> */}
+              </Skeleton>
+            </LineItem>
+          ))}
       <Total>
         <LeftTitle>Estimated Total</LeftTitle>
         <Skeleton loading={hasEmptyItems}>

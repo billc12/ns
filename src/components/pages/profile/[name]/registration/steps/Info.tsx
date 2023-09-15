@@ -117,7 +117,7 @@ const Info = ({
     registrationData,
     price: priceData,
   })
-
+  const show = false
   return (
     <StyledCard>
       <Heading>{t('steps.info.heading')}</Heading>
@@ -131,7 +131,7 @@ const Info = ({
         ))}
       </InfoItems>
       <FullInvoice {...estimate} />
-      {!registrationData.queue.includes('profile') && (
+      {show && !registrationData.queue.includes('profile') && (
         <ProfileButton data-testid="setup-profile-button" onClick={onProfileClick}>
           <Typography weight="bold" color="accent">
             {t('steps.info.setupProfile')}

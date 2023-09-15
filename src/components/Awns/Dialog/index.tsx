@@ -61,6 +61,7 @@ const TagRowStyle = styled.div`
   width: 100%;
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 `
 
 export const DialogStyle = styled(Dialog)`
@@ -134,6 +135,7 @@ const InfoImgText = styled(Typography)`
   line-height: normal;
 `
 const InfoRight = styled.div`
+  width: calc(100% - 84px);
   height: 100%;
   display: flex;
   flex-direction: column;

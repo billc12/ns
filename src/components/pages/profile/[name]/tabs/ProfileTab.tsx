@@ -254,7 +254,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
       name,
     })
   }
-  const showExtendNamesInput = prepareDataInput('ExtendNames')
+  const showExtendNamesInput = prepareDataInput('AwnsExtendNames')
   const handleExtend = () => {
     showExtendNamesInput(`extend-names-${name}`, {
       names: [name],
