@@ -327,7 +327,7 @@ importers:
       wrangler: 2.16.0
       yalc: 1.0.0-pre.53
 
-  .yalc/@ensdomains/ensjs:
+  .yalc/@myclique/awnsjs:
     specifiers:
       '@adraffy/ens-normalize': 1.9.0
       '@ensdomains/address-encoder': ^0.2.18
@@ -2261,7 +2261,7 @@ packages:
       testrpc: 0.0.1
       web3-utils: 1.8.0
 
-  /@ensdomains/ensjs/2.1.0:
+  /@myclique/awnsjs/2.1.0:
     resolution: {integrity: sha512-GRbGPT8Z/OJMDuxs75U/jUNEC0tbL0aj7/L/QQznGYKm/tiasp+ndLOaoULy9kKJFC0TBByqfFliEHDgoLhyog==}
     dependencies:
       '@babel/runtime': 7.19.0
@@ -4154,7 +4154,7 @@ packages:
       web3-eth-abi: ^1.2.1
       web3-utils: ^1.2.1
     dependencies:
-      '@ensdomains/ensjs': 2.1.0
+      '@myclique/awnsjs': 2.1.0
       '@truffle/blockchain-utils': 0.1.5
       '@truffle/contract-schema': 3.4.11
       '@truffle/debug-utils': 6.0.41
@@ -5123,7 +5123,7 @@ packages:
   /@truffle/contract/4.6.2:
     resolution: {integrity: sha512-OZZIDmKtHgZS2Q6sCczNe8OfTuMWpRaAo3vwY49LGGs0VXLiwc7nIcCFh+bMg14IRK6vBN4pWE9W9eWSBFy31Q==}
     dependencies:
-      '@ensdomains/ensjs': 2.1.0
+      '@myclique/awnsjs': 2.1.0
       '@truffle/blockchain-utils': 0.1.5
       '@truffle/contract-schema': 3.4.11
       '@truffle/debug-utils': 6.0.41

@@ -122,7 +122,7 @@ const pathRewriter: PagesFunction = async ({ request, next }) => {
       let newTitle = 'Invalid Name - ENS'
       let newDescription = 'An error occurred'
       try {
-        const { normalise } = await import('@ensdomains/ensjs/utils/normalise')
+        const { normalise } = await import('@myclique/awnsjs/utils/normalise')
         const normalisedName = normalise(decodedName)
         newTitle = `${normalisedName} on ENS`
         newDescription = `${normalisedName}'s profile on the Ethereum Name Service`

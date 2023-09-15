@@ -1,7 +1,6 @@
+import { labelhash } from '@myclique/awnsjs/utils/labels'
 import { expect } from '@playwright/test'
 import { test } from '@root/playwright'
-
-import { labelhash } from '@ensdomains/ensjs/utils/labels'
 
 import { RESOLVER_ADDRESSES } from '@app/utils/constants'
 

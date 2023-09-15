@@ -1,13 +1,13 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Contract as ContractClass } from '@ethersproject/contracts'
+import { ENSRegistry__factory } from '@myclique/awnsjs/generated/factories/ENSRegistry__factory'
+import { ETHRegistrarController__factory } from '@myclique/awnsjs/generated/factories/ETHRegistrarController__factory'
+import { NameWrapper__factory } from '@myclique/awnsjs/generated/factories/NameWrapper__factory'
+import { PublicResolver__factory } from '@myclique/awnsjs/generated/factories/PublicResolver__factory'
+import { ReverseRegistrar__factory } from '@myclique/awnsjs/generated/factories/ReverseRegistrar__factory'
 import { match } from 'ts-pattern'
 
 import LegacyETHRegistrarControllerJSON from '@ensdomains/ens-contracts/deployments/archive/ETHRegistrarController_mainnet_9380471.sol/ETHRegistrarController_mainnet_9380471.json'
-import { ENSRegistry__factory } from '@ensdomains/ensjs/generated/factories/ENSRegistry__factory'
-import { ETHRegistrarController__factory } from '@ensdomains/ensjs/generated/factories/ETHRegistrarController__factory'
-import { NameWrapper__factory } from '@ensdomains/ensjs/generated/factories/NameWrapper__factory'
-import { PublicResolver__factory } from '@ensdomains/ensjs/generated/factories/PublicResolver__factory'
-import { ReverseRegistrar__factory } from '@ensdomains/ensjs/generated/factories/ReverseRegistrar__factory'
 
 require('dotenv').config({ path: '.env.local' })
 

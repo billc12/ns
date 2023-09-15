@@ -2,14 +2,14 @@
 
 /* eslint-disable no-await-in-loop */
 import { toUtf8Bytes } from '@ethersproject/strings/lib/utf8'
+import { PublicResolver } from '@myclique/awnsjs/generated/PublicResolver'
+import { encodeContenthash } from '@myclique/awnsjs/utils/contentHash'
+import { namehash } from '@myclique/awnsjs/utils/normalise'
+import { RecordOptions } from '@myclique/awnsjs/utils/recordHelpers'
 import { User } from 'playwright/fixtures/accounts'
 import { Contracts } from 'playwright/fixtures/contracts'
 
 import { formatsByCoinType, formatsByName } from '@ensdomains/address-encoder'
-import { PublicResolver } from '@ensdomains/ensjs/generated/PublicResolver'
-import { encodeContenthash } from '@ensdomains/ensjs/utils/contentHash'
-import { namehash } from '@ensdomains/ensjs/utils/normalise'
-import { RecordOptions } from '@ensdomains/ensjs/utils/recordHelpers'
 
 import { emptyAddress } from '@app/utils/constants'
 

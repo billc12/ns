@@ -35,8 +35,8 @@
     "e2e:stateful": "npx playwright test --project=stateful",
     "e2e:ci": "E2E=true CI=true STABLE_MODE=true SLOW_MODE=true pnpm tenv start --extra-time 11368000",
     "postinstall": "husky install",
-    "local:add:ensjs": "yalc add @awnsdomains/awnsjs --workspace && pnpm install",
-    "local:remove:ensjs": "node ./scripts/removeWorkspace.mjs @awnsdomains/awnsjs && yalc remove @awnsdomains/awnsjs && pnpm install",
+    "local:add:ensjs": "yalc add @myclique/awnsjs --workspace && pnpm install",
+    "local:remove:ensjs": "node ./scripts/removeWorkspace.mjs @myclique/awnsjs && yalc remove @myclique/awnsjs && pnpm install",
     "local:add:thorin": "yalc add @ensdomains/thorin --workspace && pnpm install",
     "local:remove:thorin": "node ./scripts/removeWorkspace.mjs @ensdomains/thorin && yalc remove @ensdomains/thorin && pnpm install",
     "wrangle": "wrangler pages dev ./out --log-level none",
@@ -119,6 +119,7 @@
     "react": "*",
     "react-dom": "*"
   },
+  "packageManager": "pnpm@7.33.6",
   "devDependencies": {
     "@cloudflare/workers-types": "^3.14.1",
     "@ensdomains/buffer": "^0.1.0",

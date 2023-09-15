@@ -6,8 +6,8 @@ import { ethers } from 'hardhat'
 import { DeployFunction } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 
-import { labelhash } from '@ensdomains/ensjs/utils/labels'
-import { namehash } from '@ensdomains/ensjs/utils/normalise'
+import { labelhash } from '@myclique/awnsjs/utils/labels'
+import { namehash } from '@myclique/awnsjs/utils/normalise'
 
 const dummyABI = [
   {

@@ -6,10 +6,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
 /* eslint-disable no-await-in-loop */
+import { namehash } from '@myclique/awnsjs/utils/normalise'
 import { Accounts, User } from 'playwright/fixtures/accounts'
 import { Contracts } from 'playwright/fixtures/contracts'
-
-import { namehash } from '@ensdomains/ensjs/utils/normalise'
 
 import { Provider } from '../../provider'
 import { LegacySubname, generateLegacySubname } from './generateLegacySubname'

@@ -1,15 +1,14 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
 /* eslint-disable no-await-in-loop */
+import { PublicResolver } from '@myclique/awnsjs/generated/PublicResolver'
+import { ChildFuses, CombinedFuseInput } from '@myclique/awnsjs/utils/fuses'
+import { namehash } from '@myclique/awnsjs/utils/normalise'
+import { RecordOptions } from '@myclique/awnsjs/utils/recordHelpers'
+import { makeCommitment, makeRegistrationData } from '@myclique/awnsjs/utils/registerHelpers'
 import { Accounts, User } from 'playwright/fixtures/accounts'
 import { Contracts } from 'playwright/fixtures/contracts'
 import { Provider } from 'playwright/fixtures/provider'
-
-import { PublicResolver } from '@ensdomains/ensjs/generated/PublicResolver'
-import { ChildFuses, CombinedFuseInput } from '@ensdomains/ensjs/utils/fuses'
-import { namehash } from '@ensdomains/ensjs/utils/normalise'
-import { RecordOptions } from '@ensdomains/ensjs/utils/recordHelpers'
-import { makeCommitment, makeRegistrationData } from '@ensdomains/ensjs/utils/registerHelpers'
 
 import { NAMEWRAPPER_AWARE_RESOLVERS } from '@app/utils/constants'
 

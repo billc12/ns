@@ -1,9 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
 /* eslint-disable no-await-in-loop */
+import { ChildFuses, ParentFuses } from '@myclique/awnsjs'
 import { Locator, Page } from '@playwright/test'
-
-import { ChildFuses, ParentFuses } from '@ensdomains/ensjs'
 
 type Permission = ChildFuses['fuse'] | ParentFuses['fuse']
 

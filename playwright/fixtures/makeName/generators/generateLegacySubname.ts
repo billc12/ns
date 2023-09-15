@@ -1,11 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies */
+import { hexEncodeName } from '@myclique/awnsjs/utils/hexEncodedName'
+import { labelhash } from '@myclique/awnsjs/utils/labels'
+import { namehash } from '@myclique/awnsjs/utils/normalise'
+import { RecordOptions } from '@myclique/awnsjs/utils/recordHelpers'
 import { Accounts, User } from 'playwright/fixtures/accounts'
 import { Contracts } from 'playwright/fixtures/contracts'
-
-import { hexEncodeName } from '@ensdomains/ensjs/utils/hexEncodedName'
-import { labelhash } from '@ensdomains/ensjs/utils/labels'
-import { namehash } from '@ensdomains/ensjs/utils/normalise'
-import { RecordOptions } from '@ensdomains/ensjs/utils/recordHelpers'
 
 import { emptyAddress } from '@app/utils/constants'
 

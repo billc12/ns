@@ -1,16 +1,15 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { Accounts, User } from 'playwright/fixtures/accounts'
-import { Contracts } from 'playwright/fixtures/contracts'
-import { Provider } from 'playwright/fixtures/provider'
-
 import {
   ChildFuses,
   CombinedFuseInput,
   ParentFuses,
   encodeFuses,
-} from '@ensdomains/ensjs/utils/fuses'
-import { namehash } from '@ensdomains/ensjs/utils/normalise'
-import { RecordOptions } from '@ensdomains/ensjs/utils/recordHelpers'
+} from '@myclique/awnsjs/utils/fuses'
+import { namehash } from '@myclique/awnsjs/utils/normalise'
+import { RecordOptions } from '@myclique/awnsjs/utils/recordHelpers'
+import { Accounts, User } from 'playwright/fixtures/accounts'
+import { Contracts } from 'playwright/fixtures/contracts'
+import { Provider } from 'playwright/fixtures/provider'
 
 import { RESOLVER_ADDRESSES } from '@app/utils/constants'
 

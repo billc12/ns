@@ -22,7 +22,7 @@ const customJestConfig = {
     '^__tests__/(.*)$': '<rootDir>/__tests__/$1',
     '^@app/(.*)$': '<rootDir>/src/$1',
     '^@rainbow-me/rainbowkit$': '<rootDir>/__mocks__/rainbowkitMock.js',
-    '@ensdomains/ensjs/(.*)$': '@ensdomains/ensjs/dist/cjs/$1',
+    '@myclique/awnsjs/(.*)$': '@myclique/awnsjs/dist/cjs/$1',
     '@adraffy/ens-normalize': '@adraffy/ens-normalize/dist/index.cjs',
     '^wagmi(.*)$': 'wagmi-cjs$1',
     '@wagmi/core(.*)$': '@wagmi/core-cjs$1',

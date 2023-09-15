@@ -1,7 +1,6 @@
+import { labelhash } from '@myclique/awnsjs/utils/labels'
 import { expect } from '@playwright/test'
 import { test } from '@root/playwright'
-
-import { labelhash } from '@ensdomains/ensjs/utils/labels'
 
 test('should not show wrap button if the connected wallet is not the registrant', async ({
   login,

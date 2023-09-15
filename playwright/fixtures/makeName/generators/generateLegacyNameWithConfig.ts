@@ -1,11 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
 /* eslint-disable no-await-in-loop */
+import { namehash } from '@myclique/awnsjs/utils/normalise'
+import { RecordOptions } from '@myclique/awnsjs/utils/recordHelpers'
 import { Accounts, User } from 'playwright/fixtures/accounts'
 import { Contracts } from 'playwright/fixtures/contracts'
-
-import { namehash } from '@ensdomains/ensjs/utils/normalise'
-import { RecordOptions } from '@ensdomains/ensjs/utils/recordHelpers'
 
 import { RESOLVER_ADDRESSES } from '@app/utils/constants'
 

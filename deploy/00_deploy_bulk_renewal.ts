@@ -1,10 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Interface } from '@ethersproject/abi'
+import { namehash } from '@myclique/awnsjs/utils/normalise'
 import { ethers } from 'hardhat'
 import { DeployFunction } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
-
-import { namehash } from '@ensdomains/ensjs/utils/normalise'
 
 const { makeInterfaceId } = require('@openzeppelin/test-helpers')
 
