@@ -1,5 +1,5 @@
 {
-  "title": "将 {{name}} 引入 ENS",
+  "title": "将 {{name}} 引入 AWNS",
   "general": {
     "connectWallet": "请先连接您的钱包",
     "importDNSSECName": "导入 DNSSEC 域名",
