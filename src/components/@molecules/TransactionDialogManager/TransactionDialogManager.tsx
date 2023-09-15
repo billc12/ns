@@ -8,7 +8,6 @@ import { WagmiConfig, useAccount } from 'wagmi'
 
 import { Dialog } from '@ensdomains/thorin'
 
-// eslint-disable-next-line import/no-cycle
 import { DialogStyle } from '@app/components/Awns/Dialog'
 import { useChainId } from '@app/hooks/useChainId'
 import { transactions } from '@app/transaction-flow/transaction'

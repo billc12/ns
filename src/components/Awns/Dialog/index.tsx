@@ -5,7 +5,6 @@ import styled, { css } from 'styled-components'
 import { Button, Dialog, Typography, mq } from '@ensdomains/thorin'
 
 import UserAvatar from '@app/assets/TestImage.png'
-// eslint-disable-next-line import/no-cycle
 import { formatDateString } from '@app/components/pages/profile/[name]/tabs/ProfileTab'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 
