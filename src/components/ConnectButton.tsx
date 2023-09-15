@@ -31,7 +31,6 @@ import { useBreakpoint } from '@app/utils/BreakpointProvider'
 import { shortenAddress } from '@app/utils/utils'
 
 import BaseLink from './@atoms/BaseLink'
-// eslint-disable-next-line import/no-cycle
 import { InterText } from './Awns_Header'
 
 const StyledButtonWrapper = styled.div<{ $isTabBar?: boolean; $large?: boolean }>(

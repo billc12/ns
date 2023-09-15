@@ -9,25 +9,19 @@ import LinkIcon from '@app/assets/LinkIcon.svg'
 import TestImg from '@app/assets/TestImage.png'
 import TimeIcon from '@app/assets/TimeIcon.svg'
 import TransferIcon from '@app/assets/TransferIcon.svg'
-// eslint-disable-next-line import/no-cycle
 import SetAddressDialog from '@app/components/Awns/Dialog/SetAddressDialog'
-// eslint-disable-next-line import/no-cycle
 import TransferDialog from '@app/components/Awns/Dialog/TransferDialog'
 import { CopyButton } from '@app/components/Copy'
 // import { Outlink } from '@app/components/Outlink'
-// eslint-disable-next-line import/no-cycle
 import { ProfileSnippet } from '@app/components/ProfileSnippet'
-// eslint-disable-next-line import/no-cycle
 import { ProfileDetails } from '@app/components/pages/profile/ProfileDetails'
 import { useAbilities } from '@app/hooks/abilities/useAbilities'
 import { useChainId } from '@app/hooks/useChainId'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import useOwners from '@app/hooks/useOwners'
 import { usePrimary } from '@app/hooks/usePrimary'
-// eslint-disable-next-line import/no-cycle
 import { AuctionType, useProfileActions } from '@app/hooks/useProfileActions'
 import useRegistrationDate from '@app/hooks/useRegistrationData'
-// eslint-disable-next-line import/no-cycle
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
 import { shouldShowExtendWarning } from '@app/utils/abilities/shouldShowExtendWarning'

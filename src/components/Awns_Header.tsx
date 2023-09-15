@@ -3,12 +3,12 @@ import styled from 'styled-components'
 
 import { Typography } from '@ensdomains/thorin'
 
+import CliqueSvg from '@app/assets/CliqueLogo.svg'
 import GWeiSvg from '@app/assets/GWei.svg'
 import STPSvg from '@app/assets/StpLogo.svg'
 import useGasPrice from '@app/hooks/useGasPrice'
 import { makeDisplay } from '@app/utils/currency'
 
-// eslint-disable-next-line import/no-cycle
 import { HeaderConnect } from './ConnectButton'
 
 const Row = styled.div`
@@ -56,7 +56,7 @@ const Page = () => {
   return (
     <HeaderLayout>
       <HeaderLeft onClick={() => router.push('/')}>
-        <STPSvg />
+        {isIndex ? <CliqueSvg /> : <STPSvg />}
         <Line />
         <InterText style={{ fontWeight: 700 }} $textColor={isIndex ? '#fff' : '#3f5170'}>
           AWNS

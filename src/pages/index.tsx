@@ -9,7 +9,8 @@ import Hamburger from '@app/components/@molecules/Hamburger/Hamburger'
 import { SearchInput } from '@app/components/@molecules/SearchInput/SearchInput'
 import { LeadingHeading } from '@app/components/LeadingHeading'
 
-import ENSFull from '../assets/ENSFull.svg'
+// import ENSFull from '../assets/ENSFull.svg'
+import StpLogo from '../assets/StpLogo.svg'
 
 // const GradientTitle = styled.h1(
 //   ({ theme }) => css`
@@ -102,11 +103,11 @@ export default function Page() {
   return (
     <>
       <Head>
-        <title>ENS</title>
+        <title>AWNS</title>
       </Head>
       <StyledLeadingHeading>
         <LogoAndLanguage>
-          <StyledENS as={ENSFull} />
+          <StyledENS as={StpLogo} />
         </LogoAndLanguage>
         <Hamburger />
       </StyledLeadingHeading>

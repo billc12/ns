@@ -86,7 +86,7 @@ export default class MyDocument extends Document {
             rel="icon"
             type="image/png"
             sizes="32x32"
-            href={makeIPFSURL('/favicon-32x32.png')}
+            href={makeIPFSURL('/STPLogo-30x30.png')}
           />
           <link
             rel="icon"
