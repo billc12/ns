@@ -17,9 +17,22 @@ import { DisplayItems } from './TransactionDialogManager/DisplayItems'
 const InnerContainer = styled.div(() => [
   css`
     width: 100%;
+    border-radius: 10px;
+    border: 1px solid  #D4D7E2;
+    background: #FFF;
+    padding:14px 16px;
+    margin-bottom:100px;
+    & div:last-child{
+      &>div{
+        border:none;
+      }
+      
+    }
   `,
 ])
-
+const AddressInput = styled(Input)`
+border:none;
+`
 export const DogFood = (
     { 
       register, 
@@ -75,7 +88,7 @@ export const DogFood = (
 
   return (
     <InnerContainer>
-      <Input
+      <AddressInput
         data-testid="dogfood"
         disabled={disabled}
         label={label}
