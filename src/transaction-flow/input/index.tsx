@@ -52,6 +52,7 @@ const ProfileEditor = dynamicHelper<ProfileEditorProps>('ProfileEditor/ProfileEd
 const CreateSubname = dynamicHelper<CreateSubnameProps>('CreateSubname')
 const TransferProfile = dynamicHelper<TransferProfileProps>('TransferProfile/TransferProfile')
 const ExtendNames = dynamicHelper<ExtendNamesProps>('ExtendNames/ExtendNames')
+const AwnsExtendNames = dynamicHelper<ExtendNamesProps>('ExtendNames/Awns_ExtendNames')
 const BurnFuses = dynamicHelper<BurnFusesProps>('BurnFuses/BurnFuses')
 const SendName = dynamicHelper<SendNameProps>('SendName')
 const AwnsSendName = dynamicHelper<SendNameProps>('Awns_SendName')
@@ -82,6 +83,7 @@ export const DataInputComponents = {
   DeleteEmancipatedSubnameWarning,
   DeleteSubnameNotParentWarning,
   AwnsSendName,
+  AwnsExtendNames,
 }
 
 export type DataInputName = keyof typeof DataInputComponents

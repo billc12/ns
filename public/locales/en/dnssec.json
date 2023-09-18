@@ -1,5 +1,5 @@
 {
-  "title": "Import {{name}} into ENS",
+  "title": "Import {{name}} into AWNS",
   "general": {
     "connectWallet": "Please connect your wallet to continue",
     "importDNSSECName": "Import DNSSEC Name",

@@ -5,7 +5,6 @@ import styled, { css } from 'styled-components'
 import { Button, Dialog, Typography, mq } from '@ensdomains/thorin'
 
 import UserAvatar from '@app/assets/TestImage.png'
-// eslint-disable-next-line import/no-cycle
 import { formatDateString } from '@app/components/pages/profile/[name]/tabs/ProfileTab'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 
@@ -62,6 +61,7 @@ const TagRowStyle = styled.div`
   width: 100%;
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 `
 
 export const DialogStyle = styled(Dialog)`
@@ -135,6 +135,7 @@ const InfoImgText = styled(Typography)`
   line-height: normal;
 `
 const InfoRight = styled.div`
+  width: calc(100% - 84px);
   height: 100%;
   display: flex;
   flex-direction: column;

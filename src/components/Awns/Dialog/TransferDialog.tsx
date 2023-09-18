@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 
 import LabelInput from '../LabelInput'
-// eslint-disable-next-line import/no-cycle
 import Dialog from './index'
 
 const TransferDialog = ({

@@ -9,7 +9,6 @@ import { useBreakpoint } from '@app/utils/BreakpointProvider'
 import { shortenAddress } from '@app/utils/utils'
 
 import LabelInput from '../LabelInput'
-// eslint-disable-next-line import/no-cycle
 import Dialog from './index'
 
 const Column = styled.div`

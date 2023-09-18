@@ -3,7 +3,6 @@ import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { usePrimary } from '@app/hooks/usePrimary'
-// eslint-disable-next-line import/no-cycle
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { makeIntroItem } from '@app/transaction-flow/intro'
 import { makeTransactionItem } from '@app/transaction-flow/transaction'

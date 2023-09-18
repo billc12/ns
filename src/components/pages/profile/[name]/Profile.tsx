@@ -373,11 +373,11 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
   //     }
   //   return undefined
   // }, [error, errorTitle])
-
+  console.log(titleContent, descriptionContent)
   return (
     <>
       <Head>
-        <title>{titleContent}</title>
+        <title>{name && `${name} -`} AWNS</title>
         <meta name="description" content={descriptionContent} />
       </Head>
       {!isLoading ? (
