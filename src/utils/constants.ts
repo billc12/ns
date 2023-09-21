@@ -15,6 +15,8 @@ export const networkName = {
   '1337': 'local',
 }
 
+export const SUPPORT_NETWORK_CHAIN_IDS = [11155111]
+
 interface ResolverAddresses {
   [key: string]: EthAddress[]
 }

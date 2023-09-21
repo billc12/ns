@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useErrorBoundary, withErrorBoundary } from 'react-use-error-boundary'
-import { useIntercom } from 'react-use-intercom'
+// import { useIntercom } from 'react-use-intercom'
 import styled, { css } from 'styled-components'
 import { useNetwork, useSwitchNetwork } from 'wagmi'
 
@@ -9,6 +9,7 @@ import { mq } from '@ensdomains/thorin'
 
 import FeedbackSVG from '@app/assets/Feedback.svg'
 import ErrorScreen from '@app/components/@atoms/ErrorScreen'
+import { SUPPORT_NETWORK_CHAIN_IDS } from '@app/utils/constants'
 
 import { Navigation } from './Navigation'
 
@@ -79,23 +80,15 @@ export const Basic = withErrorBoundary(({ children }: { children: React.ReactNod
   const { switchNetwork } = useSwitchNetwork()
   const router = useRouter()
   const [error] = useErrorBoundary()
-  const { boot } = useIntercom()
+  // const { boot } = useIntercom()
+
+  // useEffect(() => {
+  //   boot()
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   useEffect(() => {
-    boot()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
-    if (
-      currentChain &&
-      !(
-        currentChain?.id === 1 ||
-        currentChain?.id === 5 ||
-        currentChain?.id === 11155111 ||
-        currentChain?.id === 1337
-      )
-    ) {
+    if (currentChain && !SUPPORT_NETWORK_CHAIN_IDS.includes(currentChain.id)) {
       switchNetwork?.(1)
       router.push('/unsupportedNetwork')
     }
