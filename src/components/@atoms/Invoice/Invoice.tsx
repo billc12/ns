@@ -14,7 +14,7 @@ const Container = styled.div(
     display: flex;
     flex-direction: column;
     /* gap: ${theme.space['2']}; */
-    gap: 37px;
+    gap: 25px;
     width: 100%;
     border-radius: ${theme.space['2']};
   `,
@@ -61,9 +61,15 @@ type Props = {
   items: InvoiceItem[]
   totalLabel: string
   unit?: CurrencyDisplay
+  discount: { label: string; discount: number }
 }
 
-export const Invoice = ({ totalLabel = 'Estimated total', unit = 'eth', items }: Props) => {
+export const Invoice = ({
+  totalLabel = 'Estimated total',
+  unit = 'eth',
+  items,
+  discount,
+}: Props) => {
   const filteredItems = items
     .map(({ value, bufferPercentage }) =>
       value && unit === 'eth' && bufferPercentage ? value.mul(bufferPercentage).div(100) : value,
@@ -73,28 +79,49 @@ export const Invoice = ({ totalLabel = 'Estimated total', unit = 'eth', items }:
   const hasEmptyItems = filteredItems.length !== items.length
   console.log('totalLabel', totalLabel)
   console.log('items', items)
-  const show = false
+  // const show = false
   return (
     <Container>
-      {show &&
-        items
-          .filter((t, i) => i === 1)
-          .map(({ label, value, bufferPercentage, color }, inx) => (
-            <LineItem data-testid={`invoice-item-${inx}`} $color={color} key={label}>
-              <LeftTitle>Estimated Gas</LeftTitle>
-              <Skeleton loading={!value}>
-                {/* <div data-testid={`invoice-item-${inx}-amount`}> */}
-                <RightTitle>
-                  <CurrencyText
-                    bufferPercentage={bufferPercentage}
-                    eth={value || BigNumber.from(0)}
-                    currency={unit}
-                  />
-                </RightTitle>
-                {/* </div> */}
-              </Skeleton>
-            </LineItem>
-          ))}
+      {items.slice(0, 1).map(({ label, value, bufferPercentage, color }, inx) => (
+        <LineItem data-testid={`invoice-item-${inx}`} $color={color} key={label}>
+          <LeftTitle>{label}</LeftTitle>
+          <Skeleton loading={!value}>
+            {/* <div data-testid={`invoice-item-${inx}-amount`}> */}
+            <RightTitle>
+              <CurrencyText
+                bufferPercentage={bufferPercentage}
+                eth={value || BigNumber.from(0)}
+                currency={unit}
+              />
+            </RightTitle>
+            {/* </div> */}
+          </Skeleton>
+        </LineItem>
+      ))}
+      <LineItem data-testid={`invoice-item-${items.length}`} key={discount.label}>
+        <LeftTitle>{discount.label}</LeftTitle>
+        <Skeleton loading={false}>
+          {/* <div data-testid={`invoice-item-${inx}-amount`}> */}
+          <RightTitle style={{ color: '#00B833' }}>{`${discount.discount * 100}%`}</RightTitle>
+          {/* </div> */}
+        </Skeleton>
+      </LineItem>
+      {items.slice(1).map(({ label, value, bufferPercentage, color }, inx) => (
+        <LineItem data-testid={`invoice-item-${inx}`} $color={color} key={label}>
+          <LeftTitle>{label}</LeftTitle>
+          <Skeleton loading={!value}>
+            {/* <div data-testid={`invoice-item-${inx}-amount`}> */}
+            <RightTitle>
+              <CurrencyText
+                bufferPercentage={bufferPercentage}
+                eth={value || BigNumber.from(0)}
+                currency={unit}
+              />
+            </RightTitle>
+            {/* </div> */}
+          </Skeleton>
+        </LineItem>
+      ))}
       <Total>
         <LeftTitle>Estimated Total</LeftTitle>
         <Skeleton loading={hasEmptyItems}>

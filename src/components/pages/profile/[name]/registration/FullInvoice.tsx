@@ -31,7 +31,7 @@ const InvoiceContainer = styled.div(
 )
 
 type Props = ReturnType<typeof useEstimateFullRegistration>
-
+const YEAR_DISCOUNT = [0.0, 0.05, 0.1, 0.15, 0.2]
 const FullInvoice = ({
   years,
   totalYearlyFee,
@@ -69,6 +69,10 @@ const FullInvoice = ({
     ],
     [t, years, totalYearlyFee, estimatedGasFee, hasPremium, premiumFee],
   )
+  const discountInvoiceItems = useMemo(
+    () => ({ label: t('invoice.discount', { years }), discount: YEAR_DISCOUNT[years - 1] }),
+    [t, years],
+  )
   return (
     <InvoiceContainer>
       {false && (
@@ -81,7 +85,12 @@ const FullInvoice = ({
           />
         </OptionBar>
       )}
-      <Invoice items={invoiceItems} unit={currencyDisplay} totalLabel={t('invoice.total')} />
+      <Invoice
+        discount={discountInvoiceItems}
+        items={invoiceItems}
+        unit={currencyDisplay}
+        totalLabel={t('invoice.total')}
+      />
     </InvoiceContainer>
   )
   return (
@@ -94,7 +103,12 @@ const FullInvoice = ({
           onChange={(e) => setCurrency(e.target.checked ? 'fiat' : 'eth')}
         />
       </OptionBar>
-      <Invoice items={invoiceItems} unit={currencyDisplay} totalLabel={t('invoice.total')} />
+      <Invoice
+        discount={discountInvoiceItems}
+        items={invoiceItems}
+        unit={currencyDisplay}
+        totalLabel={t('invoice.total')}
+      />
     </InvoiceContainer>
   )
 }

@@ -5,11 +5,12 @@
   "invoice": {
     "yearRegistration": "{{years}} year registration",
     "registration": "Registration",
-    "estimatedNetworkFee": "Est. network fee",
+    "estimatedNetworkFee": "Est. gas fee",
     "networkFee": "Network fee",
     "temporaryPremium": "Temporary premium",
     "total": "Estimated total",
-    "totalPaid": "Total paid"
+    "totalPaid": "Total paid",
+    "discount": "{{years}} year discount"
   },
   "error": {
     "nameTooLong": "The name you want to register is too long. Please choose a shorter name."

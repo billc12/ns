@@ -1,6 +1,6 @@
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { useRouter } from 'next/router'
-import { Key, ReactNode } from 'react'
+import { Key, ReactNode, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useBalance, useDisconnect } from 'wagmi'
@@ -205,6 +205,15 @@ const HeaderProfile = ({ address }: { address: string }) => {
   ] as DropdownItem[]
   console.log(dropdownItems)
   const { data: balance } = useBalance({ address: address as `0x${string}` | undefined, chainId })
+  const mainText = useMemo(() => {
+    if (primary.data && primary.data.beautifiedName) {
+      return primary.data.beautifiedName
+    }
+    if (address) {
+      return shortenAddress(address, undefined, 4, 4)
+    }
+    return '-- --'
+  }, [address, primary.data])
   return (
     <Dropdown
       width={170}
@@ -230,9 +239,7 @@ const HeaderProfile = ({ address }: { address: string }) => {
     >
       <UserButton>
         <DefaultUser />
-        <InterText style={{ fontWeight: 500 }}>
-          {balance ? `${Number(balance?.formatted).toFixed(4)} ${balance?.symbol}` : '-- --'}
-        </InterText>
+        <InterText style={{ fontWeight: 500 }}>{mainText}</InterText>
       </UserButton>
     </Dropdown>
   )

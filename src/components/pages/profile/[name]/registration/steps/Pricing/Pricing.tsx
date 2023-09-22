@@ -14,13 +14,15 @@ import {
   RadioButton,
   RadioButtonGroup,
   Toggle,
+  Tooltip,
   Typography,
   mq,
 } from '@ensdomains/thorin'
 
 import MoonpayLogo from '@app/assets/MoonpayLogo.svg'
-import UserAvatar from '@app/assets/TestImage.png'
-import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
+import UserAvatar from '@app/assets/default-avatar.png'
+import ToolTipSvg from '@app/assets/tooltip.svg'
+// import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
 import { PlusMinusControl } from '@app/components/@atoms/PlusMinusControl/Awns_PlusMinusControl'
 // import { RegistrationTimeComparisonBanner } from '@app/components/@atoms/RegistrationTimeComparisonBanner/RegistrationTimeComparisonBanner'
 import { Spacer } from '@app/components/@atoms/Spacer'
@@ -368,6 +370,14 @@ const PaymentChoice = ({
 }
 console.log('PaymentChoice', PaymentChoice)
 
+const RegisterBtn = styled(Button)`
+  width: 100% !important;
+  max-width: 100% !important;
+  &:disabled {
+    color: #fff;
+    background: rgba(0, 73, 198, 0.53);
+  }
+`
 interface ActionButtonProps {
   address?: string
   hasPendingMoonpayTransaction: boolean
@@ -381,6 +391,7 @@ interface ActionButtonProps {
   years: number
   balance: ReturnType<typeof useBalance>['data']
   totalRequiredBalance?: BigNumber
+  initCode: string
 }
 
 export const ActionButton = ({
@@ -394,6 +405,7 @@ export const ActionButton = ({
   years,
   balance,
   totalRequiredBalance,
+  initCode,
 }: ActionButtonProps) => {
   const { t } = useTranslation('register')
   if (!address) {
@@ -443,14 +455,14 @@ export const ActionButton = ({
     )
   }
   return (
-    <Button
+    <RegisterBtn
       data-testid="next-button"
       onClick={() => callback({ reverseRecord, years, paymentMethodChoice })}
-      disabled={!paymentMethodChoice}
+      disabled={!paymentMethodChoice || !initCode}
     >
       {/* {t('action.next', { ns: 'common' })} */}
       Register
-    </Button>
+    </RegisterBtn>
   )
 }
 
@@ -467,6 +479,31 @@ type Props = {
   >['initiateMoonpayRegistrationMutation']
 }
 
+const PremiumText = styled.div`
+  text-align: right;
+  font-feature-settings: 'clig' off, 'liga' off;
+
+  /* text-shadow: 0px 1px 1px #9f7c00; */
+
+  font-style: normal;
+  line-height: normal;
+  background: linear-gradient(90deg, #ffc700 0%, #ffdd29 46%, #e49700 80.13%);
+  background-clip: text;
+
+  /* stylelint-disable property-no-vendor-prefix */
+  -webkit-background-clip: text;
+  /* stylelint-enable property-no-vendor-prefix */
+
+  -webkit-text-fill-color: transparent;
+`
+const BigPremiumText = styled(PremiumText)`
+  font-size: 24px;
+  font-weight: 800;
+`
+const SmallPremiumText = styled(PremiumText)`
+  font-size: 16px;
+  font-weight: 500;
+`
 const InterText = styled(Typography)<{ $size?: string; $color?: string; $weight?: number }>`
   width: max-content;
   height: max-content;
@@ -511,8 +548,10 @@ const GrayRoundColumn = styled(Column)`
   height: max-content;
   border-radius: 10px;
   background: #f7fafc;
-  gap: 30px;
-  padding-top: 19px;
+
+  /* gap: 30px; */
+
+  padding-top: 14px;
 `
 const ContentStyle = styled(Row)`
   justify-content: space-between;
@@ -537,12 +576,46 @@ const UpButton = styled(Button)`
     background: #fff;
   }
 `
+const PremiumImgRound = styled.div<{ $premium: boolean }>(
+  ({ $premium }) => css`
+    width: 350px;
+    height: 350px;
+    ${$premium &&
+    css`
+      border-radius: 8px;
+      border: 4px solid #e49700;
+    `}
+  `,
+)
+const ToolTipRound = styled.div`
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #97b7ef;
+  background: #f8fbff;
+  color: #8d8ea5;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 19px;
+`
+const InviCode = styled(EInput)`
+  text-align: center;
+  &>div:focus-within: {
+    border-color: transparent;
+  }
+`
+const ButtonBox = styled.div`
+  width: 100%;
+  height: 100%;
+`
 const MAX_YEAR = 5
-const UpImage = () => {
+const UpImage = ({ isPremium }: { isPremium: boolean }) => {
   return (
     <Column>
       <GrayRoundRow $p="15px">
-        <Image style={{ width: '100%', height: '100%' }} src={UserAvatar} />
+        <PremiumImgRound $premium={isPremium}>
+          <Image style={{ width: '100%', height: '100%' }} alt="default img" src={UserAvatar} />
+        </PremiumImgRound>
       </GrayRoundRow>
       <UpButton>
         <InterText $size="14px" $weight={500}>
@@ -622,10 +695,16 @@ const Pricing = ({
 
   // const showPaymentChoice = !isPrimaryLoading && address
   const nameLength = beautifiedName.split('.')[0].length
+  const isPremium = true
   return (
     <StyledCard>
       <HeadName>
-        <InterText>{beautifiedName}</InterText>
+        {isPremium ? (
+          <BigPremiumText>{beautifiedName}</BigPremiumText>
+        ) : (
+          <InterText>{beautifiedName}</InterText>
+        )}
+
         {registrationStatus && (
           <InterText $color="#21C331" $size="16px">
             Available for registration
@@ -643,15 +722,22 @@ const Pricing = ({
         </GrayRoundRow>
         <GrayRoundRow $p="20px 36px">
           <InterText $color="#8D8EA5" $size="16px" $weight={500}>
-            Max Period
+            Premium
           </InterText>
-          <InterText $color="#3F5170" $size="16px" $weight={500}>
+          {isPremium ? (
+            <SmallPremiumText>Yes</SmallPremiumText>
+          ) : (
+            <InterText $color="#3F5170" $size="16px" $weight={500}>
+              No
+            </InterText>
+          )}
+          {/* <InterText $color="#3F5170" $size="16px" $weight={500}>
             {MAX_YEAR} years
-          </InterText>
+          </InterText> */}
         </GrayRoundRow>
       </ContentStyle>
       <ContentStyle>
-        <UpImage />
+        <UpImage isPremium={isPremium} />
         <Column>
           <GrayRoundColumn>
             <CenterRow style={{ padding: '0 38px' }}>
@@ -682,11 +768,37 @@ const Pricing = ({
             </div>
 
             <InitCodeRound>
-              <InterText $color="#8D8EA5" $size="14px" $weight={500} style={{ width: '100%' }}>
-                Currently only available for whitelisted users, please enter the invitation code,
-                you will get 3 invitation codes after successful registration.
-              </InterText>
-              <EInput
+              <Row style={{ justifyContent: 'flex-start', alignItems: 'center', gap: 10 }}>
+                <InterText $color="#3F5170" $size="14px" $weight={500}>
+                  Invitation Code
+                </InterText>
+                <Tooltip
+                  placement="right"
+                  content={
+                    <ToolTipRound>
+                      The beta phase requires an invitation code to register, and you will receive 3
+                      invitations for successfully registering an aw domain name.
+                    </ToolTipRound>
+                  }
+                  mobilePlacement="right"
+                  mobileWidth={50}
+                  width={325}
+                >
+                  <Button
+                    style={{
+                      width: 'max-content',
+                      height: 'max-content',
+                      padding: 0,
+                      border: 'none',
+                      background: 'transparent',
+                    }}
+                  >
+                    <ToolTipSvg />
+                  </Button>
+                </Tooltip>
+              </Row>
+
+              <InviCode
                 placeholder="Invitation Code"
                 value={initCode}
                 label=""
@@ -694,7 +806,8 @@ const Pricing = ({
               />
             </InitCodeRound>
           </GrayRoundColumn>
-          <MobileFullWidth>
+          {/* <MobileFullWidth> */}
+          <ButtonBox>
             <ActionButton
               {...{
                 address,
@@ -707,9 +820,11 @@ const Pricing = ({
                 years,
                 balance,
                 totalRequiredBalance,
+                initCode,
               }}
             />
-          </MobileFullWidth>
+          </ButtonBox>
+          {/* </MobileFullWidth> */}
         </Column>
       </ContentStyle>
     </StyledCard>
