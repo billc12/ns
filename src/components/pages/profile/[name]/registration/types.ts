@@ -2,7 +2,13 @@ import { ChildFuses } from '@myclique/awnsjs'
 
 import { ProfileRecord } from '@app/constants/profileRecordOptions'
 
-export type RegistrationStep = 'pricing' | 'profile' | 'info' | 'transactions' | 'complete'
+export type RegistrationStep =
+  | 'pricing'
+  | 'profile'
+  | 'info'
+  | 'transactions'
+  | 'confirm'
+  | 'complete'
 
 type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void
   ? I
@@ -34,6 +40,7 @@ export type RegistrationStepData = {
     secret: string
     started: boolean
   }
+  confirm: {}
   complete: {}
 }
 

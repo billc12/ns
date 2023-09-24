@@ -13,7 +13,9 @@ type Props = {
 
 export const CurrencyText = ({ eth, bufferPercentage = 100, currency = 'eth' }: Props) => {
   const { data: ethPrice, loading } = useEthPrice()
-
+  if (currency === 'eth' && eth) {
+    return <>{makeDisplay(eth, 18, 'eth')}</>
+  }
   if (loading || !eth || !ethPrice) return null
 
   if (currency === 'eth') {

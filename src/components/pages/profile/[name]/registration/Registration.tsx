@@ -22,6 +22,7 @@ import { isLabelTooLong } from '@app/utils/utils'
 
 // import Complete from './steps/Complete'
 import Complete from './steps/Awns_Complete'
+import ConfirmReg from './steps/ConfirmReg'
 import Info from './steps/Info'
 import Pricing from './steps/Pricing/Pricing'
 import Profile from './steps/Profile/Profile'
@@ -162,7 +163,7 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
         // if reverse record is selected, add the profile step to the queue
         dispatch({
           name: 'setQueue',
-          payload: ['pricing', 'profile', 'info', 'transactions', 'complete'],
+          payload: ['pricing', 'profile', 'info', 'transactions', 'confirm', 'complete'],
           selected,
         })
       }
@@ -204,7 +205,7 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
   const infoProfileCallback = () => {
     dispatch({
       name: 'setQueue',
-      payload: ['pricing', 'profile', 'info', 'transactions', 'complete'],
+      payload: ['pricing', 'profile', 'info', 'transactions', 'confirm', 'complete'],
       selected,
     })
   }
@@ -302,6 +303,14 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
                   registrationData={item}
                   onStart={onStart}
                   callback={transactionsCallback}
+                />
+              ),
+              confirm: (
+                <ConfirmReg
+                  nameDetails={nameDetails}
+                  registrationData={item}
+                  callback={genericCallback}
+                  onProfileClick={infoProfileCallback}
                 />
               ),
               complete: (

@@ -61,7 +61,7 @@ type Props = {
   items: InvoiceItem[]
   totalLabel: string
   unit?: CurrencyDisplay
-  discount: { label: string; discount: number }
+  discount?: { label: string; discount: number }
 }
 
 export const Invoice = ({
@@ -98,11 +98,13 @@ export const Invoice = ({
           </Skeleton>
         </LineItem>
       ))}
-      <LineItem data-testid={`invoice-item-${items.length}`} key={discount.label}>
-        <LeftTitle>{discount.label}</LeftTitle>
+      <LineItem data-testid={`invoice-item-${items.length}`} key={discount?.label}>
+        <LeftTitle>{discount?.label}</LeftTitle>
         <Skeleton loading={false}>
           {/* <div data-testid={`invoice-item-${inx}-amount`}> */}
-          <RightTitle style={{ color: '#00B833' }}>{`${discount.discount * 100}%`}</RightTitle>
+          <RightTitle style={{ color: '#00B833' }}>{`${
+            discount && discount.discount * 100
+          }%`}</RightTitle>
           {/* </div> */}
         </Skeleton>
       </LineItem>

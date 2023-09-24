@@ -20,7 +20,7 @@ export const randomSecret = () => {
 
 const defaultData: RegistrationReducerDataItem = {
   stepIndex: 0,
-  queue: ['pricing', 'info', 'transactions', 'complete'],
+  queue: ['pricing', 'info', 'transactions', 'confirm', 'complete'],
   years: 1,
   reverseRecord: false,
   records: [],
@@ -44,7 +44,7 @@ const isBrowser = !!(
 
 const makeDefaultData = (selected: SelectedItemProperties): RegistrationReducerDataItem => ({
   stepIndex: 0,
-  queue: ['pricing', 'info', 'transactions', 'complete'],
+  queue: ['pricing', 'info', 'transactions', 'confirm', 'complete'],
   years: 1,
   reverseRecord: false,
   records: [],

@@ -16,37 +16,36 @@ import {
 
 import { InnerDialog } from '@app/components/@atoms/InnerDialog'
 import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
+import { InterText } from '@app/components/Awns_Header'
 import { Card } from '@app/components/Card'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import useRegistrationParams from '@app/hooks/useRegistrationParams'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { makeTransactionItem } from '@app/transaction-flow/transaction'
 
+import LineProgress from '../LineProgress'
+import PremiumTitle from '../PremiumTitle'
 import { RegistrationReducerDataItem } from '../types'
 
 const StyledCard = styled(Card)(
-  ({ theme }) => css`
-    max-width: 780px;
+  () => css`
+    max-width: 840px;
     margin: 0 auto;
     flex-direction: column;
-    gap: ${theme.space['4']};
-    padding: ${theme.space['4']};
-
-    ${mq.sm.min(css`
-      padding: ${theme.space['6']} ${theme.space['18']};
-      gap: ${theme.space['6']};
-    `)}
+    align-items: center;
   `,
 )
 
 const ButtonContainer = styled.div(
   ({ theme }) => css`
-    width: ${theme.space.full};
+    /* width: 260px; */
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: ${theme.space['2']};
+    margin-top: 75px;
+    margin-bottom: 35px;
   `,
 )
 
@@ -110,7 +109,17 @@ const DialogContent = styled(Typography)(
     text-align: center;
   `,
 )
-
+const ButtonBox = styled(MobileFullWidth)(
+  () => css`
+    & > div,
+    & {
+      width: 260px;
+      ${mq.sm.min(css`
+        min-width: 260px;
+      `)}
+    }
+  `,
+)
 const FailedButton = ({ onClick, label }: { onClick: () => void; label: string }) => (
   <MobileFullWidth>
     <Button color="red" onClick={onClick}>
@@ -157,7 +166,7 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
     owner: address!,
     registrationData,
   })
-
+  // Start countdown
   const makeCommitNameFlow = useCallback(() => {
     onStart()
     createTransactionFlow(commitKey, {
@@ -169,12 +178,15 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
   }, [commitKey, createTransactionFlow, nameDetails.normalisedName, onStart, registrationParams])
 
   const makeRegisterNameFlow = () => {
-    createTransactionFlow(registerKey, {
-      transactions: [makeTransactionItem('registerName', registrationParams)],
-      requiresManualCleanup: true,
-      autoClose: true,
-      resumeLink: `/register/${nameDetails.normalisedName}`,
-    })
+    console.log('makeRegisterNameFlow')
+
+    callback({ back: false })
+    // createTransactionFlow(registerKey, {
+    //   transactions: [makeTransactionItem('registerName', registrationParams)],
+    //   requiresManualCleanup: true,
+    //   autoClose: true,
+    //   resumeLink: `/register/${nameDetails.normalisedName}`,
+    // })
   }
 
   const showCommitTransaction = () => {
@@ -206,41 +218,42 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
 
   const NormalBackButton = useMemo(
     () => (
-      <MobileFullWidth>
+      <ButtonBox>
         <Button onClick={() => callback({ back: true })} colorStyle="accentSecondary">
           {t('action.back', { ns: 'common' })}
         </Button>
-      </MobileFullWidth>
+      </ButtonBox>
     ),
     [t, callback],
   )
 
   const ResetBackButton = useMemo(
     () => (
-      <div>
+      <ButtonBox>
         <Button colorStyle="redSecondary" onClick={() => setResetOpen(true)}>
           {t('action.back', { ns: 'common' })}
         </Button>
-      </div>
+      </ButtonBox>
     ),
     [t],
   )
 
   let BackButton: ReactNode = (
-    <MobileFullWidth>
+    <ButtonBox>
       <Button onClick={() => callback({ back: true })} colorStyle="accentSecondary">
         {t('action.back', { ns: 'common' })}
       </Button>
-    </MobileFullWidth>
+    </ButtonBox>
   )
 
   let ActionButton: ReactNode = (
-    <MobileFullWidth>
+    <ButtonBox>
       <Button data-testid="start-timer-button" onClick={makeCommitNameFlow}>
         {t('steps.transactions.startTimer')}
       </Button>
-    </MobileFullWidth>
+    </ButtonBox>
   )
+  console.log('registerTx?.stage', registerTx)
 
   if (commitComplete) {
     if (registerTx?.stage === 'failed') {
@@ -261,15 +274,17 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
       )
     } else {
       BackButton = ResetBackButton
+      console.log('!registerTx', !registerTx)
+
       ActionButton = (
-        <MobileFullWidth>
+        <ButtonBox>
           <Button
             data-testid="finish-button"
             onClick={!registerTx ? makeRegisterNameFlow : showRegisterTransaction}
           >
             {t('action.finish', { ns: 'common' })}
           </Button>
-        </MobileFullWidth>
+        </ButtonBox>
       )
     }
   } else if (commitTx?.stage) {
@@ -292,15 +307,59 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
     } else if (commitTx?.stage === 'complete') {
       BackButton = ResetBackButton
       ActionButton = (
-        <MobileFullWidth>
+        <ButtonBox>
           <Button data-testid="wait-button" disabled suffix={<Spinner color="greyPrimary" />}>
             {t('steps.transactions.wait')}
           </Button>
-        </MobileFullWidth>
+        </ButtonBox>
       )
     }
   }
-
+  return (
+    <StyledCard>
+      <Dialog variant="blank" open={resetOpen} onDismiss={() => setResetOpen(false)}>
+        <Dialog.CloseButton onClick={() => setResetOpen(false)} />
+        <InnerDialog>
+          <DialogHeading>
+            <div>
+              <AlertSVG />
+            </div>
+            <DialogTitle>{t('steps.cancelRegistration.heading')}</DialogTitle>
+          </DialogHeading>
+          <DialogContent>{t('steps.cancelRegistration.contentOne')}</DialogContent>
+          <DialogContent>{t('steps.cancelRegistration.contentTwo')}</DialogContent>
+          <Dialog.Footer
+            trailing={
+              <Button onClick={resetTransactions} colorStyle="redSecondary">
+                {t('steps.cancelRegistration.footer')}
+              </Button>
+            }
+          />
+        </InnerDialog>
+      </Dialog>
+      <PremiumTitle isPremium nameDetails={nameDetails} />
+      <div style={{ marginTop: 70, marginBottom: 33 }}>
+        <LineProgress curSelect={2} />
+      </div>
+      <InterText $textColor="#000" $w={500}>
+        Wait 60 seconds for the timer to complete, almost there
+      </InterText>
+      <StyledCountdown
+        countdownSeconds={60}
+        disabled={!commitTimestamp}
+        startTimestamp={commitTimestamp}
+        size="large"
+        callback={() => setCommitComplete(true)}
+      />
+      <InterText style={{ maxWidth: 500, textAlign: 'center' }} $textColor="#000" $w={500}>
+        {t('steps.transactions.subheading')}
+      </InterText>
+      <ButtonContainer>
+        {BackButton}
+        {ActionButton}
+      </ButtonContainer>
+    </StyledCard>
+  )
   return (
     <StyledCard>
       <Dialog variant="blank" open={resetOpen} onDismiss={() => setResetOpen(false)}>

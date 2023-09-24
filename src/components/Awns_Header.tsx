@@ -30,11 +30,11 @@ const Line = styled.div`
   height: 20px;
   background: #dae4f0;
 `
-export const InterText = styled(Typography)<{ $textColor?: string }>`
+export const InterText = styled(Typography)<{ $textColor?: string; $w?: number }>`
   /* font-family: Inter; */
   font-size: 14px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: ${(props) => props.$w || 400};
   line-height: 20px;
   color: ${(props) => props.$textColor || '#3f5170'};
 `

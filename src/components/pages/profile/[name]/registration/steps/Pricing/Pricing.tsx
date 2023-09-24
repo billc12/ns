@@ -35,6 +35,7 @@ import { useNameDetails } from '@app/hooks/useNameDetails'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
 
 import FullInvoice from '../../FullInvoice'
+import PremiumTitle from '../../PremiumTitle'
 import {
   MoonpayTransactionStatus,
   PaymentMethod,
@@ -391,7 +392,6 @@ interface ActionButtonProps {
   years: number
   balance: ReturnType<typeof useBalance>['data']
   totalRequiredBalance?: BigNumber
-  initCode: string
 }
 
 export const ActionButton = ({
@@ -405,7 +405,6 @@ export const ActionButton = ({
   years,
   balance,
   totalRequiredBalance,
-  initCode,
 }: ActionButtonProps) => {
   const { t } = useTranslation('register')
   if (!address) {
@@ -458,7 +457,7 @@ export const ActionButton = ({
     <RegisterBtn
       data-testid="next-button"
       onClick={() => callback({ reverseRecord, years, paymentMethodChoice })}
-      disabled={!paymentMethodChoice || !initCode}
+      disabled={!paymentMethodChoice}
     >
       {/* {t('action.next', { ns: 'common' })} */}
       Register
@@ -496,10 +495,10 @@ const PremiumText = styled.div`
 
   -webkit-text-fill-color: transparent;
 `
-const BigPremiumText = styled(PremiumText)`
-  font-size: 24px;
-  font-weight: 800;
-`
+// const BigPremiumText = styled(PremiumText)`
+//   font-size: 24px;
+//   font-weight: 800;
+// `
 const SmallPremiumText = styled(PremiumText)`
   font-size: 16px;
   font-weight: 500;
@@ -527,12 +526,7 @@ const Column = styled.div`
   flex-direction: column;
   gap: 17px;
 `
-const HeadName = styled(Row)`
-  width: 100%;
-  justify-content: space-between;
-  padding: 23px 30px;
-  border-bottom: 1px solid #dce6ed;
-`
+
 const GrayRoundRow = styled(Row)<{ $p: string }>`
   width: 380px;
   height: max-content;
@@ -639,7 +633,7 @@ const Pricing = ({
   console.log('isPrimaryLoading', isPrimaryLoading)
 
   const [initCode, setInitCode] = useState('')
-  const { normalisedName, beautifiedName, registrationStatus } = nameDetails
+  const { normalisedName, beautifiedName } = nameDetails
 
   const { address } = useAccountSafely()
   const { data: balance } = useBalance({ address: address as `0x${string}` | undefined })
@@ -698,19 +692,7 @@ const Pricing = ({
   const isPremium = true
   return (
     <StyledCard>
-      <HeadName>
-        {isPremium ? (
-          <BigPremiumText>{beautifiedName}</BigPremiumText>
-        ) : (
-          <InterText>{beautifiedName}</InterText>
-        )}
-
-        {registrationStatus && (
-          <InterText $color="#21C331" $size="16px">
-            Available for registration
-          </InterText>
-        )}
-      </HeadName>
+      <PremiumTitle isPremium nameDetails={nameDetails} />
       <ContentStyle>
         <GrayRoundRow $p="20px 36px">
           <InterText $color="#8D8EA5" $size="16px" $weight={500}>
@@ -820,7 +802,6 @@ const Pricing = ({
                 years,
                 balance,
                 totalRequiredBalance,
-                initCode,
               }}
             />
           </ButtonBox>
