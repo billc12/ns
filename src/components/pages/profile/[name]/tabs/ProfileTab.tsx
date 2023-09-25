@@ -138,7 +138,15 @@ const ButtonStyle = styled(Button)(
     `)}
   `,
 )
+const BtnSetAdd = styled(Button)(
+  () => css`
+    width: 265px;
+    height: 40px;
 
+    border-radius: 6px;
+    background: #0049c6;
+  `,
+)
 type Props = {
   nameDetails: ReturnType<typeof useNameDetails>
   name: string
@@ -312,6 +320,15 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
           </ContentStyled>
         </div>
         <ButtonsStyle>
+          {profileActions.canSetMainName && (
+            <BtnSetAdd
+              onClick={() => {
+                addressHandleDialog(true)
+              }}
+            >
+              Set AWNS for this address
+            </BtnSetAdd>
+          )}
           {profileActions.canSetMainName && (
             <ButtonStyle
               colorStyle="background"
