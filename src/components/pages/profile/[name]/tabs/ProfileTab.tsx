@@ -191,6 +191,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
   const addressHandleDialog = (open: boolean) => {
     setOpenAddressDialog(open)
   }
+
   const {
     profile,
     normalisedName,
@@ -254,7 +255,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
     }
     return true
   }, [breakpoints.sm])
-  console.log(nameDetails.expiryDate)
+  console.log('nameDetails', nameDetails)
   const { prepareDataInput } = useTransactionFlow()
   const showSendNameInput = prepareDataInput('AwnsSendName')
   const handleSend = () => {
@@ -268,6 +269,10 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
       names: [name],
       isSelf: shouldShowExtendWarning(abilities.data),
     })
+  }
+  const showEditResolveAddressInput = prepareDataInput('EditResolveAddress')
+  const handleEditResolveAddress = () => {
+    showEditResolveAddressInput(`edit-resolve-address-${name}`, { name })
   }
   return (
     <DetailsWrapper>
@@ -329,12 +334,11 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
               Set AWNS for this address
             </BtnSetAdd>
           )}
-          {profileActions.canSetMainName && (
+          {/* 条件是否正确 */}
+          {nameDetails.profile?.address && (
             <ButtonStyle
               colorStyle="background"
-              onClick={() => {
-                addressHandleDialog(true)
-              }}
+              onClick={handleEditResolveAddress}
               prefix={<LinkIcon />}
             >
               Set Address

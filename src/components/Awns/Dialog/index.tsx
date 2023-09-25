@@ -31,7 +31,7 @@ export const Row = styled.div`
     gap: 10px;
   `)}
 `
-const CancelButton = styled(Button)`
+export const CancelButton = styled(Button)`
   width: 200px;
   height: 40px;
   border-radius: 8px;
@@ -46,7 +46,7 @@ const CancelButton = styled(Button)`
     width: 100%;
   `)}
 `
-const AuctionButton = styled(Button)`
+export const AuctionButton = styled(Button)`
   width: 200px;
   height: 40px;
   border-radius: 8px;
