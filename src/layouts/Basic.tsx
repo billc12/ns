@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useErrorBoundary, withErrorBoundary } from 'react-use-error-boundary'
 // import { useIntercom } from 'react-use-intercom'
 import styled, { css } from 'styled-components'
@@ -13,6 +13,7 @@ import { SUPPORT_NETWORK_CHAIN_IDS } from '@app/utils/constants'
 
 import { Navigation } from './Navigation'
 
+const bgUrl = `/IndexBanner.png`
 const Container = styled.div<{ $IsIndex?: boolean }>(
   ({ theme, $IsIndex }) => css`
     --padding-size: ${theme.space['4']};
@@ -21,7 +22,7 @@ const Container = styled.div<{ $IsIndex?: boolean }>(
 
     ${$IsIndex
       ? css`
-          background-image: url('IndexBanner.png');
+          background-image: url(${bgUrl});
           background-size: cover;
           background-repeat: no-repeat;
           background-position: center center;
@@ -94,14 +95,35 @@ export const Basic = withErrorBoundary(({ children }: { children: React.ReactNod
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentChain?.id, router.pathname])
-
+  const isIndex = useMemo(() => router.pathname === '/', [router.pathname])
   return (
-    <Container className="min-safe" $IsIndex={router.pathname === '/'}>
-      <Navigation />
-      <ContentWrapper>
-        {error ? <ErrorScreen errorType="application-error" /> : children}
-      </ContentWrapper>
-      <BottomPlaceholder />
-    </Container>
+    <div style={{ width: '100%', height: '100%', position: 'relative', verticalAlign: 'middle' }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        style={{
+          width: '100%',
+          height: '100vh',
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          display: 'none',
+        }}
+        width="100%"
+        height="100%"
+        src={bgUrl}
+        alt="IndexBanner"
+      />
+      <Container
+        style={{ position: 'absolute', left: 0, top: 0, width: '100%' }}
+        className="min-safe"
+        $IsIndex={isIndex}
+      >
+        <Navigation />
+        <ContentWrapper>
+          {error ? <ErrorScreen errorType="application-error" /> : children}
+        </ContentWrapper>
+        <BottomPlaceholder />
+      </Container>
+    </div>
   )
 })
