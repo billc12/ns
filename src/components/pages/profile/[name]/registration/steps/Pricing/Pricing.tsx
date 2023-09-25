@@ -1,6 +1,5 @@
 import type { BigNumber } from 'ethers'
-import Image from 'next/image'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import usePrevious from 'react-use/lib/usePrevious'
 import styled, { css } from 'styled-components'
@@ -8,6 +7,7 @@ import { useBalance } from 'wagmi'
 
 import {
   Button,
+  Dialog,
   Input as EInput,
   Field, // Heading,
   Helper,
@@ -20,18 +20,22 @@ import {
 } from '@ensdomains/thorin'
 
 import MoonpayLogo from '@app/assets/MoonpayLogo.svg'
-import UserAvatar from '@app/assets/default-avatar.png'
 import ToolTipSvg from '@app/assets/tooltip.svg'
 // import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
 import { PlusMinusControl } from '@app/components/@atoms/PlusMinusControl/Awns_PlusMinusControl'
 // import { RegistrationTimeComparisonBanner } from '@app/components/@atoms/RegistrationTimeComparisonBanner/RegistrationTimeComparisonBanner'
 import { Spacer } from '@app/components/@atoms/Spacer'
+import { AvatarClickType } from '@app/components/@molecules/ProfileEditor/Avatar/AvatarButton'
+import { AvatarViewManager } from '@app/components/@molecules/ProfileEditor/Avatar/AvatarViewManager'
 import { Card } from '@app/components/Card'
 import { ConnectButton } from '@app/components/ConnectButton'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
+import { useChainId } from '@app/hooks/useChainId'
 import { useContractAddress } from '@app/hooks/useContractAddress'
 import { useEstimateFullRegistration } from '@app/hooks/useEstimateRegistration'
 import { useNameDetails } from '@app/hooks/useNameDetails'
+import { useProfileEditorForm } from '@app/hooks/useProfileEditorForm'
+import useRegistrationReducer from '@app/hooks/useRegistrationReducer'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
 
 import FullInvoice from '../../FullInvoice'
@@ -603,19 +607,77 @@ const ButtonBox = styled.div`
   height: 100%;
 `
 const MAX_YEAR = 5
-const UpImage = ({ isPremium }: { isPremium: boolean }) => {
+const imgUrl = `/DefaultUser.png`
+const UpImage = ({ isPremium, name }: { isPremium: boolean; name: string }) => {
+  const [avatarSrc, setAvatarSrc] = useState<string | undefined>()
+  useEffect(() => {
+    const storage = localStorage.getItem(`avatar-src-${name}`)
+    if (storage) setAvatarSrc(storage)
+    if (avatarSrc) localStorage.setItem(`avatar-src-${name}`, avatarSrc)
+    else if (!avatarSrc) localStorage.removeItem(`avatar-src-${name}`)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [avatarSrc])
+  const { address } = useAccountSafely()
+  const chainId = useChainId()
+  const selected = { name, address: address!, chainId }
+  const { item } = useRegistrationReducer(selected)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [avatarFile, setAvatarFile] = useState<File | undefined>()
+  const [modalOption, setModalOption] = useState<AvatarClickType | null>(null)
+  const [modalOpen, setModalOpen] = useState(false)
+  const openInput = () => {
+    fileInputRef.current?.click()
+  }
+  const { trigger, setAvatar } = useProfileEditorForm(item.records)
   return (
     <Column>
-      <GrayRoundRow $p="15px">
+      <Dialog
+        onDismiss={() => setModalOpen(false)}
+        onClose={() => setModalOpen(false)}
+        variant="blank"
+        open={modalOpen}
+      >
+        <AvatarViewManager
+          name={name}
+          avatarFile={avatarFile}
+          handleCancel={() => setModalOpen(false)}
+          type={modalOption as AvatarClickType}
+          handleSubmit={(type: 'nft' | 'upload', uri: string, display?: string) => {
+            setAvatar(uri)
+            setAvatarSrc(display)
+            setModalOpen(false)
+            trigger()
+          }}
+        />
+      </Dialog>
+      <GrayRoundRow $p="15px" onClick={openInput}>
         <PremiumImgRound $premium={isPremium}>
-          <Image style={{ width: '100%', height: '100%' }} alt="default img" src={UserAvatar} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            style={{ width: '100%', height: '100%' }}
+            alt="default img"
+            src={avatarSrc || imgUrl}
+          />
         </PremiumImgRound>
       </GrayRoundRow>
-      <UpButton>
+      <UpButton onClick={openInput}>
         <InterText $size="14px" $weight={500}>
           + Upload image
         </InterText>
       </UpButton>
+      <input
+        type="file"
+        style={{ display: 'none' }}
+        accept="image/*"
+        ref={fileInputRef}
+        onChange={(e) => {
+          if (e.target.files?.[0]) {
+            setAvatarFile(e.target.files[0])
+            setModalOption('upload')
+            setModalOpen(true)
+          }
+        }}
+      />
     </Column>
   )
 }
@@ -719,7 +781,7 @@ const Pricing = ({
         </GrayRoundRow>
       </ContentStyle>
       <ContentStyle>
-        <UpImage isPremium={isPremium} />
+        <UpImage name={normalisedName} isPremium={isPremium} />
         <Column>
           <GrayRoundColumn>
             <CenterRow style={{ padding: '0 38px' }}>
