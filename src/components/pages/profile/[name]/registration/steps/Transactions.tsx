@@ -155,6 +155,7 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
   const commitTx = getLatestTransaction(commitKey)
   const registerTx = getLatestTransaction(registerKey)
   const [resetOpen, setResetOpen] = useState(false)
+  console.log('registerTx', registerTx)
 
   const commitTimestamp = commitTx?.stage === 'complete' ? commitTx?.finaliseTime : undefined
   const [commitComplete, setCommitComplete] = useState(
@@ -210,11 +211,11 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
     }
   }, [commitTx, makeCommitNameFlow])
 
-  useEffect(() => {
-    if (registerTx?.stage === 'complete') {
-      callback({ back: false })
-    }
-  }, [callback, registerTx?.stage])
+  // useEffect(() => {
+  //   if (registerTx?.stage === 'complete') {
+  //     callback({ back: false })
+  //   }
+  // }, [callback, registerTx])
 
   const NormalBackButton = useMemo(
     () => (
@@ -253,8 +254,6 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
       </Button>
     </ButtonBox>
   )
-  console.log('registerTx?.stage', registerTx)
-
   if (commitComplete) {
     if (registerTx?.stage === 'failed') {
       BackButton = ResetBackButton
@@ -274,8 +273,6 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
       )
     } else {
       BackButton = ResetBackButton
-      console.log('!registerTx', !registerTx)
-
       ActionButton = (
         <ButtonBox>
           <Button
