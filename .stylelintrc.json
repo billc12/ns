@@ -25,6 +25,7 @@
     "custom-property-pattern": null,
     "rule-empty-line-before": null,
     "keyframes-name-pattern": null,
-    "keyframe-block-no-duplicate-selectors": null
+    "keyframe-block-no-duplicate-selectors": null,
+    "no-descending-specificity": null
   }
 }
