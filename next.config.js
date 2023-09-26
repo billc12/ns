@@ -34,10 +34,6 @@ let nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/legacyFavourites',
-        destination: '/legacyfavourites',
-      },
-      {
         source: '/my/profile',
         destination: '/profile?connected=true',
       },
@@ -61,25 +57,36 @@ let nextConfig = {
         source: '/:name/expired-profile',
         destination: '/profile?name=:name&expired=true',
       },
+
+      {
+        source: '/legacyFavourites',
+        // destination: '/legacyfavourites',
+        destination: '/',
+      },
       {
         source: '/:name/import',
-        destination: '/import?name=:name',
+        // destination: '/import?name=:name',
+        destination: '/',
       },
       {
         source: '/tld/:tld',
-        destination: '/profile?name=:tld',
+        destination: '/',
+        // destination: '/profile?name=:tld',
       },
       {
         source: '/tld/:tld/register',
-        destination: '/register?name=:tld',
+        destination: '/',
+        // destination: '/register?name=:tld',
       },
       {
         source: '/tld/:tld/expired-profile',
-        destination: '/profile?name=:tld&expired=true',
+        destination: '/',
+        // destination: '/profile?name=:tld&expired=true',
       },
       {
         source: '/tld/:tld/import',
-        destination: '/import?name=:tld',
+        // destination: '/import?name=:tld',
+        destination: '/',
       },
     ]
   },
@@ -99,7 +106,7 @@ let nextConfig = {
               if (/\.yalc\/@ensdomains\/thorin/.test(excludePath)) {
                 return true
               }
-              if (/\.yalc\/@ensdomains\/ensjs/.test(excludePath)) { 
+              if (/\.yalc\/@ensdomains\/ensjs/.test(excludePath)) {
                 return true
               }
               return /node_modules/.test(excludePath)
