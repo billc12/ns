@@ -7,6 +7,7 @@ import { useMutation, useQueryClient, useSignTypedData } from 'wagmi'
 
 import { Button, Dialog, mq } from '@ensdomains/thorin'
 
+import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useChainName } from '@app/hooks/useChainName'
 
 import { useQueryKeys } from '../../../../utils/cacheKeyFactory'
@@ -55,7 +56,7 @@ const UploadComponent = ({
   const urlHash = useMemo(() => sha256(dataURLToBytes(dataURL)), [dataURL])
   const expiry = useMemo(() => `${Date.now() + 1000 * 60 * 60 * 24 * 7}`, [])
   const network = useChainName()
-
+  const { address } = useAccountSafely()
   const { signTypedDataAsync } = useSignTypedData({
     domain: {
       name: 'Ethereum Name Service',
@@ -78,15 +79,15 @@ const UploadComponent = ({
   })
 
   const { mutate: signAndUpload, isLoading } = useMutation(async () => {
-    let baseURL = process.env.NEXT_PUBLIC_AVUP_ENDPOINT || `https://euc.li`
+    let baseURL = process.env.NEXT_PUBLIC_AVUP_ENDPOINT || `https://awns-devapi.myclique.io/awns`
     if (network !== 'mainnet') {
       baseURL = `${baseURL}/${network}`
     }
     const endpoint = `${baseURL}/${name}`
 
-    const sig = await signTypedDataAsync()
+    const signature = await signTypedDataAsync()
     const fetched = (await fetch(endpoint, {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         'Content-Type': 'application/json',
@@ -94,7 +95,8 @@ const UploadComponent = ({
       body: JSON.stringify({
         expiry,
         dataURL,
-        sig,
+        signature,
+        address,
       }),
     }).then((res) => res.json())) as any
 
