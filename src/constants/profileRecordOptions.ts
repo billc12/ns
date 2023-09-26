@@ -99,7 +99,7 @@ export const sortValues: { [key: string]: { [key: string]: number } } = {
     return acc
   }, {}),
   address: coinsWithIcons.reduce<{ [key: string]: number }>((acc, key, index) => {
-    if (key === 'eth') acc[key] = 1
+    if (key === 'aw') acc[key] = 1
     else acc[key] = index + 300
     return acc
   }, {}),

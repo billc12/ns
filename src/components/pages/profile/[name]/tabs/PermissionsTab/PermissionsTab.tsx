@@ -40,7 +40,7 @@ export const PermissionsTab = ({ name, wrapperData, isCached: isBasicCached }: P
   const nameParts = name.split('.')
   const parentName = nameParts.slice(1).join('.')
 
-  const is2LDEth = nameParts.length === 2 && nameParts[1] === 'eth'
+  const is2LDEth = nameParts.length === 2 && nameParts[1] === 'aw'
   const isSubname = nameParts.length > 2
 
   const { wrapperData: parentWrapperData, isCachedData: isParentBasicCachedData } =

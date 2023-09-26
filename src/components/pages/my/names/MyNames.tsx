@@ -149,7 +149,7 @@ const MyNames = () => {
   const isNameDisabled = useCallback(
     (name: ReturnedName) => {
       if (mode !== 'select') return false
-      return name.parent?.name !== 'eth'
+      return name.parent?.name !== 'aw'
     },
     [mode],
   )

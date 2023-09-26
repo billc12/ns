@@ -28,7 +28,7 @@ const useDNSOwner = (name: string, valid: boolean | undefined) => {
           throw e
         }),
     {
-      enabled: ready && valid && !name?.endsWith('.eth') && name !== 'eth' && name !== '[root]',
+      enabled: ready && valid && !name?.endsWith('.aw') && name !== 'aw' && name !== '[root]',
     },
   )
 

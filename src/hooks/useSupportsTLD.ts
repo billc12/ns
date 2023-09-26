@@ -10,7 +10,7 @@ export const useSupportsTLD = (name = '') => {
     useQueryKeys().isSupportedTLD(tld),
     async () => {
       // if using "[root]", not really a valid TLD but return true for display purposes
-      if (tld === '[root]' || tld === 'eth') return true
+      if (tld === '[root]' || tld === 'aw') return true
       const isSupported = await isDnsSecEnabled(tld)
       return isSupported
     },

@@ -77,13 +77,13 @@ export const isBrowser = !!(
 export const checkDNSName = (name: string): boolean => {
   const labels = name?.split('.')
 
-  return !!labels && labels[labels.length - 1] !== 'eth'
+  return !!labels && labels[labels.length - 1] !== 'aw'
 }
 
 export const checkETH2LDFromName = (name: string) => {
   const labels = name.split('.')
   if (labels.length !== 2) return false
-  if (labels[1] !== 'eth') return false
+  if (labels[1] !== 'aw') return false
   return true
 }
 

@@ -23,7 +23,7 @@ export const NFTWithPlaceholder = ({
 } & Omit<ComponentProps<'div'>, 'ref'>) => {
   const { avatar } = useAvatar(name, network)
 
-  const isCompatible = !!(name && name.split('.').length === 2 && name.endsWith('.eth'))
+  const isCompatible = !!(name && name.split('.').length === 2 && name.endsWith('.aw'))
 
   if (!isCompatible) return null
 
