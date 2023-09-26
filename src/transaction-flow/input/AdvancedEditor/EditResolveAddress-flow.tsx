@@ -20,7 +20,7 @@ import { makeTransactionItem } from '@app/transaction-flow/transaction'
 import { TransactionDialogPassthrough } from '@app/transaction-flow/types'
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 
-type AddressRecord = {
+export type AddressRecord = {
   key: string
   coin: string
   addr: string
