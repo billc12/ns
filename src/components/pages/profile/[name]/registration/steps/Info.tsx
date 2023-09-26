@@ -134,7 +134,7 @@ const Info = ({ registrationData, nameDetails, callback, onProfileClick }: Props
   const show = false
   return (
     <StyledCard>
-      <PremiumTitle isPremium nameDetails={nameDetails} />
+      <PremiumTitle nameDetails={nameDetails} />
       <LineProgress curSelect={1} />
       <InterText $textColor="#000" $w={500}>
         Complete a transaction to begin the timer
@@ -166,7 +166,7 @@ const Info = ({ registrationData, nameDetails, callback, onProfileClick }: Props
   )
   return (
     <StyledCard>
-      <PremiumTitle isPremium nameDetails={nameDetails} />
+      <PremiumTitle nameDetails={nameDetails} />
       <LineProgress curSelect={1} />
       <Heading>{t('steps.info.heading')}</Heading>
       <Typography>{t('steps.info.subheading')}</Typography>

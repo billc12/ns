@@ -334,7 +334,7 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
           />
         </InnerDialog>
       </Dialog>
-      <PremiumTitle isPremium nameDetails={nameDetails} />
+      <PremiumTitle nameDetails={nameDetails} />
       <div style={{ marginTop: 70, marginBottom: 33 }}>
         <LineProgress curSelect={2} />
       </div>

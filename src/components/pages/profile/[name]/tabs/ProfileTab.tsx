@@ -301,7 +301,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
             <RowNameStyle>Addresses</RowNameStyle>
             <RowValueStyle>
               {parseUseAddress ? shortenAddress(parseUseAddress.addr) : '--'}
-              <CopyButton value={parseUseAddress.addr || ''} />
+              {parseUseAddress && <CopyButton value={parseUseAddress.addr || ''} />}
             </RowValueStyle>
 
             <RowNameStyle>Owner</RowNameStyle>
