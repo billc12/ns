@@ -96,11 +96,20 @@ const reducer = (state: RegistrationReducerData, action: RegistrationReducerActi
       break
     }
     case 'decreaseStep': {
-      item.stepIndex -= 1
+      if (item.queue[item.stepIndex - 1] === 'profile') {
+        item.stepIndex -= 2
+      } else {
+        item.stepIndex -= 1
+      }
       break
     }
     case 'increaseStep': {
-      item.stepIndex += 1
+      if (item.queue[item.stepIndex + 1] === 'profile') {
+        item.stepIndex += 2
+      } else {
+        item.stepIndex += 1
+      }
+
       break
     }
     case 'setPricingData': {
