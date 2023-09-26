@@ -42,7 +42,7 @@ export default function Page() {
   return (
     <>
       <Head>
-        <title>ENS - {t('notFound')}</title>
+        <title>AWNS - {t('notFound')}</title>
       </Head>
       <StyledLeadingHeading>
         <LogoAndLanguage>
