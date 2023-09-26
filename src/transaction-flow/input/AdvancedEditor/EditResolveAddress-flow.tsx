@@ -1,5 +1,5 @@
 import { isAddress } from '@ethersproject/address'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useQueryClient } from 'wagmi'
@@ -16,6 +16,7 @@ import {
 } from '@app/components/Awns/Dialog'
 import LabelInput from '@app/components/Awns/LabelInput'
 import { useNameDetails } from '@app/hooks/useNameDetails'
+import { makeTransactionItem } from '@app/transaction-flow/transaction'
 import { TransactionDialogPassthrough } from '@app/transaction-flow/types'
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 
@@ -26,6 +27,14 @@ type AddressRecord = {
 }
 type Data = {
   name: string
+}
+type RecordItem = {
+  key: string
+  value: string
+}
+
+type RecordOptions = {
+  coinTypes?: RecordItem[]
 }
 const InterText = styled(Typography)<{ $size?: string; $color?: string; $weight?: number }>`
   width: max-content;
@@ -40,12 +49,13 @@ export type Props = {
   data?: Data
   onDismiss?: () => void
 } & TransactionDialogPassthrough
-const EditResolveAddress = ({ data, onDismiss }: Props) => {
+const EditResolveAddress = ({ data, onDismiss, dispatch }: Props) => {
   const nameDetails = useNameDetails(data?.name || '')
   const { normalisedName, expiryDate, profile } = nameDetails
   const _addressArr = useMemo(() => {
     const address: AddressRecord[] = (profile?.records?.coinTypes as any[]) || []
-    return address.filter(({ addr }) => addr)
+    // filter is ETH
+    return address.filter(({ addr, coin }) => addr && coin === 'ETH')
   }, [profile?.records?.coinTypes])
   const [addrArr, setAddrArr] = useState([..._addressArr])
   const changeHandle = (item: AddressRecord) => {
@@ -54,7 +64,6 @@ const EditResolveAddress = ({ data, onDismiss }: Props) => {
     arr.splice(index, 1, item)
     setAddrArr(arr)
   }
-  const submitHandle = () => {}
   const { t } = useTranslation('profile')
   const queryClient = useQueryClient()
   const queryKeyGenerator = useQueryKeys().dogfood
@@ -93,12 +102,32 @@ const EditResolveAddress = ({ data, onDismiss }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addrArr])
   const isVerify = useMemo(() => errArr.some((i) => i), [errArr])
+  const records = useMemo(() => {
+    const coinTypes = addrArr.map(({ key, addr }) => ({ key, value: addr }))
+    return {
+      coinTypes,
+    } as RecordOptions
+  }, [addrArr])
+  const submitHandle = useCallback(() => {
+    if (isVerify) return null
+    dispatch({
+      name: 'setTransactions',
+      payload: [
+        makeTransactionItem('updateProfile', {
+          name: data?.name || '',
+          resolver: profile!.resolverAddress!,
+          records,
+        }),
+      ],
+    })
+    dispatch({ name: 'setFlowStage', payload: 'transaction' })
+  }, [data?.name, dispatch, isVerify, profile, records])
   return (
     <ContainerStyle>
       <NameInfo name={normalisedName} expiryDate={expiryDate} />
       <ContentStyle>
         {addrArr.map((item, i) => (
-          <>
+          <div key={`${item.key}-${item.addr}`}>
             <LabelInput
               value={item.addr}
               label="Connected Address"
@@ -107,7 +136,7 @@ const EditResolveAddress = ({ data, onDismiss }: Props) => {
             <InterText style={{ marginTop: 10 }} $size="12px" $color="rgb(197,47,27)">
               {errArr[i]}
             </InterText>
-          </>
+          </div>
         ))}
       </ContentStyle>
 

@@ -16,6 +16,7 @@ import { CopyButton } from '@app/components/Copy'
 import { ProfileSnippet } from '@app/components/ProfileSnippet'
 import { ProfileDetails } from '@app/components/pages/profile/ProfileDetails'
 import { useAbilities } from '@app/hooks/abilities/useAbilities'
+import { useHasGlobalError } from '@app/hooks/errors/useHasGlobalError'
 import { useChainId } from '@app/hooks/useChainId'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import useOwners from '@app/hooks/useOwners'
@@ -25,6 +26,7 @@ import useRegistrationDate from '@app/hooks/useRegistrationData'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
 import { shouldShowExtendWarning } from '@app/utils/abilities/shouldShowExtendWarning'
+import { emptyAddress } from '@app/utils/constants'
 // import { getSupportLink } from '@app/utils/supportLinks'
 import { shortenAddress, validateExpiry } from '@app/utils/utils'
 
@@ -255,7 +257,6 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
     }
     return true
   }, [breakpoints.sm])
-  console.log('nameDetails', nameDetails)
   const { prepareDataInput } = useTransactionFlow()
   const showSendNameInput = prepareDataInput('AwnsSendName')
   const handleSend = () => {
@@ -274,6 +275,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
   const handleEditResolveAddress = () => {
     showEditResolveAddressInput(`edit-resolve-address-${name}`, { name })
   }
+  const hasGlobalError = useHasGlobalError()
   return (
     <DetailsWrapper>
       <div
@@ -334,12 +336,12 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
               Set AWNS for this address
             </BtnSetAdd>
           )}
-          {/* 条件是否正确 */}
-          {nameDetails.profile?.address && (
+          {abilities.data.canEdit && nameDetails.profile?.resolverAddress !== emptyAddress && (
             <ButtonStyle
               colorStyle="background"
               onClick={handleEditResolveAddress}
               prefix={<LinkIcon />}
+              disabled={!(abilities.data.canEditRecords && !hasGlobalError)}
             >
               Set Address
             </ButtonStyle>
