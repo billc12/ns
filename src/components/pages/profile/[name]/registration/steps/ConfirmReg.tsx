@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
@@ -76,13 +77,30 @@ type Props = {
   callback: (data: { back: boolean }) => void
   onProfileClick: () => void
 }
-
+const FailedButton = ({ onClick, label }: { onClick: () => void; label: string }) => (
+  <ButtonBox>
+    <Button color="red" onClick={onClick}>
+      {label}
+    </Button>
+  </ButtonBox>
+)
+const ProgressButton = ({ onClick, label }: { onClick: () => void; label: string }) => (
+  <ButtonBox>
+    <Button colorStyle="accentSecondary" onClick={onClick}>
+      {label}
+    </Button>
+  </ButtonBox>
+)
 const ConfirmReg = ({ registrationData, nameDetails, callback, onProfileClick }: Props) => {
+  const { createTransactionFlow, getLatestTransaction, resumeTransactionFlow } =
+    useTransactionFlow()
   const { t } = useTranslation('register')
   const { normalisedName, priceData } = nameDetails
   const { address } = useAccount()
   const keySuffix = `${nameDetails.normalisedName}-${address}`
   const registerKey = `register-${keySuffix}`
+  const registerTx = getLatestTransaction(registerKey)
+
   const estimate = useEstimateFullRegistration({
     name: normalisedName,
     registrationData,
@@ -94,7 +112,7 @@ const ConfirmReg = ({ registrationData, nameDetails, callback, onProfileClick }:
     owner: address!,
     registrationData,
   })
-  const { createTransactionFlow } = useTransactionFlow()
+
   const makeRegisterNameFlow = () => {
     createTransactionFlow(registerKey, {
       transactions: [makeTransactionItem('registerName', registrationParams)],
@@ -103,6 +121,41 @@ const ConfirmReg = ({ registrationData, nameDetails, callback, onProfileClick }:
       resumeLink: `/register/${nameDetails.normalisedName}`,
     })
   }
+  const showRegisterTransaction = () => {
+    resumeTransactionFlow(registerKey)
+  }
+  useEffect(() => {
+    // Transaction successful
+    if (registerTx?.stage === 'complete') {
+      callback({ back: false })
+    }
+  }, [callback, registerTx?.stage])
+  const auctionBtn = useMemo(() => {
+    if (registerTx?.stage === 'failed') {
+      return (
+        <FailedButton
+          label={t('steps.transactions.transactionFailed')}
+          onClick={showRegisterTransaction}
+        />
+      )
+    }
+    if (registerTx?.stage === 'sent') {
+      return (
+        <ProgressButton
+          label={t('steps.transactions.transactionProgress')}
+          onClick={showRegisterTransaction}
+        />
+      )
+    }
+    return (
+      <ButtonBox>
+        <Button data-testid="next-button" onClick={makeRegisterNameFlow}>
+          Register
+        </Button>
+      </ButtonBox>
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [registerTx?.stage])
   return (
     <StyledCard>
       <PremiumTitle isPremium nameDetails={nameDetails} />
@@ -127,11 +180,7 @@ const ConfirmReg = ({ registrationData, nameDetails, callback, onProfileClick }:
             {t('action.back', { ns: 'common' })}
           </Button>
         </ButtonBox>
-        <ButtonBox>
-          <Button data-testid="next-button" onClick={makeRegisterNameFlow}>
-            Register
-          </Button>
-        </ButtonBox>
+        {auctionBtn}
       </ButtonContainer>
     </StyledCard>
   )

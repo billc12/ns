@@ -48,6 +48,7 @@ const SelectPrimaryName = dynamicHelper<SelectPrimaryNameProps>(
 )
 const ResetPrimaryName = dynamicHelper<ResetPrimaryNameProps>('ResetPrimaryName/ResetPrimaryName')
 const AdvancedEditor = dynamicHelper<AdvancedEditorProps>('AdvancedEditor/AdvancedEditor')
+const EditResolveAddress = dynamicHelper<AdvancedEditorProps>('AdvancedEditor/EditResolveAddress')
 const ProfileEditor = dynamicHelper<ProfileEditorProps>('ProfileEditor/ProfileEditor')
 const CreateSubname = dynamicHelper<CreateSubnameProps>('CreateSubname')
 const TransferProfile = dynamicHelper<TransferProfileProps>('TransferProfile/TransferProfile')
@@ -84,6 +85,7 @@ export const DataInputComponents = {
   DeleteSubnameNotParentWarning,
   AwnsSendName,
   AwnsExtendNames,
+  EditResolveAddress,
 }
 
 export type DataInputName = keyof typeof DataInputComponents
