@@ -98,16 +98,18 @@ export const Invoice = ({
           </Skeleton>
         </LineItem>
       ))}
-      <LineItem data-testid={`invoice-item-${items.length}`} key={discount?.label}>
-        <LeftTitle>{discount?.label}</LeftTitle>
-        <Skeleton loading={false}>
-          {/* <div data-testid={`invoice-item-${inx}-amount`}> */}
-          <RightTitle style={{ color: '#00B833' }}>{`${
-            discount && discount.discount * 100
-          }%`}</RightTitle>
-          {/* </div> */}
-        </Skeleton>
-      </LineItem>
+      {discount && (
+        <LineItem data-testid={`invoice-item-${items.length}`} key={discount?.label}>
+          <LeftTitle>{discount?.label}</LeftTitle>
+          <Skeleton loading={false}>
+            {/* <div data-testid={`invoice-item-${inx}-amount`}> */}
+            <RightTitle style={{ color: '#00B833' }}>{`${
+              discount && discount.discount * 100
+            }%`}</RightTitle>
+            {/* </div> */}
+          </Skeleton>
+        </LineItem>
+      )}
       {items.slice(1).map(({ label, value, bufferPercentage, color }, inx) => (
         <LineItem data-testid={`invoice-item-${inx}`} $color={color} key={label}>
           <LeftTitle>{label}</LeftTitle>

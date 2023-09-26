@@ -41,6 +41,7 @@ import { useBreakpoint } from '@app/utils/BreakpointProvider'
 import FullInvoice from '../../FullInvoice'
 import PremiumTitle from '../../PremiumTitle'
 import {
+  MAX_YEAR,
   MoonpayTransactionStatus,
   PaymentMethod,
   RegistrationReducerDataItem,
@@ -606,7 +607,6 @@ const ButtonBox = styled.div`
   width: 100%;
   height: 100%;
 `
-const MAX_YEAR = 5
 const imgUrl = `/DefaultUser.png`
 const UpImage = ({ isPremium, name }: { isPremium: boolean; name: string }) => {
   const [avatarSrc, setAvatarSrc] = useState<string | undefined>()
