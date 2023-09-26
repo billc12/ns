@@ -115,7 +115,9 @@ const ConfirmReg = ({ registrationData, nameDetails, callback, onProfileClick }:
 
   const makeRegisterNameFlow = () => {
     createTransactionFlow(registerKey, {
-      transactions: [makeTransactionItem('registerName', registrationParams)],
+      transactions: [
+        makeTransactionItem('registerName', { ...registrationParams, signature: '0x' }),
+      ],
       requiresManualCleanup: true,
       autoClose: true,
       resumeLink: `/register/${nameDetails.normalisedName}`,

@@ -52,5 +52,5 @@
     ]
   },
   "include": ["next-env.d.ts", "mdx.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["custom-test-env.js", "**/*.ignore.ts", "**/*.ignore.tsx"]
+  "exclude": ["custom-test-env.js", "**/*.ignore.ts", "**/*.ignore.tsx", "**/*.test.ts", "**/*.test.tsx", "deploy/*"]
 }

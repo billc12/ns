@@ -5,7 +5,7 @@ import type { TFunction } from 'react-i18next'
 import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
 import { calculateValueWithBuffer, secondsToYears } from '@app/utils/utils'
 
-type Data = BaseRegistrationParams & { name: string }
+type Data = BaseRegistrationParams & { name: string; signature: string }
 
 const displayItems = (
   { name, duration }: Data,
@@ -29,7 +29,7 @@ const displayItems = (
 ]
 
 const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) => {
-  const price = await ens.getPrice(data.name.split('.')[0], data.duration)
+  const price = await ens.getPrice(data.name.split('.')[0], data.duration, '0x')
   const value = price!.base.add(price!.premium)
   const valueWithBuffer = calculateValueWithBuffer(value)
 

@@ -57,6 +57,7 @@ const useEstimateRegistration = (
         ...data!,
         resolver,
         duration: 31557600,
+        signature: '0x',
         secret: 'placeholder',
       })
       return fetchTenderlyEstimate({

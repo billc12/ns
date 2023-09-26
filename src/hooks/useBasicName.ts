@@ -44,7 +44,7 @@ const getBatchData = (
       ens.getOwner.batch(name, { skipGraph }),
       ens.getWrapperData.batch(name),
       ens.getExpiry.batch(name),
-      ens.getPrice.batch(labels[0], yearsToSeconds(1), false),
+      ens.getPrice.batch(labels[0], yearsToSeconds(1), '0x', false),
     )
   }
 

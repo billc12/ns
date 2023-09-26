@@ -59,13 +59,14 @@ const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) =>
     return parts[0]
   })
 
-  const price = await ens.getPrice(labels, duration, false)
+  const price = await ens.getPrice(labels, duration, '0x', false)
   if (!price) throw new Error('No price found')
 
   const priceWithBuffer = calculateValueWithBuffer(price.base)
   return ens.renewNames.populateTransaction(names, {
     duration,
     value: priceWithBuffer,
+    signature: '0x',
     signer,
   })
 }

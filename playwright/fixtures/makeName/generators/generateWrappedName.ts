@@ -99,6 +99,7 @@ export const generateWrappedName =
         duration,
         secret,
         records,
+        signature: '0x',
         reverseRecord,
         resolver: _resolver,
         fuses: _fuses,

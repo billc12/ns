@@ -61,7 +61,7 @@ importers:
       '@metamask/inpage-provider': ^8.1.0
       '@metamask/mobile-provider': ^2.1.0
       '@metamask/post-message-stream': ^6.1.2
-      '@myclique/awnsjs': 0.0.2-alpha
+      '@myclique/awnsjs': 0.0.3-alpha
       '@next/bundle-analyzer': ^12.2.5
       '@next/swc-linux-x64-gnu': 12.1.4
       '@nomiclabs/hardhat-ethers': npm:hardhat-deploy-ethers@0.3.0-beta.13
@@ -205,7 +205,7 @@ importers:
       '@metamask/inpage-provider': 8.1.0
       '@metamask/mobile-provider': 2.1.0
       '@metamask/post-message-stream': 6.1.2
-      '@myclique/awnsjs': 0.0.2-alpha_4wk6sblqc5kfzwjkcabkhle2du
+      '@myclique/awnsjs': 0.0.3-alpha_4wk6sblqc5kfzwjkcabkhle2du
       '@rainbow-me/rainbowkit': 0.12.15_ids4vnpwyenrujupancx6kn4ci_uc36ezoirljpcbl3y5tca26rgq
       '@sentry/nextjs': 7.43.0_next@12.1.6+react@17.0.2
       '@svgr/webpack': 6.4.0
@@ -1989,7 +1989,7 @@ packages:
       rxjs: 6.6.7
       sha.js: 2.4.11
       stream-browserify: 3.0.0
-      util: 0.12.4
+      util: 0.12.5
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -3698,8 +3698,8 @@ packages:
     resolution: {integrity: sha512-eMk0b9ReBbV23xXU693TAIrLyeO5iTgBZGSJfpqriG8UkYvr/hC9u9pyMlAakDNHWmbhMZCDs6KQO0jzKD8OTw==}
     dev: false
 
-  /@myclique/awnsjs/0.0.2-alpha_4wk6sblqc5kfzwjkcabkhle2du:
-    resolution: {integrity: sha512-k0EpjJg5MhqryyPJckj0mFu+2YkoxpQ4AT+j7+rTZiHWcL4uniHLPnQmAkELA6BWQFGDzkxE0ABQ+wiVuAyx7g==}
+  /@myclique/awnsjs/0.0.3-alpha_4wk6sblqc5kfzwjkcabkhle2du:
+    resolution: {integrity: sha512-z7fboofnQlfIYKU1UOOr+XGBEDsd0hfgJIoUMnCvWH6vTg8HmSIFf0hfnai8qOKsCMhFBdvJ7bkkiL/LGd7m+Q==}
     peerDependencies:
       '@ethersproject/abi': ^5.6.4
       '@ethersproject/abstract-provider': ^5.7.0
@@ -18992,7 +18992,6 @@ packages:
       is-generator-function: 1.0.10
       is-typed-array: 1.1.9
       which-typed-array: 1.1.8
-    dev: true
 
   /utils-merge/1.0.1:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
@@ -19435,7 +19434,7 @@ packages:
     resolution: {integrity: sha512-IuXdAm65BQtPL4aI6LZJJOrKAs0SM5IK2Cqo2/lMNvVMT9Kssq6qOk68Uf7EBDH0rPuINi+ReLP+uH+0g3AnPA==}
     engines: {node: '>=8.0.0'}
     dependencies:
-      util: 0.12.4
+      util: 0.12.5
       web3-core-helpers: 1.7.4
       web3-providers-http: 1.7.4
       web3-providers-ipc: 1.7.4
@@ -19447,7 +19446,7 @@ packages:
     resolution: {integrity: sha512-2AoYCs3Owl5foWcf4uKPONyqFygSl9T54L8b581U16nsUirjhoTUGK/PBhMDVcLCmW4QQmcY5A8oPFpkQc1TTg==}
     engines: {node: '>=8.0.0'}
     dependencies:
-      util: 0.12.4
+      util: 0.12.5
       web3-core-helpers: 1.8.0
       web3-providers-http: 1.8.0
       web3-providers-ipc: 1.8.0

@@ -24,6 +24,7 @@ export const usePrice = (nameOrNames: string | string[], legacy?: boolean) => {
       getPrice(
         names.map((n) => n.split('.')[0]),
         yearsToSeconds(1),
+        '0x',
         legacy,
       ).then((d) => d || null),
     {
