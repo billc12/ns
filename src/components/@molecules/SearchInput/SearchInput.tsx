@@ -57,6 +57,10 @@ const SearchResultsContainer = styled.div<{
     &[data-error='true'] {
       border-color: ${theme.colors.red};
     }
+    @media (min-height: 800px) and (max-height: 1000px) {
+      position: initial;
+      margin-top: 20px;
+    }
 
     overflow: hidden;
 
@@ -298,7 +302,7 @@ export const SearchInput = ({
   }, [searchItem, extraItems])
 
   const handleFocusIn = useCallback(() => toggle(true), [toggle])
-  const handleFocusOut = useCallback(() => toggle(false), [toggle])
+  const handleFocusOut = useCallback(() => toggle(true), [toggle])
 
   const validateKey = useQueryKeys().validate
   const handleSearch = useCallback(() => {
