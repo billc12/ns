@@ -131,18 +131,6 @@ export const TransactionDialogManager = ({
       name: 'stopFlow',
     })
   }, [dispatch, selectedItem?.disableBackgroundClick, selectedItem?.currentFlowStage])
-  if (selectedItem?.input?.name === 'SendName') {
-    return (
-      <DialogStyle
-        title="Transfer AWNS"
-        variant="closable"
-        open={!!state.selectedKey}
-        onDismiss={onDismissDialog}
-      >
-        {InnerComponent}
-      </DialogStyle>
-    )
-  }
   return (
     <DialogStyle variant="closable" open={!!state.selectedKey} onDismiss={onDismissDialog}>
       {InnerComponent}

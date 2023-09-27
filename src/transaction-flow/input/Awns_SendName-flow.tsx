@@ -212,6 +212,7 @@ export const SendName = ({ data, dispatch, onDismiss }: Props) => {
         </SwitchBox>
       )} */}
       <ContainerStyle>
+        <Dialog.Heading title="Transfer AWNS" />
         <NameInfo name={name} expiryDate={nameDetails.expiryDate} />
         <ContentStyle>
           <Form onSubmit={handleSubmit(onSubmit)}>

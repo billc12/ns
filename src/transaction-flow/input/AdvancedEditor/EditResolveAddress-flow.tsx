@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useQueryClient } from 'wagmi'
 
-import { Typography } from '@ensdomains/thorin'
+import { Dialog, Typography } from '@ensdomains/thorin'
 
 import {
   AuctionButton,
@@ -124,6 +124,7 @@ const EditResolveAddress = ({ data, onDismiss, dispatch }: Props) => {
   }, [data?.name, dispatch, isVerify, profile, records])
   return (
     <ContainerStyle>
+      <Dialog.Heading title="Set Address AWNS" />
       <NameInfo name={normalisedName} expiryDate={expiryDate} />
       <ContentStyle>
         {addrArr.map((item, i) => (
