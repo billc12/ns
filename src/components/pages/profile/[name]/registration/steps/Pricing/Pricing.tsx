@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import usePrevious from 'react-use/lib/usePrevious'
 import styled, { css } from 'styled-components'
-import { useBalance } from 'wagmi'
+import { useBalance, useNetwork } from 'wagmi'
 
 import {
   Button,
@@ -759,6 +759,7 @@ const Pricing = ({
   const nameLength = beautifiedName.split('.')[0].length
   const { data } = useSignName(nameDetails.normalisedName)
   const isPremium = !!data?.isPremium
+  const { chain } = useNetwork()
   return (
     <StyledCard>
       <PremiumTitle nameDetails={nameDetails} />
@@ -796,7 +797,7 @@ const Pricing = ({
                 Chain
               </InterText>
               <InterText $color="#3F5170" $size="16px" $weight={500}>
-                Ethereum
+                {chain ? chain.name : '--'}
               </InterText>
             </CenterRow>
             <CenterRow style={{ padding: '0 38px' }}>

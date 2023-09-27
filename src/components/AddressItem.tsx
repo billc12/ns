@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+import { useNetwork } from 'wagmi'
 
 import { Button, Typography, mq } from '@ensdomains/thorin'
 
@@ -119,6 +120,7 @@ const ArrowRightIcon = styled.svg(
 )
 
 export const AddressItem = ({ AddressRow }: { AddressRow: ReturnedName }) => {
+  const { chain } = useNetwork()
   return (
     <>
       <AddressItemStyle>
@@ -127,7 +129,7 @@ export const AddressItem = ({ AddressRow }: { AddressRow: ReturnedName }) => {
           <AddressContent>
             <AddressNameStyle>
               {AddressRow.name}
-              <NetworkTagStyle>Ethereum</NetworkTagStyle>
+              <NetworkTagStyle>{chain?.name || 'Ethereum'} </NetworkTagStyle>
             </AddressNameStyle>
             <AddressTimeStyle>
               {/* {AddressRow.expiryDate?.toString()} */}

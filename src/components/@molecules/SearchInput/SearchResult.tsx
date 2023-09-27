@@ -6,6 +6,7 @@
 import { forwardRef, useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
+import { useNetwork } from 'wagmi'
 
 import { Avatar, Spinner, Tag, Typography } from '@ensdomains/thorin'
 
@@ -194,7 +195,7 @@ const AddressResultItem = ({ address }: { address: string }) => {
   const network = useChainId()
   const { avatar } = useAvatar(primary.data?.name, network)
   const zorb = useZorb(address, 'address')
-
+  const { chain } = useNetwork()
   return (
     <>
       <LeadingSearchItem>
@@ -202,7 +203,7 @@ const AddressResultItem = ({ address }: { address: string }) => {
           <Row>
             <InterText>{shortenAddress(address, undefined, 8, 6)}</InterText>
             <ChainRound>
-              <InterText $size="14px">Ethereum</InterText>
+              <InterText $size="14px">{chain?.name || 'Ethereum'}</InterText>
             </ChainRound>
           </Row>
           <InterText $size="14px" $color="#A7F46A">
@@ -395,7 +396,7 @@ const TextWrapper = styled.div(
 const PlaceholderResultItem = ({ input }: { input: string }) => {
   const zorb = useZorb('placeholder', 'name')
   const beautifiedName = useBeautifiedName(input)
-
+  const { chain } = useNetwork()
   return (
     <>
       <LeadingSearchItem>
@@ -403,7 +404,7 @@ const PlaceholderResultItem = ({ input }: { input: string }) => {
           <Row>
             <InterText>{beautifiedName}</InterText>
             <ChainRound>
-              <InterText $size="14px">Ethereum</InterText>
+              <InterText $size="14px">{chain?.name || 'Ethereum'} </InterText>
             </ChainRound>
           </Row>
           <InterText $size="14px" $color="#A7F46A">
@@ -439,6 +440,7 @@ const NameResultItem = forwardRef<HTMLDivElement, { name: string; $selected: boo
     // const { avatar } = useAvatar(name, network)
     // const zorb = useZorb(name, 'name')
     const { registrationStatus, isLoading, beautifiedName } = useBasicName(name)
+    const { chain } = useNetwork()
     return (
       <SearchItem
         data-testid="search-result-name"
@@ -452,7 +454,7 @@ const NameResultItem = forwardRef<HTMLDivElement, { name: string; $selected: boo
             <Row>
               <InterText>{beautifiedName}</InterText>
               <ChainRound>
-                <InterText $size="14px">Ethereum</InterText>
+                <InterText $size="14px"> {chain?.name || 'Ethereum'}</InterText>
               </ChainRound>
             </Row>
             {registrationStatus ? <AwnsStatusText status={registrationStatus} /> : '-- --'}

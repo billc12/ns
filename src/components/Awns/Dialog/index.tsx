@@ -1,6 +1,7 @@
 import Image from 'next/image'
 // import { useState } from 'react'
 import styled, { css } from 'styled-components'
+import { useNetwork } from 'wagmi'
 
 import { Button, Dialog, Typography, mq } from '@ensdomains/thorin'
 
@@ -164,6 +165,7 @@ export const ContentStyle = styled.div`
 `
 
 export const NameInfo = ({ name, expiryDate }: { name: string; expiryDate: Date | undefined }) => {
+  const { chain } = useNetwork()
   return (
     <InfoRound>
       <InfoImgRound>
@@ -175,7 +177,7 @@ export const NameInfo = ({ name, expiryDate }: { name: string; expiryDate: Date 
           <InterText $color="#3F5170" ellipsis>
             {name}
           </InterText>
-          <ChainRound>Ethereum</ChainRound>
+          <ChainRound>{chain?.name || 'Ethereum'}</ChainRound>
           {expiryDate && (
             <InterText $size="14px" $weight={500} $color="#3F5170">
               Expires {formatDateString(expiryDate)}
