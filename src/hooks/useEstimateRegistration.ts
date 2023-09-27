@@ -14,6 +14,7 @@ import { useEns } from '@app/utils/EnsProvider'
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 import { fetchTenderlyEstimate } from '@app/utils/tenderly'
 
+import { fetchedGetSignName } from './names/useSignName'
 import { useAccountSafely } from './useAccountSafely'
 import { useChainId } from './useChainId'
 import useGasPrice from './useGasPrice'
@@ -52,12 +53,16 @@ const useEstimateRegistration = (
     queryKeys.estimateRegistration(data),
     async () => {
       const resolver = await contracts?.getPublicResolver()
-      if (!resolver) return null
+      if (!data?.name) return null
+
+      const signName = await fetchedGetSignName(data.name.toString())
+
+      if (!resolver || !signName) return null
       const registrationTuple = makeRegistrationData({
         ...data!,
         resolver,
         duration: 31557600,
-        signature: '0x',
+        signature: signName || '0x',
         secret: 'placeholder',
       })
       return fetchTenderlyEstimate({

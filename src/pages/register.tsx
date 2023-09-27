@@ -19,6 +19,7 @@ export default function Page() {
   const chainId = useChainId()
 
   const nameDetails = useNameDetails(name, true)
+  console.log('🚀 ~ file: register.tsx:22 ~ Page ~ nameDetails:', nameDetails)
   const { isLoading: detailsLoading, registrationStatus } = nameDetails
 
   const isLoading = detailsLoading || initial

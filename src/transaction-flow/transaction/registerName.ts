@@ -29,7 +29,7 @@ const displayItems = (
 ]
 
 const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) => {
-  const price = await ens.getPrice(data.name.split('.')[0], data.duration, '0x')
+  const price = await ens.getPrice(data.name.split('.')[0], data.duration, data.signature || '0x')
   const value = price!.base.add(price!.premium)
   const valueWithBuffer = calculateValueWithBuffer(value)
 

@@ -4,8 +4,12 @@ import { useEns } from '@app/utils/EnsProvider'
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 import { yearsToSeconds } from '@app/utils/utils'
 
+import useSignName from './names/useSignName'
+
 export const usePrice = (nameOrNames: string | string[], years = 1, legacy?: boolean) => {
   const { ready, getPrice } = useEns()
+  const { data: signName } = useSignName(nameOrNames.toString())
+
   const names = Array.isArray(nameOrNames) ? nameOrNames : [nameOrNames]
   const type = legacy ? 'legacy' : 'new'
   const {
@@ -24,11 +28,11 @@ export const usePrice = (nameOrNames: string | string[], years = 1, legacy?: boo
       getPrice(
         names.map((n) => n.split('.')[0]),
         yearsToSeconds(1),
-        '0x',
+        signName?.sign || '0x',
         legacy,
       ).then((d) => d || null),
     {
-      enabled: !!(ready && nameOrNames && nameOrNames.length > 0),
+      enabled: !!(ready && nameOrNames && nameOrNames.length > 0 && signName?.sign),
     },
   )
 

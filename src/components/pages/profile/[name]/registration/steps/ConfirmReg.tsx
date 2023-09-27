@@ -8,6 +8,7 @@ import { Button, Typography, mq } from '@ensdomains/thorin'
 import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
 import { InterText } from '@app/components/Awns_Header'
 import { Card } from '@app/components/Card'
+import useSignName from '@app/hooks/names/useSignName'
 import { useEstimateFullRegistration } from '@app/hooks/useEstimateRegistration'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import useRegistrationParams from '@app/hooks/useRegistrationParams'
@@ -113,10 +114,15 @@ const ConfirmReg = ({ registrationData, nameDetails, callback, onProfileClick }:
     registrationData,
   })
 
+  const { data: signatureName } = useSignName(nameDetails.normalisedName)
+
   const makeRegisterNameFlow = () => {
     createTransactionFlow(registerKey, {
       transactions: [
-        makeTransactionItem('registerName', { ...registrationParams, signature: '0x' }),
+        makeTransactionItem('registerName', {
+          ...registrationParams,
+          signature: signatureName?.sign || '0x',
+        }),
       ],
       requiresManualCleanup: true,
       autoClose: true,

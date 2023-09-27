@@ -11,6 +11,7 @@ import { isLabelTooLong, yearsToSeconds } from '@app/utils/utils'
 
 import { useGlobalErrorFunc } from './errors/useGlobalErrorFunc'
 import { usePccExpired } from './fuses/usePccExpired'
+import { fetchedGetSignName } from './names/useSignName'
 import { useContractAddress } from './useContractAddress'
 import useCurrentBlockTimestamp from './useCurrentBlockTimestamp'
 import { useSupportsTLD } from './useSupportsTLD'
@@ -24,7 +25,7 @@ type BatchReturn = [] | BaseBatchReturn | NormalBatchReturn | ETH2LDBatchReturn 
 
 const EXPIRY_LIVE_WATCH_TIME = 1_000 * 60 * 5 // 5 minutes
 
-const getBatchData = (
+const getBatchData = async (
   name: string,
   validation: any,
   ens: ENS,
@@ -35,16 +36,24 @@ const getBatchData = (
     return Promise.all([ens.getOwner('', { contract: 'registry' })])
   }
 
+  const signName = await fetchedGetSignName(name)
+
   const labels = name.split('.')
   if (validation.isETH && validation.is2LD) {
     if (validation.isShort) {
       return Promise.resolve([])
     }
+    console.log(
+      'ens.getPrice',
+      labels,
+      signName,
+      (await ens.getPrice(labels[0], yearsToSeconds(1), signName))?.base.toString(),
+    )
     return ens.batch(
       ens.getOwner.batch(name, { skipGraph }),
       ens.getWrapperData.batch(name),
       ens.getExpiry.batch(name),
-      ens.getPrice.batch(labels[0], yearsToSeconds(1), '0x', false),
+      ens.getPrice.batch(labels[0], yearsToSeconds(1), signName || '0x', false),
     )
   }
 

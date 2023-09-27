@@ -5,7 +5,7 @@ import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 type Result = { data: string }
 const BASE_URL = `https://awns-devapi.myclique.io/awns/sign/name`
 
-const fetched = async (n: string) => {
+export const fetchedGetSignName = async (n: string) => {
   const response = await fetch(`${BASE_URL}?name=${n}`).then((res) => res.json<Result>())
   return response.data
 }
@@ -16,7 +16,7 @@ const useSignName = (name: string) => {
     queryKey,
     async () => {
       try {
-        const result = await fetched(name)
+        const result = await fetchedGetSignName(name)
         return {
           sign: result,
           isPremium: result === '0x',

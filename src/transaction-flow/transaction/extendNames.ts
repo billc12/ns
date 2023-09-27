@@ -2,6 +2,7 @@ import type { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
 import type { JsonRpcSigner } from '@ethersproject/providers'
 import type { TFunction } from 'react-i18next'
 
+import { fetchedGetSignName } from '@app/hooks/names/useSignName'
 import { HelperProps, PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
 import { makeDisplay } from '@app/utils/currency'
 
@@ -59,14 +60,16 @@ const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) =>
     return parts[0]
   })
 
-  const price = await ens.getPrice(labels, duration, '0x', false)
+  const signName = await fetchedGetSignName(names.toString())
+
+  const price = await ens.getPrice(labels, duration, signName || '0x', false)
   if (!price) throw new Error('No price found')
 
   const priceWithBuffer = calculateValueWithBuffer(price.base)
   return ens.renewNames.populateTransaction(names, {
     duration,
     value: priceWithBuffer,
-    signature: '0x',
+    signature: signName || '0x',
     signer,
   })
 }
