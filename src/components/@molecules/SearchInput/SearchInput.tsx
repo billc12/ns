@@ -302,7 +302,7 @@ export const SearchInput = ({
   }, [searchItem, extraItems])
 
   const handleFocusIn = useCallback(() => toggle(true), [toggle])
-  const handleFocusOut = useCallback(() => toggle(true), [toggle])
+  const handleFocusOut = useCallback(() => toggle(false), [toggle])
 
   const validateKey = useQueryKeys().validate
   const handleSearch = useCallback(() => {
