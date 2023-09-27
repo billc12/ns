@@ -100,7 +100,7 @@ const UploadComponent = ({
       }),
     }).then((res) => res.json())) as any
 
-    if (fetched.message === 'uploaded') {
+    if (fetched.msg === 'success' && fetched.code === 200) {
       queryClient.invalidateQueries(queryKeys)
       return handleSubmit('upload', endpoint, dataURL)
     }

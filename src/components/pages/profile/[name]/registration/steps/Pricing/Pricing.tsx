@@ -609,13 +609,15 @@ const ButtonBox = styled.div`
   height: 100%;
 `
 const imgUrl = `/DefaultUser.png`
+const setLocalStorage = (src: string | undefined, name: string) => {
+  if (src) localStorage.setItem(`avatar-src-${name}`, src)
+  else if (!src) localStorage.removeItem(`avatar-src-${name}`)
+}
 const UpImage = ({ isPremium, name }: { isPremium: boolean; name: string }) => {
   const [avatarSrc, setAvatarSrc] = useState<string | undefined>()
   useEffect(() => {
     const storage = localStorage.getItem(`avatar-src-${name}`)
     if (storage) setAvatarSrc(storage)
-    if (avatarSrc) localStorage.setItem(`avatar-src-${name}`, avatarSrc)
-    else if (!avatarSrc) localStorage.removeItem(`avatar-src-${name}`)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [avatarSrc])
   const { address } = useAccountSafely()
@@ -645,7 +647,10 @@ const UpImage = ({ isPremium, name }: { isPremium: boolean; name: string }) => {
           type={modalOption as AvatarClickType}
           handleSubmit={(type: 'nft' | 'upload', uri: string, display?: string) => {
             setAvatar(uri)
-            setAvatarSrc(display)
+            setAvatarSrc(() => {
+              setLocalStorage(display, name)
+              return display
+            })
             setModalOpen(false)
             trigger()
           }}

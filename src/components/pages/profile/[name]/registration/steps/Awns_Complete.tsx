@@ -1,7 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
 import { ETHRegistrarController__factory } from '@myclique/awnsjs/generated/factories/ETHRegistrarController__factory'
 import dynamic from 'next/dynamic'
-import Image from 'next/image'
 import React, { useEffect, useMemo, useState } from 'react'
 import type ConfettiT from 'react-confetti'
 import { useTranslation } from 'react-i18next'
@@ -53,7 +52,7 @@ const Confetti = dynamic(() =>
   import('react-confetti').then((mod) => mod.default as typeof ConfettiT),
 )
 
-const useEthInvoice = (
+export const useEthInvoice = (
   name: string,
   isMoonpayFlow: boolean,
 ): { InvoiceFilled?: React.ReactNode; avatarSrc?: string } => {
@@ -182,7 +181,7 @@ const Complete = ({
   const { width, height } = useWindowSize()
   console.log('beautifiedName', beautifiedName)
   console.log('isMoonpayFlow', isMoonpayFlow)
-
+  const { avatarSrc } = useEthInvoice(name, false)
   return (
     <StyledCard>
       <HeadStyle>
@@ -193,7 +192,12 @@ const Complete = ({
       </CenterBox>
       <Round>
         <UserImg>
-          <Image src={UserAvatar} style={{ width: '100%', height: '100%' }} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={avatarSrc || UserAvatar.src}
+            style={{ width: '100%', height: '100%' }}
+            alt="UserAvatar"
+          />
         </UserImg>
         <PositionImg>
           <HeadTitle $color="#fff">{name}</HeadTitle>
