@@ -93,24 +93,24 @@ const FullInvoice = ({
       />
     </InvoiceContainer>
   )
-  return (
-    <InvoiceContainer>
-      <OptionBar>
-        <GasDisplay gasPrice={gasPrice} />
-        <CurrencyToggle
-          size="small"
-          checked={userConfig.currency === 'fiat'}
-          onChange={(e) => setCurrency(e.target.checked ? 'fiat' : 'eth')}
-        />
-      </OptionBar>
-      <Invoice
-        discount={discountInvoiceItems}
-        items={invoiceItems}
-        unit={currencyDisplay}
-        totalLabel={t('invoice.total')}
-      />
-    </InvoiceContainer>
-  )
+  // return (
+  //   <InvoiceContainer>
+  //     <OptionBar>
+  //       <GasDisplay gasPrice={gasPrice} />
+  //       <CurrencyToggle
+  //         size="small"
+  //         checked={userConfig.currency === 'fiat'}
+  //         onChange={(e) => setCurrency(e.target.checked ? 'fiat' : 'eth')}
+  //       />
+  //     </OptionBar>
+  //     <Invoice
+  //       discount={discountInvoiceItems}
+  //       items={invoiceItems}
+  //       unit={currencyDisplay}
+  //       totalLabel={t('invoice.total')}
+  //     />
+  //   </InvoiceContainer>
+  // )
 }
 
 export default FullInvoice

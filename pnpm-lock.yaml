@@ -61,7 +61,7 @@ importers:
       '@metamask/inpage-provider': ^8.1.0
       '@metamask/mobile-provider': ^2.1.0
       '@metamask/post-message-stream': ^6.1.2
-      '@myclique/awnsjs': 0.0.3-alpha
+      '@myclique/awnsjs': 0.0.37-alpha
       '@next/bundle-analyzer': ^12.2.5
       '@next/swc-linux-x64-gnu': 12.1.4
       '@nomiclabs/hardhat-ethers': npm:hardhat-deploy-ethers@0.3.0-beta.13
@@ -205,7 +205,7 @@ importers:
       '@metamask/inpage-provider': 8.1.0
       '@metamask/mobile-provider': 2.1.0
       '@metamask/post-message-stream': 6.1.2
-      '@myclique/awnsjs': 0.0.3-alpha_4wk6sblqc5kfzwjkcabkhle2du
+      '@myclique/awnsjs': 0.0.37-alpha_4wk6sblqc5kfzwjkcabkhle2du
       '@rainbow-me/rainbowkit': 0.12.15_ids4vnpwyenrujupancx6kn4ci_uc36ezoirljpcbl3y5tca26rgq
       '@sentry/nextjs': 7.43.0_next@12.1.6+react@17.0.2
       '@svgr/webpack': 6.4.0
@@ -3698,8 +3698,8 @@ packages:
     resolution: {integrity: sha512-eMk0b9ReBbV23xXU693TAIrLyeO5iTgBZGSJfpqriG8UkYvr/hC9u9pyMlAakDNHWmbhMZCDs6KQO0jzKD8OTw==}
     dev: false
 
-  /@myclique/awnsjs/0.0.3-alpha_4wk6sblqc5kfzwjkcabkhle2du:
-    resolution: {integrity: sha512-z7fboofnQlfIYKU1UOOr+XGBEDsd0hfgJIoUMnCvWH6vTg8HmSIFf0hfnai8qOKsCMhFBdvJ7bkkiL/LGd7m+Q==}
+  /@myclique/awnsjs/0.0.37-alpha_4wk6sblqc5kfzwjkcabkhle2du:
+    resolution: {integrity: sha512-81A9j3HaIpsmW+aiD5139dzmWtvjhxcc7subyXYZln8MrLuNpA3a0yZCNQ12NOIQe5NNGlE3aDLoDxOsp5WPRg==}
     peerDependencies:
       '@ethersproject/abi': ^5.6.4
       '@ethersproject/abstract-provider': ^5.7.0

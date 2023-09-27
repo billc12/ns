@@ -7,8 +7,7 @@ import {
   AlertSVG,
   Button,
   CountdownCircle,
-  Dialog,
-  Heading,
+  Dialog, // Heading,
   Spinner,
   Typography,
   mq,
@@ -357,43 +356,43 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
       </ButtonContainer>
     </StyledCard>
   )
-  return (
-    <StyledCard>
-      <Dialog variant="blank" open={resetOpen} onDismiss={() => setResetOpen(false)}>
-        <Dialog.CloseButton onClick={() => setResetOpen(false)} />
-        <InnerDialog>
-          <DialogHeading>
-            <div>
-              <AlertSVG />
-            </div>
-            <DialogTitle>{t('steps.cancelRegistration.heading')}</DialogTitle>
-          </DialogHeading>
-          <DialogContent>{t('steps.cancelRegistration.contentOne')}</DialogContent>
-          <DialogContent>{t('steps.cancelRegistration.contentTwo')}</DialogContent>
-          <Dialog.Footer
-            trailing={
-              <Button onClick={resetTransactions} colorStyle="redSecondary">
-                {t('steps.cancelRegistration.footer')}
-              </Button>
-            }
-          />
-        </InnerDialog>
-      </Dialog>
-      <Heading>{t('steps.transactions.heading')}</Heading>
-      <StyledCountdown
-        countdownSeconds={60}
-        disabled={!commitTimestamp}
-        startTimestamp={commitTimestamp}
-        size="large"
-        callback={() => setCommitComplete(true)}
-      />
-      <Typography>{t('steps.transactions.subheading')}</Typography>
-      <ButtonContainer>
-        {BackButton}
-        {ActionButton}
-      </ButtonContainer>
-    </StyledCard>
-  )
+  // return (
+  //   <StyledCard>
+  //     <Dialog variant="blank" open={resetOpen} onDismiss={() => setResetOpen(false)}>
+  //       <Dialog.CloseButton onClick={() => setResetOpen(false)} />
+  //       <InnerDialog>
+  //         <DialogHeading>
+  //           <div>
+  //             <AlertSVG />
+  //           </div>
+  //           <DialogTitle>{t('steps.cancelRegistration.heading')}</DialogTitle>
+  //         </DialogHeading>
+  //         <DialogContent>{t('steps.cancelRegistration.contentOne')}</DialogContent>
+  //         <DialogContent>{t('steps.cancelRegistration.contentTwo')}</DialogContent>
+  //         <Dialog.Footer
+  //           trailing={
+  //             <Button onClick={resetTransactions} colorStyle="redSecondary">
+  //               {t('steps.cancelRegistration.footer')}
+  //             </Button>
+  //           }
+  //         />
+  //       </InnerDialog>
+  //     </Dialog>
+  //     <Heading>{t('steps.transactions.heading')}</Heading>
+  //     <StyledCountdown
+  //       countdownSeconds={60}
+  //       disabled={!commitTimestamp}
+  //       startTimestamp={commitTimestamp}
+  //       size="large"
+  //       callback={() => setCommitComplete(true)}
+  //     />
+  //     <Typography>{t('steps.transactions.subheading')}</Typography>
+  //     <ButtonContainer>
+  //       {BackButton}
+  //       {ActionButton}
+  //     </ButtonContainer>
+  //   </StyledCard>
+  // )
 }
 
 export default Transactions
