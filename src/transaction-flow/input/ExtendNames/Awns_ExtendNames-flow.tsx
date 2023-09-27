@@ -278,7 +278,7 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
       : {
           disabled: !!estimateGasLimitError,
           onClick: () => {
-            if (!totalRentFee) return
+            if (!totalYearlyFee) return
             dispatch({
               name: 'setTransactions',
               payload: transactions,
