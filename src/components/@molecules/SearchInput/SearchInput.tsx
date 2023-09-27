@@ -57,7 +57,7 @@ const SearchResultsContainer = styled.div<{
     &[data-error='true'] {
       border-color: ${theme.colors.red};
     }
-    @media (min-height: 800px) and (max-height: 1000px) {
+    @media (min-height: 500px) and (max-height: 1100px) and (min-width: 700px) {
       position: initial;
       margin-top: 20px;
     }
