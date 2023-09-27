@@ -243,8 +243,8 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
     },
   ]
   const discountInvoiceItems = useMemo(
-    () => ({ label: t('invoice.discount', { years }), discount: YEAR_DISCOUNT[years - 1] }),
-    [t, years],
+    () => ({ label: `${years} Year Discount`, discount: YEAR_DISCOUNT[years - 1] }),
+    [years],
   )
   const title = t('input.extendNames.title', { count: names.length })
 
