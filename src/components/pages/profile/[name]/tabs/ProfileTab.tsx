@@ -31,6 +31,8 @@ import { emptyAddress } from '@app/utils/constants'
 // import { getSupportLink } from '@app/utils/supportLinks'
 import { shortenAddress, validateExpiry } from '@app/utils/utils'
 
+import { useEthInvoice } from '../registration/steps/Awns_Complete'
+
 const DetailsWrapper = styled.div(
   ({ theme }) => css`
     display: flex;
@@ -280,6 +282,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
   const parseUseAddress: AddressRecord = nameDetails.profile?.records.coinTypes?.find(
     ({ coin }) => coin === 'ETH',
   ) as any
+  const { avatarSrc } = useEthInvoice(normalisedName, false)
   return (
     <DetailsWrapper>
       <div
@@ -295,7 +298,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
           }}
         >
           <StyleBg>
-            <StyledImg src={TestImg.src} />
+            <StyledImg src={avatarSrc || TestImg.src} />
           </StyleBg>
           <ContentStyled>
             <RowNameStyle>Addresses</RowNameStyle>

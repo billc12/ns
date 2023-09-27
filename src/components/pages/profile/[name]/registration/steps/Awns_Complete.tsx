@@ -1,7 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
 import { ETHRegistrarController__factory } from '@myclique/awnsjs/generated/factories/ETHRegistrarController__factory'
 import dynamic from 'next/dynamic'
-import Image from 'next/image'
 import React, { useEffect, useMemo, useState } from 'react'
 import type ConfettiT from 'react-confetti'
 import { useTranslation } from 'react-i18next'
@@ -13,10 +12,14 @@ import { Button, Typography, mq } from '@ensdomains/thorin'
 import UserAvatar from '@app/assets/TestImage.png'
 import { Invoice } from '@app/components/@atoms/Invoice/Invoice'
 import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
+import { InterText } from '@app/components/@molecules/SearchInput/SearchResult'
 import { Card } from '@app/components/Card'
+import useSignName from '@app/hooks/names/useSignName'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import useWindowSize from '@app/hooks/useWindowSize'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
+
+import { BigPremiumText } from '../PremiumTitle'
 
 const StyledCard = styled(Card)(
   ({ theme }) => css`
@@ -53,7 +56,7 @@ const Confetti = dynamic(() =>
   import('react-confetti').then((mod) => mod.default as typeof ConfettiT),
 )
 
-const useEthInvoice = (
+export const useEthInvoice = (
   name: string,
   isMoonpayFlow: boolean,
 ): { InvoiceFilled?: React.ReactNode; avatarSrc?: string } => {
@@ -173,15 +176,14 @@ const PositionImg = styled.div`
   top: 37px;
   transform: translateX(-50%);
 `
-const Complete = ({
-  nameDetails: { normalisedName: name, beautifiedName },
-  callback,
-  isMoonpayFlow,
-}: Props) => {
+const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
+  const { normalisedName: name, beautifiedName } = nameDetails
   const { t } = useTranslation('register')
   const { width, height } = useWindowSize()
   console.log('beautifiedName', beautifiedName)
   console.log('isMoonpayFlow', isMoonpayFlow)
+  const { avatarSrc } = useEthInvoice(name, false)
+  const { data } = useSignName(name)
 
   return (
     <StyledCard>
@@ -189,11 +191,22 @@ const Complete = ({
         <HeadTitle>{`Congratulations! Here's your AWNS`}</HeadTitle>
       </HeadStyle>
       <CenterBox>
-        <HeadTitle>{name}</HeadTitle>
+        {data?.isPremium ? (
+          <BigPremiumText>{name}</BigPremiumText>
+        ) : (
+          <InterText $color="#3F5170" $size="16px" $weight={500}>
+            {name}
+          </InterText>
+        )}
       </CenterBox>
       <Round>
         <UserImg>
-          <Image src={UserAvatar} style={{ width: '100%', height: '100%' }} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={avatarSrc || UserAvatar.src}
+            style={{ width: '100%', height: '100%' }}
+            alt="UserAvatar"
+          />
         </UserImg>
         <PositionImg>
           <HeadTitle $color="#fff">{name}</HeadTitle>

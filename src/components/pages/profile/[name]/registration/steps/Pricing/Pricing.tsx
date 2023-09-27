@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import usePrevious from 'react-use/lib/usePrevious'
 import styled, { css } from 'styled-components'
-import { useBalance } from 'wagmi'
+import { useBalance, useNetwork } from 'wagmi'
 
 import {
   Button,
@@ -505,7 +505,7 @@ const PremiumText = styled.div`
 //   font-size: 24px;
 //   font-weight: 800;
 // `
-const SmallPremiumText = styled(PremiumText)`
+export const SmallPremiumText = styled(PremiumText)`
   font-size: 16px;
   font-weight: 500;
 `
@@ -609,13 +609,15 @@ const ButtonBox = styled.div`
   height: 100%;
 `
 const imgUrl = `/DefaultUser.png`
+const setLocalStorage = (src: string | undefined, name: string) => {
+  if (src) localStorage.setItem(`avatar-src-${name}`, src)
+  else if (!src) localStorage.removeItem(`avatar-src-${name}`)
+}
 const UpImage = ({ isPremium, name }: { isPremium: boolean; name: string }) => {
   const [avatarSrc, setAvatarSrc] = useState<string | undefined>()
   useEffect(() => {
     const storage = localStorage.getItem(`avatar-src-${name}`)
     if (storage) setAvatarSrc(storage)
-    if (avatarSrc) localStorage.setItem(`avatar-src-${name}`, avatarSrc)
-    else if (!avatarSrc) localStorage.removeItem(`avatar-src-${name}`)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [avatarSrc])
   const { address } = useAccountSafely()
@@ -645,7 +647,10 @@ const UpImage = ({ isPremium, name }: { isPremium: boolean; name: string }) => {
           type={modalOption as AvatarClickType}
           handleSubmit={(type: 'nft' | 'upload', uri: string, display?: string) => {
             setAvatar(uri)
-            setAvatarSrc(display)
+            setAvatarSrc(() => {
+              setLocalStorage(display, name)
+              return display
+            })
             setModalOpen(false)
             trigger()
           }}
@@ -754,6 +759,7 @@ const Pricing = ({
   const nameLength = beautifiedName.split('.')[0].length
   const { data } = useSignName(nameDetails.normalisedName)
   const isPremium = !!data?.isPremium
+  const { chain } = useNetwork()
   return (
     <StyledCard>
       <PremiumTitle nameDetails={nameDetails} />
@@ -791,7 +797,7 @@ const Pricing = ({
                 Chain
               </InterText>
               <InterText $color="#3F5170" $size="16px" $weight={500}>
-                Ethereum
+                {chain ? chain.name : '--'}
               </InterText>
             </CenterRow>
             <CenterRow style={{ padding: '0 38px' }}>

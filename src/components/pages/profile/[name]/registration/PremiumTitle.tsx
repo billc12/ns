@@ -32,7 +32,7 @@ const HeadName = styled(Row)`
   padding: 23px 30px;
   border-bottom: 1px solid #dce6ed;
 `
-const BigPremiumText = styled(PremiumText)`
+export const BigPremiumText = styled(PremiumText)`
   font-size: 24px;
   font-weight: 800;
 `
