@@ -66,7 +66,7 @@ const TagRowStyle = styled.div`
 `
 
 export const DialogStyle = styled(Dialog)`
-  width: 480px;
+  width: max-content;
   border-radius: 10px;
   border: 1px solid #d4d7e2;
   background: #fff;
@@ -82,10 +82,16 @@ export const DialogStyle = styled(Dialog)`
       font-weight: 500;
       line-height: 24px;
     }
+    & > div:nth-child(2) > div {
+      color: #3f5170;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 24px;
+    }
   }
 
-  & button {
-    top: inherit;
+  & > div > button {
+    top: 2.5rem;
     & svg {
       width: 20px;
       height: 20px;

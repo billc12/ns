@@ -54,6 +54,7 @@ const DisplayItemLabel = styled(Typography)(
   ({ theme }) => css`
     color: ${theme.colors.textSecondary};
     justify-self: flex-start;
+    color: #8d8ea5;
   `,
 )
 
@@ -62,6 +63,9 @@ const AvatarWrapper = styled.div(
     width: ${theme.space['7']};
     min-width: ${theme.space['7']};
     height: ${theme.space['7']};
+    & > div {
+      color: #3f5170;
+    }
   `,
 )
 
@@ -87,6 +91,7 @@ const InnerValueWrapper = styled.div(
 
 const ValueTypography = styled(Typography)(
   ({ theme }) => css`
+    color: #3f5170;
     overflow-wrap: anywhere;
     text-align: right;
     margin-left: ${theme.space['2']};

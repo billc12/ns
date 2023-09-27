@@ -108,6 +108,7 @@ const CircleIcon = styled.svg(
 const MessageTypography = styled(Typography)(
   () => css`
     text-align: center;
+    color: #3f5170;
   `,
 )
 
@@ -562,6 +563,7 @@ export const TransactionStageModal = ({
     }
     return (
       <Button
+        style={{ background: '#0049C6' }}
         disabled={
           !canEnableTransactionRequest || requestLoading || !sendTransaction || !!requestError
         }

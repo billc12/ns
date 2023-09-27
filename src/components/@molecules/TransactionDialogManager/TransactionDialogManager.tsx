@@ -6,8 +6,6 @@ import { useTranslation } from 'react-i18next'
 import usePrevious from 'react-use/lib/usePrevious'
 import { WagmiConfig, useAccount } from 'wagmi'
 
-import { Dialog } from '@ensdomains/thorin'
-
 import { DialogStyle } from '@app/components/Awns/Dialog'
 import { useChainId } from '@app/hooks/useChainId'
 import { transactions } from '@app/transaction-flow/transaction'
@@ -146,13 +144,8 @@ export const TransactionDialogManager = ({
     )
   }
   return (
-    <Dialog
-      variant="blank"
-      open={!!state.selectedKey}
-      onDismiss={onDismissDialog}
-      onClose={onDismiss}
-    >
+    <DialogStyle variant="closable" open={!!state.selectedKey} onDismiss={onDismissDialog}>
       {InnerComponent}
-    </Dialog>
+    </DialogStyle>
   )
 }
