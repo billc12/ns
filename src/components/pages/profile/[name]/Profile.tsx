@@ -10,6 +10,7 @@ import { Banner, CheckCircleSVG, PageButtons, Typography, mq } from '@ensdomains
 import BaseLink from '@app/components/@atoms/BaseLink'
 import { LoadingOverlay } from '@app/components/LoadingOverlay'
 import { Table } from '@app/components/table'
+import useSignName from '@app/hooks/names/useSignName'
 // import { useAbilities } from '@app/hooks/abilities/useAbilities'
 import { useRecentTransactions } from '@app/hooks/transactions/useRecentTransactions'
 // import { useChainId } from '@app/hooks/useChainId'
@@ -23,6 +24,7 @@ import { formatFullExpiry } from '@app/utils/utils'
 
 import { shouldShowSuccessPage } from '../../import/[name]/shared'
 import { AccountHeader } from '../AccountHeader'
+import { BigPremiumText } from './registration/PremiumTitle'
 import { AssetsTab } from './tabs/AssetsTab'
 import { InvitationCode } from './tabs/InvitationCodeTab'
 // import MoreTab from './tabs/MoreTab/MoreTab'
@@ -251,7 +253,7 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
     // wrapperData,
     // registrationStatus,
   } = nameDetails
-
+  const { data } = useSignName(normalisedName)
   const isLoading = _isLoading || detailsLoading
 
   const isSmDown = useMemo(() => {
@@ -391,7 +393,12 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
             }}
           >
             <CardsStyle>
-              <CardTitleStyle>{beautifiedName}</CardTitleStyle>
+              {data?.isPremium ? (
+                <BigPremiumText>{beautifiedName}</BigPremiumText>
+              ) : (
+                <CardTitleStyle>{beautifiedName}</CardTitleStyle>
+              )}
+
               <TabButtonContainer>
                 {isOwner
                   ? tabs.map((tabItem) => (
