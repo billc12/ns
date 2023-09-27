@@ -10,6 +10,8 @@ import { useEstimateFullRegistration } from '@app/hooks/useEstimateRegistration'
 import { CURRENCY_FLUCTUATION_BUFFER_PERCENTAGE } from '@app/utils/constants'
 import useUserConfig from '@app/utils/useUserConfig'
 
+import { YEAR_DISCOUNT } from './types'
+
 const OptionBar = styled.div(
   () => css`
     width: 100%;
@@ -31,7 +33,6 @@ const InvoiceContainer = styled.div(
 )
 
 type Props = ReturnType<typeof useEstimateFullRegistration>
-const YEAR_DISCOUNT = [0.0, 0.05, 0.1, 0.15, 0.2]
 const FullInvoice = ({
   years,
   totalYearlyFee,

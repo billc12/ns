@@ -11,6 +11,7 @@ import { Invoice, InvoiceItem } from '@app/components/@atoms/Invoice/Invoice'
 import { PlusMinusControl } from '@app/components/@atoms/PlusMinusControl/Awns_PlusMinusControl'
 import { StyledName } from '@app/components/@atoms/StyledName/StyledName'
 import { NameInfo } from '@app/components/Awns/Dialog'
+import { YEAR_DISCOUNT } from '@app/components/pages/profile/[name]/registration/types'
 import { formatDateString } from '@app/components/pages/profile/[name]/tabs/ProfileTab'
 import gasLimitDictionary from '@app/constants/gasLimits'
 import { useAvatar } from '@app/hooks/useAvatar'
@@ -255,7 +256,10 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
   const gasLimit = estimatedGasLimit || hardcodedGasLimit
 
   const transactionFee = gasPrice ? gasLimit.mul(gasPrice) : BigNumber.from('0')
-
+  const discountInvoiceItems = useMemo(
+    () => ({ label: t('invoice.discount', { years }), discount: YEAR_DISCOUNT[years - 1] }),
+    [t, years],
+  )
   const items: InvoiceItem[] = [
     {
       label: t('input.extendNames.invoice.extension', { count: years }),
@@ -315,7 +319,12 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
                   <Text>{formatDateString(currentExpiry)}</Text>
                 </Row>
                 <GasEstimationCacheableComponent $isCached={isEstimateGasLoading}>
-                  <Invoice items={items} unit={currencyDisplay} totalLabel="Estimated total" />
+                  <Invoice
+                    items={items}
+                    unit={currencyDisplay}
+                    totalLabel="Estimated total"
+                    discount={discountInvoiceItems}
+                  />
                   {(!!estimateGasLimitError ||
                     (estimatedGasLimit && balance?.value.lt(estimatedGasLimit))) && (
                     <Helper type="warning">{t('input.extendNames.gasLimitError')}</Helper>

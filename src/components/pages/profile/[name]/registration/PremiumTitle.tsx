@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 import { Typography } from '@ensdomains/thorin'
 
+import useSignName from '@app/hooks/names/useSignName'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 
 const Row = styled.div`
@@ -45,14 +46,10 @@ const InterText = styled(Typography)<{ $size?: string; $color?: string; $weight?
   line-height: normal;
   white-space: pre-wrap;
 `
-const PremiumTitle = ({
-  nameDetails,
-  isPremium,
-}: {
-  nameDetails: ReturnType<typeof useNameDetails>
-  isPremium: boolean
-}) => {
-  const { beautifiedName, registrationStatus } = nameDetails
+const PremiumTitle = ({ nameDetails }: { nameDetails: ReturnType<typeof useNameDetails> }) => {
+  const { beautifiedName, registrationStatus, normalisedName } = nameDetails
+  const { data } = useSignName(normalisedName)
+  const isPremium = !!data?.isPremium
   return (
     <HeadName>
       {isPremium ? (

@@ -13,6 +13,7 @@ import styled, { css } from 'styled-components'
 import Add from '@app/assets/Add.svg'
 import MinusIcon from '@app/assets/Minus.svg'
 import PlusIcon from '@app/assets/Plus.svg'
+import { MAX_YEAR } from '@app/components/pages/profile/[name]/registration/types'
 import { useDefaultRef } from '@app/hooks/useDefaultRef'
 import { createChangeEvent } from '@app/utils/syntheticEvent'
 
@@ -167,7 +168,7 @@ export const PlusMinusControl = forwardRef(
       defaultValue,
       minValue = 1,
       // maxValue is needed to prevent exceeding NUMBER.MAX_SAFE_INTEGER
-      maxValue = Number.MAX_SAFE_INTEGER - 1,
+      maxValue = MAX_YEAR,
       name = 'plus-minus-control',
       unit = 'years',
       onChange,

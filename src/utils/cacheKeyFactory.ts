@@ -178,5 +178,6 @@ export const useQueryKeys = () => {
         'claimDomain',
       ],
     },
+    getSignName: (name: string) => [...globalKeys, 'getSignName', name],
   }
 }

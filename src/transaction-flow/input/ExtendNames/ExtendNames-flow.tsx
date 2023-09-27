@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useAccount, useBalance } from 'wagmi'
@@ -11,6 +11,7 @@ import { Invoice, InvoiceItem } from '@app/components/@atoms/Invoice/Invoice'
 import { PlusMinusControl } from '@app/components/@atoms/PlusMinusControl/PlusMinusControl'
 import { RegistrationTimeComparisonBanner } from '@app/components/@atoms/RegistrationTimeComparisonBanner/RegistrationTimeComparisonBanner'
 import { StyledName } from '@app/components/@atoms/StyledName/StyledName'
+import { YEAR_DISCOUNT } from '@app/components/pages/profile/[name]/registration/types'
 import gasLimitDictionary from '@app/constants/gasLimits'
 import { useAvatar } from '@app/hooks/useAvatar'
 import { useEstimateGasLimitForTransactions } from '@app/hooks/useEstimateGasLimitForTransactions'
@@ -241,7 +242,10 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
       value: transactionFee,
     },
   ]
-
+  const discountInvoiceItems = useMemo(
+    () => ({ label: t('invoice.discount', { years }), discount: YEAR_DISCOUNT[years - 1] }),
+    [t, years],
+  )
   const title = t('input.extendNames.title', { count: names.length })
 
   const trailingButtonProps =
@@ -289,7 +293,12 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
                 />
               </OptionBar>
               <GasEstimationCacheableComponent $isCached={isEstimateGasLoading}>
-                <Invoice items={items} unit={currencyDisplay} totalLabel="Estimated total" />
+                <Invoice
+                  items={items}
+                  unit={currencyDisplay}
+                  totalLabel="Estimated total"
+                  discount={discountInvoiceItems}
+                />
                 {(!!estimateGasLimitError ||
                   (estimatedGasLimit && balance?.value.lt(estimatedGasLimit))) && (
                   <Helper type="warning">{t('input.extendNames.gasLimitError')}</Helper>

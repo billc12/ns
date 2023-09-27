@@ -24,6 +24,7 @@ import { usePrimary } from '@app/hooks/usePrimary'
 import { AuctionType, useProfileActions } from '@app/hooks/useProfileActions'
 import useRegistrationDate from '@app/hooks/useRegistrationData'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
+import { AddressRecord } from '@app/transaction-flow/input/AdvancedEditor/EditResolveAddress-flow'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
 import { shouldShowExtendWarning } from '@app/utils/abilities/shouldShowExtendWarning'
 import { emptyAddress } from '@app/utils/constants'
@@ -276,6 +277,9 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
     showEditResolveAddressInput(`edit-resolve-address-${name}`, { name })
   }
   const hasGlobalError = useHasGlobalError()
+  const parseUseAddress: AddressRecord = nameDetails.profile?.records.coinTypes?.find(
+    ({ coin }) => coin === 'ETH',
+  ) as any
   return (
     <DetailsWrapper>
       <div
@@ -296,13 +300,13 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
           <ContentStyled>
             <RowNameStyle>Addresses</RowNameStyle>
             <RowValueStyle>
-              {nameDetails?.ownerData?.owner ? shortenAddress(nameDetails?.ownerData?.owner) : '--'}{' '}
-              <CopyButton value={nameDetails?.ownerData?.owner} />
+              {parseUseAddress ? shortenAddress(parseUseAddress.addr) : '--'}
+              {parseUseAddress && <CopyButton value={parseUseAddress.addr || ''} />}
             </RowValueStyle>
 
             <RowNameStyle>Owner</RowNameStyle>
             <RowValueStyle>
-              {nameDetails?.ownerData?.owner ? shortenAddress(nameDetails?.ownerData?.owner) : '--'}{' '}
+              {nameDetails?.ownerData?.owner ? shortenAddress(nameDetails?.ownerData?.owner) : '--'}
               <CopyButton value={nameDetails?.ownerData?.owner} />
             </RowValueStyle>
 

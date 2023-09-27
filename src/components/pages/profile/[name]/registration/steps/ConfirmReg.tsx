@@ -160,7 +160,7 @@ const ConfirmReg = ({ registrationData, nameDetails, callback, onProfileClick }:
   }, [registerTx?.stage])
   return (
     <StyledCard>
-      <PremiumTitle isPremium nameDetails={nameDetails} />
+      <PremiumTitle nameDetails={nameDetails} />
       <LineProgress curSelect={3} />
       <InterText $textColor="#000" $w={500}>
         Complete a second transaction to secure your name

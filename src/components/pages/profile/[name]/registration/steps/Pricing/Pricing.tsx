@@ -29,6 +29,7 @@ import { AvatarClickType } from '@app/components/@molecules/ProfileEditor/Avatar
 import { AvatarViewManager } from '@app/components/@molecules/ProfileEditor/Avatar/AvatarViewManager'
 import { Card } from '@app/components/Card'
 import { ConnectButton } from '@app/components/ConnectButton'
+import useSignName from '@app/hooks/names/useSignName'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useChainId } from '@app/hooks/useChainId'
 import { useContractAddress } from '@app/hooks/useContractAddress'
@@ -41,6 +42,7 @@ import { useBreakpoint } from '@app/utils/BreakpointProvider'
 import FullInvoice from '../../FullInvoice'
 import PremiumTitle from '../../PremiumTitle'
 import {
+  MAX_YEAR,
   MoonpayTransactionStatus,
   PaymentMethod,
   RegistrationReducerDataItem,
@@ -606,7 +608,6 @@ const ButtonBox = styled.div`
   width: 100%;
   height: 100%;
 `
-const MAX_YEAR = 5
 const imgUrl = `/DefaultUser.png`
 const UpImage = ({ isPremium, name }: { isPremium: boolean; name: string }) => {
   const [avatarSrc, setAvatarSrc] = useState<string | undefined>()
@@ -751,10 +752,11 @@ const Pricing = ({
 
   // const showPaymentChoice = !isPrimaryLoading && address
   const nameLength = beautifiedName.split('.')[0].length
-  const isPremium = true
+  const { data } = useSignName(nameDetails.normalisedName)
+  const isPremium = !!data?.isPremium
   return (
     <StyledCard>
-      <PremiumTitle isPremium nameDetails={nameDetails} />
+      <PremiumTitle nameDetails={nameDetails} />
       <ContentStyle>
         <GrayRoundRow $p="20px 36px">
           <InterText $color="#8D8EA5" $size="16px" $weight={500}>
