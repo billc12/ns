@@ -505,7 +505,7 @@ const PremiumText = styled.div`
 //   font-size: 24px;
 //   font-weight: 800;
 // `
-const SmallPremiumText = styled(PremiumText)`
+export const SmallPremiumText = styled(PremiumText)`
   font-size: 16px;
   font-weight: 500;
 `

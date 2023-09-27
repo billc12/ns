@@ -146,7 +146,7 @@ const Column = styled.div`
   gap: 17px;
 `
 
-const InterText = styled(Typography)<{ $size?: string; $color?: string; $weight?: number }>`
+export const InterText = styled(Typography)<{ $size?: string; $color?: string; $weight?: number }>`
   width: max-content;
   height: max-content;
   color: ${(props) => props.$color || '#fff'};
