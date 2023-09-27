@@ -322,7 +322,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
             <RowNameStyle>Chain</RowNameStyle>
             <RowValueStyle>{currentChain?.name || '--'}</RowValueStyle>
 
-            <RowNameStyle>Contract Address</RowNameStyle>
+            {/* <RowNameStyle>Contract Address</RowNameStyle>
             <RowValueStyle>
               0x6621...2ae908 <CopyButton value="1" />
             </RowValueStyle>
@@ -330,7 +330,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
             <RowNameStyle>Contract Address</RowNameStyle>
             <RowValueStyle>
               0x45678...2aef4 <CopyButton value="1" />
-            </RowValueStyle>
+            </RowValueStyle> */}
           </ContentStyled>
         </div>
         <ButtonsStyle>
