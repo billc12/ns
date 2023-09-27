@@ -173,7 +173,8 @@ export const useEstimateFullRegistration = ({ registrationData, price, name }: F
   const yearlyFee = price?.base
   const premiumFee = price?.premium
   const hasPremium = premiumFee?.gt(0)
-  const totalYearlyFee = yearlyFee?.mul(registrationData.years)
+  const discountRate = 100 - (registrationData.years - 1) * 5
+  const totalYearlyFee = yearlyFee?.mul(registrationData.years).mul(discountRate).div(100)
 
   return {
     estimatedGasFee,

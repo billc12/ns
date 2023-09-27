@@ -20,6 +20,7 @@ import { useNameDetails } from '@app/hooks/useNameDetails'
 import { useZorb } from '@app/hooks/useZorb'
 import { makeTransactionItem } from '@app/transaction-flow/transaction'
 import { TransactionDialogPassthrough } from '@app/transaction-flow/types'
+import { CURRENCY_FLUCTUATION_BUFFER_PERCENTAGE } from '@app/utils/constants'
 import useUserConfig from '@app/utils/useUserConfig'
 import { yearsToSeconds } from '@app/utils/utils'
 
@@ -231,11 +232,11 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
   const { userConfig } = useUserConfig()
   const currencyDisplay = userConfig.currency === 'fiat' ? userConfig.fiat : 'eth'
 
-  const { total: rentFee } = usePrice(names, false)
+  const { total: rentFee, totalYearlyFee } = usePrice(names, years, false)
 
-  const totalRentFee = rentFee ? rentFee.mul(years) : undefined
+  // const totalRentFee = rentFee ? rentFee.mul(years) : undefined
   const transactions = [
-    makeTransactionItem('extendNames', { names, duration, rentPrice: totalRentFee!, isSelf }),
+    makeTransactionItem('extendNames', { names, duration, rentPrice: totalYearlyFee!, isSelf }),
   ]
   const currentExpiry = useMemo(() => {
     if (!nameDetail || !nameDetail.expiryDate) {
@@ -263,8 +264,8 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
   const items: InvoiceItem[] = [
     {
       label: t('input.extendNames.invoice.extension', { count: years }),
-      value: totalRentFee,
-      bufferPercentage: 102,
+      value: totalYearlyFee,
+      bufferPercentage: CURRENCY_FLUCTUATION_BUFFER_PERCENTAGE,
     },
     {
       label: t('input.extendNames.invoice.transaction'),

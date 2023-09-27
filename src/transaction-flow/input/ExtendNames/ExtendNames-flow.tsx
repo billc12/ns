@@ -212,11 +212,11 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
   const { userConfig, setCurrency } = useUserConfig()
   const currencyDisplay = userConfig.currency === 'fiat' ? userConfig.fiat : 'eth'
 
-  const { total: rentFee, loading: priceLoading } = usePrice(names, false)
+  const { total: rentFee, loading: priceLoading, totalYearlyFee } = usePrice(names, years, false)
 
-  const totalRentFee = rentFee ? rentFee.mul(years) : undefined
+  // const totalRentFee = rentFee ? rentFee.mul(years) : undefined
   const transactions = [
-    makeTransactionItem('extendNames', { names, duration, rentPrice: totalRentFee!, isSelf }),
+    makeTransactionItem('extendNames', { names, duration, rentPrice: totalYearlyFee!, isSelf }),
   ]
 
   const {
@@ -234,7 +234,7 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
   const items: InvoiceItem[] = [
     {
       label: t('input.extendNames.invoice.extension', { count: years }),
-      value: totalRentFee,
+      value: totalYearlyFee,
       bufferPercentage: 102,
     },
     {
@@ -254,7 +254,7 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
       : {
           disabled: !!estimateGasLimitError,
           onClick: () => {
-            if (!totalRentFee) return
+            if (!totalYearlyFee) return
             dispatch({
               name: 'setTransactions',
               payload: transactions,

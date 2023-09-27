@@ -4,7 +4,7 @@ import { useEns } from '@app/utils/EnsProvider'
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 import { yearsToSeconds } from '@app/utils/utils'
 
-export const usePrice = (nameOrNames: string | string[], legacy?: boolean) => {
+export const usePrice = (nameOrNames: string | string[], years = 1, legacy?: boolean) => {
   const { ready, getPrice } = useEns()
   const names = Array.isArray(nameOrNames) ? nameOrNames : [nameOrNames]
   const type = legacy ? 'legacy' : 'new'
@@ -36,11 +36,14 @@ export const usePrice = (nameOrNames: string | string[], legacy?: boolean) => {
   const premium = data?.premium
   const total = data?.base ? data.base.add(data.premium) : undefined
   const hasPremium = data?.premium.gt(0)
+  const discountRate = 100 - (years - 1) * 5
+  const totalYearlyFee = total?.mul(years).mul(discountRate).div(100)
 
   return {
     base,
     premium,
     total,
+    totalYearlyFee,
     hasPremium,
     isCachedData: status === 'success' && isFetched && !isFetchedAfterMount,
     loading,
