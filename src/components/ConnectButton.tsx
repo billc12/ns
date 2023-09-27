@@ -221,7 +221,8 @@ const HeaderProfile = ({ address }: { address: string }) => {
       items={
         [
           {
-            label: shortenAddress(address),
+            // label: shortenAddress(address),
+            label: t('navigation.names'),
             color: 'text',
             onClick: () => {
               router.push(`/my/names`)
