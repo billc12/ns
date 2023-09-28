@@ -13,6 +13,7 @@ import { Table } from '@app/components/table'
 import useSignName from '@app/hooks/names/useSignName'
 // import { useAbilities } from '@app/hooks/abilities/useAbilities'
 import { useRecentTransactions } from '@app/hooks/transactions/useRecentTransactions'
+import useGetTransfers from '@app/hooks/useGetTransfers'
 // import { useChainId } from '@app/hooks/useChainId'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import { useProtectedRoute } from '@app/hooks/useProtectedRoute'
@@ -20,7 +21,7 @@ import { useQueryParameterState } from '@app/hooks/useQueryParameterState'
 import { useRouterWithHistory } from '@app/hooks/useRouterWithHistory'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
 // import { Content, ContentWarning } from '@app/layouts/Content'
-import { formatFullExpiry } from '@app/utils/utils'
+import { formatFullExpiry, shortenAddress } from '@app/utils/utils'
 
 import { shouldShowSuccessPage } from '../../import/[name]/shared'
 import { AccountHeader } from '../AccountHeader'
@@ -96,9 +97,10 @@ const TableContentStyle = styled(Typography)(
     height: 58px;
     display: flex;
     align-items: center;
+    justify-content: center;
     ${mq.sm.max(css`
       height: 36px;
-    `)}
+    `)};
   `,
 )
 
@@ -212,23 +214,18 @@ export const NameAvailableBanner = ({
     </BaseLink>
   )
 }
-const arr = [
-  { a: '0x6621...2ae908', b: '0x6621...2ae908', c: '2023.08.26 21:45:21', d: '0x6621...2ae908' },
-  { a: '0x6621...2ae908', b: '0x6621...2ae908', c: '2023.08.26 21:45:21', d: '0x6621...2ae908' },
-  { a: '0x6621...2ae908', b: '0x6621...2ae908', c: '2023.08.26 21:45:21', d: '0x6621...2ae908' },
-  { a: '0x6621...2ae908', b: '0x6621...2ae908', c: '2023.08.26 21:45:21', d: '0x6621...2ae908' },
-]
+
 const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
+  const { result } = useGetTransfers(name)
   const tableList = useMemo(() => {
-    return arr.map(({ a, b, c, d }) => [
-      <TableContentStyle>{a}</TableContentStyle>,
-      <TableContentStyle>{b}</TableContentStyle>,
-      <TableContentStyle>{c}</TableContentStyle>,
-      <TableContentStyle>{d}</TableContentStyle>,
-      <TableContentStyle>{d}</TableContentStyle>,
+    if (!result || !result.length) return []
+    return result.map(({ eventTime, owner, preOwner, transactionID }) => [
+      <TableContentStyle>{shortenAddress(owner.id)}</TableContentStyle>,
+      <TableContentStyle>{shortenAddress(preOwner.id)}</TableContentStyle>,
+      <TableContentStyle>{new Date(eventTime * 1000).toLocaleString()}</TableContentStyle>,
+      <TableContentStyle>{shortenAddress(transactionID)}</TableContentStyle>,
     ])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [result])
   const router = useRouterWithHistory()
   const { t } = useTranslation('profile')
   // const chainId = useChainId()
