@@ -1,11 +1,11 @@
 import { getEncryptedLabelAmount } from '@myclique/awnsjs/utils/labels'
 import Head from 'next/head'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
 
-import { Banner, CheckCircleSVG, PageButtons, Typography, mq } from '@ensdomains/thorin'
+import { Banner, CheckCircleSVG, Typography, mq } from '@ensdomains/thorin'
 
 import BaseLink from '@app/components/@atoms/BaseLink'
 import { LoadingOverlay } from '@app/components/LoadingOverlay'
@@ -59,19 +59,19 @@ const TabButtonContainer = styled.div(
   `,
 )
 
-const PageButtonsStyle = styled(PageButtons)(
-  () => css`
-    width: auto;
-    & > button {
-      width: auto;
-      height: auto;
-      min-height: auto;
-      min-width: auto;
-      border: none;
-      padding: 0;
-    }
-  `,
-)
+// const PageButtonsStyle = styled(PageButtons)(
+//   () => css`
+//     width: auto;
+//     & > button {
+//       width: auto;
+//       height: auto;
+//       min-height: auto;
+//       min-width: auto;
+//       border: none;
+//       padding: 0;
+//     }
+//   `,
+// )
 
 const TopRowStyle = styled.div(
   () => css`
@@ -220,8 +220,8 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
   const tableList = useMemo(() => {
     if (!result || !result.length) return []
     return result.map(({ eventTime, owner, preOwner, transactionID }) => [
-      <TableContentStyle>{shortenAddress(owner.id)}</TableContentStyle>,
       <TableContentStyle>{shortenAddress(preOwner.id)}</TableContentStyle>,
+      <TableContentStyle>{shortenAddress(owner.id)}</TableContentStyle>,
       <TableContentStyle>{new Date(eventTime * 1000).toLocaleString()}</TableContentStyle>,
       <TableContentStyle>{shortenAddress(transactionID)}</TableContentStyle>,
     ])
@@ -232,7 +232,7 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
   const { address } = useAccount()
   const transactions = useRecentTransactions()
   const breakpoints = useBreakpoint()
-  const [current, setCurrent] = useState<number>(1)
+  // const [current, setCurrent] = useState<number>(1)
   const nameDetails = useNameDetails(name)
   const {
     // error,
@@ -512,14 +512,14 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
                       >
                         Related Transactions
                       </Typography>
-                      <PageButtonsStyle
+                      {/* <PageButtonsStyle
                         alwaysShowFirst
                         alwaysShowLast
                         current={current}
                         size="small"
                         total={6}
                         onChange={(value) => setCurrent(value)}
-                      />
+                      /> */}
                     </TopRowStyle>
                   </>
                 }
