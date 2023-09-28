@@ -18,6 +18,7 @@ import { ProfileDetails } from '@app/components/pages/profile/ProfileDetails'
 import { useAbilities } from '@app/hooks/abilities/useAbilities'
 import { useHasGlobalError } from '@app/hooks/errors/useHasGlobalError'
 import { useChainId } from '@app/hooks/useChainId'
+import useGetNftAddress from '@app/hooks/useGetNftAddress'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import useOwners from '@app/hooks/useOwners'
 import { usePrimary } from '@app/hooks/usePrimary'
@@ -283,6 +284,8 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
     ({ coin }) => coin === 'ETH',
   ) as any
   const { avatarSrc } = useEthInvoice(normalisedName, false)
+  const { accountAddress } = useGetNftAddress(normalisedName)
+
   return (
     <DetailsWrapper>
       <div
@@ -322,15 +325,20 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
             <RowNameStyle>Chain</RowNameStyle>
             <RowValueStyle>{currentChain?.name || '--'}</RowValueStyle>
 
-            {/* <RowNameStyle>Contract Address</RowNameStyle>
+            <RowNameStyle>Resolver Address</RowNameStyle>
             <RowValueStyle>
-              0x6621...2ae908 <CopyButton value="1" />
+              {profile ? shortenAddress(profile.resolverAddress) : '--'} <CopyButton value="1" />
             </RowValueStyle>
 
-            <RowNameStyle>Contract Address</RowNameStyle>
-            <RowValueStyle>
-              0x45678...2aef4 <CopyButton value="1" />
-            </RowValueStyle> */}
+            <RowNameStyle>6551</RowNameStyle>
+            {accountAddress ? (
+              <RowValueStyle>
+                {shortenAddress(accountAddress)}
+                <CopyButton value={accountAddress} />
+              </RowValueStyle>
+            ) : (
+              <RowValueStyle>--</RowValueStyle>
+            )}
           </ContentStyled>
         </div>
         <ButtonsStyle>
