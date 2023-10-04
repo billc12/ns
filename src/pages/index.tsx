@@ -115,7 +115,7 @@ export default function Page() {
           <BoldTitle>{t('title')}</BoldTitle>
           <BoldTitle>
             {t('title_name')}
-            <span style={{ fontSize: 12, marginLeft: 0 }}>Powered by ERC 6551</span>
+            <span style={{ fontSize: '1rem', marginLeft: 15 }}>Powered by ERC 6551</span>
           </BoldTitle>
           <BoldTitle $size={24} $fontW={500}>
             {t('business')}
