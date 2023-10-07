@@ -78,8 +78,6 @@ export const Invoice = ({
   const total = filteredItems.reduce((a, b) => a!.add(b!), BigNumber.from(0))
   const hasEmptyItems = filteredItems.length !== items.length
   console.log('totalLabel', totalLabel)
-  console.log('items', items)
-  // const show = false
   return (
     <Container>
       {items.slice(0, 1).map(({ label, value, bufferPercentage, color }, inx) => (

@@ -275,7 +275,6 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
     }
     return false
   }, [address, nameDetails.ownerData?.owner])
-  console.log(isSmDown, isOwner)
 
   const [titleContent, descriptionContent] = useMemo(() => {
     if (isSelf) {
@@ -306,7 +305,6 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
 
   // const [tab, setTab] = useQueryParameterState<Tab>('tab', 'profile')
   const [tab, setTab] = useQueryParameterState<Tab>('tab', 'detail')
-  console.log('tab', tab)
   // const tab = isWrapped ? tabs : tabs.filter((_tab) => _tab !== 'permissions')
 
   // const abilities = useAbilities(normalisedName)

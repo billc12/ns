@@ -156,8 +156,6 @@ export const SendName = ({ data, dispatch, onDismiss }: Props) => {
   const hasErrors = Object.keys(formState.errors || {}).length > 0
 
   const onSubmit = (formData: any) => {
-    console.log('formData', managerChoice, ownerChoice)
-
     handleSubmitForm({
       basicNameData,
       dispatch,

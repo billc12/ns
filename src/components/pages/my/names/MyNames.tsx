@@ -83,7 +83,6 @@ const MyNames = () => {
   const address = (router.query.address as string) || (_address as string)
   const isSelf = true
   const chainId = useChainId()
-  console.log(_address, address)
 
   const [mode, setMode] = useState<NameTableMode>('view')
   const [selectedNames, setSelectedNames] = useState<string[]>([])

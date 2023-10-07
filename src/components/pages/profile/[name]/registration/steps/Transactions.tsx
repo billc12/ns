@@ -154,7 +154,6 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
   const commitTx = getLatestTransaction(commitKey)
   const registerTx = getLatestTransaction(registerKey)
   const [resetOpen, setResetOpen] = useState(false)
-  console.log('registerTx', registerTx)
 
   const commitTimestamp = commitTx?.stage === 'complete' ? commitTx?.finaliseTime : undefined
   const [commitComplete, setCommitComplete] = useState(
@@ -178,8 +177,6 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
   }, [commitKey, createTransactionFlow, nameDetails.normalisedName, onStart, registrationParams])
 
   const makeRegisterNameFlow = () => {
-    console.log('makeRegisterNameFlow')
-
     callback({ back: false })
     // createTransactionFlow(registerKey, {
     //   transactions: [makeTransactionItem('registerName', registrationParams)],

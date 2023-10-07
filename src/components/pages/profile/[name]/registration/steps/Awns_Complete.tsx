@@ -132,7 +132,6 @@ export const useEthInvoice = (
 
   return { InvoiceFilled, avatarSrc }
 }
-console.log('useEthInvoice', useEthInvoice)
 
 type Props = {
   nameDetails: ReturnType<typeof useNameDetails>
