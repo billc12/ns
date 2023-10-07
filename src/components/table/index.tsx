@@ -44,6 +44,9 @@ const TableStyle = styled.table(
       td:first-child {
         text-align: left !important;
         padding-left: 30px;
+        & > div {
+          justify-content: flex-start;
+        }
       }
       td:last-child {
         text-align: right;
