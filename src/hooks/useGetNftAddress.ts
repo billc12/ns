@@ -20,8 +20,8 @@ const useGetNftAddress = (_name: string) => {
   const hasToken = is2ldEth || isWrapped
 
   const { tokenContract, tokenId } = useMemo(() => {
-    const _contractAddress: `0x${string}` = (!isWrapped ? wrapperAddress : registrarAddress) as any
-    const _hex = !isWrapped ? namehash(name) : labelhash(name.split('.')[0])
+    const _contractAddress: `0x${string}` = (isWrapped ? wrapperAddress : registrarAddress) as any
+    const _hex = isWrapped ? namehash(name) : labelhash(name.split('.')[0])
     const _tokenId = BigNumber.from(_hex).toString()
     return { tokenContract: _contractAddress, tokenId: _tokenId }
   }, [isWrapped, name, registrarAddress, wrapperAddress])
