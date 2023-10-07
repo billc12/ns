@@ -194,7 +194,8 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
   }
 
   const showRegisterTransaction = () => {
-    resumeTransactionFlow(registerKey)
+    // resumeTransactionFlow(registerKey)
+    callback({ back: false })
   }
 
   const resetTransactions = () => {
