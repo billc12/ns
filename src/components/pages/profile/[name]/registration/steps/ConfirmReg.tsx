@@ -3,9 +3,10 @@ import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
 
-import { Button, Typography, mq } from '@ensdomains/thorin'
+import { Typography, mq } from '@ensdomains/thorin'
 
 import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
+import { BackButton, NextButton } from '@app/components/Awns/Dialog'
 import { InterText } from '@app/components/Awns_Header'
 import { Card } from '@app/components/Card'
 import useSignName from '@app/hooks/names/useSignName'
@@ -80,16 +81,16 @@ type Props = {
 }
 const FailedButton = ({ onClick, label }: { onClick: () => void; label: string }) => (
   <ButtonBox>
-    <Button color="red" onClick={onClick}>
+    <NextButton color="red" onClick={onClick}>
       {label}
-    </Button>
+    </NextButton>
   </ButtonBox>
 )
 const ProgressButton = ({ onClick, label }: { onClick: () => void; label: string }) => (
   <ButtonBox>
-    <Button colorStyle="accentSecondary" onClick={onClick}>
+    <NextButton colorStyle="accentSecondary" onClick={onClick}>
       {label}
-    </Button>
+    </NextButton>
   </ButtonBox>
 )
 const ConfirmReg = ({ registrationData, nameDetails, callback, onProfileClick }: Props) => {
@@ -157,9 +158,9 @@ const ConfirmReg = ({ registrationData, nameDetails, callback, onProfileClick }:
     }
     return (
       <ButtonBox>
-        <Button data-testid="next-button" onClick={makeRegisterNameFlow}>
+        <NextButton data-testid="next-button" onClick={makeRegisterNameFlow}>
           Register
-        </Button>
+        </NextButton>
       </ButtonBox>
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -184,9 +185,9 @@ const ConfirmReg = ({ registrationData, nameDetails, callback, onProfileClick }:
       )}
       <ButtonContainer>
         <ButtonBox>
-          <Button colorStyle="accentSecondary" onClick={() => callback({ back: true })}>
+          <BackButton colorStyle="accentSecondary" onClick={() => callback({ back: true })}>
             {t('action.back', { ns: 'common' })}
-          </Button>
+          </BackButton>
         </ButtonBox>
         {auctionBtn}
       </ButtonContainer>

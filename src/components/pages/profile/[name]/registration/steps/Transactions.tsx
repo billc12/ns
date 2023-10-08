@@ -15,6 +15,7 @@ import {
 
 import { InnerDialog } from '@app/components/@atoms/InnerDialog'
 import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
+import { BackButton as BackBtn, NextButton } from '@app/components/Awns/Dialog'
 import { InterText } from '@app/components/Awns_Header'
 import { Card } from '@app/components/Card'
 import { useNameDetails } from '@app/hooks/useNameDetails'
@@ -121,17 +122,15 @@ const ButtonBox = styled(MobileFullWidth)(
 )
 const FailedButton = ({ onClick, label }: { onClick: () => void; label: string }) => (
   <MobileFullWidth>
-    <Button color="red" onClick={onClick}>
+    <NextButton color="red" onClick={onClick}>
       {label}
-    </Button>
+    </NextButton>
   </MobileFullWidth>
 )
 
 const ProgressButton = ({ onClick, label }: { onClick: () => void; label: string }) => (
   <MobileFullWidth>
-    <Button colorStyle="accentSecondary" onClick={onClick}>
-      {label}
-    </Button>
+    <NextButton onClick={onClick}>{label}</NextButton>
   </MobileFullWidth>
 )
 
@@ -217,9 +216,9 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
   const NormalBackButton = useMemo(
     () => (
       <ButtonBox>
-        <Button onClick={() => callback({ back: true })} colorStyle="accentSecondary">
+        <BackBtn onClick={() => callback({ back: true })} colorStyle="accentSecondary">
           {t('action.back', { ns: 'common' })}
-        </Button>
+        </BackBtn>
       </ButtonBox>
     ),
     [t, callback],
@@ -228,9 +227,7 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
   const ResetBackButton = useMemo(
     () => (
       <ButtonBox>
-        <Button colorStyle="redSecondary" onClick={() => setResetOpen(true)}>
-          {t('action.back', { ns: 'common' })}
-        </Button>
+        <BackBtn onClick={() => setResetOpen(true)}>{t('action.back', { ns: 'common' })}</BackBtn>
       </ButtonBox>
     ),
     [t],
@@ -238,17 +235,17 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
 
   let BackButton: ReactNode = (
     <ButtonBox>
-      <Button onClick={() => callback({ back: true })} colorStyle="accentSecondary">
+      <BackBtn onClick={() => callback({ back: true })}>
         {t('action.back', { ns: 'common' })}
-      </Button>
+      </BackBtn>
     </ButtonBox>
   )
 
   let ActionButton: ReactNode = (
     <ButtonBox>
-      <Button data-testid="start-timer-button" onClick={makeCommitNameFlow}>
+      <NextButton data-testid="start-timer-button" onClick={makeCommitNameFlow}>
         {t('steps.transactions.startTimer')}
-      </Button>
+      </NextButton>
     </ButtonBox>
   )
   if (commitComplete) {
@@ -272,12 +269,12 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
       BackButton = ResetBackButton
       ActionButton = (
         <ButtonBox>
-          <Button
+          <NextButton
             data-testid="finish-button"
             onClick={!registerTx ? makeRegisterNameFlow : showRegisterTransaction}
           >
             {t('action.finish', { ns: 'common' })}
-          </Button>
+          </NextButton>
         </ButtonBox>
       )
     }
@@ -302,9 +299,9 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
       BackButton = ResetBackButton
       ActionButton = (
         <ButtonBox>
-          <Button data-testid="wait-button" disabled suffix={<Spinner color="greyPrimary" />}>
+          <NextButton data-testid="wait-button" disabled suffix={<Spinner color="greyPrimary" />}>
             {t('steps.transactions.wait')}
-          </Button>
+          </NextButton>
         </ButtonBox>
       )
     }

@@ -27,6 +27,7 @@ import { PlusMinusControl } from '@app/components/@atoms/PlusMinusControl/Awns_P
 import { Spacer } from '@app/components/@atoms/Spacer'
 import { AvatarClickType } from '@app/components/@molecules/ProfileEditor/Avatar/AvatarButton'
 import { AvatarViewManager } from '@app/components/@molecules/ProfileEditor/Avatar/AvatarViewManager'
+import { NextButton } from '@app/components/Awns/Dialog'
 import { Card } from '@app/components/Card'
 import { ConnectButton } from '@app/components/ConnectButton'
 import useSignName from '@app/hooks/names/useSignName'
@@ -377,14 +378,6 @@ const PaymentChoice = ({
 }
 console.log('PaymentChoice', PaymentChoice)
 
-const RegisterBtn = styled(Button)`
-  width: 100% !important;
-  max-width: 100% !important;
-  &:disabled {
-    color: #fff;
-    background: rgba(0, 73, 198, 0.53);
-  }
-`
 interface ActionButtonProps {
   address?: string
   hasPendingMoonpayTransaction: boolean
@@ -460,14 +453,14 @@ export const ActionButton = ({
     )
   }
   return (
-    <RegisterBtn
+    <NextButton
       data-testid="next-button"
       onClick={() => callback({ reverseRecord, years, paymentMethodChoice })}
       disabled={!paymentMethodChoice}
     >
       {/* {t('action.next', { ns: 'common' })} */}
       Register
-    </RegisterBtn>
+    </NextButton>
   )
 }
 

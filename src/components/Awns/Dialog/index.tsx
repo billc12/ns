@@ -31,29 +31,21 @@ export const Row = styled.div`
     gap: 10px;
   `)}
 `
-export const CancelButton = styled(Button)`
-  width: 200px;
-  height: 40px;
-  border-radius: 8px;
+export const BackButton = styled(Button)`
   border: 1px solid #0049c6;
+  background: #fff;
   color: #0049c6;
-  text-align: center;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px;
-  ${mq.sm.max(css`
-    width: 100%;
-  `)}
+
+  &:hover {
+    background: #fff;
+  }
 `
-export const AuctionButton = styled(Button)`
-  width: 200px;
-  height: 40px;
-  border-radius: 8px;
+export const NextButton = styled(Button)`
   background: #0049c6;
-  ${mq.sm.max(css`
-    width: 100%;
-  `)}
+  color: #fff;
+  &:hover {
+    background: #0049c6;
+  }
 `
 
 export const DialogStyle = styled(Dialog)`
@@ -134,7 +126,7 @@ const InfoImgText = styled(Typography)`
 `
 const InfoRight = styled.div`
   flex: 1;
-  height: 100%;
+  height: 84px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -219,11 +211,11 @@ const ADialog = ({
         <ContainerStyle>
           <NameInfo name={nameDetails.normalisedName} expiryDate={nameDetails.expiryDate} />
           <ContentStyle>{children}</ContentStyle>
-          <Row style={{ marginTop: 20 }}>
-            <CancelButton colorStyle="accentSecondary" onClick={() => handleOpen(false)}>
+          <Row style={{ marginTop: 20, width: '100%' }}>
+            <BackButton colorStyle="accentSecondary" onClick={() => handleOpen(false)}>
               Cancel
-            </CancelButton>
-            <AuctionButton onClick={() => okFn()}>{okBtnTitle}</AuctionButton>
+            </BackButton>
+            <NextButton onClick={() => okFn()}>{okBtnTitle}</NextButton>
           </Row>
         </ContainerStyle>
       </DialogStyle>

@@ -4,13 +4,13 @@ import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useAccount, useBalance } from 'wagmi'
 
-import { Avatar, Button, Dialog, Helper, ScrollBox, Typography, mq } from '@ensdomains/thorin'
+import { Avatar, Dialog, Helper, ScrollBox, Typography, mq } from '@ensdomains/thorin'
 
 import { CacheableComponent } from '@app/components/@atoms/CacheableComponent'
 import { Invoice, InvoiceItem } from '@app/components/@atoms/Invoice/Invoice'
 import { PlusMinusControl } from '@app/components/@atoms/PlusMinusControl/Awns_PlusMinusControl'
 import { StyledName } from '@app/components/@atoms/StyledName/StyledName'
-import { NameInfo } from '@app/components/Awns/Dialog'
+import { BackButton, NameInfo, NextButton } from '@app/components/Awns/Dialog'
 import { YEAR_DISCOUNT } from '@app/components/pages/profile/[name]/registration/types'
 import { formatDateString } from '@app/components/pages/profile/[name]/tabs/ProfileTab'
 import gasLimitDictionary from '@app/constants/gasLimits'
@@ -337,13 +337,9 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
         </InnerContainer>
       </ScrollBoxWrapper>
       <Dialog.Footer
-        leading={
-          <Button colorStyle="accentSecondary" onClick={onDismiss}>
-            {t('action.back', { ns: 'common' })}
-          </Button>
-        }
+        leading={<BackButton onClick={onDismiss}>{t('action.back', { ns: 'common' })}</BackButton>}
         trailing={
-          <Button
+          <NextButton
             {...trailingButtonProps}
             data-testid="extend-names-confirm"
             disabled={isEstimateGasLoading}

@@ -4,11 +4,17 @@ import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
 
-import { Button, Dialog, mq } from '@ensdomains/thorin'
+import { Dialog, mq } from '@ensdomains/thorin'
 
 import { Spacer } from '@app/components/@atoms/Spacer'
 import { DogFood } from '@app/components/@molecules/DogFood'
-import { ContainerStyle, ContentStyle, NameInfo } from '@app/components/Awns/Dialog'
+import {
+  BackButton,
+  ContainerStyle,
+  ContentStyle,
+  NameInfo,
+  NextButton,
+} from '@app/components/Awns/Dialog'
 import { useAbilities } from '@app/hooks/abilities/useAbilities'
 import { useBasicName } from '@app/hooks/useBasicName'
 import { useNameDetails } from '@app/hooks/useNameDetails'
@@ -234,14 +240,14 @@ export const SendName = ({ data, dispatch, onDismiss }: Props) => {
             <FooterContainer>
               <Dialog.Footer
                 leading={
-                  <Button colorStyle="accentSecondary" onClick={onDismiss}>
+                  <BackButton onClick={onDismiss}>
                     {t('action.cancel', { ns: 'common' })}
-                  </Button>
+                  </BackButton>
                 }
                 trailing={
-                  <Button type="submit" disabled={!hasChoice || hasErrors}>
+                  <NextButton type="submit" disabled={!hasChoice || hasErrors}>
                     {t('action.next', { ns: 'common' })}
-                  </Button>
+                  </NextButton>
                 }
               />
             </FooterContainer>
