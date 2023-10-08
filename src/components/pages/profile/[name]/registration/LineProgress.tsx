@@ -7,6 +7,7 @@ const Center = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  gap: 8px;
 `
 const InterText = styled(Typography)<{ $size?: string; $color?: string; $weight?: number }>`
   width: max-content;
@@ -19,21 +20,21 @@ const InterText = styled(Typography)<{ $size?: string; $color?: string; $weight?
   white-space: pre-wrap;
 `
 const RoundBox = styled(Center)<{ $select: boolean }>`
-  width: 43px;
-  height: 43px;
-  background: #fff;
-  border: 1px solid ${(props) => (props.$select ? '#000' : '#d4d7e2')};
+  width: 30px;
+  height: 30px;
+  background: ${(props) => (props.$select ? '#0049C6' : '#fff')};
+  border: 1px solid #0049c6;
   border-radius: 50%;
 `
-const Line = styled.div<{ $select: boolean }>`
+const Line = styled.div`
   width: 234px;
   height: 1px;
-  background: ${(props) => (props.$select ? '#000' : '#d4d7e2')};
+  border: 1px dashed #0049c6;
 `
 const Round = ({ num, isSelect }: { num: number; isSelect: boolean }) => {
   return (
     <RoundBox $select={isSelect}>
-      <InterText $size="14px" $weight={500}>
+      <InterText $size="16px" $weight={500} $color={isSelect ? '#fff' : '#0049C6'}>
         {num}
       </InterText>
     </RoundBox>
@@ -46,7 +47,7 @@ const LineProgress = ({ curSelect }: { curSelect: number }) => {
     index + 1 !== LENGTH ? (
       <>
         <Round key={`Round-${index}`} num={index + 1} isSelect={curSelect >= index + 1} />
-        <Line key={`line-${index}`} $select={curSelect > index + 1} />
+        <Line key={`line-${index}`} />
       </>
     ) : (
       <Round key={`Round-${index}`} num={index + 1} isSelect={curSelect >= index + 1} />

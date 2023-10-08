@@ -1,11 +1,10 @@
-import Image from 'next/image'
-// import { useState } from 'react'
 import styled, { css } from 'styled-components'
 import { useNetwork } from 'wagmi'
 
 import { Button, Dialog, Typography, mq } from '@ensdomains/thorin'
 
 import UserAvatar from '@app/assets/TestImage.png'
+import { useEthInvoice } from '@app/components/pages/profile/[name]/registration/steps/Awns_Complete'
 import { formatDateString } from '@app/components/pages/profile/[name]/tabs/ProfileTab'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 
@@ -32,37 +31,21 @@ export const Row = styled.div`
     gap: 10px;
   `)}
 `
-export const CancelButton = styled(Button)`
-  width: 200px;
-  height: 40px;
-  border-radius: 8px;
+export const BackButton = styled(Button)`
   border: 1px solid #0049c6;
+  background: #fff;
   color: #0049c6;
-  text-align: center;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px;
-  ${mq.sm.max(css`
-    width: 100%;
-  `)}
-`
-export const AuctionButton = styled(Button)`
-  width: 200px;
-  height: 40px;
-  border-radius: 8px;
-  background: #0049c6;
-  ${mq.sm.max(css`
-    width: 100%;
-  `)}
-`
 
-const TagRowStyle = styled.div`
-  height: auto;
-  width: 100%;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  &:hover {
+    background: #fff;
+  }
+`
+export const NextButton = styled(Button)`
+  background: #0049c6;
+  color: #fff;
+  &:hover {
+    background: #0049c6;
+  }
 `
 
 export const DialogStyle = styled(Dialog)`
@@ -142,16 +125,19 @@ const InfoImgText = styled(Typography)`
   line-height: normal;
 `
 const InfoRight = styled.div`
-  width: calc(100% - 84px);
-  height: 100%;
+  flex: 1;
+  height: 84px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
   ${mq.sm.max(css`
     gap: 10px;
     text-align: left;
   `)}
+`
+const FlexRow = styled.div`
+  display: flex;
+  gap: 10px;
 `
 const ChainRound = styled.div`
   padding: 4px 12px;
@@ -172,24 +158,31 @@ export const ContentStyle = styled.div`
 
 export const NameInfo = ({ name, expiryDate }: { name: string; expiryDate: Date | undefined }) => {
   const { chain } = useNetwork()
+  const { avatarSrc } = useEthInvoice(name, false)
   return (
     <InfoRound>
       <InfoImgRound>
-        <Image src={UserAvatar} style={{ width: '100%', height: '100%' }} />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={avatarSrc || UserAvatar.src}
+          style={{ width: '100%', height: '100%' }}
+          alt="User Avatar"
+        />
         <InfoImgText>{name}</InfoImgText>
       </InfoImgRound>
       <InfoRight>
-        <TagRowStyle>
+        <FlexRow>
           <InterText $color="#3F5170" ellipsis>
             {name}
           </InterText>
           <ChainRound>{chain?.name || 'Ethereum'}</ChainRound>
-          {expiryDate && (
-            <InterText $size="14px" $weight={500} $color="#3F5170">
-              Expires {formatDateString(expiryDate)}
-            </InterText>
-          )}
-        </TagRowStyle>
+        </FlexRow>
+
+        {expiryDate && (
+          <InterText $size="14px" $weight={500} $color="#3F5170">
+            Expires {formatDateString(expiryDate)}
+          </InterText>
+        )}
       </InfoRight>
     </InfoRound>
   )
@@ -218,11 +211,11 @@ const ADialog = ({
         <ContainerStyle>
           <NameInfo name={nameDetails.normalisedName} expiryDate={nameDetails.expiryDate} />
           <ContentStyle>{children}</ContentStyle>
-          <Row style={{ marginTop: 20 }}>
-            <CancelButton colorStyle="accentSecondary" onClick={() => handleOpen(false)}>
+          <Row style={{ marginTop: 20, width: '100%' }}>
+            <BackButton colorStyle="accentSecondary" onClick={() => handleOpen(false)}>
               Cancel
-            </CancelButton>
-            <AuctionButton onClick={() => okFn()}>{okBtnTitle}</AuctionButton>
+            </BackButton>
+            <NextButton onClick={() => okFn()}>{okBtnTitle}</NextButton>
           </Row>
         </ContainerStyle>
       </DialogStyle>

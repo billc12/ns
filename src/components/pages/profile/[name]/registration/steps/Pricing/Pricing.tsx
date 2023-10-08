@@ -27,6 +27,7 @@ import { PlusMinusControl } from '@app/components/@atoms/PlusMinusControl/Awns_P
 import { Spacer } from '@app/components/@atoms/Spacer'
 import { AvatarClickType } from '@app/components/@molecules/ProfileEditor/Avatar/AvatarButton'
 import { AvatarViewManager } from '@app/components/@molecules/ProfileEditor/Avatar/AvatarViewManager'
+import { NextButton } from '@app/components/Awns/Dialog'
 import { Card } from '@app/components/Card'
 import { ConnectButton } from '@app/components/ConnectButton'
 import useSignName from '@app/hooks/names/useSignName'
@@ -377,14 +378,6 @@ const PaymentChoice = ({
 }
 console.log('PaymentChoice', PaymentChoice)
 
-const RegisterBtn = styled(Button)`
-  width: 100% !important;
-  max-width: 100% !important;
-  &:disabled {
-    color: #fff;
-    background: rgba(0, 73, 198, 0.53);
-  }
-`
 interface ActionButtonProps {
   address?: string
   hasPendingMoonpayTransaction: boolean
@@ -460,14 +453,14 @@ export const ActionButton = ({
     )
   }
   return (
-    <RegisterBtn
+    <NextButton
       data-testid="next-button"
       onClick={() => callback({ reverseRecord, years, paymentMethodChoice })}
       disabled={!paymentMethodChoice}
     >
       {/* {t('action.next', { ns: 'common' })} */}
       Register
-    </RegisterBtn>
+    </NextButton>
   )
 }
 
@@ -509,7 +502,7 @@ export const SmallPremiumText = styled(PremiumText)`
   font-size: 16px;
   font-weight: 500;
 `
-const InterText = styled(Typography)<{ $size?: string; $color?: string; $weight?: number }>`
+export const InterText = styled(Typography)<{ $size?: string; $color?: string; $weight?: number }>`
   width: max-content;
   height: max-content;
   color: ${(props) => props.$color || '#3F5170'};
@@ -533,7 +526,7 @@ const Column = styled.div`
   gap: 17px;
 `
 
-const GrayRoundRow = styled(Row)<{ $p: string }>`
+export const GrayRoundRow = styled(Row)<{ $p: string }>`
   width: 380px;
   height: max-content;
   padding: ${(props) => props.$p};
@@ -590,7 +583,6 @@ const PremiumImgRound = styled.div<{ $premium: boolean }>(
 const ToolTipRound = styled.div`
   padding: 8px 10px;
   border-radius: 6px;
-  border: 1px solid #97b7ef;
   background: #f8fbff;
   color: #8d8ea5;
   font-size: 14px;
@@ -766,7 +758,7 @@ const Pricing = ({
       <ContentStyle>
         <GrayRoundRow $p="20px 36px">
           <InterText $color="#8D8EA5" $size="16px" $weight={500}>
-            length
+            Length
           </InterText>
           <InterText $color="#3F5170" $size="16px" $weight={500}>
             {nameLength} characters
@@ -774,13 +766,13 @@ const Pricing = ({
         </GrayRoundRow>
         <GrayRoundRow $p="20px 36px">
           <InterText $color="#8D8EA5" $size="16px" $weight={500}>
-            Premium
+            Level
           </InterText>
           {isPremium ? (
-            <SmallPremiumText>Yes</SmallPremiumText>
+            <SmallPremiumText>Premium</SmallPremiumText>
           ) : (
             <InterText $color="#3F5170" $size="16px" $weight={500}>
-              No
+              Normal
             </InterText>
           )}
           {/* <InterText $color="#3F5170" $size="16px" $weight={500}>
@@ -797,7 +789,7 @@ const Pricing = ({
                 Chain
               </InterText>
               <InterText $color="#3F5170" $size="16px" $weight={500}>
-                {chain ? chain.name : '--'}
+                {chain ? chain.name : 'Sepolia'}
               </InterText>
             </CenterRow>
             <CenterRow style={{ padding: '0 38px' }}>

@@ -441,33 +441,39 @@ const NameResultItem = forwardRef<HTMLDivElement, { name: string; $selected: boo
     // const zorb = useZorb(name, 'name')
     const { registrationStatus, isLoading, beautifiedName } = useBasicName(name)
     const { chain } = useNetwork()
+    const isImported = registrationStatus !== 'notImported'
+
     return (
-      <SearchItem
-        data-testid="search-result-name"
-        {...props}
-        $clickable={registrationStatus !== 'short'}
-        ref={ref}
-        $gridTemplateColumns="auto auto"
-      >
-        <LeadingSearchItem>
-          <Column>
-            <Row>
-              <InterText>{beautifiedName}</InterText>
-              <ChainRound>
-                <InterText $size="14px"> {chain?.name || 'Ethereum'}</InterText>
-              </ChainRound>
-            </Row>
-            {registrationStatus ? <AwnsStatusText status={registrationStatus} /> : '-- --'}
-          </Column>
-        </LeadingSearchItem>
-        {!isLoading && registrationStatus ? (
-          <AwnsStatusTag status={registrationStatus} />
-        ) : (
-          <SpinnerWrapper>
-            <Spinner color="accent" />
-          </SpinnerWrapper>
+      <>
+        {isImported && (
+          <SearchItem
+            data-testid="search-result-name"
+            {...props}
+            $clickable={registrationStatus !== 'short'}
+            ref={ref}
+            $gridTemplateColumns="auto auto"
+          >
+            <LeadingSearchItem>
+              <Column>
+                <Row>
+                  <InterText>{beautifiedName}</InterText>
+                  <ChainRound>
+                    <InterText $size="14px"> {chain?.name || 'Ethereum'}</InterText>
+                  </ChainRound>
+                </Row>
+                {registrationStatus ? <AwnsStatusText status={registrationStatus} /> : '-- --'}
+              </Column>
+            </LeadingSearchItem>
+            {!isLoading && registrationStatus ? (
+              <AwnsStatusTag status={registrationStatus} />
+            ) : (
+              <SpinnerWrapper>
+                <Spinner color="accent" />
+              </SpinnerWrapper>
+            )}
+          </SearchItem>
         )}
-      </SearchItem>
+      </>
     )
   },
 )

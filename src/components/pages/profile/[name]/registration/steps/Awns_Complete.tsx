@@ -7,19 +7,24 @@ import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
 
-import { Button, Typography, mq } from '@ensdomains/thorin'
+import { Typography, mq } from '@ensdomains/thorin'
 
 import UserAvatar from '@app/assets/TestImage.png'
 import { Invoice } from '@app/components/@atoms/Invoice/Invoice'
 import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
 import { InterText } from '@app/components/@molecules/SearchInput/SearchResult'
+import { BackButton, NextButton } from '@app/components/Awns/Dialog'
 import { Card } from '@app/components/Card'
 import useSignName from '@app/hooks/names/useSignName'
+import { useEstimateFullRegistration } from '@app/hooks/useEstimateRegistration'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import useWindowSize from '@app/hooks/useWindowSize'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 
+import FullInvoice from '../FullInvoice'
 import { BigPremiumText } from '../PremiumTitle'
+import { RegistrationReducerDataItem } from '../types'
+import { GrayRoundRow } from './Pricing/Pricing'
 
 const StyledCard = styled(Card)(
   ({ theme }) => css`
@@ -51,7 +56,13 @@ const ButtonContainer = styled.div(
     gap: ${theme.space['2']};
   `,
 )
-
+const FullInvoiceBox = styled.div`
+  width: 100%;
+  border-radius: 10px;
+  background: #f7fafc;
+  padding: 20px 36px;
+  margin-top: 15px;
+`
 const Confetti = dynamic(() =>
   import('react-confetti').then((mod) => mod.default as typeof ConfettiT),
 )
@@ -132,12 +143,12 @@ export const useEthInvoice = (
 
   return { InvoiceFilled, avatarSrc }
 }
-console.log('useEthInvoice', useEthInvoice)
 
 type Props = {
   nameDetails: ReturnType<typeof useNameDetails>
   callback: (toProfile: boolean) => void
   isMoonpayFlow: boolean
+  registrationData: RegistrationReducerDataItem
 }
 const CenterBox = styled.div`
   display: flex;
@@ -176,21 +187,34 @@ const PositionImg = styled.div`
   top: 37px;
   transform: translateX(-50%);
 `
-const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
-  const { normalisedName: name, beautifiedName } = nameDetails
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 10px;
+  & .btn {
+    grid-column: 2;
+  }
+`
+const Complete = ({ nameDetails, callback, isMoonpayFlow, registrationData }: Props) => {
+  const { normalisedName: name, beautifiedName, priceData } = nameDetails
   const { t } = useTranslation('register')
   const { width, height } = useWindowSize()
   console.log('beautifiedName', beautifiedName)
   console.log('isMoonpayFlow', isMoonpayFlow)
   const { avatarSrc } = useEthInvoice(name, false)
   const { data } = useSignName(name)
-
+  const estimate = useEstimateFullRegistration({
+    name,
+    registrationData,
+    price: priceData,
+  })
   return (
     <StyledCard>
       <HeadStyle>
         <HeadTitle>{`Congratulations! Here's your AWNS`}</HeadTitle>
       </HeadStyle>
-      <CenterBox>
+      {/* <CenterBox>
         {data?.isPremium ? (
           <BigPremiumText>{name}</BigPremiumText>
         ) : (
@@ -198,20 +222,51 @@ const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
             {name}
           </InterText>
         )}
-      </CenterBox>
-      <Round>
-        <UserImg>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={avatarSrc || UserAvatar.src}
-            style={{ width: '100%', height: '100%' }}
-            alt="UserAvatar"
-          />
-        </UserImg>
-        <PositionImg>
-          <HeadTitle $color="#fff">{name}</HeadTitle>
-        </PositionImg>
-      </Round>
+      </CenterBox> */}
+      <Container>
+        <Round>
+          <UserImg>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={avatarSrc || UserAvatar.src}
+              style={{ width: '100%', height: '100%', borderRadius: 8, pointerEvents: 'none' }}
+              alt="UserAvatar"
+            />
+          </UserImg>
+          <PositionImg>
+            <HeadTitle $color="#fff">{name}</HeadTitle>
+          </PositionImg>
+        </Round>
+        <div>
+          <GrayRoundRow $p="20px 36px">
+            <InterText $color="#8D8EA5" $size="16px" $weight={500}>
+              Name
+            </InterText>
+            {data?.isPremium ? (
+              <BigPremiumText>{name}</BigPremiumText>
+            ) : (
+              <InterText $color="#3F5170" $size="18px" $weight={600}>
+                {name}
+              </InterText>
+            )}
+          </GrayRoundRow>
+          <FullInvoiceBox>
+            <FullInvoice {...estimate} />
+          </FullInvoiceBox>
+        </div>
+        <ButtonContainer className="btn">
+          <MobileFullWidth>
+            <BackButton onClick={() => callback(false)}>
+              {t('steps.complete.registerAnother')}
+            </BackButton>
+          </MobileFullWidth>
+          <MobileFullWidth>
+            <NextButton data-testid="view-name" onClick={() => callback(true)}>
+              {t('steps.complete.viewName')}
+            </NextButton>
+          </MobileFullWidth>
+        </ButtonContainer>
+      </Container>
       <Confetti
         width={width}
         height={height}
@@ -245,18 +300,6 @@ const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
       </TitleContainer> */}
       {/* <Typography>{t('steps.complete.description')}</Typography> */}
       {/* {InvoiceFilled} */}
-      <ButtonContainer>
-        <MobileFullWidth>
-          <Button colorStyle="accentSecondary" onClick={() => callback(false)}>
-            {t('steps.complete.registerAnother')}
-          </Button>
-        </MobileFullWidth>
-        <MobileFullWidth>
-          <Button data-testid="view-name" onClick={() => callback(true)}>
-            {t('steps.complete.viewName')}
-          </Button>
-        </MobileFullWidth>
-      </ButtonContainer>
     </StyledCard>
   )
 }

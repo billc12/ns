@@ -9,6 +9,8 @@ import BaseLink from '@app/components/@atoms/BaseLink'
 import { ReturnedName } from '@app/hooks/names/useNamesFromAddress/useNamesFromAddress'
 import { formatFullExpiry } from '@app/utils/utils'
 
+import { useEthInvoice } from './pages/profile/[name]/registration/steps/Awns_Complete'
+
 const AddressItemStyle = styled.div(
   () => css`
     height: 124px;
@@ -121,11 +123,12 @@ const ArrowRightIcon = styled.svg(
 
 export const AddressItem = ({ AddressRow }: { AddressRow: ReturnedName }) => {
   const { chain } = useNetwork()
+  const { avatarSrc } = useEthInvoice(AddressRow.name, false)
   return (
     <>
       <AddressItemStyle>
         <ContentStyle>
-          <StyledImg src={TestImg.src} />
+          <StyledImg src={avatarSrc || TestImg.src} />
           <AddressContent>
             <AddressNameStyle>
               {AddressRow.name}

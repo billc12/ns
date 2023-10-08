@@ -127,11 +127,13 @@ export const SearchInputBox = forwardRef(
       input,
       setInput,
       containerRef,
+      handleSearch,
     }: {
       size?: 'medium' | 'extraLarge'
       input: string
       setInput: Dispatch<SetStateAction<string>>
       containerRef: ForwardedRef<HTMLDivElement>
+      handleSearch: () => void
     },
     ref,
   ) => {
@@ -155,7 +157,7 @@ export const SearchInputBox = forwardRef(
           data-testid="search-input-box"
         />
         <SearchIconStyle>
-          <SearchIconSvg />
+          <SearchIconSvg onClick={handleSearch} />
         </SearchIconStyle>
       </SearchInputWrapper>
     )

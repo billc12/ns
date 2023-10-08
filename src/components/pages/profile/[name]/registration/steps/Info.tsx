@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components'
 import { Button, Heading, Typography, mq } from '@ensdomains/thorin'
 
 import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
+import { BackButton, NextButton } from '@app/components/Awns/Dialog'
 import { InterText } from '@app/components/Awns_Header'
 import { Card } from '@app/components/Card'
 import { useEstimateFullRegistration } from '@app/hooks/useEstimateRegistration'
@@ -152,14 +153,14 @@ const Info = ({ registrationData, nameDetails, callback, onProfileClick }: Props
       )}
       <ButtonContainer>
         <ButtonBox>
-          <Button colorStyle="accentSecondary" onClick={() => callback({ back: true })}>
+          <BackButton colorStyle="accentSecondary" onClick={() => callback({ back: true })}>
             {t('action.back', { ns: 'common' })}
-          </Button>
+          </BackButton>
         </ButtonBox>
         <ButtonBox>
-          <Button data-testid="next-button" onClick={() => callback({ back: false })}>
+          <NextButton data-testid="next-button" onClick={() => callback({ back: false })}>
             {t('action.begin', { ns: 'common' })}
-          </Button>
+          </NextButton>
         </ButtonBox>
       </ButtonContainer>
     </StyledCard>

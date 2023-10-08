@@ -7,11 +7,11 @@ import { useQueryClient } from 'wagmi'
 import { Dialog, Typography } from '@ensdomains/thorin'
 
 import {
-  AuctionButton,
-  CancelButton,
+  BackButton,
   ContainerStyle,
   ContentStyle,
   NameInfo,
+  NextButton,
   Row,
 } from '@app/components/Awns/Dialog'
 import LabelInput from '@app/components/Awns/LabelInput'
@@ -141,13 +141,11 @@ const EditResolveAddress = ({ data, onDismiss, dispatch }: Props) => {
         ))}
       </ContentStyle>
 
-      <Row style={{ marginTop: 20 }}>
-        <CancelButton colorStyle="accentSecondary" onClick={onDismiss}>
-          Cancel
-        </CancelButton>
-        <AuctionButton onClick={submitHandle} disabled={isVerify}>
+      <Row style={{ marginTop: 20, width: '100%' }}>
+        <BackButton onClick={onDismiss}>Cancel</BackButton>
+        <NextButton onClick={submitHandle} disabled={isVerify}>
           Save
-        </AuctionButton>
+        </NextButton>
       </Row>
     </ContainerStyle>
   )
