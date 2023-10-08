@@ -20,6 +20,7 @@ import useWindowSize from '@app/hooks/useWindowSize'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 
 import { BigPremiumText } from '../PremiumTitle'
+import { GrayRoundRow } from './Pricing/Pricing'
 
 const StyledCard = styled(Card)(
   ({ theme }) => css`
@@ -175,6 +176,15 @@ const PositionImg = styled.div`
   top: 37px;
   transform: translateX(-50%);
 `
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 10px;
+  & .btn {
+    grid-column: 2;
+  }
+`
 const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
   const { normalisedName: name, beautifiedName } = nameDetails
   const { t } = useTranslation('register')
@@ -189,7 +199,7 @@ const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
       <HeadStyle>
         <HeadTitle>{`Congratulations! Here's your AWNS`}</HeadTitle>
       </HeadStyle>
-      <CenterBox>
+      {/* <CenterBox>
         {data?.isPremium ? (
           <BigPremiumText>{name}</BigPremiumText>
         ) : (
@@ -197,20 +207,48 @@ const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
             {name}
           </InterText>
         )}
-      </CenterBox>
-      <Round>
-        <UserImg>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={avatarSrc || UserAvatar.src}
-            style={{ width: '100%', height: '100%' }}
-            alt="UserAvatar"
-          />
-        </UserImg>
-        <PositionImg>
-          <HeadTitle $color="#fff">{name}</HeadTitle>
-        </PositionImg>
-      </Round>
+      </CenterBox> */}
+      <Container>
+        <Round>
+          <UserImg>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={avatarSrc || UserAvatar.src}
+              style={{ width: '100%', height: '100%', borderRadius: 8, pointerEvents: 'none' }}
+              alt="UserAvatar"
+            />
+          </UserImg>
+          <PositionImg>
+            <HeadTitle $color="#fff">{name}</HeadTitle>
+          </PositionImg>
+        </Round>
+        <div>
+          <GrayRoundRow $p="20px 36px">
+            <InterText $color="#8D8EA5" $size="16px" $weight={500}>
+              Name
+            </InterText>
+            {data?.isPremium ? (
+              <BigPremiumText>{name}</BigPremiumText>
+            ) : (
+              <InterText $color="#3F5170" $size="18px" $weight={600}>
+                {name}
+              </InterText>
+            )}
+          </GrayRoundRow>
+        </div>
+        <ButtonContainer className="btn">
+          <MobileFullWidth>
+            <Button colorStyle="accentSecondary" onClick={() => callback(false)}>
+              {t('steps.complete.registerAnother')}
+            </Button>
+          </MobileFullWidth>
+          <MobileFullWidth>
+            <Button data-testid="view-name" onClick={() => callback(true)}>
+              {t('steps.complete.viewName')}
+            </Button>
+          </MobileFullWidth>
+        </ButtonContainer>
+      </Container>
       <Confetti
         width={width}
         height={height}
@@ -244,18 +282,6 @@ const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
       </TitleContainer> */}
       {/* <Typography>{t('steps.complete.description')}</Typography> */}
       {/* {InvoiceFilled} */}
-      <ButtonContainer>
-        <MobileFullWidth>
-          <Button colorStyle="accentSecondary" onClick={() => callback(false)}>
-            {t('steps.complete.registerAnother')}
-          </Button>
-        </MobileFullWidth>
-        <MobileFullWidth>
-          <Button data-testid="view-name" onClick={() => callback(true)}>
-            {t('steps.complete.viewName')}
-          </Button>
-        </MobileFullWidth>
-      </ButtonContainer>
     </StyledCard>
   )
 }

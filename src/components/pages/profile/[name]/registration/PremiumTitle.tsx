@@ -60,7 +60,7 @@ const PremiumTitle = ({ nameDetails }: { nameDetails: ReturnType<typeof useNameD
 
       {registrationStatus && (
         <InterText $color="#21C331" $size="16px">
-          Available for registration
+          Available
         </InterText>
       )}
     </HeadName>

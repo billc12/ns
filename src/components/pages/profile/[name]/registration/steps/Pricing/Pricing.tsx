@@ -509,7 +509,7 @@ export const SmallPremiumText = styled(PremiumText)`
   font-size: 16px;
   font-weight: 500;
 `
-const InterText = styled(Typography)<{ $size?: string; $color?: string; $weight?: number }>`
+export const InterText = styled(Typography)<{ $size?: string; $color?: string; $weight?: number }>`
   width: max-content;
   height: max-content;
   color: ${(props) => props.$color || '#3F5170'};
@@ -533,7 +533,7 @@ const Column = styled.div`
   gap: 17px;
 `
 
-const GrayRoundRow = styled(Row)<{ $p: string }>`
+export const GrayRoundRow = styled(Row)<{ $p: string }>`
   width: 380px;
   height: max-content;
   padding: ${(props) => props.$p};
@@ -766,7 +766,7 @@ const Pricing = ({
       <ContentStyle>
         <GrayRoundRow $p="20px 36px">
           <InterText $color="#8D8EA5" $size="16px" $weight={500}>
-            length
+            Length
           </InterText>
           <InterText $color="#3F5170" $size="16px" $weight={500}>
             {nameLength} characters
@@ -774,13 +774,13 @@ const Pricing = ({
         </GrayRoundRow>
         <GrayRoundRow $p="20px 36px">
           <InterText $color="#8D8EA5" $size="16px" $weight={500}>
-            Premium
+            Level
           </InterText>
           {isPremium ? (
-            <SmallPremiumText>Yes</SmallPremiumText>
+            <SmallPremiumText>Premium</SmallPremiumText>
           ) : (
             <InterText $color="#3F5170" $size="16px" $weight={500}>
-              No
+              Normal
             </InterText>
           )}
           {/* <InterText $color="#3F5170" $size="16px" $weight={500}>

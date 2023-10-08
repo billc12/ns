@@ -443,6 +443,9 @@ export const SearchInput = ({
       input={inputVal}
       setInput={setInputVal}
       size={size}
+      handleSearch={() => {
+        handleSearch()
+      }}
     />
   )
 
