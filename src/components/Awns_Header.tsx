@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
@@ -63,12 +64,17 @@ const Page = () => {
         </InterText>
       </HeaderLeft>
       <HeaderNav>
-        <InterText as="a" $textColor={isIndex ? '#fff' : '#3f5170'}>
-          Explore
-        </InterText>
-        <InterText as="a" $textColor={isIndex ? '#fff' : '#3f5170'}>
-          Clique
-        </InterText>
+        <Link href="/">
+          <InterText as="a" $textColor={isIndex ? '#fff' : '#3f5170'} style={{ cursor: 'pointer' }}>
+            Explore
+          </InterText>
+        </Link>
+        <a href="https://www.myclique.io/daos" target="_blank" rel="noreferrer">
+          <InterText as="a" $textColor={isIndex ? '#fff' : '#3f5170'} style={{ cursor: 'pointer' }}>
+            Clique
+          </InterText>
+        </a>
+
         <InterText as="a" $textColor={isIndex ? '#fff' : '#3f5170'}>
           Help
         </InterText>

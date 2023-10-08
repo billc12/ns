@@ -590,7 +590,6 @@ const PremiumImgRound = styled.div<{ $premium: boolean }>(
 const ToolTipRound = styled.div`
   padding: 8px 10px;
   border-radius: 6px;
-  border: 1px solid #97b7ef;
   background: #f8fbff;
   color: #8d8ea5;
   font-size: 14px;
@@ -797,7 +796,7 @@ const Pricing = ({
                 Chain
               </InterText>
               <InterText $color="#3F5170" $size="16px" $weight={500}>
-                {chain ? chain.name : '--'}
+                {chain ? chain.name : 'Sepolia'}
               </InterText>
             </CenterRow>
             <CenterRow style={{ padding: '0 38px' }}>

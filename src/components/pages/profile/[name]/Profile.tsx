@@ -13,6 +13,7 @@ import { Table } from '@app/components/table'
 import useSignName from '@app/hooks/names/useSignName'
 // import { useAbilities } from '@app/hooks/abilities/useAbilities'
 import { useRecentTransactions } from '@app/hooks/transactions/useRecentTransactions'
+import { useChainName } from '@app/hooks/useChainName'
 import useGetTransfers from '@app/hooks/useGetTransfers'
 // import { useChainId } from '@app/hooks/useChainId'
 import { useNameDetails } from '@app/hooks/useNameDetails'
@@ -21,7 +22,7 @@ import { useQueryParameterState } from '@app/hooks/useQueryParameterState'
 import { useRouterWithHistory } from '@app/hooks/useRouterWithHistory'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
 // import { Content, ContentWarning } from '@app/layouts/Content'
-import { formatFullExpiry, shortenAddress } from '@app/utils/utils'
+import { formatFullExpiry, makeEtherscanLink, shortenAddress } from '@app/utils/utils'
 
 import { shouldShowSuccessPage } from '../../import/[name]/shared'
 import { AccountHeader } from '../AccountHeader'
@@ -217,15 +218,26 @@ export const NameAvailableBanner = ({
 
 const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
   const { result } = useGetTransfers(name)
+  const chainName = useChainName()
   const tableList = useMemo(() => {
     if (!result || !result.length) return []
     return result.map(({ eventTime, owner, preOwner, transactionID }) => [
       <TableContentStyle>{shortenAddress(preOwner.id)}</TableContentStyle>,
-      <TableContentStyle>{shortenAddress(owner.id)}</TableContentStyle>,
+      <TableContentStyle
+        style={{ cursor: 'pointer' }}
+        onClick={() => window.open(makeEtherscanLink(transactionID, chainName), '_blank')}
+      >
+        {shortenAddress(owner.id)}
+      </TableContentStyle>,
       <TableContentStyle>{new Date(eventTime * 1000).toLocaleString()}</TableContentStyle>,
-      <TableContentStyle>{shortenAddress(transactionID)}</TableContentStyle>,
+      <TableContentStyle
+        style={{ cursor: 'pointer' }}
+        onClick={() => window.open(makeEtherscanLink(transactionID, chainName), '_blank')}
+      >
+        {shortenAddress(transactionID)}
+      </TableContentStyle>,
     ])
-  }, [result])
+  }, [chainName, result])
   const router = useRouterWithHistory()
   const { t } = useTranslation('profile')
   // const chainId = useChainId()
