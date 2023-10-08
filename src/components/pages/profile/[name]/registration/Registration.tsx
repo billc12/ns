@@ -315,6 +315,7 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
               ),
               complete: (
                 <Complete
+                  registrationData={item}
                   nameDetails={nameDetails}
                   callback={onComplete}
                   isMoonpayFlow={item.isMoonpayFlow}

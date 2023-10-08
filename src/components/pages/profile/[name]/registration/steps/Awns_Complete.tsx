@@ -7,19 +7,23 @@ import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
 
-import { Button, Typography, mq } from '@ensdomains/thorin'
+import { Typography, mq } from '@ensdomains/thorin'
 
 import UserAvatar from '@app/assets/TestImage.png'
 import { Invoice } from '@app/components/@atoms/Invoice/Invoice'
 import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
 import { InterText } from '@app/components/@molecules/SearchInput/SearchResult'
+import { BackButton, NextButton } from '@app/components/Awns/Dialog'
 import { Card } from '@app/components/Card'
 import useSignName from '@app/hooks/names/useSignName'
+import { useEstimateFullRegistration } from '@app/hooks/useEstimateRegistration'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import useWindowSize from '@app/hooks/useWindowSize'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 
+import FullInvoice from '../FullInvoice'
 import { BigPremiumText } from '../PremiumTitle'
+import { RegistrationReducerDataItem } from '../types'
 import { GrayRoundRow } from './Pricing/Pricing'
 
 const StyledCard = styled(Card)(
@@ -52,7 +56,13 @@ const ButtonContainer = styled.div(
     gap: ${theme.space['2']};
   `,
 )
-
+const FullInvoiceBox = styled.div`
+  width: 100%;
+  border-radius: 10px;
+  background: #f7fafc;
+  padding: 20px 36px;
+  margin-top: 15px;
+`
 const Confetti = dynamic(() =>
   import('react-confetti').then((mod) => mod.default as typeof ConfettiT),
 )
@@ -138,6 +148,7 @@ type Props = {
   nameDetails: ReturnType<typeof useNameDetails>
   callback: (toProfile: boolean) => void
   isMoonpayFlow: boolean
+  registrationData: RegistrationReducerDataItem
 }
 const CenterBox = styled.div`
   display: flex;
@@ -185,15 +196,19 @@ const Container = styled.div`
     grid-column: 2;
   }
 `
-const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
-  const { normalisedName: name, beautifiedName } = nameDetails
+const Complete = ({ nameDetails, callback, isMoonpayFlow, registrationData }: Props) => {
+  const { normalisedName: name, beautifiedName, priceData } = nameDetails
   const { t } = useTranslation('register')
   const { width, height } = useWindowSize()
   console.log('beautifiedName', beautifiedName)
   console.log('isMoonpayFlow', isMoonpayFlow)
   const { avatarSrc } = useEthInvoice(name, false)
   const { data } = useSignName(name)
-
+  const estimate = useEstimateFullRegistration({
+    name,
+    registrationData,
+    price: priceData,
+  })
   return (
     <StyledCard>
       <HeadStyle>
@@ -235,17 +250,20 @@ const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
               </InterText>
             )}
           </GrayRoundRow>
+          <FullInvoiceBox>
+            <FullInvoice {...estimate} />
+          </FullInvoiceBox>
         </div>
         <ButtonContainer className="btn">
           <MobileFullWidth>
-            <Button colorStyle="accentSecondary" onClick={() => callback(false)}>
+            <BackButton onClick={() => callback(false)}>
               {t('steps.complete.registerAnother')}
-            </Button>
+            </BackButton>
           </MobileFullWidth>
           <MobileFullWidth>
-            <Button data-testid="view-name" onClick={() => callback(true)}>
+            <NextButton data-testid="view-name" onClick={() => callback(true)}>
               {t('steps.complete.viewName')}
-            </Button>
+            </NextButton>
           </MobileFullWidth>
         </ButtonContainer>
       </Container>
