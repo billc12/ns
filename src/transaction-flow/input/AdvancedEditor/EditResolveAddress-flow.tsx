@@ -6,14 +6,7 @@ import { useQueryClient } from 'wagmi'
 
 import { Dialog, Typography } from '@ensdomains/thorin'
 
-import {
-  BackButton,
-  ContainerStyle,
-  ContentStyle,
-  NameInfo,
-  NextButton,
-  Row,
-} from '@app/components/Awns/Dialog'
+import { BackButton, ContentStyle, NameInfo, NextButton, Row } from '@app/components/Awns/Dialog'
 import LabelInput from '@app/components/Awns/LabelInput'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import { makeTransactionItem } from '@app/transaction-flow/transaction'
@@ -123,7 +116,7 @@ const EditResolveAddress = ({ data, onDismiss, dispatch }: Props) => {
     dispatch({ name: 'setFlowStage', payload: 'transaction' })
   }, [data?.name, dispatch, isVerify, profile, records])
   return (
-    <ContainerStyle>
+    <>
       <Dialog.Heading title="Set Address AWNS" />
       <NameInfo name={normalisedName} expiryDate={expiryDate} />
       <ContentStyle>
@@ -147,7 +140,7 @@ const EditResolveAddress = ({ data, onDismiss, dispatch }: Props) => {
           Save
         </NextButton>
       </Row>
-    </ContainerStyle>
+    </>
   )
 }
 export default EditResolveAddress

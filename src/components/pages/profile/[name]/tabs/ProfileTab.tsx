@@ -10,7 +10,6 @@ import TestImg from '@app/assets/TestImage.png'
 import TimeIcon from '@app/assets/TimeIcon.svg'
 import TransferIcon from '@app/assets/TransferIcon.svg'
 import SetAddressDialog from '@app/components/Awns/Dialog/SetAddressDialog'
-import TransferDialog from '@app/components/Awns/Dialog/TransferDialog'
 import { CopyButton } from '@app/components/Copy'
 // import { Outlink } from '@app/components/Outlink'
 import { ProfileSnippet } from '@app/components/ProfileSnippet'
@@ -189,11 +188,9 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
   const breakpoints = useBreakpoint()
   const { data: registrationData } = useRegistrationDate(name)
   const { chain: currentChain } = useNetwork()
-  const [openTransferDialog, setOpenTransferDialog] = useState(false)
+
   const [openAddressDialog, setOpenAddressDialog] = useState<boolean>(false)
-  const transferHandleDialog = (open: boolean) => {
-    setOpenTransferDialog(open)
-  }
+
   const addressHandleDialog = (open: boolean) => {
     setOpenAddressDialog(open)
   }
@@ -430,11 +427,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
           gracePeriodEndDate={gracePeriodEndDate}
         />
       )}
-      <TransferDialog
-        open={openTransferDialog}
-        handleOpen={transferHandleDialog}
-        nameDetails={nameDetails}
-      />
+
       <SetAddressDialog
         open={openAddressDialog}
         handleOpen={addressHandleDialog}

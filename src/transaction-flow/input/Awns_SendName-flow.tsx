@@ -8,13 +8,7 @@ import { Dialog, mq } from '@ensdomains/thorin'
 
 import { Spacer } from '@app/components/@atoms/Spacer'
 import { DogFood } from '@app/components/@molecules/DogFood'
-import {
-  BackButton,
-  ContainerStyle,
-  ContentStyle,
-  NameInfo,
-  NextButton,
-} from '@app/components/Awns/Dialog'
+import { BackButton, ContentStyle, NameInfo, NextButton } from '@app/components/Awns/Dialog'
 import { useAbilities } from '@app/hooks/abilities/useAbilities'
 import { useBasicName } from '@app/hooks/useBasicName'
 import { useNameDetails } from '@app/hooks/useNameDetails'
@@ -215,7 +209,7 @@ export const SendName = ({ data, dispatch, onDismiss }: Props) => {
           />
         </SwitchBox>
       )} */}
-      <ContainerStyle>
+      <>
         <Dialog.Heading title="Transfer AWNS" />
         <NameInfo name={name} expiryDate={nameDetails.expiryDate} />
         <ContentStyle>
@@ -253,7 +247,7 @@ export const SendName = ({ data, dispatch, onDismiss }: Props) => {
             </FooterContainer>
           </Form>
         </ContentStyle>
-      </ContainerStyle>
+      </>
     </>
   )
 }

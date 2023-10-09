@@ -289,64 +289,68 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
         }
 
   return (
-    <Container data-testid="extend-names-modal">
+    <>
       <Dialog.Heading title="Extend AWNS" />
-      <ScrollBoxWrapper>
-        <InnerContainer>
-          {view === 'name-list' ? (
-            <NamesList names={names} />
-          ) : (
-            <>
-              <NameInfo
-                name={nameDetail?.normalisedName || ''}
-                expiryDate={nameDetail?.expiryDate}
-              />
-              <InfoContainerStyle>
-                <Row>
-                  <Text>Registration Year</Text>
-                  <PlusMinusWrapper>
-                    <PlusMinusControl
-                      minValue={1}
-                      value={years}
-                      onChange={(e) => {
-                        const newYears = parseInt(e.target.value)
-                        if (!Number.isNaN(newYears)) setYears(newYears)
-                      }}
+      <Container data-testid="extend-names-modal">
+        <ScrollBoxWrapper>
+          <InnerContainer>
+            {view === 'name-list' ? (
+              <NamesList names={names} />
+            ) : (
+              <>
+                <NameInfo
+                  name={nameDetail?.normalisedName || ''}
+                  expiryDate={nameDetail?.expiryDate}
+                />
+                <InfoContainerStyle>
+                  <Row>
+                    <Text>Registration Year</Text>
+                    <PlusMinusWrapper>
+                      <PlusMinusControl
+                        minValue={1}
+                        value={years}
+                        onChange={(e) => {
+                          const newYears = parseInt(e.target.value)
+                          if (!Number.isNaN(newYears)) setYears(newYears)
+                        }}
+                      />
+                    </PlusMinusWrapper>
+                  </Row>
+                  <Row>
+                    <Text>Expiry on</Text>
+                    <Text>{formatDateString(currentExpiry)}</Text>
+                  </Row>
+                  <GasEstimationCacheableComponent $isCached={isEstimateGasLoading}>
+                    <Invoice
+                      items={items}
+                      unit={currencyDisplay}
+                      totalLabel="Estimated total"
+                      discount={discountInvoiceItems}
                     />
-                  </PlusMinusWrapper>
-                </Row>
-                <Row>
-                  <Text>Expiry on</Text>
-                  <Text>{formatDateString(currentExpiry)}</Text>
-                </Row>
-                <GasEstimationCacheableComponent $isCached={isEstimateGasLoading}>
-                  <Invoice
-                    items={items}
-                    unit={currencyDisplay}
-                    totalLabel="Estimated total"
-                    discount={discountInvoiceItems}
-                  />
-                  {(!!estimateGasLimitError ||
-                    (estimatedGasLimit && balance?.value.lt(estimatedGasLimit))) && (
-                    <Helper type="warning">{t('input.extendNames.gasLimitError')}</Helper>
-                  )}
-                </GasEstimationCacheableComponent>
-              </InfoContainerStyle>
-            </>
-          )}
-        </InnerContainer>
-      </ScrollBoxWrapper>
-      <Dialog.Footer
-        leading={<BackButton onClick={onDismiss}>{t('action.back', { ns: 'common' })}</BackButton>}
-        trailing={
-          <NextButton
-            {...trailingButtonProps}
-            data-testid="extend-names-confirm"
-            disabled={isEstimateGasLoading}
-          />
-        }
-      />
-    </Container>
+                    {(!!estimateGasLimitError ||
+                      (estimatedGasLimit && balance?.value.lt(estimatedGasLimit))) && (
+                      <Helper type="warning">{t('input.extendNames.gasLimitError')}</Helper>
+                    )}
+                  </GasEstimationCacheableComponent>
+                </InfoContainerStyle>
+              </>
+            )}
+          </InnerContainer>
+        </ScrollBoxWrapper>
+        <Dialog.Footer
+          leading={
+            <BackButton onClick={onDismiss}>{t('action.back', { ns: 'common' })}</BackButton>
+          }
+          trailing={
+            <NextButton
+              {...trailingButtonProps}
+              data-testid="extend-names-confirm"
+              disabled={isEstimateGasLoading}
+            />
+          }
+        />
+      </Container>
+    </>
   )
 }
 
