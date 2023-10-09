@@ -7,8 +7,8 @@ import { Button, Typography, mq } from '@ensdomains/thorin'
 
 import LinkIcon from '@app/assets/LinkIcon.svg'
 import TestImg from '@app/assets/TestImage.png'
-import TimeIcon from '@app/assets/TimeIcon.svg'
 import TransferIcon from '@app/assets/TransferIcon.svg'
+import ExtendBtn from '@app/components/Awns/Button/Extend'
 import { CopyButton } from '@app/components/Copy'
 // import { Outlink } from '@app/components/Outlink'
 import { ProfileSnippet } from '@app/components/ProfileSnippet'
@@ -25,7 +25,6 @@ import useRegistrationDate from '@app/hooks/useRegistrationData'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { AddressRecord } from '@app/transaction-flow/input/AdvancedEditor/EditResolveAddress-flow'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
-import { shouldShowExtendWarning } from '@app/utils/abilities/shouldShowExtendWarning'
 import { emptyAddress } from '@app/utils/constants'
 // import { getSupportLink } from '@app/utils/supportLinks'
 import { shortenAddress, validateExpiry } from '@app/utils/utils'
@@ -241,19 +240,14 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
     return true
   }, [breakpoints.sm])
   const { prepareDataInput } = useTransactionFlow()
+
   const showSendNameInput = prepareDataInput('AwnsSendName')
   const handleSend = () => {
     showSendNameInput(`send-name-${name}`, {
       name,
     })
   }
-  const showExtendNamesInput = prepareDataInput('AwnsExtendNames')
-  const handleExtend = () => {
-    showExtendNamesInput(`extend-names-${name}`, {
-      names: [name],
-      isSelf: shouldShowExtendWarning(abilities.data),
-    })
-  }
+
   const showEditResolveAddressInput = prepareDataInput('EditResolveAddress')
   const handleEditResolveAddress = () => {
     showEditResolveAddressInput(`edit-resolve-address-${name}`, { name })
@@ -342,9 +336,10 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
           )}
 
           {abilities.data.canExtend && (
-            <ButtonStyle onClick={handleExtend} colorStyle="background" prefix={<TimeIcon />}>
-              Extend
-            </ButtonStyle>
+            // <ButtonStyle onClick={handleExtend} colorStyle="background" prefix={<TimeIcon />}>
+            //   Extend
+            // </ButtonStyle>
+            <ExtendBtn name={name} />
           )}
 
           {abilities.data.canSend && (

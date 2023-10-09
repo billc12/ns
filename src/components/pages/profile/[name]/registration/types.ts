@@ -28,6 +28,8 @@ export type RegistrationStepData = {
     years: number
     reverseRecord: boolean
     paymentMethodChoice: PaymentMethod | ''
+    discountCode?: string
+    invitationName?: string
   }
   profile: {
     records: ProfileRecord[]

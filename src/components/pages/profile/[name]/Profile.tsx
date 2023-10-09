@@ -224,14 +224,14 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
     return result.map(({ eventTime, owner, preOwner, transactionID }) => [
       <TableContentStyle>{shortenAddress(preOwner.id)}</TableContentStyle>,
       <TableContentStyle
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: 'pointer', textDecoration: 'underline' }}
         onClick={() => window.open(makeEtherscanLink(transactionID, chainName), '_blank')}
       >
         {shortenAddress(owner.id)}
       </TableContentStyle>,
       <TableContentStyle>{new Date(eventTime * 1000).toLocaleString()}</TableContentStyle>,
       <TableContentStyle
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: 'pointer', textDecoration: 'underline' }}
         onClick={() => window.open(makeEtherscanLink(transactionID, chainName), '_blank')}
       >
         {shortenAddress(transactionID)}
