@@ -564,6 +564,9 @@ export const TransactionStageModal = ({
     return (
       <Button
         style={{ background: '#0049C6' }}
+        loading={
+          !canEnableTransactionRequest || requestLoading || !sendTransaction || !!requestError
+        }
         disabled={
           !canEnableTransactionRequest || requestLoading || !sendTransaction || !!requestError
         }

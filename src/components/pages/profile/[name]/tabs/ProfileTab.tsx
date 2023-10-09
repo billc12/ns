@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 // import { Trans, useTranslation } from 'react-i18next' Helper
 import styled, { css } from 'styled-components'
 import { useAccount, useNetwork } from 'wagmi'
@@ -265,6 +265,41 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
   const { avatarSrc } = useEthInvoice(normalisedName, false)
   const { accountAddress } = useGetNftAddress(normalisedName)
 
+  const dateRef1 = useRef<HTMLElement | null>(null)
+  const dateRef2 = useRef<HTMLElement | null>(null)
+  const [enterState, setEnterState] = useState({
+    enterBox1: false,
+    enterBox2: false,
+  })
+  const handleEnter1 = () => {
+    setEnterState({ ...enterState, enterBox1: true })
+  }
+  const handleEnter2 = () => {
+    setEnterState({ ...enterState, enterBox2: true })
+  }
+  const handleLeave1 = () => {
+    setEnterState({ ...enterState, enterBox1: false })
+  }
+  const handleLeave2 = () => {
+    setEnterState({ ...enterState, enterBox2: false })
+  }
+  useEffect(() => {
+    const dom1 = dateRef1.current
+    const dom2 = dateRef2.current
+    if (dateRef1.current && dateRef2.current) {
+      dom1?.addEventListener('mouseenter', handleEnter1)
+      dom2?.addEventListener('mouseenter', handleEnter2)
+      dom1?.addEventListener('mouseleave', handleLeave1)
+      dom2?.addEventListener('mouseleave', handleLeave2)
+    }
+    return () => {
+      dom1?.removeEventListener('mouseenter', handleEnter1)
+      dom1?.removeEventListener('mouseleave', handleLeave1)
+      dom2?.removeEventListener('mouseenter', handleEnter2)
+      dom2?.removeEventListener('mouseleave', handleLeave2)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   return (
     <DetailsWrapper>
       <div
@@ -295,11 +330,25 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
               <CopyButton value={nameDetails?.ownerData?.owner} />
             </RowValueStyle>
 
-            <RowNameStyle>Registration Date</RowNameStyle>
-            <RowValueStyle>{registrationData?.registrationDate?.toString() || '--'}</RowValueStyle>
+            <RowNameStyle>Registration</RowNameStyle>
+            <RowValueStyle
+              ref={dateRef1}
+              style={{ textDecoration: enterState.enterBox1 ? 'none' : 'underline' }}
+            >
+              {enterState.enterBox1
+                ? registrationData?.registrationDate.toUTCString()
+                : registrationData?.registrationDate?.toString() || '--'}
+            </RowValueStyle>
 
-            <RowNameStyle>Expiration Date</RowNameStyle>
-            <RowValueStyle>{nameDetails.expiryDate?.toString() || '--'} </RowValueStyle>
+            <RowNameStyle>Expiration</RowNameStyle>
+            <RowValueStyle
+              ref={dateRef2}
+              style={{ textDecoration: enterState.enterBox2 ? 'none' : 'underline' }}
+            >
+              {enterState.enterBox2
+                ? nameDetails.expiryDate?.toUTCString()
+                : nameDetails.expiryDate?.toString() || '--'}
+            </RowValueStyle>
 
             <RowNameStyle>Chain</RowNameStyle>
             <RowValueStyle>{currentChain?.name || '--'}</RowValueStyle>
