@@ -3,7 +3,7 @@ import { useQuery } from 'wagmi'
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 
 type Result = { data: string }
-const BASE_URL = `https://awns-devapi.myclique.io/awns/sign/name`
+const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/sign/name`
 
 export const fetchedGetSignName = async (n: string) => {
   const response = await fetch(`${BASE_URL}?name=${n}`).then((res) => res.json<Result>())

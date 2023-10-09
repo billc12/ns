@@ -79,7 +79,7 @@ const UploadComponent = ({
   })
 
   const { mutate: signAndUpload, isLoading } = useMutation(async () => {
-    let baseURL = process.env.NEXT_PUBLIC_AVUP_ENDPOINT || `https://awns-devapi.myclique.io/awns`
+    let baseURL = process.env.NEXT_PUBLIC_AVUP_ENDPOINT || process.env.NEXT_PUBLIC_BASE_URL
     if (network !== 'mainnet') {
       baseURL = `${baseURL}/${network}`
     }

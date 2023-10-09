@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 // import { Trans, useTranslation } from 'react-i18next' Helper
 import styled, { css } from 'styled-components'
 import { useAccount, useNetwork } from 'wagmi'
@@ -7,10 +7,8 @@ import { Button, Typography, mq } from '@ensdomains/thorin'
 
 import LinkIcon from '@app/assets/LinkIcon.svg'
 import TestImg from '@app/assets/TestImage.png'
-import TimeIcon from '@app/assets/TimeIcon.svg'
 import TransferIcon from '@app/assets/TransferIcon.svg'
-import SetAddressDialog from '@app/components/Awns/Dialog/SetAddressDialog'
-import TransferDialog from '@app/components/Awns/Dialog/TransferDialog'
+import ExtendBtn from '@app/components/Awns/Button/Extend'
 import { CopyButton } from '@app/components/Copy'
 // import { Outlink } from '@app/components/Outlink'
 import { ProfileSnippet } from '@app/components/ProfileSnippet'
@@ -22,12 +20,11 @@ import useGetNftAddress from '@app/hooks/useGetNftAddress'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import useOwners from '@app/hooks/useOwners'
 import { usePrimary } from '@app/hooks/usePrimary'
-import { AuctionType, useProfileActions } from '@app/hooks/useProfileActions'
+import { useProfileActions } from '@app/hooks/useProfileActions'
 import useRegistrationDate from '@app/hooks/useRegistrationData'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { AddressRecord } from '@app/transaction-flow/input/AdvancedEditor/EditResolveAddress-flow'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
-import { shouldShowExtendWarning } from '@app/utils/abilities/shouldShowExtendWarning'
 import { emptyAddress } from '@app/utils/constants'
 // import { getSupportLink } from '@app/utils/supportLinks'
 import { shortenAddress, validateExpiry } from '@app/utils/utils'
@@ -189,14 +186,6 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
   const breakpoints = useBreakpoint()
   const { data: registrationData } = useRegistrationDate(name)
   const { chain: currentChain } = useNetwork()
-  const [openTransferDialog, setOpenTransferDialog] = useState(false)
-  const [openAddressDialog, setOpenAddressDialog] = useState<boolean>(false)
-  const transferHandleDialog = (open: boolean) => {
-    setOpenTransferDialog(open)
-  }
-  const addressHandleDialog = (open: boolean) => {
-    setOpenAddressDialog(open)
-  }
 
   const {
     profile,
@@ -233,17 +222,6 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
     expiryDate,
   })
 
-  const IsOwner = useMemo(() => {
-    if (address === ownerData?.owner) {
-      return true
-    }
-    return false
-  }, [address, ownerData?.owner])
-  console.log(IsOwner)
-
-  const PrimaryNameAuction = profileActions.profileActions?.filter(
-    (item) => !!item.type && item.type === AuctionType.PrimaryName,
-  )[0]
   const isExpired = useMemo(
     () => gracePeriodEndDate && gracePeriodEndDate < new Date(),
     [gracePeriodEndDate],
@@ -262,22 +240,23 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
     return true
   }, [breakpoints.sm])
   const { prepareDataInput } = useTransactionFlow()
+
   const showSendNameInput = prepareDataInput('AwnsSendName')
   const handleSend = () => {
     showSendNameInput(`send-name-${name}`, {
       name,
     })
   }
-  const showExtendNamesInput = prepareDataInput('AwnsExtendNames')
-  const handleExtend = () => {
-    showExtendNamesInput(`extend-names-${name}`, {
-      names: [name],
-      isSelf: shouldShowExtendWarning(abilities.data),
-    })
-  }
+
   const showEditResolveAddressInput = prepareDataInput('EditResolveAddress')
   const handleEditResolveAddress = () => {
     showEditResolveAddressInput(`edit-resolve-address-${name}`, { name })
+  }
+  const showSetPrimaryNameInput = prepareDataInput('SetPrimaryName')
+  const handleSelectPrimaryName = () => {
+    if (address && name) {
+      showSetPrimaryNameInput(`edit-resolve-address-${name}`, { address, name })
+    }
   }
   const hasGlobalError = useHasGlobalError()
   const parseUseAddress: AddressRecord = nameDetails.profile?.records.coinTypes?.find(
@@ -286,6 +265,41 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
   const { avatarSrc } = useEthInvoice(normalisedName, false)
   const { accountAddress } = useGetNftAddress(normalisedName)
 
+  const dateRef1 = useRef<HTMLElement | null>(null)
+  const dateRef2 = useRef<HTMLElement | null>(null)
+  const [enterState, setEnterState] = useState({
+    enterBox1: false,
+    enterBox2: false,
+  })
+  const handleEnter1 = () => {
+    setEnterState({ ...enterState, enterBox1: true })
+  }
+  const handleEnter2 = () => {
+    setEnterState({ ...enterState, enterBox2: true })
+  }
+  const handleLeave1 = () => {
+    setEnterState({ ...enterState, enterBox1: false })
+  }
+  const handleLeave2 = () => {
+    setEnterState({ ...enterState, enterBox2: false })
+  }
+  useEffect(() => {
+    const dom1 = dateRef1.current
+    const dom2 = dateRef2.current
+    if (dateRef1.current && dateRef2.current) {
+      dom1?.addEventListener('mouseenter', handleEnter1)
+      dom2?.addEventListener('mouseenter', handleEnter2)
+      dom1?.addEventListener('mouseleave', handleLeave1)
+      dom2?.addEventListener('mouseleave', handleLeave2)
+    }
+    return () => {
+      dom1?.removeEventListener('mouseenter', handleEnter1)
+      dom1?.removeEventListener('mouseleave', handleLeave1)
+      dom2?.removeEventListener('mouseenter', handleEnter2)
+      dom2?.removeEventListener('mouseleave', handleLeave2)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   return (
     <DetailsWrapper>
       <div
@@ -316,11 +330,25 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
               <CopyButton value={nameDetails?.ownerData?.owner} />
             </RowValueStyle>
 
-            <RowNameStyle>Registration Date</RowNameStyle>
-            <RowValueStyle>{registrationData?.registrationDate?.toString() || '--'}</RowValueStyle>
+            <RowNameStyle>Registration</RowNameStyle>
+            <RowValueStyle
+              ref={dateRef1}
+              style={{ textDecoration: enterState.enterBox1 ? 'none' : 'underline' }}
+            >
+              {enterState.enterBox1
+                ? registrationData?.registrationDate.toUTCString()
+                : registrationData?.registrationDate?.toString() || '--'}
+            </RowValueStyle>
 
-            <RowNameStyle>Expiration Date</RowNameStyle>
-            <RowValueStyle>{nameDetails.expiryDate?.toString() || '--'} </RowValueStyle>
+            <RowNameStyle>Expiration</RowNameStyle>
+            <RowValueStyle
+              ref={dateRef2}
+              style={{ textDecoration: enterState.enterBox2 ? 'none' : 'underline' }}
+            >
+              {enterState.enterBox2
+                ? nameDetails.expiryDate?.toUTCString()
+                : nameDetails.expiryDate?.toString() || '--'}
+            </RowValueStyle>
 
             <RowNameStyle>Chain</RowNameStyle>
             <RowValueStyle>{currentChain?.name || '--'}</RowValueStyle>
@@ -343,13 +371,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
         </div>
         <ButtonsStyle>
           {profileActions.canSetMainName && (
-            <BtnSetAdd
-              onClick={() => {
-                addressHandleDialog(true)
-              }}
-            >
-              Set AWNS for this address
-            </BtnSetAdd>
+            <BtnSetAdd onClick={handleSelectPrimaryName}>Set AWNS for this address</BtnSetAdd>
           )}
           {abilities.data.canEdit && nameDetails.profile?.resolverAddress !== emptyAddress && (
             <ButtonStyle
@@ -363,9 +385,10 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
           )}
 
           {abilities.data.canExtend && (
-            <ButtonStyle onClick={handleExtend} colorStyle="background" prefix={<TimeIcon />}>
-              Extend
-            </ButtonStyle>
+            // <ButtonStyle onClick={handleExtend} colorStyle="background" prefix={<TimeIcon />}>
+            //   Extend
+            // </ButtonStyle>
+            <ExtendBtn name={name} />
           )}
 
           {abilities.data.canSend && (
@@ -430,20 +453,6 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
           gracePeriodEndDate={gracePeriodEndDate}
         />
       )}
-      <TransferDialog
-        open={openTransferDialog}
-        handleOpen={transferHandleDialog}
-        nameDetails={nameDetails}
-      />
-      <SetAddressDialog
-        open={openAddressDialog}
-        handleOpen={addressHandleDialog}
-        nameDetails={nameDetails}
-        address={address}
-        submit={() => {
-          PrimaryNameAuction?.onClick()
-        }}
-      />
     </DetailsWrapper>
   )
 }
