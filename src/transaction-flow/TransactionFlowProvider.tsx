@@ -203,7 +203,15 @@ export const TransactionFlowProvider = ({ children }: { children: ReactNode }) =
     } else {
       timeout = setTimeout(() => {
         setSelectedKey((prev) => {
-          if (prev) dispatch({ name: 'cleanupTransaction', payload: prev })
+          if (prev) {
+            if (
+              state.items[prev].transactions[0]?.stage &&
+              state.items[prev].transactions[0]?.stage !== 'complete'
+            ) {
+              return prev
+            }
+            dispatch({ name: 'cleanupTransaction', payload: prev })
+          }
           return null
         })
       }, 350)
@@ -211,7 +219,7 @@ export const TransactionFlowProvider = ({ children }: { children: ReactNode }) =
     return () => {
       clearTimeout(timeout)
     }
-  }, [state.selectedKey, dispatch])
+  }, [state.selectedKey, dispatch, state.items])
 
   return (
     <TransactionContext.Provider value={providerValue}>
