@@ -15,6 +15,7 @@ import type { Props as ProfileEditorProps } from './ProfileEditor/ProfileEditor-
 import type { Props as ResetPrimaryNameProps } from './ResetPrimaryName/ResetPrimaryName-flow'
 import type { Props as RevokePermissionsProps } from './RevokePermissions/RevokePermissions-flow'
 import type { Props as SelectPrimaryNameProps } from './SelectPrimaryName/SelectPrimaryName-flow'
+import type { Props as SetPrimaryNameProps } from './SelectPrimaryName/SetPrimaryName-flow'
 import type { Props as SendNameProps } from './SendName-flow'
 import type { Props as TransferProfileProps } from './TransferProfile/TransferProfile-flow'
 import type { Props as UnknownLabelsProps } from './UnknownLabels/UnknownLabels-flow'
@@ -46,6 +47,7 @@ const EditResolver = dynamicHelper<EditResolverProps>('EditResolver/EditResolver
 const SelectPrimaryName = dynamicHelper<SelectPrimaryNameProps>(
   'SelectPrimaryName/SelectPrimaryName',
 )
+const SetPrimaryName = dynamicHelper<SetPrimaryNameProps>('SelectPrimaryName/SetPrimaryName')
 const ResetPrimaryName = dynamicHelper<ResetPrimaryNameProps>('ResetPrimaryName/ResetPrimaryName')
 const AdvancedEditor = dynamicHelper<AdvancedEditorProps>('AdvancedEditor/AdvancedEditor')
 const EditResolveAddress = dynamicHelper<AdvancedEditorProps>('AdvancedEditor/EditResolveAddress')
@@ -73,6 +75,7 @@ export const DataInputComponents = {
   ProfileEditor,
   AdvancedEditor,
   SelectPrimaryName,
+  SetPrimaryName,
   ResetPrimaryName,
   TransferProfile,
   CreateSubname,

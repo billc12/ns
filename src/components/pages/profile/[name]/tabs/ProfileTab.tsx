@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 // import { Trans, useTranslation } from 'react-i18next' Helper
 import styled, { css } from 'styled-components'
 import { useAccount, useNetwork } from 'wagmi'
@@ -9,7 +9,6 @@ import LinkIcon from '@app/assets/LinkIcon.svg'
 import TestImg from '@app/assets/TestImage.png'
 import TimeIcon from '@app/assets/TimeIcon.svg'
 import TransferIcon from '@app/assets/TransferIcon.svg'
-import SetAddressDialog from '@app/components/Awns/Dialog/SetAddressDialog'
 import { CopyButton } from '@app/components/Copy'
 // import { Outlink } from '@app/components/Outlink'
 import { ProfileSnippet } from '@app/components/ProfileSnippet'
@@ -21,7 +20,7 @@ import useGetNftAddress from '@app/hooks/useGetNftAddress'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import useOwners from '@app/hooks/useOwners'
 import { usePrimary } from '@app/hooks/usePrimary'
-import { AuctionType, useProfileActions } from '@app/hooks/useProfileActions'
+import { useProfileActions } from '@app/hooks/useProfileActions'
 import useRegistrationDate from '@app/hooks/useRegistrationData'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { AddressRecord } from '@app/transaction-flow/input/AdvancedEditor/EditResolveAddress-flow'
@@ -189,12 +188,6 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
   const { data: registrationData } = useRegistrationDate(name)
   const { chain: currentChain } = useNetwork()
 
-  const [openAddressDialog, setOpenAddressDialog] = useState<boolean>(false)
-
-  const addressHandleDialog = (open: boolean) => {
-    setOpenAddressDialog(open)
-  }
-
   const {
     profile,
     normalisedName,
@@ -230,17 +223,6 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
     expiryDate,
   })
 
-  const IsOwner = useMemo(() => {
-    if (address === ownerData?.owner) {
-      return true
-    }
-    return false
-  }, [address, ownerData?.owner])
-  console.log(IsOwner)
-
-  const PrimaryNameAuction = profileActions.profileActions?.filter(
-    (item) => !!item.type && item.type === AuctionType.PrimaryName,
-  )[0]
   const isExpired = useMemo(
     () => gracePeriodEndDate && gracePeriodEndDate < new Date(),
     [gracePeriodEndDate],
@@ -275,6 +257,12 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
   const showEditResolveAddressInput = prepareDataInput('EditResolveAddress')
   const handleEditResolveAddress = () => {
     showEditResolveAddressInput(`edit-resolve-address-${name}`, { name })
+  }
+  const showSetPrimaryNameInput = prepareDataInput('SetPrimaryName')
+  const handleSelectPrimaryName = () => {
+    if (address && name) {
+      showSetPrimaryNameInput(`edit-resolve-address-${name}`, { address, name })
+    }
   }
   const hasGlobalError = useHasGlobalError()
   const parseUseAddress: AddressRecord = nameDetails.profile?.records.coinTypes?.find(
@@ -340,13 +328,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
         </div>
         <ButtonsStyle>
           {profileActions.canSetMainName && (
-            <BtnSetAdd
-              onClick={() => {
-                addressHandleDialog(true)
-              }}
-            >
-              Set AWNS for this address
-            </BtnSetAdd>
+            <BtnSetAdd onClick={handleSelectPrimaryName}>Set AWNS for this address</BtnSetAdd>
           )}
           {abilities.data.canEdit && nameDetails.profile?.resolverAddress !== emptyAddress && (
             <ButtonStyle
@@ -427,16 +409,6 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
           gracePeriodEndDate={gracePeriodEndDate}
         />
       )}
-
-      <SetAddressDialog
-        open={openAddressDialog}
-        handleOpen={addressHandleDialog}
-        nameDetails={nameDetails}
-        address={address}
-        submit={() => {
-          PrimaryNameAuction?.onClick()
-        }}
-      />
     </DetailsWrapper>
   )
 }
