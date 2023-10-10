@@ -187,5 +187,6 @@ export const useQueryKeys = () => {
       account,
       chain,
     ],
+    getUserNFTList: (name: string) => [...globalKeys, name, 'getUserNFTList'],
   }
 }

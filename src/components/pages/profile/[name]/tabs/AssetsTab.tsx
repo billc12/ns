@@ -2,16 +2,18 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 
-import { Typography, mq } from '@ensdomains/thorin'
+import { Spinner, Typography, mq } from '@ensdomains/thorin'
 
 import NftETHIcon from '@app/assets/ETH.svg'
 import NftBreakIcon from '@app/assets/NftBreakIcon.svg'
 import RefreshIcon from '@app/assets/RefreshIcon.svg'
 import TestImg from '@app/assets/TestImage.png'
 import { CopyButton } from '@app/components/Copy'
+import { EmptyData } from '@app/components/EmptyData'
 import { Table } from '@app/components/table'
 import { Tokens } from '@app/components/tokens/tokens'
 import useGetTokenList from '@app/hooks/requst/useGetTokenList'
+import useGetUserNFT from '@app/hooks/requst/useGetUserNFT'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 
 const TabButtonContainer = styled.div(
@@ -130,9 +132,11 @@ const AssetsTokens = styled.div(
 
 const NFTsCard = styled.div(
   () => css`
+    width: 100%;
+    height: 100%;
     padding: 0 64px 100px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 18px;
     flex-wrap: wrap;
     ${mq.sm.max(css`
@@ -230,20 +234,45 @@ const TokenImg = styled.img`
   border-radius: 18px;
   border: 1px solid #d4d7e2;
 `
-function NftCardItem() {
-  const testArr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+const SpinnerBox = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+function NftCardItem({ name }: { name: string }) {
+  const { data, isLoading } = useGetUserNFT({
+    name,
+  })
+  if (isLoading) {
+    return (
+      <SpinnerBox>
+        <Spinner color="accent" size="large" />
+      </SpinnerBox>
+    )
+  }
+  if (!data || !data.total) {
+    return (
+      <>
+        <EmptyData />
+      </>
+    )
+  }
 
   return (
     <>
-      {testArr.map((item) => (
-        <NFTCardStyle key={item}>
-          <NftBgStyle src={TestImg.src} />
+      {data.content.map((item) => (
+        <NFTCardStyle key={`${item.nftscan_id}${item.name}`}>
+          <NftBgStyle src={item.image_uri || TestImg.src} />
           <IconsStyle className="icons-style">
             <Icons as={RefreshIcon} />
             <Icons as={NftETHIcon} />
           </IconsStyle>
           <NftBottomStyle>
-            <Typography ellipsis>adsaasdasdasdasdas</Typography>
+            <Typography ellipsis>
+              {item.name || item.contract_name} - #{item.nftscan_id}
+            </Typography>
 
             <div className="bottom-icons-style">
               <BottomIconStyle as={NftBreakIcon} />
@@ -260,10 +289,9 @@ type Props = {
 export const AssetsTab = ({ nameDetails }: Props) => {
   const { t } = useTranslation('profile')
   const [tab, setTab] = useState<Tab>('assets')
-  const account = nameDetails.profile?.address
+  const name = nameDetails.beautifiedName
   const { data: tokenList, isLoading } = useGetTokenList({
-    account: account || '',
-    name: nameDetails.beautifiedName,
+    name,
   })
   const AssetsTableList = useMemo(() => {
     if (!tokenList || !tokenList.length) return []
@@ -321,7 +349,7 @@ export const AssetsTab = ({ nameDetails }: Props) => {
       )}
       {tab === 'nft' && (
         <NFTsCard>
-          <NftCardItem />
+          <NftCardItem name={name} />
         </NFTsCard>
       )}
       {tab === 'history' && (
