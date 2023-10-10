@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 
-import { Spinner, Typography, mq } from '@ensdomains/thorin'
+import { Button, Spinner, Toast, Typography, mq } from '@ensdomains/thorin'
 
 import NftETHIcon from '@app/assets/ETH.svg'
 import NftBreakIcon from '@app/assets/NftBreakIcon.svg'
@@ -13,7 +13,7 @@ import { EmptyData } from '@app/components/EmptyData'
 import { Table } from '@app/components/table'
 import { Tokens } from '@app/components/tokens/tokens'
 import useGetTokenList from '@app/hooks/requst/useGetTokenList'
-import useGetUserNFT from '@app/hooks/requst/useGetUserNFT'
+import useGetUserNFT, { IRefreshParams, useRefreshNFTScan } from '@app/hooks/requst/useGetUserNFT'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 
 const TabButtonContainer = styled.div(
@@ -245,6 +245,27 @@ function NftCardItem({ name }: { name: string }) {
   const { data, isLoading } = useGetUserNFT({
     name,
   })
+  const refresh = useRefreshNFTScan()
+  const [refreshInfo, setRefreshInfo] = useState({
+    open: false,
+    message: '',
+  })
+  const handleRefresh = (params: IRefreshParams) => {
+    refresh(params).then((res) => {
+      if (res.code === 200 && res.data.status === 'SUCCESS') {
+        setRefreshInfo({
+          open: true,
+          message: 'Refresh successful!',
+        })
+      } else {
+        setRefreshInfo({
+          open: true,
+          message: 'Refresh failed!',
+        })
+      }
+    })
+  }
+
   if (isLoading) {
     return (
       <SpinnerBox>
@@ -266,20 +287,49 @@ function NftCardItem({ name }: { name: string }) {
         <NFTCardStyle key={`${item.nftscan_id}${item.name}`}>
           <NftBgStyle src={item.image_uri || TestImg.src} />
           <IconsStyle className="icons-style">
-            <Icons as={RefreshIcon} />
-            <Icons as={NftETHIcon} />
+            {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+            <div
+              onClick={() =>
+                handleRefresh({ contractAddress: item.contract_address, tokenId: item.token_id })
+              }
+            >
+              <Icons as={RefreshIcon} />
+            </div>
+            <div>
+              <Icons as={NftETHIcon} />
+            </div>
           </IconsStyle>
           <NftBottomStyle>
             <Typography ellipsis>
-              {item.name || item.contract_name} - #{item.nftscan_id}
+              {item.name || item.contract_name} - #{item.token_id}
             </Typography>
 
-            <div className="bottom-icons-style">
+            {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+            <div
+              className="bottom-icons-style"
+              onClick={() => {
+                window.open(
+                  `https://opensea.io/assets/ethereum/${item.contract_address}/${item.token_id}`,
+                  '_blank',
+                )
+              }}
+            >
               <BottomIconStyle as={NftBreakIcon} />
             </div>
           </NftBottomStyle>
         </NFTCardStyle>
       ))}
+      <Toast
+        description={refreshInfo.message}
+        open={refreshInfo.open}
+        title="Tip"
+        variant="desktop"
+        onClose={() => setRefreshInfo({ ...refreshInfo, open: false })}
+      >
+        <Button size="small" onClick={() => setRefreshInfo({ ...refreshInfo, open: false })}>
+          Close
+        </Button>
+      </Toast>
     </>
   )
 }
