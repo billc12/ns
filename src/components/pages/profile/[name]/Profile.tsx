@@ -436,7 +436,7 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
             {tab === 'detail' ? (
               <ProfileTab name={normalisedName} nameDetails={nameDetails} />
             ) : tab === 'assets' ? (
-              <AssetsTab />
+              <AssetsTab nameDetails={nameDetails} />
             ) : (
               <>
                 <InvitationCode />

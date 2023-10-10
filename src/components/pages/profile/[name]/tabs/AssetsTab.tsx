@@ -11,6 +11,8 @@ import TestImg from '@app/assets/TestImage.png'
 import { CopyButton } from '@app/components/Copy'
 import { Table } from '@app/components/table'
 import { Tokens } from '@app/components/tokens/tokens'
+import useGetTokenList from '@app/hooks/requst/useGetTokenList'
+import { useNameDetails } from '@app/hooks/useNameDetails'
 
 const TabButtonContainer = styled.div(
   ({ theme }) => css`
@@ -65,6 +67,7 @@ const TableContentStyle = styled.div(
     height: 58px;
     display: flex;
     align-items: center;
+    gap: 8px;
     ${mq.sm.max(css`
       height: 36px;
     `)}
@@ -73,33 +76,7 @@ const TableContentStyle = styled.div(
 
 const tabs = ['assets', 'nft', 'history'] as const
 type Tab = typeof tabs[number]
-const AssetsTokenList = [
-  {
-    Token: <Tokens Symbol="ETH" />,
-    Balance: 0,
-    USDValue: 0,
-  },
-  {
-    Token: <Tokens Symbol="WETH" />,
-    Balance: 0,
-    USDValue: 0,
-  },
-  {
-    Token: <Tokens Symbol="USDT" />,
-    Balance: 0,
-    USDValue: 0,
-  },
-  {
-    Token: <Tokens Symbol="USDC" />,
-    Balance: 0,
-    USDValue: 0,
-  },
-  {
-    Token: <Tokens Symbol="STPT" />,
-    Balance: 0,
-    USDValue: 0,
-  },
-]
+
 const HistoryTokenList = [
   {
     Type: 'Send',
@@ -136,6 +113,13 @@ const HistoryTokenList = [
 const AssetsTokens = styled.div(
   () => css`
     padding-bottom: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+
     ${mq.sm.max(css`
       padding: 0 20px 100px;
       display: grid;
@@ -240,7 +224,12 @@ const NftBottomStyle = styled.div(
     align-items: center;
   `,
 )
-
+const TokenImg = styled.img`
+  width: 18px;
+  height: 18px;
+  border-radius: 18px;
+  border: 1px solid #d4d7e2;
+`
 function NftCardItem() {
   const testArr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
@@ -265,17 +254,33 @@ function NftCardItem() {
     </>
   )
 }
-
-export const AssetsTab = () => {
+type Props = {
+  nameDetails: ReturnType<typeof useNameDetails>
+}
+export const AssetsTab = ({ nameDetails }: Props) => {
   const { t } = useTranslation('profile')
   const [tab, setTab] = useState<Tab>('assets')
+  const account = nameDetails.profile?.address
+  const { data: tokenList, isLoading } = useGetTokenList({
+    account: account || '',
+    name: nameDetails.beautifiedName,
+  })
   const AssetsTableList = useMemo(() => {
-    return AssetsTokenList.map(({ Token, Balance, USDValue }) => [
-      <TableContentStyle>{Token}</TableContentStyle>,
-      <TableContentStyle style={{ justifyContent: 'center' }}>{Balance}</TableContentStyle>,
-      <TableContentStyle style={{ justifyContent: 'end' }}>${USDValue}</TableContentStyle>,
+    if (!tokenList || !tokenList.length) return []
+    return tokenList.map((item) => [
+      <TableContentStyle>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <TokenImg src={item.logo_url} alt="token img" />
+        {item.symbol.toUpperCase()}
+      </TableContentStyle>,
+      <TableContentStyle style={{ justifyContent: 'center' }}>
+        {Math.floor(item.amount * 10000) / 10000}
+      </TableContentStyle>,
+      <TableContentStyle style={{ justifyContent: 'end' }}>
+        {Math.floor(item.price * 10000) / 10000}
+      </TableContentStyle>,
     ])
-  }, [])
+  }, [tokenList])
 
   const HistoryTableList = useMemo(() => {
     return HistoryTokenList.map(({ Type, Token, Amount, TxID }) => [
@@ -306,7 +311,12 @@ export const AssetsTab = () => {
       </div>
       {tab === 'assets' && (
         <AssetsTokens>
-          <Table labels={['Token', 'Balance', 'USD Value']} rows={AssetsTableList} noneBorder />
+          <Table
+            labels={['Token', 'Balance', 'USD Value']}
+            rows={AssetsTableList}
+            noneBorder
+            isLoading={isLoading}
+          />
         </AssetsTokens>
       )}
       {tab === 'nft' && (
