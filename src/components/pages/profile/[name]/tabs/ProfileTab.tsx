@@ -333,7 +333,10 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
             <RowNameStyle>Registration</RowNameStyle>
             <RowValueStyle
               ref={dateRef1}
-              style={{ textDecoration: enterState.enterBox1 ? 'none' : 'underline' }}
+              style={{
+                textDecoration: enterState.enterBox1 ? 'none' : 'underline',
+                cursor: 'pointer',
+              }}
             >
               {enterState.enterBox1
                 ? registrationData?.registrationDate.toUTCString()
@@ -343,7 +346,10 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
             <RowNameStyle>Expiration</RowNameStyle>
             <RowValueStyle
               ref={dateRef2}
-              style={{ textDecoration: enterState.enterBox2 ? 'none' : 'underline' }}
+              style={{
+                textDecoration: enterState.enterBox2 ? 'none' : 'underline',
+                cursor: 'pointer',
+              }}
             >
               {enterState.enterBox2
                 ? nameDetails.expiryDate?.toUTCString()
@@ -351,7 +357,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
             </RowValueStyle>
 
             <RowNameStyle>Chain</RowNameStyle>
-            <RowValueStyle>{currentChain?.name || '--'}</RowValueStyle>
+            <RowValueStyle>{currentChain?.name || 'Sepolia'}</RowValueStyle>
 
             <RowNameStyle>Resolver Address</RowNameStyle>
             <RowValueStyle>

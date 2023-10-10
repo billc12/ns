@@ -88,13 +88,14 @@ const StyledLeadingHeading = styled(LeadingHeading)(
     )}
   `,
 )
-const BoldTitle = styled(Typography)<{ $size?: number; $fontW?: number }>`
+const BoldTitle = styled(Typography)<{ $size?: string; $fontW?: number; $family?: string }>`
   color: #fff;
   font-size: ${(props) => props.$size || '60px'};
   font-style: normal;
   font-weight: ${(props) => props.$fontW || 400};
   line-height: 67px;
   white-space: nowrap;
+  font-family: ${(props) => props.$family || 'Passion One'};
 `
 export default function Page() {
   const { t } = useTranslation('awns_common')
@@ -114,7 +115,7 @@ export default function Page() {
         <Stack>
           <BoldTitle>{t('title')}</BoldTitle>
           <BoldTitle>{t('title_name')}</BoldTitle>
-          <BoldTitle $size={24} $fontW={500}>
+          <BoldTitle $size="24px" $fontW={500} $family="Inter">
             {t('business')}
           </BoldTitle>
           {/* <GradientTitle>{t('title')}</GradientTitle>
