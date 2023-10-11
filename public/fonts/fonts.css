@@ -55,3 +55,39 @@
   font-display: swap;
   font-style: normal;
 }
+@font-face {
+  font-family: 'Passion One';
+  src: url('./passion-one/PassionOne-Black.otf') format('opentype');
+  font-weight: 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Passion One';
+  src: url('./passion-one/PassionOne-Bold.otf') format('opentype');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Passion One';
+  src: url('./passion-one/PassionOne-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('./inter/Inter-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('./inter/Inter-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('./inter/Inter-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-display: swap;
+}

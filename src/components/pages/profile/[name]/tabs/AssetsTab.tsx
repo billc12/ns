@@ -2,15 +2,19 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 
-import { Typography, mq } from '@ensdomains/thorin'
+import { Button, Spinner, Toast, Typography, mq } from '@ensdomains/thorin'
 
 import NftETHIcon from '@app/assets/ETH.svg'
 import NftBreakIcon from '@app/assets/NftBreakIcon.svg'
 import RefreshIcon from '@app/assets/RefreshIcon.svg'
 import TestImg from '@app/assets/TestImage.png'
 import { CopyButton } from '@app/components/Copy'
+import { EmptyData } from '@app/components/EmptyData'
 import { Table } from '@app/components/table'
 import { Tokens } from '@app/components/tokens/tokens'
+import useGetTokenList from '@app/hooks/requst/useGetTokenList'
+import useGetUserNFT, { IRefreshParams, useRefreshNFTScan } from '@app/hooks/requst/useGetUserNFT'
+import { useNameDetails } from '@app/hooks/useNameDetails'
 
 const TabButtonContainer = styled.div(
   ({ theme }) => css`
@@ -65,6 +69,7 @@ const TableContentStyle = styled.div(
     height: 58px;
     display: flex;
     align-items: center;
+    gap: 8px;
     ${mq.sm.max(css`
       height: 36px;
     `)}
@@ -73,33 +78,7 @@ const TableContentStyle = styled.div(
 
 const tabs = ['assets', 'nft', 'history'] as const
 type Tab = typeof tabs[number]
-const AssetsTokenList = [
-  {
-    Token: <Tokens Symbol="ETH" />,
-    Balance: 0,
-    USDValue: 0,
-  },
-  {
-    Token: <Tokens Symbol="WETH" />,
-    Balance: 0,
-    USDValue: 0,
-  },
-  {
-    Token: <Tokens Symbol="USDT" />,
-    Balance: 0,
-    USDValue: 0,
-  },
-  {
-    Token: <Tokens Symbol="USDC" />,
-    Balance: 0,
-    USDValue: 0,
-  },
-  {
-    Token: <Tokens Symbol="STPT" />,
-    Balance: 0,
-    USDValue: 0,
-  },
-]
+
 const HistoryTokenList = [
   {
     Type: 'Send',
@@ -136,6 +115,13 @@ const HistoryTokenList = [
 const AssetsTokens = styled.div(
   () => css`
     padding-bottom: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+
     ${mq.sm.max(css`
       padding: 0 20px 100px;
       display: grid;
@@ -146,9 +132,11 @@ const AssetsTokens = styled.div(
 
 const NFTsCard = styled.div(
   () => css`
+    width: 100%;
+    height: 100%;
     padding: 0 64px 100px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 18px;
     flex-wrap: wrap;
     ${mq.sm.max(css`
@@ -240,42 +228,137 @@ const NftBottomStyle = styled.div(
     align-items: center;
   `,
 )
+const TokenImg = styled.img`
+  width: 18px;
+  height: 18px;
+  border-radius: 18px;
+  border: 1px solid #d4d7e2;
+`
+const SpinnerBox = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+function NftCardItem({ name }: { name: string }) {
+  const { data, isLoading } = useGetUserNFT({
+    name,
+  })
+  const refresh = useRefreshNFTScan()
+  const [refreshInfo, setRefreshInfo] = useState({
+    open: false,
+    message: '',
+  })
+  const handleRefresh = (params: IRefreshParams) => {
+    refresh(params).then((res) => {
+      if (res.code === 200 && res.data.status === 'SUCCESS') {
+        setRefreshInfo({
+          open: true,
+          message: 'Refresh successful!',
+        })
+      } else {
+        setRefreshInfo({
+          open: true,
+          message: 'Refresh failed!',
+        })
+      }
+    })
+  }
 
-function NftCardItem() {
-  const testArr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  if (isLoading) {
+    return (
+      <SpinnerBox>
+        <Spinner color="accent" size="large" />
+      </SpinnerBox>
+    )
+  }
+  if (!data || !data.total) {
+    return (
+      <>
+        <EmptyData />
+      </>
+    )
+  }
 
   return (
     <>
-      {testArr.map((item) => (
-        <NFTCardStyle key={item}>
-          <NftBgStyle src={TestImg.src} />
+      {data.content.map((item) => (
+        <NFTCardStyle key={`${item.nftscan_id}${item.name}`}>
+          <NftBgStyle src={item.image_uri || TestImg.src} />
           <IconsStyle className="icons-style">
-            <Icons as={RefreshIcon} />
-            <Icons as={NftETHIcon} />
+            {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+            <div
+              onClick={() =>
+                handleRefresh({ contractAddress: item.contract_address, tokenId: item.token_id })
+              }
+            >
+              <Icons as={RefreshIcon} />
+            </div>
+            <div>
+              <Icons as={NftETHIcon} />
+            </div>
           </IconsStyle>
           <NftBottomStyle>
-            <Typography ellipsis>adsaasdasdasdasdas</Typography>
+            <Typography ellipsis>
+              {item.name || item.contract_name} - #{item.token_id}
+            </Typography>
 
-            <div className="bottom-icons-style">
+            {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+            <div
+              className="bottom-icons-style"
+              onClick={() => {
+                window.open(
+                  `https://opensea.io/assets/ethereum/${item.contract_address}/${item.token_id}`,
+                  '_blank',
+                )
+              }}
+            >
               <BottomIconStyle as={NftBreakIcon} />
             </div>
           </NftBottomStyle>
         </NFTCardStyle>
       ))}
+      <Toast
+        description={refreshInfo.message}
+        open={refreshInfo.open}
+        title="Tip"
+        variant="desktop"
+        onClose={() => setRefreshInfo({ ...refreshInfo, open: false })}
+      >
+        <Button size="small" onClick={() => setRefreshInfo({ ...refreshInfo, open: false })}>
+          Close
+        </Button>
+      </Toast>
     </>
   )
 }
-
-export const AssetsTab = () => {
+type Props = {
+  nameDetails: ReturnType<typeof useNameDetails>
+}
+export const AssetsTab = ({ nameDetails }: Props) => {
   const { t } = useTranslation('profile')
   const [tab, setTab] = useState<Tab>('assets')
+  const name = nameDetails.beautifiedName
+  const { data: tokenList, isLoading } = useGetTokenList({
+    name,
+  })
   const AssetsTableList = useMemo(() => {
-    return AssetsTokenList.map(({ Token, Balance, USDValue }) => [
-      <TableContentStyle>{Token}</TableContentStyle>,
-      <TableContentStyle style={{ justifyContent: 'center' }}>{Balance}</TableContentStyle>,
-      <TableContentStyle style={{ justifyContent: 'end' }}>${USDValue}</TableContentStyle>,
+    if (!tokenList || !tokenList.length) return []
+    return tokenList.map((item) => [
+      <TableContentStyle>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <TokenImg src={item.logo_url} alt="token img" />
+        {item.symbol.toUpperCase()}
+      </TableContentStyle>,
+      <TableContentStyle style={{ justifyContent: 'center' }}>
+        {Math.floor(item.amount * 10000) / 10000}
+      </TableContentStyle>,
+      <TableContentStyle style={{ justifyContent: 'end' }}>
+        {Math.floor(item.price * 10000) / 10000}
+      </TableContentStyle>,
     ])
-  }, [])
+  }, [tokenList])
 
   const HistoryTableList = useMemo(() => {
     return HistoryTokenList.map(({ Type, Token, Amount, TxID }) => [
@@ -306,12 +389,17 @@ export const AssetsTab = () => {
       </div>
       {tab === 'assets' && (
         <AssetsTokens>
-          <Table labels={['Token', 'Balance', 'USD Value']} rows={AssetsTableList} noneBorder />
+          <Table
+            labels={['Token', 'Balance', 'USD Value']}
+            rows={AssetsTableList}
+            noneBorder
+            isLoading={isLoading}
+          />
         </AssetsTokens>
       )}
       {tab === 'nft' && (
         <NFTsCard>
-          <NftCardItem />
+          <NftCardItem name={name} />
         </NFTsCard>
       )}
       {tab === 'history' && (

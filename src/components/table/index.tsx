@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import styled, { css } from 'styled-components'
 
-import { Typography } from '@ensdomains/thorin'
+import { Spinner, Typography } from '@ensdomains/thorin'
 
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
 
@@ -110,6 +110,7 @@ export const Table = ({
   RowHeight,
   minHeight,
   noneBorder,
+  isLoading,
 }: {
   labels: string[]
   rows: (string | number | JSX.Element)[][]
@@ -118,6 +119,7 @@ export const Table = ({
   RowHeight?: number
   minHeight?: number
   noneBorder?: boolean
+  isLoading?: boolean
 }) => {
   const breakpoints = useBreakpoint()
   const isSmDown = useMemo(() => {
@@ -126,7 +128,13 @@ export const Table = ({
     }
     return true
   }, [breakpoints.sm])
-
+  if (isLoading) {
+    return (
+      <>
+        <Spinner color="accent" size="large" />
+      </>
+    )
+  }
   return (
     <>
       {isSmDown ? (
@@ -158,7 +166,7 @@ export const Table = ({
       ) : (
         <div
           style={{
-            width: 'auto',
+            width: '100%',
             minHeight: minHeight || 285,
             height: TableHeight || '100%',
             borderRadius: noneBorder ? '0' : '10px',
