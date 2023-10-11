@@ -88,9 +88,9 @@ const SliderContainer = styled.div(
     padding: ${theme.space['2']} 0;
     width: ${theme.space.full};
 
-    & > svg {
-      width: ${theme.space['6']};
-      height: ${theme.space['6']};
+    & svg {
+      width: 20px;
+      height: 20px;
       opacity: 0.15;
     }
 
@@ -99,7 +99,11 @@ const SliderContainer = styled.div(
     `)}
   `,
 )
-
+const CircleBtn = styled.button<{ $d: boolean }>`
+  width: 20px;
+  height: 20px;
+  cursor: ${(p) => (p.$d ? 'not-allowed' : 'pointer')};
+`
 export const AvCancelButton = ({ handleCancel }: { handleCancel: () => void }) => {
   const { t } = useTranslation('common')
 
@@ -139,7 +143,17 @@ export const CropComponent = ({
   const touchPoints = useRef<Touch[]>([])
 
   const [zoom, setZoom] = useState(100)
-
+  const handleChangeZoom = (z: number) => {
+    if (z + zoom >= 200) {
+      setZoom(200)
+      return
+    }
+    if (z + zoom <= 100) {
+      setZoom(100)
+      return
+    }
+    setZoom(zoom + z)
+  }
   const handleSubmit = () => {
     const { cropSize, max } = getVars(canvasRef.current!)
     const cropCanvas = document.createElement('canvas')
@@ -406,7 +420,10 @@ export const CropComponent = ({
             </ImageContainer>
           </ImageWrapper>
           <SliderContainer>
-            <MinusCircleSVG />
+            <CircleBtn onClick={() => zoom > 100 && handleChangeZoom(-10)} $d={zoom <= 100}>
+              <MinusCircleSVG />
+            </CircleBtn>
+
             <Slider
               label="zoom"
               hideLabel
@@ -415,7 +432,9 @@ export const CropComponent = ({
               min={100}
               max={200}
             />
-            <PlusCircleSVG />
+            <CircleBtn onClick={() => zoom < 200 && handleChangeZoom(10)} $d={zoom >= 200}>
+              <PlusCircleSVG />
+            </CircleBtn>
           </SliderContainer>
         </EditImageContainer>
       </AvatarScrollBox>
