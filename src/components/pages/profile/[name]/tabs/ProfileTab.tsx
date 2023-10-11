@@ -300,6 +300,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  const hide = false
   return (
     <DetailsWrapper>
       <div
@@ -376,7 +377,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
           </ContentStyled>
         </div>
         <ButtonsStyle>
-          {profileActions.canSetMainName && (
+          {profileActions.canSetMainName && hide && (
             <BtnSetAdd onClick={handleSelectPrimaryName}>Set AWNS for this address</BtnSetAdd>
           )}
           {abilities.data.canEdit && nameDetails.profile?.resolverAddress !== emptyAddress && (
