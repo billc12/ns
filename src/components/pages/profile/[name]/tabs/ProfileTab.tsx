@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo } from 'react'
 // import { Trans, useTranslation } from 'react-i18next' Helper
 import styled, { css } from 'styled-components'
 import { useAccount, useNetwork } from 'wagmi'
 
-import { Button, Typography, mq } from '@ensdomains/thorin'
+import { Button, Tooltip, Typography, mq } from '@ensdomains/thorin'
 
 import LinkIcon from '@app/assets/LinkIcon.svg'
 import TestImg from '@app/assets/TestImage.png'
@@ -78,7 +78,7 @@ const ContentStyled = styled.div(
     display: grid;
     column-gap: 10px;
     justify-content: space-between;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto 200px;
     ${mq.sm.max(css`
       width: auto;
       padding: 15px;
@@ -96,13 +96,14 @@ const RowNameStyle = styled(Typography)(
 )
 const RowValueStyle = styled(Typography)(
   () => css`
+    display: flex;
+    justify-content: end;
     color: var(--word-color2, #3f5170);
     font-size: 14px;
     font-weight: 500;
     line-height: normal;
     text-align: right;
-    display: flex;
-    justify-content: end;
+    white-space: pre-wrap;
   `,
 )
 
@@ -150,6 +151,18 @@ const BtnSetAdd = styled(Button)(
     background: #0049c6;
   `,
 )
+const TimeRound = styled(Button)`
+  &:hover,
+  & {
+    background: none;
+    padding: 0;
+    width: 100%;
+    height: max-content;
+  }
+  & > div > div {
+    text-decoration: underline;
+  }
+`
 type Props = {
   nameDetails: ReturnType<typeof useNameDetails>
   name: string
@@ -265,41 +278,6 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
   const { avatarSrc } = useEthInvoice(normalisedName, false)
   const { accountAddress } = useGetNftAddress(normalisedName)
 
-  const dateRef1 = useRef<HTMLElement | null>(null)
-  const dateRef2 = useRef<HTMLElement | null>(null)
-  const [enterState, setEnterState] = useState({
-    enterBox1: false,
-    enterBox2: false,
-  })
-  const handleEnter1 = () => {
-    setEnterState({ ...enterState, enterBox1: true })
-  }
-  const handleEnter2 = () => {
-    setEnterState({ ...enterState, enterBox2: true })
-  }
-  const handleLeave1 = () => {
-    setEnterState({ ...enterState, enterBox1: false })
-  }
-  const handleLeave2 = () => {
-    setEnterState({ ...enterState, enterBox2: false })
-  }
-  useEffect(() => {
-    const dom1 = dateRef1.current
-    const dom2 = dateRef2.current
-    if (dateRef1.current && dateRef2.current) {
-      dom1?.addEventListener('mouseenter', handleEnter1)
-      dom2?.addEventListener('mouseenter', handleEnter2)
-      dom1?.addEventListener('mouseleave', handleLeave1)
-      dom2?.addEventListener('mouseleave', handleLeave2)
-    }
-    return () => {
-      dom1?.removeEventListener('mouseenter', handleEnter1)
-      dom1?.removeEventListener('mouseleave', handleLeave1)
-      dom2?.removeEventListener('mouseenter', handleEnter2)
-      dom2?.removeEventListener('mouseleave', handleLeave2)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
   const hide = false
   return (
     <DetailsWrapper>
@@ -332,37 +310,39 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
             </RowValueStyle>
 
             <RowNameStyle>Registration</RowNameStyle>
-            <RowValueStyle
-              ref={dateRef1}
-              style={{
-                textDecoration: enterState.enterBox1 ? 'none' : 'underline',
-                cursor: 'pointer',
-              }}
+            <Tooltip
+              additionalGap={0}
+              content={
+                <RowValueStyle>{registrationData?.registrationDate?.toUTCString()}</RowValueStyle>
+              }
+              mobilePlacement="top"
+              placement="top"
             >
-              {enterState.enterBox1
-                ? registrationData?.registrationDate.toUTCString()
-                : registrationData?.registrationDate?.toString() || '--'}
-            </RowValueStyle>
+              <TimeRound id="buttonIdTop">
+                <RowValueStyle>{registrationData?.registrationDate?.toString()}</RowValueStyle>
+              </TimeRound>
+            </Tooltip>
 
             <RowNameStyle>Expiration</RowNameStyle>
-            <RowValueStyle
-              ref={dateRef2}
-              style={{
-                textDecoration: enterState.enterBox2 ? 'none' : 'underline',
-                cursor: 'pointer',
-              }}
+
+            <Tooltip
+              additionalGap={0}
+              content={<RowValueStyle>{nameDetails.expiryDate?.toUTCString()}</RowValueStyle>}
+              mobilePlacement="top"
+              placement="top"
             >
-              {enterState.enterBox2
-                ? nameDetails.expiryDate?.toUTCString()
-                : nameDetails.expiryDate?.toString() || '--'}
-            </RowValueStyle>
+              <TimeRound id="buttonIdTop">
+                <RowValueStyle>{nameDetails.expiryDate?.toString()}</RowValueStyle>
+              </TimeRound>
+            </Tooltip>
 
             <RowNameStyle>Chain</RowNameStyle>
             <RowValueStyle>{currentChain?.name || 'Sepolia'}</RowValueStyle>
 
             <RowNameStyle>Resolver Address</RowNameStyle>
             <RowValueStyle>
-              {profile ? shortenAddress(profile.resolverAddress) : '--'} <CopyButton value="1" />
+              {profile ? shortenAddress(profile.resolverAddress) : '--'}
+              <CopyButton value={profile?.resolverAddress} />
             </RowValueStyle>
 
             <RowNameStyle>6551</RowNameStyle>
