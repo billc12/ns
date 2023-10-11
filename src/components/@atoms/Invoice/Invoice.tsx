@@ -62,6 +62,7 @@ type Props = {
   totalLabel: string
   unit?: CurrencyDisplay
   discount?: { label: string; discount: number }
+  discountCodeLabel?: JSX.Element
 }
 
 export const Invoice = ({
@@ -69,6 +70,7 @@ export const Invoice = ({
   unit = 'eth',
   items,
   discount,
+  discountCodeLabel,
 }: Props) => {
   const filteredItems = items
     .map(({ value, bufferPercentage }) =>
@@ -124,6 +126,7 @@ export const Invoice = ({
           </Skeleton>
         </LineItem>
       ))}
+      {discountCodeLabel}
       <Total>
         <LeftTitle>Estimated Total</LeftTitle>
         <Skeleton loading={hasEmptyItems}>

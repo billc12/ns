@@ -50,6 +50,7 @@ import {
   RegistrationStepData,
 } from '../../types'
 import { useMoonpayRegistration } from '../../useMoonpayRegistration'
+import DiscountCodeLabel from './DiscountCodeLabel'
 
 // import TemporaryPremium from './TemporaryPremium'
 
@@ -752,6 +753,13 @@ const Pricing = ({
   const { data } = useSignName(nameDetails.normalisedName)
   const isPremium = !!data?.isPremium
   const { chain } = useNetwork()
+  const [discountCode, setDiscountCode] = useState('')
+  const handleDiscountCode = (v: string) => {
+    setDiscountCode(v)
+  }
+  const discountCodeLabel = (
+    <DiscountCodeLabel code={discountCode} setCodeCallback={handleDiscountCode} />
+  )
   return (
     <StyledCard>
       <PremiumTitle nameDetails={nameDetails} />
@@ -808,7 +816,7 @@ const Pricing = ({
               />
             </CenterRow>
             <div style={{ padding: '0 38px' }}>
-              <FullInvoice {...fullEstimate} />
+              <FullInvoice {...fullEstimate} discountCodeLabel={discountCodeLabel} />
             </div>
 
             <InitCodeRound>

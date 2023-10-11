@@ -363,10 +363,10 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
           </ContentStyled>
         </div>
         <ButtonsStyle>
-          {profileActions.canSetMainName && hide && (
+          {profileActions.canSetMainName && (
             <BtnSetAdd onClick={handleSelectPrimaryName}>Set AWNS for this address</BtnSetAdd>
           )}
-          {abilities.data.canEdit && nameDetails.profile?.resolverAddress !== emptyAddress && (
+          {abilities.data.canEdit && hide && nameDetails.profile?.resolverAddress !== emptyAddress && (
             <ButtonStyle
               colorStyle="background"
               onClick={handleEditResolveAddress}

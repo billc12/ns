@@ -9,6 +9,7 @@ import type { Props as BurnFusesProps } from './BurnFuses/BurnFuses-flow'
 import type { Props as CreateSubnameProps } from './CreateSubname-flow'
 import type { Props as DeleteEmancipatedSubnameWarningProps } from './DeleteEmancipatedSubnameWarning/DeleteEmancipatedSubnameWarning-flow'
 import type { Props as DeleteSubnameNotParentWarningProps } from './DeleteSubnameNotParentWarning/DeleteSubnameNotParentWarning-flow'
+import type { Props as DiscountCodeProps } from './DiscountCode-flow'
 import type { Props as EditResolverProps } from './EditResolver/EditResolver-flow'
 import type { Props as ExtendNamesProps } from './ExtendNames/ExtendNames-flow'
 import type { Props as ProfileEditorProps } from './ProfileEditor/ProfileEditor-flow'
@@ -69,6 +70,7 @@ const DeleteEmancipatedSubnameWarning = dynamicHelper<DeleteEmancipatedSubnameWa
 const DeleteSubnameNotParentWarning = dynamicHelper<DeleteSubnameNotParentWarningProps>(
   'DeleteSubnameNotParentWarning/DeleteSubnameNotParentWarning',
 )
+const DiscountCode = dynamicHelper<DiscountCodeProps>('DiscountCode')
 
 export const DataInputComponents = {
   EditResolver,
@@ -89,6 +91,7 @@ export const DataInputComponents = {
   AwnsSendName,
   AwnsExtendNames,
   EditResolveAddress,
+  DiscountCode,
 }
 
 export type DataInputName = keyof typeof DataInputComponents
