@@ -313,7 +313,9 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
             <Tooltip
               additionalGap={0}
               content={
-                <RowValueStyle>{registrationData?.registrationDate?.toUTCString()}</RowValueStyle>
+                <RowValueStyle style={{ justifyContent: 'center' }}>
+                  {registrationData?.registrationDate?.toUTCString()}
+                </RowValueStyle>
               }
               mobilePlacement="top"
               placement="top"
@@ -327,7 +329,11 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
 
             <Tooltip
               additionalGap={0}
-              content={<RowValueStyle>{nameDetails.expiryDate?.toUTCString()}</RowValueStyle>}
+              content={
+                <RowValueStyle style={{ justifyContent: 'center' }}>
+                  {nameDetails.expiryDate?.toUTCString()}
+                </RowValueStyle>
+              }
               mobilePlacement="top"
               placement="top"
             >
