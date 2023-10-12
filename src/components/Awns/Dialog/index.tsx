@@ -180,7 +180,7 @@ export const NameInfo = ({ name, expiryDate }: { name: string; expiryDate: Date 
 
         {expiryDate && (
           <InterText $size="14px" $weight={500} $color="#3F5170">
-            Expires {formatDateString(expiryDate)}
+            Expires at {formatDateString(expiryDate)}
           </InterText>
         )}
       </InfoRight>

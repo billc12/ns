@@ -223,10 +223,10 @@ const RecordsValue = ({ value }: { value: [string, string | undefined][] }) => {
       {value.map(([key, val]) => (
         <RecordContainer key={`${key}-${val}`}>
           <Typography ellipsis>
-            <strong>
+            {/* <strong>
               {key}
               {!!val && ':'}
-            </strong>{' '}
+            </strong>{' '} */}
             {!!val && val}
           </Typography>
         </RecordContainer>

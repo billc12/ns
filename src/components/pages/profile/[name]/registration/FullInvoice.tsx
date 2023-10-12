@@ -76,7 +76,7 @@ const FullInvoice = ({
     [t, years, totalYearlyFee, estimatedGasFee, hasPremium, premiumFee],
   )
   const discountInvoiceItems = useMemo(
-    () => ({ label: `${years} Year Discount`, discount: YEAR_DISCOUNT[years - 1] }),
+    () => ({ label: `${years} year discount`, discount: YEAR_DISCOUNT[years - 1] }),
     [years],
   )
   return (

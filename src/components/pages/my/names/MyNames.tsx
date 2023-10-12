@@ -65,6 +65,7 @@ const AccountsLayout = styled.div`
 const AddressList = styled.div(
   () => css`
     width: 840px;
+    min-height: 400px;
     border-radius: 10px;
     border: 1px solid var(--line, #d4d7e2);
     background: #fff;

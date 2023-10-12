@@ -248,7 +248,8 @@
       "duration": "Duration",
       "cost": "Cost",
       "update": "Update",
-      "resolver": "Resolver"
+      "resolver": "Resolver",
+      "information": "Information"
     },
     "itemValue": {
       "records_one": "{{count}} record",

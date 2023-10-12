@@ -70,7 +70,7 @@ const InvitationNameLabel = ({ name, setNameCallback }: TInvitationName) => {
           content={
             <ToolTipRound>
               The beta phase requires an invitation code to register, and you will receive 3
-              invitations for successfully registering an aw domain name.
+              invitations for successfully registering an AW domain name.
             </ToolTipRound>
           }
           mobilePlacement="right"

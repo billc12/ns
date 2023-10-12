@@ -183,7 +183,7 @@
       "heading": "Almost there",
       "subheading": "This timer helps prevent others from registering the name before you do. Your name is not registered until you've completed the second transaction.",
       "startTimer": "Start timer",
-      "wait": "Wait",
+      "wait": "Confirming",
       "transactionFailed": "Transaction Failed",
       "transactionProgress": "Transaction in progress"
     },

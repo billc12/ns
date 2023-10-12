@@ -258,7 +258,7 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
 
   const transactionFee = gasPrice ? gasLimit.mul(gasPrice) : BigNumber.from('0')
   const discountInvoiceItems = useMemo(
-    () => ({ label: `${years} Year Discount`, discount: YEAR_DISCOUNT[years - 1] }),
+    () => ({ label: `${years} year discount`, discount: YEAR_DISCOUNT[years - 1] }),
     [years],
   )
   const items: InvoiceItem[] = [

@@ -88,7 +88,7 @@ const DiscountCode = ({ data: { code, setCodeCallback }, onDismiss }: Props) => 
   }
   return (
     <>
-      <Dialog.Heading title="Set Address AWNS" />
+      <Dialog.Heading title="Discount Code" />
       <Container>
         <Label>Please enter the discount code</Label>
         <CodeInput

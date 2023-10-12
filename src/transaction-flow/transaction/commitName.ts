@@ -20,7 +20,7 @@ const displayItems = (
     value: t('transaction.description.commitName'),
   },
   {
-    label: 'info',
+    label: 'information',
     value: t('transaction.info.commitName'),
   },
 ]
