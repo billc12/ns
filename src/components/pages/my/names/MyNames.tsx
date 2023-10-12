@@ -156,6 +156,12 @@ const MyNames = () => {
   const loading = namesLoading || namesStatus === 'loading' || !router.isReady || !namesData
 
   useProtectedRoute('/', loading ? true : address && address !== '')
+  useEffect(() => {
+    if (!_address) {
+      router.replace('/')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [_address])
   const show = false
   return (
     <>

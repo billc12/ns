@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
@@ -48,7 +49,13 @@ export default function Page() {
   }, [])
 
   useProtectedRoute('/', isConnecting || isReconnecting ? true : address)
-
+  const router = useRouter()
+  useEffect(() => {
+    if (!address) {
+      router.replace('/')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address])
   const showDevPanel =
     process.env.NEXT_PUBLIC_ENSJS_DEBUG ||
     process.env.NODE_ENV === 'development' ||
