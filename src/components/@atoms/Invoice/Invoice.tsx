@@ -64,6 +64,7 @@ type Props = {
   discount?: { label: string; discount: number }
   discountCodeLabel?: JSX.Element
   invitationNameLabel?: JSX.Element
+  totalTitle?: string
 }
 
 export const Invoice = ({
@@ -73,6 +74,7 @@ export const Invoice = ({
   discount,
   discountCodeLabel,
   invitationNameLabel,
+  totalTitle,
 }: Props) => {
   const filteredItems = items
     .map(({ value, bufferPercentage }) =>
@@ -131,7 +133,7 @@ export const Invoice = ({
       {discountCodeLabel}
       {invitationNameLabel}
       <Total>
-        <LeftTitle>Estimated Total</LeftTitle>
+        <LeftTitle>{totalTitle || 'Estimated Total'}</LeftTitle>
         <Skeleton loading={hasEmptyItems}>
           {/* <div data-testid="invoice-total"> */}
           <RightTitle $weight={800}>

@@ -5,7 +5,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import type ConfettiT from 'react-confetti'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
-import { useAccount } from 'wagmi'
+import { useAccount, useTransaction } from 'wagmi'
 
 import { Typography, mq } from '@ensdomains/thorin'
 
@@ -16,14 +16,11 @@ import { InterText } from '@app/components/@molecules/SearchInput/SearchResult'
 import { BackButton, NextButton } from '@app/components/Awns/Dialog'
 import { Card } from '@app/components/Card'
 import useSignName from '@app/hooks/names/useSignName'
-import { useEstimateFullRegistration } from '@app/hooks/useEstimateRegistration'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import useWindowSize from '@app/hooks/useWindowSize'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 
-import FullInvoice from '../FullInvoice'
 import { BigPremiumText } from '../PremiumTitle'
-import { RegistrationReducerDataItem } from '../types'
 import { GrayRoundRow } from './Pricing/Pricing'
 
 const StyledCard = styled(Card)(
@@ -85,6 +82,9 @@ export const useEthInvoice = (
 
   const commitReceipt = commitTxFlow?.minedData
   const registerReceipt = registerTxFlow?.minedData
+  const { data } = useTransaction({
+    hash: (registerTxFlow?.hash as any) || '',
+  })
 
   const registrationValue = useMemo(() => {
     if (!registerReceipt) return null
@@ -120,6 +120,7 @@ export const useEthInvoice = (
   const InvoiceFilled = useMemo(() => {
     if (isLoading) return null
     const value = registrationValue || BigNumber.from(0)
+    console.log('value', value)
 
     const commitGasUsed = BigNumber.from(commitReceipt?.gasUsed || 0)
     const registerGasUsed = BigNumber.from(registerReceipt?.gasUsed || 0)
@@ -130,14 +131,17 @@ export const useEthInvoice = (
 
     return (
       <Invoice
+        totalTitle="Total paid"
         items={[
-          { label: t('invoice.registration'), value },
-          { label: t('invoice.networkFee'), value: totalNetFee },
+          { label: 'Registration', value: data?.value },
+          { label: 'Gas fee', value: totalNetFee },
+          // { label: t('invoice.registration'), value },
+          // { label: t('invoice.networkFee'), value: totalNetFee },
         ]}
         totalLabel={t('invoice.totalPaid')}
       />
     )
-  }, [isLoading, registrationValue, commitReceipt, registerReceipt, t])
+  }, [isLoading, registrationValue, commitReceipt, registerReceipt, data?.value, t])
 
   if (isMoonpayFlow) return { InvoiceFilled: null, avatarSrc }
 
@@ -148,7 +152,6 @@ type Props = {
   nameDetails: ReturnType<typeof useNameDetails>
   callback: (toProfile: boolean) => void
   isMoonpayFlow: boolean
-  registrationData: RegistrationReducerDataItem
 }
 const CenterBox = styled.div`
   display: flex;
@@ -196,19 +199,15 @@ const Container = styled.div`
     grid-column: 2;
   }
 `
-const Complete = ({ nameDetails, callback, isMoonpayFlow, registrationData }: Props) => {
-  const { normalisedName: name, beautifiedName, priceData } = nameDetails
+const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
+  const { normalisedName: name, beautifiedName } = nameDetails
   const { t } = useTranslation('register')
   const { width, height } = useWindowSize()
   console.log('beautifiedName', beautifiedName)
   console.log('isMoonpayFlow', isMoonpayFlow)
-  const { avatarSrc } = useEthInvoice(name, false)
+  const { avatarSrc, InvoiceFilled } = useEthInvoice(name, false)
   const { data } = useSignName(name)
-  const estimate = useEstimateFullRegistration({
-    name,
-    registrationData,
-    price: priceData,
-  })
+
   return (
     <StyledCard>
       <HeadStyle>
@@ -250,9 +249,7 @@ const Complete = ({ nameDetails, callback, isMoonpayFlow, registrationData }: Pr
               </InterText>
             )}
           </GrayRoundRow>
-          <FullInvoiceBox>
-            <FullInvoice {...estimate} />
-          </FullInvoiceBox>
+          <FullInvoiceBox>{InvoiceFilled}</FullInvoiceBox>
         </div>
         <ButtonContainer className="btn">
           <MobileFullWidth>
