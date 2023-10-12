@@ -56,7 +56,11 @@ const InvitationNameLabel = ({ name, setNameCallback }: TInvitationName) => {
   const handleDiscountCode = () => {
     showInvitationNameInput(`discount-code-${name}`, { name, setNameCallback })
   }
+  const cleanName = () => {
+    setNameCallback('')
+  }
   const auctionBtn = name ? <DelRoundSVG /> : <AddRoundSVG />
+  const handleAuctionFn = name ? cleanName : handleDiscountCode
   return (
     <Row>
       <Row className="content">
@@ -88,7 +92,7 @@ const InvitationNameLabel = ({ name, setNameCallback }: TInvitationName) => {
       </Row>
       <Row className="content">
         <NameLabel>{name}</NameLabel>
-        <SvgBtn onClick={() => !name && handleDiscountCode()}>{auctionBtn}</SvgBtn>
+        <SvgBtn onClick={handleAuctionFn}>{auctionBtn}</SvgBtn>
       </Row>
     </Row>
   )
