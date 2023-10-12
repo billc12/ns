@@ -12,6 +12,7 @@ import type { Props as DeleteSubnameNotParentWarningProps } from './DeleteSubnam
 import type { Props as DiscountCodeProps } from './DiscountCode-flow'
 import type { Props as EditResolverProps } from './EditResolver/EditResolver-flow'
 import type { Props as ExtendNamesProps } from './ExtendNames/ExtendNames-flow'
+import type { Props as InvitationNameProps } from './InvitationName-flow'
 import type { Props as ProfileEditorProps } from './ProfileEditor/ProfileEditor-flow'
 import type { Props as ResetPrimaryNameProps } from './ResetPrimaryName/ResetPrimaryName-flow'
 import type { Props as RevokePermissionsProps } from './RevokePermissions/RevokePermissions-flow'
@@ -71,7 +72,7 @@ const DeleteSubnameNotParentWarning = dynamicHelper<DeleteSubnameNotParentWarnin
   'DeleteSubnameNotParentWarning/DeleteSubnameNotParentWarning',
 )
 const DiscountCode = dynamicHelper<DiscountCodeProps>('DiscountCode')
-
+const InvitationName = dynamicHelper<InvitationNameProps>('InvitationName')
 export const DataInputComponents = {
   EditResolver,
   ProfileEditor,
@@ -92,6 +93,7 @@ export const DataInputComponents = {
   AwnsExtendNames,
   EditResolveAddress,
   DiscountCode,
+  InvitationName,
 }
 
 export type DataInputName = keyof typeof DataInputComponents

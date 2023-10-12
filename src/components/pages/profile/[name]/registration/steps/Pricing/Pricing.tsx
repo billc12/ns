@@ -8,19 +8,16 @@ import { useBalance, useNetwork } from 'wagmi'
 import {
   Button,
   Dialog,
-  Input as EInput,
   Field, // Heading,
   Helper,
   RadioButton,
   RadioButtonGroup,
   Toggle,
-  Tooltip,
   Typography,
   mq,
 } from '@ensdomains/thorin'
 
 import MoonpayLogo from '@app/assets/MoonpayLogo.svg'
-import ToolTipSvg from '@app/assets/tooltip.svg'
 // import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
 import { PlusMinusControl } from '@app/components/@atoms/PlusMinusControl/Awns_PlusMinusControl'
 // import { RegistrationTimeComparisonBanner } from '@app/components/@atoms/RegistrationTimeComparisonBanner/RegistrationTimeComparisonBanner'
@@ -51,6 +48,7 @@ import {
 } from '../../types'
 import { useMoonpayRegistration } from '../../useMoonpayRegistration'
 import DiscountCodeLabel from './DiscountCodeLabel'
+import InvitationNameLabel from './InvitationNameLabel'
 
 // import TemporaryPremium from './TemporaryPremium'
 
@@ -552,12 +550,7 @@ const ContentStyle = styled(Row)`
   padding: 0 30px;
   gap: 20px;
 `
-const InitCodeRound = styled.div`
-  width: 380px;
-  border-radius: 10px;
-  background: #f0f8fd;
-  padding: 17px 36px;
-`
+
 const UpButton = styled(Button)`
   width: 150px;
   padding: 10px 18px;
@@ -581,22 +574,7 @@ const PremiumImgRound = styled.div<{ $premium: boolean }>(
     `}
   `,
 )
-const ToolTipRound = styled.div`
-  padding: 8px 10px;
-  border-radius: 6px;
-  background: #f8fbff;
-  color: #8d8ea5;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 19px;
-`
-const InviCode = styled(EInput)`
-  text-align: center;
-  &>div:focus-within: {
-    border-color: transparent;
-  }
-`
+
 const ButtonBox = styled.div`
   width: 100%;
   height: 100%;
@@ -693,7 +671,6 @@ const Pricing = ({
   // const { t } = useTranslation('register')
   console.log('isPrimaryLoading', isPrimaryLoading)
 
-  const [initCode, setInitCode] = useState('')
   const { normalisedName, beautifiedName } = nameDetails
 
   const { address } = useAccountSafely()
@@ -760,6 +737,13 @@ const Pricing = ({
   const discountCodeLabel = (
     <DiscountCodeLabel code={discountCode} setCodeCallback={handleDiscountCode} />
   )
+  const [invitationName, setInvitationName] = useState('')
+  const handleInvitationName = (n: string) => {
+    setInvitationName(n)
+  }
+  const invitationNameLabel = (
+    <InvitationNameLabel name={invitationName} setNameCallback={handleInvitationName} />
+  )
   return (
     <StyledCard>
       <PremiumTitle nameDetails={nameDetails} />
@@ -816,47 +800,12 @@ const Pricing = ({
               />
             </CenterRow>
             <div style={{ padding: '0 38px' }}>
-              <FullInvoice {...fullEstimate} discountCodeLabel={discountCodeLabel} />
-            </div>
-
-            <InitCodeRound>
-              <Row style={{ justifyContent: 'flex-start', alignItems: 'center', gap: 10 }}>
-                <InterText $color="#3F5170" $size="14px" $weight={500}>
-                  Invitation Code
-                </InterText>
-                <Tooltip
-                  placement="right"
-                  content={
-                    <ToolTipRound>
-                      The beta phase requires an invitation code to register, and you will receive 3
-                      invitations for successfully registering an aw domain name.
-                    </ToolTipRound>
-                  }
-                  mobilePlacement="right"
-                  mobileWidth={50}
-                  width={325}
-                >
-                  <Button
-                    style={{
-                      width: 'max-content',
-                      height: 'max-content',
-                      padding: 0,
-                      border: 'none',
-                      background: 'transparent',
-                    }}
-                  >
-                    <ToolTipSvg />
-                  </Button>
-                </Tooltip>
-              </Row>
-
-              <InviCode
-                placeholder="Invitation Code"
-                value={initCode}
-                label=""
-                onChange={(e) => setInitCode(e.target.value)}
+              <FullInvoice
+                {...fullEstimate}
+                discountCodeLabel={discountCodeLabel}
+                invitationNameLabel={invitationNameLabel}
               />
-            </InitCodeRound>
+            </div>
           </GrayRoundColumn>
           {/* <MobileFullWidth> */}
           <ButtonBox>

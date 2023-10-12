@@ -31,8 +31,11 @@ const InvoiceContainer = styled.div(
     width: 100%;
   `,
 )
-
-type Props = ReturnType<typeof useEstimateFullRegistration> & { discountCodeLabel?: JSX.Element }
+type LabelProps = {
+  discountCodeLabel?: JSX.Element
+  invitationNameLabel?: JSX.Element
+}
+type Props = ReturnType<typeof useEstimateFullRegistration> & LabelProps
 const FullInvoice = ({
   years,
   totalYearlyFee,
@@ -41,6 +44,7 @@ const FullInvoice = ({
   premiumFee,
   gasPrice,
   discountCodeLabel,
+  invitationNameLabel,
 }: Props) => {
   const { t } = useTranslation('register')
 
@@ -93,6 +97,7 @@ const FullInvoice = ({
         unit={currencyDisplay}
         totalLabel={t('invoice.total')}
         discountCodeLabel={discountCodeLabel}
+        invitationNameLabel={invitationNameLabel}
       />
     </InvoiceContainer>
   )
