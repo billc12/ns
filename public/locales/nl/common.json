@@ -161,7 +161,8 @@
       "subname": "Subnaam",
       "duration": "Duur",
       "cost": "Kosten",
-      "update": "Update"
+      "update": "Update",
+      "information": "Information"
     },
     "itemValue": {
       "records_one": "{{count}} record",
