@@ -12,6 +12,8 @@ export type TDiscountCode = {
   setCodeCallback: (v: string) => void
   code: string
   name: string
+  loading: boolean
+  success: boolean
 }
 export type Props = {
   data: TDiscountCode
@@ -80,15 +82,12 @@ const Row = styled.div`
   gap: 18px;
   margin-top: 50px;
 `
-const DiscountCode = ({ data: { code, setCodeCallback }, onDismiss }: Props) => {
+const DiscountCode = ({ data: { code, setCodeCallback, loading, success }, onDismiss }: Props) => {
   const [disCode, setDisCode] = useState(code)
-  const succuss = true
-  const isLoading = false
   const saveCode = () => {
     setCodeCallback(disCode)
     onDismiss()
   }
-
   return (
     <>
       <Dialog.Heading title="Discount Code" />
@@ -101,8 +100,8 @@ const DiscountCode = ({ data: { code, setCodeCallback }, onDismiss }: Props) => 
           value={disCode}
           onChange={(e) => setDisCode(e.target.value)}
         />
-        <Skeleton loading={isLoading}>
-          {succuss ? (
+        <Skeleton loading={loading}>
+          {success ? (
             <SuccessTip>Discount 95% OFF</SuccessTip>
           ) : (
             <ErrTip>Discount code invalid</ErrTip>

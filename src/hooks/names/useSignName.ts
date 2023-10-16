@@ -1,3 +1,4 @@
+import { formatFixed } from '@ethersproject/bignumber'
 import { useQuery } from 'wagmi'
 
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
@@ -22,7 +23,7 @@ export const fetchedGetSignName = async (n: string, d: string) => {
 
 const useSignName = (name: string, discountCode?: string) => {
   const queryKey = useQueryKeys().getSignName(name, discountCode || '')
-  const { data } = useQuery(
+  const { data, isLoading } = useQuery(
     queryKey,
     async () => {
       try {
@@ -31,6 +32,7 @@ const useSignName = (name: string, discountCode?: string) => {
         return {
           ...result,
           isPremium: result.signature === '0x',
+          hasDiscount: Number(formatFixed(result.discountRate, 18)) < 1,
         }
       } catch {
         return null
@@ -39,6 +41,6 @@ const useSignName = (name: string, discountCode?: string) => {
     { enabled: !!name },
   )
 
-  return { data }
+  return { data, isLoading }
 }
 export default useSignName

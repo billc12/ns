@@ -30,12 +30,12 @@ export type RegistrationStepData = {
     reverseRecord: boolean
     paymentMethodChoice: PaymentMethod | ''
     discountCode: string
-    invitationName?: string
     signature: string
     discount: string
     discountCount: number
     timestamp: number
     referral: string
+    invitationName: string
   } & TDiscount
   profile: {
     records: ProfileRecord[]

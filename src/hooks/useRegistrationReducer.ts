@@ -39,6 +39,8 @@ const defaultData: RegistrationReducerDataItem = {
   discountCount: 0,
   referral: '',
   timestamp: 0,
+  signature: '',
+  invitationName: '',
 }
 
 const isBrowser = !!(
@@ -64,6 +66,8 @@ const makeDefaultData = (selected: SelectedItemProperties): RegistrationReducerD
   discountCount: 0,
   referral: '',
   timestamp: 0,
+  signature: '',
+  invitationName: '',
   ...selected,
 })
 
@@ -125,6 +129,13 @@ const reducer = (state: RegistrationReducerData, action: RegistrationReducerActi
     case 'setPricingData': {
       item.years = action.payload.years
       item.reverseRecord = action.payload.reverseRecord
+      item.discount = action.payload.discount
+      item.discountCode = action.payload.discountCode
+      item.discountCount = action.payload.discountCount
+      item.referral = action.payload.referral
+      item.signature = action.payload.signature
+      item.timestamp = action.payload.timestamp
+      item.invitationName = action.payload.invitationName
       break
     }
     case 'setTransactionsData': {

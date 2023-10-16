@@ -147,7 +147,9 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
     discountCode,
     discountCount,
     referral,
+    signature,
     timestamp,
+    invitationName,
   }: RegistrationStepData['pricing']) => {
     if (paymentMethodChoice === PaymentMethod.moonpay) {
       initiateMoonpayRegistrationMutation.mutate(years)
@@ -155,7 +157,17 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
     }
     dispatch({
       name: 'setPricingData',
-      payload: { years, reverseRecord, discount, discountCode, discountCount, referral, timestamp },
+      payload: {
+        years,
+        reverseRecord,
+        discount,
+        discountCode,
+        discountCount,
+        referral,
+        timestamp,
+        signature,
+        invitationName,
+      },
       selected,
     })
     if (!item.queue.includes('profile')) {

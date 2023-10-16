@@ -1,5 +1,5 @@
 import type { BigNumber } from 'ethers'
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import usePrevious from 'react-use/lib/usePrevious'
 import styled, { css } from 'styled-components'
@@ -32,6 +32,7 @@ import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useChainId } from '@app/hooks/useChainId'
 import { useContractAddress } from '@app/hooks/useContractAddress'
 import { useEstimateFullRegistration } from '@app/hooks/useEstimateRegistration'
+import useGetSignReferral from '@app/hooks/useGetSignReferral'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import { useProfileEditorForm } from '@app/hooks/useProfileEditorForm'
 import useRegistrationReducer from '@app/hooks/useRegistrationReducer'
@@ -390,6 +391,15 @@ interface ActionButtonProps {
   years: number
   balance: ReturnType<typeof useBalance>['data']
   totalRequiredBalance?: BigNumber
+  discountInfo: {
+    discountCode: string
+    signature: string
+    discount: string
+    discountCount: number
+    timestamp: number
+    referral: string
+    invitationName: string
+  }
 }
 
 export const ActionButton = ({
@@ -406,6 +416,7 @@ export const ActionButton = ({
   years,
   balance,
   totalRequiredBalance,
+  discountInfo,
 }: ActionButtonProps) => {
   const { t } = useTranslation('register')
   if (!address) {
@@ -422,7 +433,7 @@ export const ActionButton = ({
     return (
       <Button
         data-testid="next-button"
-        // onClick={() => callback({ reverseRecord, years, paymentMethodChoice })}
+        onClick={() => callback({ reverseRecord, years, paymentMethodChoice, ...discountInfo })}
       >
         {t('action.tryAgain', { ns: 'common' })}
       </Button>
@@ -433,7 +444,7 @@ export const ActionButton = ({
       <Button
         loading={initiateMoonpayRegistrationMutation.isLoading}
         data-testid="next-button"
-        // onClick={() => callback({ reverseRecord, years, paymentMethodChoice })}
+        onClick={() => callback({ reverseRecord, years, paymentMethodChoice, ...discountInfo })}
         disabled={!paymentMethodChoice || initiateMoonpayRegistrationMutation.isLoading}
       >
         {t('action.next', { ns: 'common' })}
@@ -457,11 +468,17 @@ export const ActionButton = ({
   return (
     <NextButton
       data-testid="next-button"
-      // onClick={() => callback({ reverseRecord, years, paymentMethodChoice })}
+      onClick={() =>
+        callback({
+          reverseRecord,
+          years,
+          paymentMethodChoice,
+          ...discountInfo,
+        })
+      }
       disabled={!paymentMethodChoice}
     >
-      {/* {t('action.next', { ns: 'common' })} */}
-      Register
+      {t('action.next', { ns: 'common' })}
     </NextButton>
   )
 }
@@ -732,31 +749,50 @@ const Pricing = ({
 
   // const showPaymentChoice = !isPrimaryLoading && address
   const nameLength = beautifiedName.split('.')[0].length
-  const { data } = useSignName(nameDetails.normalisedName)
-  const isPremium = !!data?.isPremium
-  const { chain } = useNetwork()
-  const [discountCode, setDiscountCode] = useState('')
-  const { data: signData } = useSignName(nameDetails.normalisedName, discountCode)
-  console.log('signData', signData)
 
+  const { chain } = useNetwork()
+  const [discountCode, setDiscountCode] = useState(registrationData.discount)
+  const { data: signData, isLoading } = useSignName(nameDetails.normalisedName, discountCode)
+  const isPremium = !!signData?.isPremium
   const handleDiscountCode = (v: string) => {
     setDiscountCode(v)
   }
-
   const discountCodeLabel = (
     <DiscountCodeLabel
       code={discountCode}
       setCodeCallback={handleDiscountCode}
       name={nameDetails.normalisedName}
+      loading={isLoading}
+      success={signData?.hasDiscount || false}
     />
   )
-  const [invitationName, setInvitationName] = useState('')
+  const [invitationName, setInvitationName] = useState(registrationData.invitationName)
   const handleInvitationName = (n: string) => {
     setInvitationName(n)
   }
+  const { data: referralData } = useGetSignReferral(invitationName)
   const invitationNameLabel = (
     <InvitationNameLabel name={invitationName} setNameCallback={handleInvitationName} />
   )
+  const discountInfo = useMemo(() => {
+    return {
+      discountCode,
+      signature: signData?.signature || '',
+      discount: signData?.discountRate || '',
+      discountCount: signData?.discountCount || 0,
+      timestamp: signData?.timestamp || 0,
+      referral: referralData?.reward || '',
+      invitationName,
+    }
+  }, [
+    discountCode,
+    referralData?.reward,
+    signData?.discountCount,
+    signData?.discountRate,
+    signData?.signature,
+    signData?.timestamp,
+    invitationName,
+  ])
   return (
     <StyledCard>
       <PremiumTitle nameDetails={nameDetails} />
@@ -834,6 +870,7 @@ const Pricing = ({
                 years,
                 balance,
                 totalRequiredBalance,
+                discountInfo,
               }}
             />
           </ButtonBox>
