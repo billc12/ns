@@ -1,8 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
 import { Contract } from '@ethersproject/contracts'
+import AggregatorInterface from '@myclique/awns-contracts/build/contracts/AggregatorInterface.json'
 import { useProvider, useQuery } from 'wagmi'
-
-import AggregatorInterface from '@ensdomains/ens-contracts/build/contracts/AggregatorInterface.json'
 
 import { useChainId } from '@app/hooks/useChainId'
 import { useEns } from '@app/utils/EnsProvider'

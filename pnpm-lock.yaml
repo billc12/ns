@@ -46,9 +46,6 @@ importers:
       '@ensdomains/dnssecoraclejs':
         specifier: ^0.2.7
         version: 0.2.7(@nomiclabs/hardhat-web3@2.0.0)(hardhat@2.11.2)(ts-node@10.9.1)(typescript@5.2.2)(web3-core-helpers@1.10.0)(web3-core-promievent@1.10.0)(web3-eth-abi@1.10.0)(web3-utils@1.10.0)(web3@1.10.0)
-      '@ensdomains/ens-contracts':
-        specifier: 0.0.16
-        version: 0.0.16(@nomiclabs/hardhat-web3@2.0.0)(hardhat@2.11.2)(web3-core-helpers@1.10.0)(web3-core-promievent@1.10.0)(web3-eth-abi@1.10.0)(web3-utils@1.10.0)(web3@1.10.0)
       '@ensdomains/ens-validation':
         specifier: ^0.1.0
         version: 0.1.0
@@ -115,9 +112,12 @@ importers:
       '@metamask/post-message-stream':
         specifier: ^6.1.2
         version: 6.1.2
+      '@myclique/awns-contracts':
+        specifier: 0.0.4
+        version: 0.0.4
       '@myclique/awnsjs':
-        specifier: 0.0.41-alpha
-        version: 0.0.41-alpha(@ethersproject/abi@5.7.0)(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/address@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/bytes@5.7.0)(@ethersproject/contracts@5.7.0)(@ethersproject/keccak256@5.7.0)(@ethersproject/providers@5.7.2)(@ethersproject/solidity@5.7.0)(@ethersproject/strings@5.7.0)(@ethersproject/transactions@5.7.0)(@ethersproject/web@5.7.1)
+        specifier: 1.0.1-alpha
+        version: 1.0.1-alpha(@ethersproject/abi@5.7.0)(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/address@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/bytes@5.7.0)(@ethersproject/contracts@5.7.0)(@ethersproject/keccak256@5.7.0)(@ethersproject/providers@5.7.2)(@ethersproject/solidity@5.7.0)(@ethersproject/strings@5.7.0)(@ethersproject/transactions@5.7.0)(@ethersproject/web@5.7.1)
       '@rainbow-me/rainbowkit':
         specifier: 0.12.15
         version: 0.12.15(patch_hash=ids4vnpwyenrujupancx6kn4ci)(@types/react@17.0.30)(ethers@5.7.2)(react-dom@17.0.2)(react@17.0.2)(wagmi@0.12.13)
@@ -2245,6 +2245,10 @@ packages:
       - web3-utils
     dev: true
 
+  /@ensdomains/buffer@0.1.1:
+    resolution: {integrity: sha512-92SfSiNS8XorgU7OUBHo/i1ZU7JV7iz/6bKuLPNVsMxV79/eI7fJR6jfJJc40zAHjs3ha+Xo965Idomlq3rqnw==}
+    dev: false
+
   /@ensdomains/content-hash@2.5.7:
     resolution: {integrity: sha512-WNdGKCeubMIAfyPYTMlKeX6cgXKIEo42OcWPOLBiclzJwMibkVqpaGgWKVH9dniJq7bLXLa2tQ0k/F1pt6gUxA==}
     dependencies:
@@ -2296,27 +2300,6 @@ packages:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
-    dev: false
-
-  /@ensdomains/ens-contracts@0.0.16(@nomiclabs/hardhat-web3@2.0.0)(hardhat@2.11.2)(web3-core-helpers@1.10.0)(web3-core-promievent@1.10.0)(web3-eth-abi@1.10.0)(web3-utils@1.10.0)(web3@1.10.0):
-    resolution: {integrity: sha512-pssd2nrzHoFJOvzANoBVNMdb9H9tpyMPSyb9JaTFmS6HDo7RRcsyWL8FYCGkUmsnAqzz8dz3OwxiH03s8cLG2A==}
-    dependencies:
-      '@ensdomains/buffer': 0.0.13(@nomiclabs/hardhat-web3@2.0.0)(hardhat@2.11.2)(web3-core-helpers@1.10.0)(web3-core-promievent@1.10.0)(web3-eth-abi@1.10.0)(web3-utils@1.10.0)(web3@1.10.0)
-      '@ensdomains/solsha1': 0.0.3
-      '@openzeppelin/contracts': 4.7.3
-      dns-packet: 5.4.0
-    transitivePeerDependencies:
-      - '@nomiclabs/hardhat-web3'
-      - bufferutil
-      - encoding
-      - hardhat
-      - supports-color
-      - utf-8-validate
-      - web3
-      - web3-core-helpers
-      - web3-core-promievent
-      - web3-eth-abi
-      - web3-utils
     dev: false
 
   /@ensdomains/ens-contracts@0.0.3:
@@ -3816,8 +3799,17 @@ packages:
     resolution: {integrity: sha512-eMk0b9ReBbV23xXU693TAIrLyeO5iTgBZGSJfpqriG8UkYvr/hC9u9pyMlAakDNHWmbhMZCDs6KQO0jzKD8OTw==}
     dev: false
 
-  /@myclique/awnsjs@0.0.41-alpha(@ethersproject/abi@5.7.0)(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/address@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/bytes@5.7.0)(@ethersproject/contracts@5.7.0)(@ethersproject/keccak256@5.7.0)(@ethersproject/providers@5.7.2)(@ethersproject/solidity@5.7.0)(@ethersproject/strings@5.7.0)(@ethersproject/transactions@5.7.0)(@ethersproject/web@5.7.1):
-    resolution: {integrity: sha512-us8HgQ8fGkcCmvRrTVTEa3udM9Qi5EDNmqrZ8qhi5fxZzQnfK/SYGjXKRIsMzCQ4f8U2+VQRsE/f/p1ADwUXfw==}
+  /@myclique/awns-contracts@0.0.4:
+    resolution: {integrity: sha512-6hU29I1Zz42gNUE4KrdIriD7cihxhSaH/NhsolSOYwiYRjyh8DRhFoCSR7ZRnMDpWXsI6dk59/7kapQqk/PYHw==}
+    dependencies:
+      '@ensdomains/buffer': 0.1.1
+      '@ensdomains/solsha1': 0.0.3
+      '@openzeppelin/contracts': 4.7.3
+      dns-packet: 5.4.0
+    dev: false
+
+  /@myclique/awnsjs@1.0.1-alpha(@ethersproject/abi@5.7.0)(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/address@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/bytes@5.7.0)(@ethersproject/contracts@5.7.0)(@ethersproject/keccak256@5.7.0)(@ethersproject/providers@5.7.2)(@ethersproject/solidity@5.7.0)(@ethersproject/strings@5.7.0)(@ethersproject/transactions@5.7.0)(@ethersproject/web@5.7.1):
+    resolution: {integrity: sha512-v18YPnneaXNsf65FYBNrH7V/eV3Z8nIoozIRBvt8Oc7ebfIZD+3jWuksCgDCGowHl6NiVYYejlBm1miYU3GjAw==}
     peerDependencies:
       '@ethersproject/abi': ^5.6.4
       '@ethersproject/abstract-provider': ^5.7.0
