@@ -44,6 +44,9 @@ const BodyStyle = styled.div`
   width: 100%;
   display: flex;
   gap: 14px;
+  ${mq.sm.max(css`
+    display: grid;
+  `)}
 `
 
 const ContentTitleStyle = styled.div`
@@ -69,6 +72,10 @@ const CenterLeftStyle = styled.div`
   padding: 30px 36px;
   display: grid;
   gap: 24px;
+  ${mq.sm.max(css`
+    width: 100%;
+    height: auto;
+  `)}
 `
 
 const ClaimStyle = styled.div`
@@ -99,6 +106,10 @@ const CenterRightStyle = styled.div`
   box-shadow: 0 4px 14px 0 rgba(40, 79, 115, 0.1);
   width: 643px;
   height: 585px;
+  ${mq.sm.max(css`
+    width: 100%;
+    height: auto;
+  `)}
 `
 
 const BottomStyle = styled.div`
@@ -111,6 +122,10 @@ const BottomStyle = styled.div`
   box-shadow: 0 4px 14px 0 rgba(40, 79, 115, 0.1);
   display: grid;
   gap: 30px;
+  ${mq.sm.max(css`
+    width: 100%;
+    height: auto;
+  `)}
 `
 const BottomTitleStyle = styled.div`
   color: var(--word-color, #3f5170);
