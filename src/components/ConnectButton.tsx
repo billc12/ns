@@ -217,7 +217,7 @@ const HeaderProfile = ({ address }: { address: string }) => {
   return (
     <Dropdown
       width={170}
-      align="left"
+      align="right"
       items={
         [
           {

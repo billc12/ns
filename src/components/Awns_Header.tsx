@@ -69,6 +69,11 @@ const Page = () => {
             Explore
           </InterText>
         </Link>
+        <Link href="/rewards">
+          <InterText as="a" $textColor={isIndex ? '#fff' : '#3f5170'} style={{ cursor: 'pointer' }}>
+            Referral rewards
+          </InterText>
+        </Link>
         <a href="https://www.myclique.io/daos" target="_blank" rel="noreferrer">
           <InterText as="a" $textColor={isIndex ? '#fff' : '#3f5170'} style={{ cursor: 'pointer' }}>
             Clique
