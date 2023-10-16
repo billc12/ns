@@ -51,12 +51,10 @@ const Container = styled.div<{ $IsIndex?: boolean }>(
 
 const ContentWrapper = styled.div(
   ({ theme }) => css`
-    /* max-width: ${theme.space['192']}; */
-    max-width: 840px;
     width: 100%;
-    align-self: center;
     flex-grow: 1;
     display: flex;
+    align-items: center;
     flex-direction: column;
     gap: ${theme.space['4']};
     flex-gap: ${theme.space['4']};
