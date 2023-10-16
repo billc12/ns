@@ -76,13 +76,19 @@ export const Invoice = ({
   invitationNameLabel,
   totalTitle,
 }: Props) => {
+  console.log('items', items)
+
   const filteredItems = items
     .map(({ value, bufferPercentage }) =>
       value && unit === 'eth' && bufferPercentage ? value.mul(bufferPercentage).div(100) : value,
     )
     .filter((x) => !!x)
   const total = filteredItems.reduce((a, b) => a!.add(b!), BigNumber.from(0))
+  console.log('total', total?.toString())
+
   const hasEmptyItems = filteredItems.length !== items.length
+  console.log('hasEmptyItems', items)
+
   console.log('totalLabel', totalLabel)
   return (
     <Container>

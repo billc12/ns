@@ -36,11 +36,11 @@ const SvgBtn = styled.button`
   height: 16px;
   cursor: pointer;
 `
-const DiscountCodeLabel = ({ code, setCodeCallback }: TDiscountCode) => {
+const DiscountCodeLabel = ({ code, setCodeCallback, name }: TDiscountCode) => {
   const { prepareDataInput } = useTransactionFlow()
   const showDiscountCodeInput = prepareDataInput('DiscountCode')
   const handleDiscountCode = () => {
-    showDiscountCodeInput(`discount-code-${code}`, { code, setCodeCallback })
+    showDiscountCodeInput(`discount-code-${code}`, { code, setCodeCallback, name })
   }
   const cleanCode = () => {
     setCodeCallback('')

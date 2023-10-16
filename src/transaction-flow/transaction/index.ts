@@ -64,9 +64,13 @@ export type TransactionData<T extends TransactionName> = Parameters<
 export const makeTransactionItem = <T extends TransactionName>(
   name: T,
   data: TransactionData<T>,
-) => ({
-  name,
-  data,
-})
+) => {
+  console.log('data', data)
+
+  return {
+    name,
+    data,
+  }
+}
 
 export type TransactionItem = ReturnType<typeof makeTransactionItem>

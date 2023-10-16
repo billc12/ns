@@ -122,7 +122,7 @@ const ConfirmReg = ({ registrationData, nameDetails, callback, onProfileClick }:
       transactions: [
         makeTransactionItem('registerName', {
           ...registrationParams,
-          signature: signatureName?.sign || '0x',
+          signature: signatureName?.signature || '0x',
         }),
       ],
       requiresManualCleanup: true,

@@ -141,6 +141,7 @@ type Props = {
   onStart: () => void
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Transactions = ({ registrationData, nameDetails, callback, onStart }: Props) => {
   const { t } = useTranslation('register')
 
@@ -166,14 +167,24 @@ const Transactions = ({ registrationData, nameDetails, callback, onStart }: Prop
   })
   // Start countdown
   const makeCommitNameFlow = useCallback(() => {
-    onStart()
-    createTransactionFlow(commitKey, {
-      transactions: [makeTransactionItem('commitName', registrationParams)],
+    createTransactionFlow(registerKey, {
+      transactions: [
+        makeTransactionItem('registerName', {
+          ...registrationParams,
+          discount: '1000000000000000000',
+          discountCode: '0',
+          discountCount: 0,
+          timestamp: 1697456889,
+          signature:
+            '0x908fd5e6c70eaa5d45f37291f5647d4c0d5cd1f3cac790265341ec48cec5f0c4062f9bd82ffb422ab4d3f183b34672ff02627bd23597feb92bfd20c04f6c8ce51c',
+          referral: '0',
+        }),
+      ],
       requiresManualCleanup: true,
       autoClose: true,
       resumeLink: `/register/${nameDetails.normalisedName}`,
     })
-  }, [commitKey, createTransactionFlow, nameDetails.normalisedName, onStart, registrationParams])
+  }, [createTransactionFlow, nameDetails.normalisedName, registerKey, registrationParams])
 
   const makeRegisterNameFlow = () => {
     callback({ back: false })

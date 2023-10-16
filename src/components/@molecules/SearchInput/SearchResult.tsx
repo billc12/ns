@@ -440,6 +440,7 @@ const NameResultItem = forwardRef<HTMLDivElement, { name: string; $selected: boo
     // const { avatar } = useAvatar(name, network)
     // const zorb = useZorb(name, 'name')
     const { registrationStatus, isLoading, beautifiedName } = useBasicName(name)
+
     const { chain } = useNetwork()
     const isImported = registrationStatus !== 'notImported'
 

@@ -22,7 +22,18 @@ type BaseBatchReturn = [ReturnedENS['getOwner']]
 type NormalBatchReturn = [...BaseBatchReturn, ReturnedENS['getWrapperData']]
 type ETH2LDBatchReturn = [...NormalBatchReturn, ReturnedENS['getExpiry'], ReturnedENS['getPrice']]
 type BatchReturn = [] | BaseBatchReturn | NormalBatchReturn | ETH2LDBatchReturn | undefined
-
+export type TDiscount = {
+  discount: string
+  discountCount: number
+  discountCode: string
+  timestamp: number
+}
+export const DefaultDiscount: TDiscount = {
+  discount: ' ',
+  discountCode: ' ',
+  discountCount: 0,
+  timestamp: 0,
+}
 const EXPIRY_LIVE_WATCH_TIME = 1_000 * 60 * 5 // 5 minutes
 
 const getBatchData = async (
@@ -35,25 +46,50 @@ const getBatchData = async (
   if (name === '[root]') {
     return Promise.all([ens.getOwner('', { contract: 'registry' })])
   }
-
-  const signName = await fetchedGetSignName(name)
+  const signData = await fetchedGetSignName(name, '')
 
   const labels = name.split('.')
+  try {
+    const res = await ens.getPrice(
+      labels[0],
+      yearsToSeconds(1),
+      signData.signature,
+      signData.discountRate,
+      signData.discountCount,
+      signData.discountCode,
+      signData.timestamp,
+    )
+    console.log(
+      'ss',
+      yearsToSeconds(1),
+      signData.signature,
+      signData.discountRate,
+      signData.discountCount,
+      signData.discountCode,
+      signData.timestamp,
+    )
+
+    console.log('resresres', res)
+  } catch (error) {
+    console.log('errorerror111', error)
+  }
   if (validation.isETH && validation.is2LD) {
     if (validation.isShort) {
       return Promise.resolve([])
     }
-    console.log(
-      'ens.getPrice',
-      labels,
-      signName,
-      (await ens.getPrice(labels[0], yearsToSeconds(1), signName))?.base.toString(),
-    )
     return ens.batch(
       ens.getOwner.batch(name, { skipGraph }),
       ens.getWrapperData.batch(name),
       ens.getExpiry.batch(name),
-      ens.getPrice.batch(labels[0], yearsToSeconds(1), signName || '0x', false),
+      ens.getPrice.batch(
+        labels[0],
+        yearsToSeconds(1),
+        signData.signature,
+        signData.discountRate,
+        signData.discountCount,
+        signData.discountCode,
+        signData.timestamp,
+      ),
     )
   }
 
@@ -101,6 +137,7 @@ export const useBasicName = (name?: string | null, options: UseBasicNameOptions 
     },
   )
   const [ownerData, _wrapperData, expiryData, priceData] = batchData || []
+  console.log('batchData', batchData)
 
   const wrapperData = useMemo(() => {
     if (!_wrapperData) return undefined
@@ -131,6 +168,7 @@ export const useBasicName = (name?: string | null, options: UseBasicNameOptions 
     if (blockTimestamp) return blockTimestamp * 1000
     return Date.now() - EXPIRY_LIVE_WATCH_TIME
   }, [isTempPremiumDesynced, blockTimestamp])
+  console.log('batchDatabatchData', batchData)
 
   const registrationStatus = batchData
     ? getRegistrationStatus({
@@ -143,6 +181,7 @@ export const useBasicName = (name?: string | null, options: UseBasicNameOptions 
         supportedTLD,
       })
     : undefined
+  console.log('registrationStatusaa', name, registrationStatus, batchData)
 
   const truncatedName = normalisedName ? truncateFormat(normalisedName) : undefined
 

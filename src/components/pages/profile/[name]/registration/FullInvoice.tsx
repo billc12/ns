@@ -47,6 +47,7 @@ const FullInvoice = ({
   invitationNameLabel,
 }: Props) => {
   const { t } = useTranslation('register')
+  console.log('totalYearlyFee111', totalYearlyFee)
 
   const { userConfig, setCurrency } = useUserConfig()
   const currencyDisplay = userConfig.currency === 'fiat' ? userConfig.fiat : 'eth'
@@ -75,6 +76,8 @@ const FullInvoice = ({
     ],
     [t, years, totalYearlyFee, estimatedGasFee, hasPremium, premiumFee],
   )
+  console.log('invoiceItems', invoiceItems)
+
   const discountInvoiceItems = useMemo(
     () => ({ label: `${years} year discount`, discount: YEAR_DISCOUNT[years - 1] }),
     [years],

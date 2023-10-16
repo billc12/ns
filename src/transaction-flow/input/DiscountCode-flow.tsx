@@ -5,11 +5,13 @@ import { Dialog, Input, Skeleton } from '@ensdomains/thorin'
 
 import { BackButton, NextButton } from '@app/components/Awns/Dialog'
 
+// import useSignName from '@app/hooks/names/useSignName'
 import { TransactionDialogPassthrough } from '../types'
 
 export type TDiscountCode = {
   setCodeCallback: (v: string) => void
   code: string
+  name: string
 }
 export type Props = {
   data: TDiscountCode
@@ -86,6 +88,7 @@ const DiscountCode = ({ data: { code, setCodeCallback }, onDismiss }: Props) => 
     setCodeCallback(disCode)
     onDismiss()
   }
+
   return (
     <>
       <Dialog.Heading title="Discount Code" />

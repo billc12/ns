@@ -8,7 +8,7 @@ import useSignName from './names/useSignName'
 
 export const usePrice = (nameOrNames: string | string[], years = 1, legacy?: boolean) => {
   const { ready, getPrice } = useEns()
-  const { data: signName } = useSignName(nameOrNames.toString())
+  const { data: signName } = useSignName(nameOrNames.toString(), '')
 
   const names = Array.isArray(nameOrNames) ? nameOrNames : [nameOrNames]
   const type = legacy ? 'legacy' : 'new'
@@ -28,11 +28,14 @@ export const usePrice = (nameOrNames: string | string[], years = 1, legacy?: boo
       getPrice(
         names.map((n) => n.split('.')[0]),
         yearsToSeconds(1),
-        signName?.sign || '0x',
-        legacy,
+        signName?.signature || '0x',
+        signName?.discountRate!,
+        signName?.discountCount!,
+        signName?.discountCode!,
+        signName?.timestamp!,
       ).then((d) => d || null),
     {
-      enabled: !!(ready && nameOrNames && nameOrNames.length > 0 && signName?.sign),
+      enabled: !!(ready && nameOrNames && nameOrNames.length > 0 && signName?.signature),
     },
   )
 

@@ -123,6 +123,7 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
   const labelTooLong = isLabelTooLong(normalisedName)
   const { dispatch, item } = useRegistrationReducer(selected)
   const step = item.queue[item.stepIndex]
+  console.log('itemitemitem', item)
 
   const keySuffix = `${nameDetails.normalisedName}-${address}`
   const commitKey = `commit-${keySuffix}`
@@ -142,12 +143,21 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
     years,
     reverseRecord,
     paymentMethodChoice,
+    discount,
+    discountCode,
+    discountCount,
+    referral,
+    timestamp,
   }: RegistrationStepData['pricing']) => {
     if (paymentMethodChoice === PaymentMethod.moonpay) {
       initiateMoonpayRegistrationMutation.mutate(years)
       return
     }
-    dispatch({ name: 'setPricingData', payload: { years, reverseRecord }, selected })
+    dispatch({
+      name: 'setPricingData',
+      payload: { years, reverseRecord, discount, discountCode, discountCount, referral, timestamp },
+      selected,
+    })
     if (!item.queue.includes('profile')) {
       // if profile is not in queue, set the default profile data
       dispatch({
@@ -315,7 +325,7 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
               ),
               complete: (
                 <Complete
-                  registrationData={item}
+                  // registrationData={item}
                   nameDetails={nameDetails}
                   callback={onComplete}
                   isMoonpayFlow={item.isMoonpayFlow}

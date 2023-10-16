@@ -5,7 +5,7 @@ import { PublicResolver } from '@myclique/awnsjs/generated/PublicResolver'
 import { ChildFuses, CombinedFuseInput } from '@myclique/awnsjs/utils/fuses'
 import { namehash } from '@myclique/awnsjs/utils/normalise'
 import { RecordOptions } from '@myclique/awnsjs/utils/recordHelpers'
-import { makeCommitment, makeRegistrationData } from '@myclique/awnsjs/utils/registerHelpers'
+import { makeCommitmentData, makeRegistrationData } from '@myclique/awnsjs/utils/registerHelpers'
 import { Accounts, User } from 'playwright/fixtures/accounts'
 import { Contracts } from 'playwright/fixtures/contracts'
 import { Provider } from 'playwright/fixtures/provider'
@@ -18,7 +18,6 @@ import { WrappedSubname, generateWrappedSubname } from './generateWrappedSubname
 const DEFAULT_RESOLVER = NAMEWRAPPER_AWARE_RESOLVERS['1337'][0] as `0x${string}`
 
 type Fuse = ChildFuses['fuse']
-
 export type Name = {
   label: string
   owner?: User
@@ -31,6 +30,11 @@ export type Name = {
   records?: RecordOptions
   subnames?: Omit<WrappedSubname, 'name' | 'nameOwner'>[]
   offset?: number
+  referral: string
+  discount: string
+  discountCount: number
+  discountCode: string
+  timestamp: number
 }
 
 type Dependencies = {
@@ -52,6 +56,11 @@ export const generateWrappedName =
     fuses,
     records,
     subnames,
+    discount,
+    discountCode,
+    discountCount,
+    timestamp,
+    referral,
   }: Name) => {
     const name = `${label}.eth`
     console.log('generating wrapped name:', name)
@@ -74,7 +83,7 @@ export const generateWrappedName =
       : undefined
 
     console.log('making commitment:', name)
-    const { commitment } = makeCommitment({
+    const commitment = makeCommitmentData({
       name,
       owner: _owner,
       duration,
@@ -83,6 +92,12 @@ export const generateWrappedName =
       reverseRecord,
       fuses: _fuses,
       resolver: _resolver,
+      signature: '0x',
+      discount,
+      discountCode,
+      discountCount,
+      timestamp,
+      referral,
     })
     const commitTx = await controller.commit(commitment)
     await commitTx.wait()
@@ -93,7 +108,7 @@ export const generateWrappedName =
     console.log('registering name:', name)
     const price = await controller.rentPrice(label, duration)
     const registrationTx = await controller.register(
-      ...makeRegistrationData({
+      makeRegistrationData({
         name,
         owner: _owner,
         duration,
@@ -103,6 +118,11 @@ export const generateWrappedName =
         reverseRecord,
         resolver: _resolver,
         fuses: _fuses,
+        discount,
+        discountCode,
+        discountCount,
+        referral,
+        timestamp,
       }),
       {
         value: price[0],

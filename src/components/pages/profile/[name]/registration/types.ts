@@ -1,6 +1,7 @@
 import { ChildFuses } from '@myclique/awnsjs'
 
 import { ProfileRecord } from '@app/constants/profileRecordOptions'
+import { TDiscount } from '@app/hooks/useBasicName'
 
 export type RegistrationStep =
   | 'pricing'
@@ -28,9 +29,14 @@ export type RegistrationStepData = {
     years: number
     reverseRecord: boolean
     paymentMethodChoice: PaymentMethod | ''
-    discountCode?: string
+    discountCode: string
     invitationName?: string
-  }
+    signature: string
+    discount: string
+    discountCount: number
+    timestamp: number
+    referral: string
+  } & TDiscount
   profile: {
     records: ProfileRecord[]
     clearRecords?: boolean

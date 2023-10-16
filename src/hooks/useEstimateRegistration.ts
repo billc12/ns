@@ -14,10 +14,11 @@ import { useEns } from '@app/utils/EnsProvider'
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 import { fetchTenderlyEstimate } from '@app/utils/tenderly'
 
-import { fetchedGetSignName } from './names/useSignName'
+import useSignName, { fetchedGetSignName } from './names/useSignName'
 import { useAccountSafely } from './useAccountSafely'
 import { useChainId } from './useChainId'
 import useGasPrice from './useGasPrice'
+import useGetSignReferral from './useGetSignReferral'
 import { useNameDetails } from './useNameDetails'
 import useRegistrationParams from './useRegistrationParams'
 
@@ -55,25 +56,27 @@ const useEstimateRegistration = (
       const resolver = await contracts?.getPublicResolver()
       if (!data?.name) return null
 
-      const signName = await fetchedGetSignName(data.name.toString())
+      const signName = await fetchedGetSignName(data.name.toString(), '')
 
       if (!resolver || !signName) return null
       const registrationTuple = makeRegistrationData({
         ...data!,
         resolver,
         duration: 31557600,
-        signature: signName || '0x',
+        signature: signName.signature || '0x',
         secret: 'placeholder',
       })
+      console.log('registrationTuple', registrationTuple)
+
       return fetchTenderlyEstimate({
         type: 'registration',
         networkId: chainId,
-        label: registrationTuple[0],
-        owner: registrationTuple[1],
-        resolver: registrationTuple[4],
-        data: registrationTuple[5],
-        reverseRecord: registrationTuple[6],
-        ownerControlledFuses: registrationTuple[7],
+        label: registrationTuple.priceParams.name,
+        owner: registrationTuple.owner,
+        resolver: registrationTuple.resolver,
+        data: registrationTuple.data as string[],
+        reverseRecord: registrationTuple.reverseRecord,
+        ownerControlledFuses: registrationTuple.ownerControlledFuses as number,
       })
     },
     {
@@ -156,12 +159,15 @@ type FullProps = {
 
 export const useEstimateFullRegistration = ({ registrationData, price, name }: FullProps) => {
   const { gasPrice, isLoading: gasPriceLoading } = useGasPrice()
+
   const { address } = useAccountSafely()
   const { owner, fuses, records, reverseRecord } = useRegistrationParams({
     name,
     owner: address || '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
     registrationData,
   })
+  const { data: signData } = useSignName(name)
+  const { data: referralData } = useGetSignReferral(name)
   const { estimate: registrationGasFee, isLoading: registrationGasLoading } =
     useEstimateRegistration(gasPrice, {
       name,
@@ -169,12 +175,17 @@ export const useEstimateFullRegistration = ({ registrationData, price, name }: F
       fuses,
       records,
       reverseRecord,
+      discount: signData?.discountRate!,
+      discountCode: signData?.discountCode!,
+      discountCount: signData?.discountCount!,
+      referral: referralData?.reward!,
+      timestamp: signData?.timestamp!,
     })
   const estimatedGasLoading = gasPriceLoading || registrationGasLoading
   const estimatedGasFee = useMemo(() => {
     return registrationGasFee ? registrationGasFee.add(gasLimitDictionary.COMMIT) : undefined
   }, [registrationGasFee])
-
+  console.log('price', registrationGasFee?.toString())
   const yearlyFee = price?.base
   const premiumFee = price?.premium
   const hasPremium = premiumFee?.gt(0)

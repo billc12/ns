@@ -60,17 +60,29 @@ const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) =>
     return parts[0]
   })
 
-  const signName = await fetchedGetSignName(names.toString())
+  const signData = await fetchedGetSignName(names.toString(), '')
 
-  const price = await ens.getPrice(labels, duration, signName || '0x', false)
+  const price = await ens.getPrice(
+    labels,
+    duration,
+    signData.signature || '0x',
+    signData?.discountRate!,
+    signData?.discountCount!,
+    signData?.discountCode!,
+    signData?.timestamp!,
+  )
   if (!price) throw new Error('No price found')
 
   const priceWithBuffer = calculateValueWithBuffer(price.base)
   return ens.renewNames.populateTransaction(names, {
     duration,
     value: priceWithBuffer,
-    signature: signName || '0x',
+    signature: signData.signature || '0x',
     signer,
+    discount: signData.discountRate,
+    discountCode: signData.discountCode,
+    discountCount: signData.discountCount,
+    timestamp: signData.timestamp,
   })
 }
 export default { transaction, displayItems, helper } as Transaction<Data>

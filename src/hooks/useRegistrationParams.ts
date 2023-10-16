@@ -11,12 +11,24 @@ type Props = {
   owner: string
   registrationData: Pick<
     RegistrationReducerDataItem,
-    'years' | 'resolver' | 'secret' | 'records' | 'clearRecords' | 'permissions' | 'reverseRecord'
+    | 'years'
+    | 'resolver'
+    | 'secret'
+    | 'records'
+    | 'clearRecords'
+    | 'permissions'
+    | 'reverseRecord'
+    | 'discount'
+    | 'discountCode'
+    | 'discountCount'
+    | 'timestamp'
+    | 'referral'
+    | 'signature'
   >
 }
 
 const useRegistrationParams = ({ name, owner, registrationData }: Props) => {
-  const registrationParams: BaseRegistrationParams & { name: string } = useMemo(
+  const registrationParams: BaseRegistrationParams & { name: string; signature: string } = useMemo(
     () => ({
       name,
       owner,
@@ -36,6 +48,12 @@ const useRegistrationParams = ({ name, owner, registrationData }: Props) => {
         unnamed: [],
       },
       reverseRecord: registrationData.reverseRecord,
+      discount: registrationData.discount,
+      discountCode: registrationData.discountCode,
+      discountCount: registrationData.discountCount,
+      referral: registrationData.referral,
+      timestamp: registrationData.timestamp,
+      signature: registrationData.signature,
     }),
     [owner, name, registrationData],
   )

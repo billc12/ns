@@ -397,9 +397,12 @@ export const ActionButton = ({
   hasPendingMoonpayTransaction,
   hasFailedMoonpayTransaction,
   paymentMethodChoice,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   reverseRecord,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   callback,
   initiateMoonpayRegistrationMutation,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   years,
   balance,
   totalRequiredBalance,
@@ -419,7 +422,7 @@ export const ActionButton = ({
     return (
       <Button
         data-testid="next-button"
-        onClick={() => callback({ reverseRecord, years, paymentMethodChoice })}
+        // onClick={() => callback({ reverseRecord, years, paymentMethodChoice })}
       >
         {t('action.tryAgain', { ns: 'common' })}
       </Button>
@@ -430,7 +433,7 @@ export const ActionButton = ({
       <Button
         loading={initiateMoonpayRegistrationMutation.isLoading}
         data-testid="next-button"
-        onClick={() => callback({ reverseRecord, years, paymentMethodChoice })}
+        // onClick={() => callback({ reverseRecord, years, paymentMethodChoice })}
         disabled={!paymentMethodChoice || initiateMoonpayRegistrationMutation.isLoading}
       >
         {t('action.next', { ns: 'common' })}
@@ -454,7 +457,7 @@ export const ActionButton = ({
   return (
     <NextButton
       data-testid="next-button"
-      onClick={() => callback({ reverseRecord, years, paymentMethodChoice })}
+      // onClick={() => callback({ reverseRecord, years, paymentMethodChoice })}
       disabled={!paymentMethodChoice}
     >
       {/* {t('action.next', { ns: 'common' })} */}
@@ -720,6 +723,8 @@ const Pricing = ({
     },
     price: nameDetails.priceData,
   })
+  console.log('nameDetails', nameDetails)
+
   const { premiumFee, totalYearlyFee, estimatedGasFee } = fullEstimate
 
   const yearlyRequiredBalance = totalYearlyFee?.mul(110).div(100)
@@ -731,11 +736,19 @@ const Pricing = ({
   const isPremium = !!data?.isPremium
   const { chain } = useNetwork()
   const [discountCode, setDiscountCode] = useState('')
+  const { data: signData } = useSignName(nameDetails.normalisedName, discountCode)
+  console.log('signData', signData)
+
   const handleDiscountCode = (v: string) => {
     setDiscountCode(v)
   }
+
   const discountCodeLabel = (
-    <DiscountCodeLabel code={discountCode} setCodeCallback={handleDiscountCode} />
+    <DiscountCodeLabel
+      code={discountCode}
+      setCodeCallback={handleDiscountCode}
+      name={nameDetails.normalisedName}
+    />
   )
   const [invitationName, setInvitationName] = useState('')
   const handleInvitationName = (n: string) => {

@@ -178,7 +178,7 @@ export const useQueryKeys = () => {
         'claimDomain',
       ],
     },
-    getSignName: (name: string) => [...globalKeys, 'getSignName', name],
+    getSignName: (name: string, code?: string) => [...globalKeys, 'getSignName', name, code],
     getTransfers: (name: string) => [...globalKeys, 'getTransfers', name],
     getUserTokenList: (name: string, account: string, chain: string) => [
       ...globalKeys,
@@ -188,5 +188,6 @@ export const useQueryKeys = () => {
       chain,
     ],
     getUserNFTList: (name: string) => [...globalKeys, name, 'getUserNFTList'],
+    getSignReferral: (name: string) => [...globalKeys, 'getSignReferral', name],
   }
 }

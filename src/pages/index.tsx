@@ -7,6 +7,7 @@ import { Typography, mq } from '@ensdomains/thorin'
 import Hamburger from '@app/components/@molecules/Hamburger/Hamburger'
 import { SearchInput } from '@app/components/@molecules/SearchInput/SearchInput'
 import { LeadingHeading } from '@app/components/LeadingHeading'
+import useSignName from '@app/hooks/names/useSignName'
 
 // import ENSFull from '../assets/ENSFull.svg'
 import StpLogo from '../assets/StpLogo.svg'
@@ -99,6 +100,8 @@ const BoldTitle = styled(Typography)<{ $size?: string; $fontW?: number; $family?
 `
 export default function Page() {
   const { t } = useTranslation('awns_common')
+  const { data } = useSignName('stp.aw')
+  console.log('data', data)
 
   return (
     <>

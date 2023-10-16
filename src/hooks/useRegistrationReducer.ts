@@ -34,6 +34,11 @@ const defaultData: RegistrationReducerDataItem = {
   isMoonpayFlow: false,
   externalTransactionId: '',
   chainId: 1,
+  discount: '',
+  discountCode: '',
+  discountCount: 0,
+  referral: '',
+  timestamp: 0,
 }
 
 const isBrowser = !!(
@@ -54,6 +59,11 @@ const makeDefaultData = (selected: SelectedItemProperties): RegistrationReducerD
   started: false,
   isMoonpayFlow: false,
   externalTransactionId: '',
+  discount: '',
+  discountCode: '',
+  discountCount: 0,
+  referral: '',
+  timestamp: 0,
   ...selected,
 })
 
