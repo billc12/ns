@@ -50,14 +50,15 @@ const SvgBtn = styled.button`
   height: 16px;
   cursor: pointer;
 `
-const InvitationNameLabel = ({ name, setNameCallback }: TInvitationName) => {
+const InvitationNameLabel = ({ info, setNameCallback }: TInvitationName) => {
+  const name = info.invitationName
   const { prepareDataInput } = useTransactionFlow()
   const showInvitationNameInput = prepareDataInput('InvitationName')
   const handleDiscountCode = () => {
-    showInvitationNameInput(`discount-code-${name}`, { name, setNameCallback })
+    showInvitationNameInput(`discount-code-${name}`, { info, setNameCallback })
   }
   const cleanName = () => {
-    setNameCallback('')
+    setNameCallback({ ...info, invitationName: '' })
   }
   const auctionBtn = name ? <DelRoundSVG /> : <AddRoundSVG />
   const handleAuctionFn = name ? cleanName : handleDiscountCode

@@ -29,8 +29,8 @@ export type TDiscount = {
   timestamp: number
 }
 export const DefaultDiscount: TDiscount = {
-  discount: ' ',
-  discountCode: ' ',
+  discount: '',
+  discountCode: '',
   discountCount: 0,
   timestamp: 0,
 }

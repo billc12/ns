@@ -46,6 +46,9 @@ export const NextButton = styled(Button)`
   &:hover {
     background: #0049c6;
   }
+  &:disabled:hover {
+    background: #e5e5e5;
+  }
 `
 
 export const DialogStyle = styled(Dialog)`

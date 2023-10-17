@@ -1,19 +1,19 @@
+import { formatFixed } from '@ethersproject/bignumber'
 import { useState } from 'react'
 import styled from 'styled-components'
 
 import { Dialog, Input, Skeleton } from '@ensdomains/thorin'
 
 import { BackButton, NextButton } from '@app/components/Awns/Dialog'
+import { DisInfo } from '@app/components/pages/profile/[name]/registration/steps/Pricing/Pricing'
+import useSignName from '@app/hooks/names/useSignName'
 
-// import useSignName from '@app/hooks/names/useSignName'
 import { TransactionDialogPassthrough } from '../types'
 
 export type TDiscountCode = {
-  setCodeCallback: (v: string) => void
-  code: string
+  setCodeCallback: (v: DisInfo) => void
+  info: DisInfo
   name: string
-  loading: boolean
-  success: boolean
 }
 export type Props = {
   data: TDiscountCode
@@ -82,12 +82,24 @@ const Row = styled.div`
   gap: 18px;
   margin-top: 50px;
 `
-const DiscountCode = ({ data: { code, setCodeCallback, loading, success }, onDismiss }: Props) => {
-  const [disCode, setDisCode] = useState(code)
+const DiscountCode = ({ data: { info, setCodeCallback, name }, onDismiss }: Props) => {
+  const [disCode, setDisCode] = useState(info.discountCode)
+
+  const { data: signData, isLoading } = useSignName(name, disCode)
   const saveCode = () => {
-    setCodeCallback(disCode)
+    setCodeCallback({
+      ...info,
+      discount: signData?.discountRate!,
+      discountCode: signData?.discountCode!,
+      discountCount: signData?.discountCount!,
+      timestamp: signData?.timestamp!,
+    })
     onDismiss()
   }
+  const hasDiscount = signData && signData.hasDiscount
+  const discount = hasDiscount && Number(formatFixed(signData?.discountRate || '0', 18)) * 100
+  console.log('signData', signData)
+
   return (
     <>
       <Dialog.Heading title="Discount Code" />
@@ -100,16 +112,18 @@ const DiscountCode = ({ data: { code, setCodeCallback, loading, success }, onDis
           value={disCode}
           onChange={(e) => setDisCode(e.target.value)}
         />
-        <Skeleton loading={loading}>
-          {success ? (
-            <SuccessTip>Discount 95% OFF</SuccessTip>
+        <Skeleton loading={isLoading}>
+          {hasDiscount ? (
+            <SuccessTip>Discount {discount}% OFF</SuccessTip>
           ) : (
             <ErrTip>Discount code invalid</ErrTip>
           )}
         </Skeleton>
         <Row>
           <BackButton onClick={onDismiss}>Close</BackButton>
-          <NextButton onClick={saveCode}>Save</NextButton>
+          <NextButton onClick={() => hasDiscount && saveCode()} disabled={!hasDiscount}>
+            Save
+          </NextButton>
         </Row>
       </Container>
     </>
