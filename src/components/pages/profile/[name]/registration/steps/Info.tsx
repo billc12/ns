@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
@@ -154,19 +155,44 @@ const Info = ({ registrationData, nameDetails, callback, onProfileClick }: Props
   const { address } = useAccount()
   const keySuffix = `${nameDetails.normalisedName}-${address}`
   const registerKey = `register-${keySuffix}`
+
   const registrationParams = useRegistrationParams({
     name: nameDetails.normalisedName,
     owner: address!,
     registrationData,
   })
-  const { createTransactionFlow } = useTransactionFlow()
+  const { createTransactionFlow, getLatestTransaction, resumeTransactionFlow } =
+    useTransactionFlow()
+  const registerTx = getLatestTransaction(registerKey)
   const makeRegisterNameFlow = () => {
     createTransactionFlow(registerKey, {
       transactions: [makeTransactionItem('registerName', registrationParams)],
       requiresManualCleanup: true,
       autoClose: true,
-      resumeLink: `/register/${nameDetails.normalisedName}`,
+      // resumeLink: `/register/${nameDetails.normalisedName}`,
     })
+  }
+  const showRegisterTransaction = () => {
+    resumeTransactionFlow(registerKey)
+  }
+  useEffect(() => {
+    if (registerTx?.stage === 'complete') {
+      callback({ back: false })
+    }
+  }, [callback, registerTx?.stage])
+  const auctionBtn = () => {
+    if (registerTx?.stage === 'sent') {
+      return (
+        <NextButton data-testid="next-button" onClick={showRegisterTransaction}>
+          {t('steps.transactions.transactionProgress')}
+        </NextButton>
+      )
+    }
+    return (
+      <NextButton data-testid="next-button" onClick={makeRegisterNameFlow}>
+        Register
+      </NextButton>
+    )
   }
   return (
     <StyledCard>
@@ -192,11 +218,7 @@ const Info = ({ registrationData, nameDetails, callback, onProfileClick }: Props
             {t('action.back', { ns: 'common' })}
           </BackButton>
         </ButtonBox>
-        <ButtonBox>
-          <NextButton data-testid="next-button" onClick={makeRegisterNameFlow}>
-            {t('action.begin', { ns: 'common' })}
-          </NextButton>
-        </ButtonBox>
+        <ButtonBox>{auctionBtn()}</ButtonBox>
       </ButtonContainer>
     </StyledCard>
   )

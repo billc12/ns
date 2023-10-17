@@ -120,6 +120,11 @@ const reducer = (state: RegistrationReducerData, action: RegistrationReducerActi
     case 'increaseStep': {
       if (item.queue[item.stepIndex + 1] === 'profile') {
         item.stepIndex += 2
+      } else if (
+        item.queue[item.stepIndex + 1] === 'transactions' ||
+        item.queue[item.stepIndex + 1] === 'confirm'
+      ) {
+        item.stepIndex = item.queue.length - 1
       } else {
         item.stepIndex += 1
       }
