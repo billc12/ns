@@ -124,13 +124,16 @@ const DiscountCode = ({ data: { info, setCodeCallback, name }, onDismiss }: Prop
           value={disCode}
           onChange={(e) => setDisCode(e.target.value)}
         />
-        <Skeleton loading={isLoading}>
-          {hasDiscount ? (
-            <SuccessTip>Discount {discount}% OFF</SuccessTip>
-          ) : (
-            <ErrTip>Discount code invalid</ErrTip>
-          )}
-        </Skeleton>
+        {disCode && (
+          <Skeleton loading={isLoading}>
+            {hasDiscount ? (
+              <SuccessTip>Discount {discount}% OFF</SuccessTip>
+            ) : (
+              <ErrTip>Discount code invalid</ErrTip>
+            )}
+          </Skeleton>
+        )}
+
         <Row>
           <BackButton onClick={onDismiss}>Close</BackButton>
           <NextButton onClick={() => hasDiscount && saveCode()} disabled={!hasDiscount}>
