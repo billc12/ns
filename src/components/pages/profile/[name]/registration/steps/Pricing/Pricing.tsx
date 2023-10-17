@@ -1,5 +1,5 @@
 import type { BigNumber } from 'ethers'
-import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import usePrevious from 'react-use/lib/usePrevious'
 import styled, { css } from 'styled-components'
@@ -32,7 +32,6 @@ import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useChainId } from '@app/hooks/useChainId'
 import { useContractAddress } from '@app/hooks/useContractAddress'
 import { useEstimateFullRegistration } from '@app/hooks/useEstimateRegistration'
-import useGetSignReferral from '@app/hooks/useGetSignReferral'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import { useProfileEditorForm } from '@app/hooks/useProfileEditorForm'
 import useRegistrationReducer from '@app/hooks/useRegistrationReducer'
@@ -391,15 +390,7 @@ interface ActionButtonProps {
   years: number
   balance: ReturnType<typeof useBalance>['data']
   totalRequiredBalance?: BigNumber
-  discountInfo: {
-    discountCode: string
-    signature: string
-    discount: string
-    discountCount: number
-    timestamp: number
-    referral: string
-    invitationName: string
-  }
+  discountInfo: DisInfo
 }
 
 export const ActionButton = ({
@@ -678,6 +669,24 @@ const UpImage = ({ isPremium, name }: { isPremium: boolean; name: string }) => {
     </Column>
   )
 }
+export type DisInfo = {
+  discountCode: string
+  signature: string
+  discount: string
+  discountCount: number
+  timestamp: number
+  referral: string
+  invitationName: string
+}
+export const defaultDisInfo: DisInfo = {
+  discountCode: '',
+  signature: '',
+  discount: '',
+  discountCount: 0,
+  timestamp: 0,
+  referral: '',
+  invitationName: '',
+}
 const Pricing = ({
   nameDetails,
   callback,
@@ -690,6 +699,7 @@ const Pricing = ({
 }: Props) => {
   // const { t } = useTranslation('register')
   console.log('isPrimaryLoading', isPrimaryLoading)
+  console.log('registrationData', registrationData)
 
   const { normalisedName, beautifiedName } = nameDetails
 
@@ -740,7 +750,6 @@ const Pricing = ({
     },
     price: nameDetails.priceData,
   })
-  console.log('nameDetails', nameDetails)
 
   const { premiumFee, totalYearlyFee, estimatedGasFee } = fullEstimate
 
@@ -751,48 +760,30 @@ const Pricing = ({
   const nameLength = beautifiedName.split('.')[0].length
 
   const { chain } = useNetwork()
-  const [discountCode, setDiscountCode] = useState(registrationData.discount)
-  const { data: signData, isLoading } = useSignName(nameDetails.normalisedName, discountCode)
+  const [disInfo, setDisInfo] = useState<DisInfo>({
+    discount: registrationData.discount,
+    discountCode: registrationData.discountCode,
+    discountCount: registrationData.discountCount,
+    referral: registrationData.referral,
+    timestamp: registrationData.timestamp,
+    invitationName: registrationData.invitationName,
+    signature: registrationData.signature,
+  })
+
+  const { data: signData } = useSignName(nameDetails.normalisedName, disInfo.discountCode)
   const isPremium = !!signData?.isPremium
-  const handleDiscountCode = (v: string) => {
-    setDiscountCode(v)
+  const handleDisInfo = (d: DisInfo) => {
+    setDisInfo(d)
   }
   const discountCodeLabel = (
     <DiscountCodeLabel
-      code={discountCode}
-      setCodeCallback={handleDiscountCode}
+      info={disInfo}
+      setCodeCallback={handleDisInfo}
       name={nameDetails.normalisedName}
-      loading={isLoading}
-      success={signData?.hasDiscount || false}
     />
   )
-  const [invitationName, setInvitationName] = useState(registrationData.invitationName)
-  const handleInvitationName = (n: string) => {
-    setInvitationName(n)
-  }
-  const { data: referralData } = useGetSignReferral(invitationName)
-  const invitationNameLabel = (
-    <InvitationNameLabel name={invitationName} setNameCallback={handleInvitationName} />
-  )
-  const discountInfo = useMemo(() => {
-    return {
-      discountCode,
-      signature: signData?.signature || '',
-      discount: signData?.discountRate || '',
-      discountCount: signData?.discountCount || 0,
-      timestamp: signData?.timestamp || 0,
-      referral: referralData?.reward || '',
-      invitationName,
-    }
-  }, [
-    discountCode,
-    referralData?.reward,
-    signData?.discountCount,
-    signData?.discountRate,
-    signData?.signature,
-    signData?.timestamp,
-    invitationName,
-  ])
+  const invitationNameLabel = <InvitationNameLabel info={disInfo} setNameCallback={handleDisInfo} />
+
   return (
     <StyledCard>
       <PremiumTitle nameDetails={nameDetails} />
@@ -870,7 +861,7 @@ const Pricing = ({
                 years,
                 balance,
                 totalRequiredBalance,
-                discountInfo,
+                discountInfo: disInfo,
               }}
             />
           </ButtonBox>

@@ -1,3 +1,4 @@
+import { formatFixed } from '@ethersproject/bignumber'
 import styled from 'styled-components'
 
 import { Typography } from '@ensdomains/thorin'
@@ -6,6 +7,8 @@ import AddRoundSVG from '@app/assets/add-round.svg'
 import DelRoundSVG from '@app/assets/del-round.svg'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { TDiscountCode } from '@app/transaction-flow/input/DiscountCode-flow'
+
+import { defaultDisInfo } from './Pricing'
 
 const Row = styled.div`
   display: flex;
@@ -36,27 +39,31 @@ const SvgBtn = styled.button`
   height: 16px;
   cursor: pointer;
 `
-const DiscountCodeLabel = ({ code, setCodeCallback, name, loading, success }: TDiscountCode) => {
+const DiscountCodeLabel = ({ info, setCodeCallback, name }: TDiscountCode) => {
   const { prepareDataInput } = useTransactionFlow()
   const showDiscountCodeInput = prepareDataInput('DiscountCode')
+  const code = info.discountCode
+  const discount = !!info?.discount && Number(formatFixed(info?.discount, 18)) * 100
   const handleDiscountCode = () => {
     showDiscountCodeInput(`discount-code-${code}`, {
-      code,
+      info,
       setCodeCallback,
       name,
-      loading,
-      success,
     })
   }
   const cleanCode = () => {
-    setCodeCallback('')
+    setCodeCallback({ ...defaultDisInfo, invitationName: info.invitationName })
   }
   const auctionBtn = code ? <DelRoundSVG /> : <AddRoundSVG />
   return (
     <Row>
       <LeftTitle>Discount Code</LeftTitle>
       <Row className="content">
-        {!!code && <RightTitle>{code}</RightTitle>}
+        {!!code && (
+          <RightTitle>
+            {code} <span style={{ fontWeight: 700 }}> ({discount}% OFF) </span>
+          </RightTitle>
+        )}
         <SvgBtn onClick={() => (!code ? handleDiscountCode() : cleanCode())} type="button">
           {auctionBtn}
         </SvgBtn>

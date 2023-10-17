@@ -116,8 +116,8 @@ importers:
         specifier: 0.0.4
         version: 0.0.4
       '@myclique/awnsjs':
-        specifier: 1.0.5-alpha
-        version: 1.0.5-alpha(@ethersproject/abi@5.7.0)(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/address@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/bytes@5.7.0)(@ethersproject/contracts@5.7.0)(@ethersproject/keccak256@5.7.0)(@ethersproject/providers@5.7.2)(@ethersproject/solidity@5.7.0)(@ethersproject/strings@5.7.0)(@ethersproject/transactions@5.7.0)(@ethersproject/web@5.7.1)
+        specifier: 1.0.16-alpha
+        version: 1.0.16-alpha(@ethersproject/abi@5.7.0)(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/address@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/bytes@5.7.0)(@ethersproject/contracts@5.7.0)(@ethersproject/keccak256@5.7.0)(@ethersproject/providers@5.7.2)(@ethersproject/solidity@5.7.0)(@ethersproject/strings@5.7.0)(@ethersproject/transactions@5.7.0)(@ethersproject/web@5.7.1)
       '@rainbow-me/rainbowkit':
         specifier: 0.12.15
         version: 0.12.15(patch_hash=ids4vnpwyenrujupancx6kn4ci)(@types/react@17.0.30)(ethers@5.7.2)(react-dom@17.0.2)(react@17.0.2)(wagmi@0.12.13)
@@ -3808,8 +3808,8 @@ packages:
       dns-packet: 5.4.0
     dev: false
 
-  /@myclique/awnsjs@1.0.5-alpha(@ethersproject/abi@5.7.0)(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/address@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/bytes@5.7.0)(@ethersproject/contracts@5.7.0)(@ethersproject/keccak256@5.7.0)(@ethersproject/providers@5.7.2)(@ethersproject/solidity@5.7.0)(@ethersproject/strings@5.7.0)(@ethersproject/transactions@5.7.0)(@ethersproject/web@5.7.1):
-    resolution: {integrity: sha512-aa7dlWy6rqc8uqcQtUgCfhkyfyn6NfYu8Rb3dERbNGh43rzWe1xQaDqs4QnldmBN8Tm+PcvdjaH5euomuR0XxQ==}
+  /@myclique/awnsjs@1.0.16-alpha(@ethersproject/abi@5.7.0)(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/address@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/bytes@5.7.0)(@ethersproject/contracts@5.7.0)(@ethersproject/keccak256@5.7.0)(@ethersproject/providers@5.7.2)(@ethersproject/solidity@5.7.0)(@ethersproject/strings@5.7.0)(@ethersproject/transactions@5.7.0)(@ethersproject/web@5.7.1):
+    resolution: {integrity: sha512-So4/mGdKSXgGbWijU8nhsy6YyCJ9Q5GbTB6hIV/Oc1Zok1H+Yhsb/7j0zgjZFZ8geZwcU68yDDSHN0lb9+Befg==}
     peerDependencies:
       '@ethersproject/abi': ^5.6.4
       '@ethersproject/abstract-provider': ^5.7.0

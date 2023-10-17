@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
+import { useAccount } from 'wagmi'
 
 import { Button, Heading, Typography, mq } from '@ensdomains/thorin'
 
@@ -9,6 +10,9 @@ import { InterText } from '@app/components/Awns_Header'
 import { Card } from '@app/components/Card'
 import { useEstimateFullRegistration } from '@app/hooks/useEstimateRegistration'
 import { useNameDetails } from '@app/hooks/useNameDetails'
+import useRegistrationParams from '@app/hooks/useRegistrationParams'
+import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
+import { makeTransactionItem } from '@app/transaction-flow/transaction'
 
 import FullInvoice from '../FullInvoice'
 import LineProgress from '../LineProgress'
@@ -133,6 +137,23 @@ const Info = ({ registrationData, nameDetails, callback, onProfileClick }: Props
     price: priceData,
   })
   const show = false
+  const { address } = useAccount()
+  const keySuffix = `${nameDetails.normalisedName}-${address}`
+  const registerKey = `register-${keySuffix}`
+  const registrationParams = useRegistrationParams({
+    name: nameDetails.normalisedName,
+    owner: address!,
+    registrationData,
+  })
+  const { createTransactionFlow } = useTransactionFlow()
+  const makeRegisterNameFlow = () => {
+    createTransactionFlow(registerKey, {
+      transactions: [makeTransactionItem('registerName', registrationParams)],
+      requiresManualCleanup: true,
+      autoClose: true,
+      resumeLink: `/register/${nameDetails.normalisedName}`,
+    })
+  }
   return (
     <StyledCard>
       <PremiumTitle nameDetails={nameDetails} />
@@ -158,7 +179,7 @@ const Info = ({ registrationData, nameDetails, callback, onProfileClick }: Props
           </BackButton>
         </ButtonBox>
         <ButtonBox>
-          <NextButton data-testid="next-button" onClick={() => callback({ back: false })}>
+          <NextButton data-testid="next-button" onClick={makeRegisterNameFlow}>
             {t('action.begin', { ns: 'common' })}
           </NextButton>
         </ButtonBox>

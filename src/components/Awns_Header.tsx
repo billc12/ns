@@ -4,9 +4,9 @@ import styled from 'styled-components'
 
 import { Typography } from '@ensdomains/thorin'
 
-import CliqueSvg from '@app/assets/CliqueLogo.svg'
 import GWeiSvg from '@app/assets/GWei.svg'
 import STPSvg from '@app/assets/StpLogo.svg'
+import StpLogoWhiteSvg from '@app/assets/StpLogo_white.svg'
 import useGasPrice from '@app/hooks/useGasPrice'
 import { makeDisplay } from '@app/utils/currency'
 
@@ -57,7 +57,7 @@ const Page = () => {
   return (
     <HeaderLayout>
       <HeaderLeft onClick={() => router.push('/')}>
-        {isIndex ? <CliqueSvg /> : <STPSvg />}
+        {isIndex ? <StpLogoWhiteSvg /> : <STPSvg />}
         <Line />
         <InterText style={{ fontWeight: 700 }} $textColor={isIndex ? '#fff' : '#3f5170'}>
           AWNS
