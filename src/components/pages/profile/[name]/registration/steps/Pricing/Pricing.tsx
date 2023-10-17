@@ -560,6 +560,9 @@ const ContentStyle = styled(Row)`
   justify-content: space-between;
   padding: 0 30px;
   gap: 20px;
+  ${mq.sm.max(css`
+    display: grid;
+  `)}
 `
 
 const UpButton = styled(Button)`
@@ -583,6 +586,9 @@ const PremiumImgRound = styled.div<{ $premium: boolean }>(
       border-radius: 8px;
       border: 4px solid #e49700;
     `}
+    ${mq.sm.max(css`
+      padding: 20px;
+    `)}
   `,
 )
 
@@ -775,6 +781,7 @@ const Pricing = ({
   const handleDisInfo = (d: DisInfo) => {
     setDisInfo(d)
   }
+
   const discountCodeLabel = (
     <DiscountCodeLabel
       info={disInfo}

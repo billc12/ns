@@ -28,11 +28,12 @@ import { AnyItem, HistoryItem, SearchItem } from './types'
 const Container = styled.div<{ $size: 'medium' | 'extraLarge' }>(
   ({ $size }) => css`
     /* width: 100%; */
-    width: 600px;
+    width: auto;
     position: relative;
     margin-top: 20px;
     ${$size === 'extraLarge' &&
     mq.sm.min(css`
+      width: 600px;
       padding-left: 48px;
       padding-right: 48px;
     `)}
@@ -120,6 +121,7 @@ const InputAndCancel = styled.div(
 const CancelButton = styled(Typography)(
   ({ theme }) => css`
     padding: ${theme.space['3']};
+    color: #fff;
   `,
 )
 

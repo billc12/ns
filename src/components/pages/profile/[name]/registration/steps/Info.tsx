@@ -26,7 +26,7 @@ const StyledCard = styled(Card)(
     flex-direction: column;
     gap: 10px;
     /* padding: ${theme.space['4']}; */
-
+    width: 100%;
     ${mq.sm.min(css`
       /* padding: ${theme.space['6']} ${theme.space['18']}; */
       gap: 40px;
@@ -102,8 +102,10 @@ const ButtonBox = styled(MobileFullWidth)(
     & > div,
     & {
       width: 260px;
-      ${mq.sm.min(css`
-        min-width: 260px;
+      min-width: 260px;
+      ${mq.sm.max(css`
+        min-width: 160px;
+        width: 160px;
       `)}
     }
   `,
@@ -118,7 +120,19 @@ const FullInvoiceBox = styled.div`
   border-radius: 10px;
   background: #f7fafc;
   padding: 30px;
+  ${mq.sm.max(css`
+    width: 100%;
+  `)}
 `
+const ContentStyled = styled.div`
+  height: auto;
+  width: auto;
+  ${mq.sm.max(css`
+    width: 100%;
+    padding: 0 16px;
+  `)}
+`
+
 const infoItemArr = Array.from({ length: 3 }, (_, i) => `steps.info.ethItems.${i}`)
 
 type Props = {
@@ -161,9 +175,11 @@ const Info = ({ registrationData, nameDetails, callback, onProfileClick }: Props
       <InterText $textColor="#000" $w={500}>
         Complete a transaction to begin the timer
       </InterText>
-      <FullInvoiceBox>
-        <FullInvoice {...estimate} />
-      </FullInvoiceBox>
+      <ContentStyled>
+        <FullInvoiceBox>
+          <FullInvoice {...estimate} />
+        </FullInvoiceBox>
+      </ContentStyled>
 
       {show && !registrationData.queue.includes('profile') && (
         <ProfileButton data-testid="setup-profile-button" onClick={onProfileClick}>

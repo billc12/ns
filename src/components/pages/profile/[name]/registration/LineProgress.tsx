@@ -1,6 +1,6 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-import { Typography } from '@ensdomains/thorin'
+import { Typography, mq } from '@ensdomains/thorin'
 
 const Center = styled.div`
   display: flex;
@@ -30,6 +30,9 @@ const Line = styled.div`
   width: 234px;
   height: 1px;
   border: 1px dashed #0049c6;
+  ${mq.sm.max(css`
+    width: 100px;
+  `)}
 `
 const Round = ({ num, isSelect }: { num: number; isSelect: boolean }) => {
   return (
