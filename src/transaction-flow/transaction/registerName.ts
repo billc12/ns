@@ -40,7 +40,6 @@ const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) =>
     signData?.discountCode!,
     signData?.timestamp!,
   )
-  console.log('data', data)
 
   const value = price!.base.add(price!.premium)
   const valueWithBuffer = calculateValueWithBuffer(value)

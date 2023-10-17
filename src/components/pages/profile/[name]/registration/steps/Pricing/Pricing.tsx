@@ -776,21 +776,21 @@ const Pricing = ({
   )
   const discountInfo = useMemo(() => {
     return {
-      discountCode,
+      discountCode: signData?.discountCode || '',
       signature: signData?.signature || '',
-      discount: signData?.discountRate || '',
+      discount: signData?.discountRate || '0',
       discountCount: signData?.discountCount || 0,
       timestamp: signData?.timestamp || 0,
-      referral: referralData?.reward || '',
+      referral: referralData?.reward || '0',
       invitationName,
     }
   }, [
-    discountCode,
-    referralData?.reward,
-    signData?.discountCount,
-    signData?.discountRate,
+    signData?.discountCode,
     signData?.signature,
+    signData?.discountRate,
+    signData?.discountCount,
     signData?.timestamp,
+    referralData?.reward,
     invitationName,
   ])
   return (
