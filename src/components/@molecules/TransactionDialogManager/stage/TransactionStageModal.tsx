@@ -430,6 +430,12 @@ export const TransactionStageModal = ({
         ens,
         transaction.data,
       )
+      console.error(
+        '🚀 ~ file: TransactionStageModal.tsx:432 ~ transaction.data:222',
+        transaction.data,
+        signer,
+        populatedTransaction,
+      )
 
       const txWithZeroGas = {
         ...populatedTransaction,
@@ -561,6 +567,14 @@ export const TransactionStageModal = ({
         </Button>
       )
     }
+
+    console.error(
+      '🚀 ~ file: TransactionStageModal.tsx:432 ~ transaction.data:',
+      !canEnableTransactionRequest,
+      requestLoading,
+      !sendTransaction,
+      !!requestError,
+    )
     return (
       <Button
         style={{ background: '#0049C6' }}

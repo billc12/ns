@@ -76,7 +76,7 @@
     "@metamask/inpage-provider": "^8.1.0",
     "@metamask/mobile-provider": "^2.1.0",
     "@metamask/post-message-stream": "^6.1.2",
-    "@myclique/awnsjs": "1.0.5-alpha",
+    "@myclique/awnsjs": "1.0.16-alpha",
     "@rainbow-me/rainbowkit": "0.12.15",
     "@sentry/nextjs": "^7.43.0",
     "@svgr/webpack": "^6.3.1",

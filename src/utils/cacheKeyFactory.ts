@@ -99,10 +99,11 @@ export const useQueryKeys = () => {
       resolvedAddress,
       'namesFromResolvedAddress',
     ],
-    getPrice: (type: 'legacy' | 'new', names: string[]) => [
+    getPrice: (type: 'legacy' | 'new', names: string[], sign: any) => [
       ...globalKeys,
       type,
       ...names,
+      ...sign,
       'getPrice',
     ],
     primary: (localAddress: string) => [...globalKeys, 'getName', localAddress, 'primary'],
