@@ -1,4 +1,5 @@
 import { formatFixed } from '@ethersproject/bignumber'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { Typography } from '@ensdomains/thorin'
@@ -42,6 +43,13 @@ const SvgBtn = styled.button`
   height: 16px;
   cursor: pointer;
 `
+export type DisInfo = {
+  discountCode: string
+  signature: string
+  discount: string
+  discountCount: number
+  timestamp: number
+}
 const DiscountCodeLabel = ({ info, setCodeCallback, name }: TDiscountCode) => {
   const { prepareDataInput } = useTransactionFlow()
   const showDiscountCodeInput = prepareDataInput('DiscountCode')
@@ -64,8 +72,6 @@ const DiscountCodeLabel = ({ info, setCodeCallback, name }: TDiscountCode) => {
           discountCount,
           signature,
           timestamp,
-          referral: '',
-          invitationName: info.invitationName,
         })
       },
     )
@@ -87,4 +93,35 @@ const DiscountCodeLabel = ({ info, setCodeCallback, name }: TDiscountCode) => {
     </Row>
   )
 }
-export default DiscountCodeLabel
+const DiscountCodeLabelProvider = (initData: DisInfo, name: string) => {
+  const [disInfo, setDisInfo] = useState<DisInfo>({
+    discount: initData.discount,
+    discountCode: initData.discountCode,
+    discountCount: initData.discountCount,
+    timestamp: initData.timestamp,
+    signature: initData.signature,
+  })
+  const handleDisInfo = (d: DisInfo) => {
+    setDisInfo(d)
+  }
+  useEffect(() => {
+    if (!initData.discountCode || !Number(initData.discountCode)) {
+      fetchedGetSignName(name, '').then(
+        ({ discountCode, discountCount, discountRate, signature, timestamp }) => {
+          setDisInfo({
+            ...disInfo,
+            discount: discountRate,
+            discountCode,
+            discountCount,
+            signature,
+            timestamp,
+          })
+        },
+      )
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  const disLabel = <DiscountCodeLabel setCodeCallback={handleDisInfo} info={disInfo} name={name} />
+  return { disInfo, disLabel }
+}
+export default DiscountCodeLabelProvider

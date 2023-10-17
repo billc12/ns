@@ -4,14 +4,12 @@ import styled, { css } from 'styled-components'
 import { Dialog, Input, mq } from '@ensdomains/thorin'
 
 import { BackButton, NextButton } from '@app/components/Awns/Dialog'
-import { DisInfo } from '@app/components/pages/profile/[name]/registration/steps/Pricing/Pricing'
 
 import { TransactionDialogPassthrough } from '../types'
 
 export type TInvitationName = {
-  setNameCallback: (v: DisInfo) => void
-
-  info: DisInfo
+  setNameCallback: (v: string) => void
+  name: string
 }
 export type Props = {
   data: TInvitationName
@@ -74,11 +72,11 @@ const Title = styled.p`
   font-weight: 400;
   line-height: 152.523%; /* 21.353px */
 `
-const InvitationName = ({ data: { setNameCallback, info }, onDismiss }: Props) => {
-  const [nameInp, setNameInp] = useState(info.invitationName)
+const InvitationName = ({ data: { setNameCallback, name }, onDismiss }: Props) => {
+  const [nameInp, setNameInp] = useState(name)
 
   const saveName = () => {
-    setNameCallback({ ...info, invitationName: nameInp, referral: nameInp })
+    setNameCallback(nameInp)
     onDismiss()
   }
   return (

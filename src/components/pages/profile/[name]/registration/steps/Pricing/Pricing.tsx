@@ -27,7 +27,7 @@ import { AvatarViewManager } from '@app/components/@molecules/ProfileEditor/Avat
 import { NextButton } from '@app/components/Awns/Dialog'
 import { Card } from '@app/components/Card'
 import { ConnectButton } from '@app/components/ConnectButton'
-import useSignName, { fetchedGetSignName } from '@app/hooks/names/useSignName'
+import useSignName from '@app/hooks/names/useSignName'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useChainId } from '@app/hooks/useChainId'
 import { useContractAddress } from '@app/hooks/useContractAddress'
@@ -47,7 +47,7 @@ import {
   RegistrationStepData,
 } from '../../types'
 import { useMoonpayRegistration } from '../../useMoonpayRegistration'
-import DiscountCodeLabel from './DiscountCodeLabel'
+import DiscountCodeLabelProvider, { DisInfo } from './DiscountCodeLabel'
 import InvitationNameLabel from './InvitationNameLabel'
 
 // import TemporaryPremium from './TemporaryPremium'
@@ -390,7 +390,7 @@ interface ActionButtonProps {
   years: number
   balance: ReturnType<typeof useBalance>['data']
   totalRequiredBalance?: BigNumber
-  discountInfo: DisInfo
+  discountInfo: DisInfo & { referral: string }
 }
 
 export const ActionButton = ({
@@ -672,24 +672,6 @@ const UpImage = ({ isPremium, name }: { isPremium: boolean; name: string }) => {
     </Column>
   )
 }
-export type DisInfo = {
-  discountCode: string
-  signature: string
-  discount: string
-  discountCount: number
-  timestamp: number
-  referral: string
-  invitationName: string
-}
-export const defaultDisInfo: DisInfo = {
-  discountCode: '',
-  signature: '',
-  discount: '',
-  discountCount: 0,
-  timestamp: 0,
-  referral: '',
-  invitationName: '',
-}
 
 const Pricing = ({
   nameDetails,
@@ -764,46 +746,26 @@ const Pricing = ({
   const nameLength = beautifiedName.split('.')[0].length
 
   const { chain } = useNetwork()
-  const [disInfo, setDisInfo] = useState<DisInfo>({
+
+  const initDis: DisInfo = {
     discount: registrationData.discount,
     discountCode: registrationData.discountCode,
     discountCount: registrationData.discountCount,
-    referral: registrationData.referral,
     timestamp: registrationData.timestamp,
-    invitationName: registrationData.invitationName,
     signature: registrationData.signature,
-  })
-  useEffect(() => {
-    if (!registrationData.discountCode || !Number(registrationData.discountCode)) {
-      fetchedGetSignName(normalisedName, '').then(
-        ({ discountCode, discountCount, discountRate, signature, timestamp }) => {
-          setDisInfo({
-            ...disInfo,
-            discount: discountRate,
-            discountCode,
-            discountCount,
-            signature,
-            timestamp,
-          })
-        },
-      )
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [normalisedName, registrationData.discountCode])
+  }
+  const { disLabel, disInfo } = DiscountCodeLabelProvider(initDis, nameDetails.normalisedName)
   const { data: signData } = useSignName(nameDetails.normalisedName, disInfo.discountCode)
   const isPremium = !!signData?.isPremium
-  const handleDisInfo = (d: DisInfo) => {
-    setDisInfo(d)
-  }
 
-  const discountCodeLabel = (
-    <DiscountCodeLabel
-      info={disInfo}
-      setCodeCallback={handleDisInfo}
-      name={nameDetails.normalisedName}
-    />
+  const [invitationName, setInvitationName] = useState(registrationData.referral)
+  const referral = invitationName.split('.')[0]
+  const handleInviName = (n: string) => {
+    setInvitationName(n)
+  }
+  const invitationNameLabel = (
+    <InvitationNameLabel name={invitationName} setNameCallback={handleInviName} />
   )
-  const invitationNameLabel = <InvitationNameLabel info={disInfo} setNameCallback={handleDisInfo} />
 
   return (
     <StyledCard>
@@ -863,7 +825,7 @@ const Pricing = ({
             <div style={{ padding: '0 38px' }}>
               <FullInvoice
                 {...fullEstimate}
-                discountCodeLabel={discountCodeLabel}
+                discountCodeLabel={disLabel}
                 invitationNameLabel={invitationNameLabel}
               />
             </div>
@@ -882,7 +844,7 @@ const Pricing = ({
               years,
               balance,
               totalRequiredBalance,
-              discountInfo: disInfo,
+              discountInfo: { ...disInfo, referral },
             }}
           />
 

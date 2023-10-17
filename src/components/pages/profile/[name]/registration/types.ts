@@ -1,7 +1,8 @@
 import { ChildFuses } from '@myclique/awnsjs'
 
 import { ProfileRecord } from '@app/constants/profileRecordOptions'
-import { TDiscount } from '@app/hooks/useBasicName'
+
+import { DisInfo } from './steps/Pricing/DiscountCodeLabel'
 
 export type RegistrationStep =
   | 'pricing'
@@ -23,20 +24,13 @@ export enum PaymentMethod {
   ethereum = 'ethereum',
   moonpay = 'moonpay',
 }
-
+type DiscountCode = DisInfo & { referral: string }
 export type RegistrationStepData = {
   pricing: {
     years: number
     reverseRecord: boolean
     paymentMethodChoice: PaymentMethod | ''
-    discountCode: string
-    signature: string
-    discount: string
-    discountCount: number
-    timestamp: number
-    referral: string
-    invitationName: string
-  } & TDiscount
+  } & DiscountCode
   profile: {
     records: ProfileRecord[]
     clearRecords?: boolean

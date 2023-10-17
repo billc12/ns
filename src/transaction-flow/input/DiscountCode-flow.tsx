@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components'
 import { Dialog, Input, Skeleton, mq } from '@ensdomains/thorin'
 
 import { BackButton, NextButton } from '@app/components/Awns/Dialog'
-import { DisInfo } from '@app/components/pages/profile/[name]/registration/steps/Pricing/Pricing'
+import { DisInfo } from '@app/components/pages/profile/[name]/registration/steps/Pricing/DiscountCodeLabel'
 import useSignName from '@app/hooks/names/useSignName'
 
 import { TransactionDialogPassthrough } from '../types'
@@ -110,7 +110,6 @@ const DiscountCode = ({ data: { info, setCodeCallback, name }, onDismiss }: Prop
   }
   const hasDiscount = signData && signData.hasDiscount
   const discount = hasDiscount && Number(formatFixed(signData?.discountRate || '0', 18)) * 100
-  console.log('signData', signData)
 
   return (
     <>

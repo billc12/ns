@@ -22,18 +22,7 @@ type BaseBatchReturn = [ReturnedENS['getOwner']]
 type NormalBatchReturn = [...BaseBatchReturn, ReturnedENS['getWrapperData']]
 type ETH2LDBatchReturn = [...NormalBatchReturn, ReturnedENS['getExpiry'], ReturnedENS['getPrice']]
 type BatchReturn = [] | BaseBatchReturn | NormalBatchReturn | ETH2LDBatchReturn | undefined
-export type TDiscount = {
-  discount: string
-  discountCount: number
-  discountCode: string
-  timestamp: number
-}
-export const DefaultDiscount: TDiscount = {
-  discount: '',
-  discountCode: '',
-  discountCount: 0,
-  timestamp: 0,
-}
+
 const EXPIRY_LIVE_WATCH_TIME = 1_000 * 60 * 5 // 5 minutes
 
 const getBatchData = async (
