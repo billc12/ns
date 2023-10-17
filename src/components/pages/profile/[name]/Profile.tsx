@@ -393,7 +393,14 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
         <meta name="description" content={descriptionContent} />
       </Head>
       {!isLoading ? (
-        <div style={{ display: 'grid', gap: 20, padding: isSmDown ? '20px' : 0 }}>
+        <div
+          style={{
+            display: 'grid',
+            gap: 20,
+            padding: isSmDown ? '20px' : 0,
+            width: isSmDown ? '100%' : 'auto',
+          }}
+        >
           {typeof window === 'object' && isOwner && <AccountHeader />}
 
           <ContentStyle

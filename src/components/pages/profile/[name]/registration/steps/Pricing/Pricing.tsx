@@ -548,13 +548,14 @@ export const GrayRoundRow = styled(Row)<{ $p: string }>`
 `
 const GrayRoundColumn = styled(Column)`
   width: 380px;
-  height: max-content;
   border-radius: 10px;
   background: #f7fafc;
-
-  /* gap: 30px; */
-
+  height: 380px;
   padding-top: 14px;
+  ${mq.sm.max(css`
+    height: auto;
+    padding-bottom: 14px;
+  `)}
 `
 const ContentStyle = styled(Row)`
   justify-content: space-between;
@@ -592,10 +593,6 @@ const PremiumImgRound = styled.div<{ $premium: boolean }>(
   `,
 )
 
-const ButtonBox = styled.div`
-  width: 100%;
-  height: 100%;
-`
 const imgUrl = `/DefaultUser.png`
 const setLocalStorage = (src: string | undefined, name: string) => {
   if (src) localStorage.setItem(`avatar-src-${name}`, src)
@@ -872,23 +869,23 @@ const Pricing = ({
             </div>
           </GrayRoundColumn>
           {/* <MobileFullWidth> */}
-          <ButtonBox>
-            <ActionButton
-              {...{
-                address,
-                hasPendingMoonpayTransaction,
-                hasFailedMoonpayTransaction,
-                paymentMethodChoice,
-                reverseRecord,
-                callback,
-                initiateMoonpayRegistrationMutation,
-                years,
-                balance,
-                totalRequiredBalance,
-                discountInfo: disInfo,
-              }}
-            />
-          </ButtonBox>
+
+          <ActionButton
+            {...{
+              address,
+              hasPendingMoonpayTransaction,
+              hasFailedMoonpayTransaction,
+              paymentMethodChoice,
+              reverseRecord,
+              callback,
+              initiateMoonpayRegistrationMutation,
+              years,
+              balance,
+              totalRequiredBalance,
+              discountInfo: disInfo,
+            }}
+          />
+
           {/* </MobileFullWidth> */}
         </Column>
       </ContentStyle>
