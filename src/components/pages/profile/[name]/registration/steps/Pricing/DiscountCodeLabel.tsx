@@ -5,10 +5,9 @@ import { Typography } from '@ensdomains/thorin'
 
 import AddRoundSVG from '@app/assets/add-round.svg'
 import DelRoundSVG from '@app/assets/del-round.svg'
+import { fetchedGetSignName } from '@app/hooks/names/useSignName'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { TDiscountCode } from '@app/transaction-flow/input/DiscountCode-flow'
-
-import { defaultDisInfo } from './Pricing'
 
 const Row = styled.div`
   display: flex;
@@ -33,6 +32,10 @@ const RightTitle = styled(Typography)<{ $weight?: number }>`
   font-style: normal;
   font-weight: ${(props) => props.$weight || 500};
   line-height: normal;
+  max-width: 150px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `
 const SvgBtn = styled.button`
   width: 16px;
@@ -43,6 +46,7 @@ const DiscountCodeLabel = ({ info, setCodeCallback, name }: TDiscountCode) => {
   const { prepareDataInput } = useTransactionFlow()
   const showDiscountCodeInput = prepareDataInput('DiscountCode')
   const code = info.discountCode
+  const hasDiscount = !!code && Number(formatFixed(info?.discount, 18)) < 1
   const discount = !!info?.discount && Number(formatFixed(info?.discount, 18)) * 100
   const handleDiscountCode = () => {
     showDiscountCodeInput(`discount-code-${code}`, {
@@ -51,20 +55,32 @@ const DiscountCodeLabel = ({ info, setCodeCallback, name }: TDiscountCode) => {
       name,
     })
   }
-  const cleanCode = () => {
-    setCodeCallback({ ...defaultDisInfo, invitationName: info.invitationName })
+  const cleanCode = async () => {
+    fetchedGetSignName(name, '').then(
+      ({ discountCode, discountCount, discountRate, signature, timestamp }) => {
+        setCodeCallback({
+          discount: discountRate,
+          discountCode,
+          discountCount,
+          signature,
+          timestamp,
+          referral: '',
+          invitationName: info.invitationName,
+        })
+      },
+    )
   }
-  const auctionBtn = code ? <DelRoundSVG /> : <AddRoundSVG />
+  const auctionBtn = hasDiscount ? <DelRoundSVG /> : <AddRoundSVG />
   return (
     <Row>
       <LeftTitle>Discount Code</LeftTitle>
       <Row className="content">
-        {!!code && (
+        {!!hasDiscount && (
           <RightTitle>
             {code} <span style={{ fontWeight: 700 }}> ({discount}% OFF) </span>
           </RightTitle>
         )}
-        <SvgBtn onClick={() => (!code ? handleDiscountCode() : cleanCode())} type="button">
+        <SvgBtn onClick={() => (!hasDiscount ? handleDiscountCode() : cleanCode())} type="button">
           {auctionBtn}
         </SvgBtn>
       </Row>

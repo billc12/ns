@@ -34,8 +34,8 @@ const defaultData: RegistrationReducerDataItem = {
   isMoonpayFlow: false,
   externalTransactionId: '',
   chainId: 1,
-  discount: '',
-  discountCode: '',
+  discount: '1000000000000000000',
+  discountCode: '0',
   discountCount: 0,
   referral: '',
   timestamp: 0,
@@ -61,8 +61,8 @@ const makeDefaultData = (selected: SelectedItemProperties): RegistrationReducerD
   started: false,
   isMoonpayFlow: false,
   externalTransactionId: '',
-  discount: '',
-  discountCode: '',
+  discount: '1000000000000000000',
+  discountCode: '0',
   discountCount: 0,
   referral: '',
   timestamp: 0,
@@ -120,6 +120,11 @@ const reducer = (state: RegistrationReducerData, action: RegistrationReducerActi
     case 'increaseStep': {
       if (item.queue[item.stepIndex + 1] === 'profile') {
         item.stepIndex += 2
+      } else if (
+        item.queue[item.stepIndex + 1] === 'transactions' ||
+        item.queue[item.stepIndex + 1] === 'confirm'
+      ) {
+        item.stepIndex = item.queue.length - 1
       } else {
         item.stepIndex += 1
       }

@@ -71,16 +71,17 @@ export const useEthInvoice = (
   const { t } = useTranslation('register')
   const { address } = useAccount()
   const keySuffix = `${name}-${address}`
-  const commitKey = `commit-${keySuffix}`
+  // const commitKey = `commit-${keySuffix}`
   const registerKey = `register-${keySuffix}`
   const { getLatestTransaction } = useTransactionFlow()
 
-  const commitTxFlow = getLatestTransaction(commitKey)
+  // const commitTxFlow = getLatestTransaction(commitKey)
   const registerTxFlow = getLatestTransaction(registerKey)
 
   const [avatarSrc, setAvatarSrc] = useState<string | undefined>()
 
-  const commitReceipt = commitTxFlow?.minedData
+  // const commitReceipt = commitTxFlow?.minedData
+
   const registerReceipt = registerTxFlow?.minedData
   const { data } = useTransaction({
     hash: (registerTxFlow?.hash as any) || '',
@@ -110,7 +111,7 @@ export const useEthInvoice = (
     return null
   }, [registerReceipt])
 
-  const isLoading = !commitReceipt || !registerReceipt
+  const isLoading = !registerReceipt
 
   useEffect(() => {
     const storage = localStorage.getItem(`avatar-src-${name}`)
@@ -122,12 +123,12 @@ export const useEthInvoice = (
     const value = registrationValue || BigNumber.from(0)
     console.log('value', value)
 
-    const commitGasUsed = BigNumber.from(commitReceipt?.gasUsed || 0)
+    // const commitGasUsed = BigNumber.from(commitReceipt?.gasUsed || 0)
     const registerGasUsed = BigNumber.from(registerReceipt?.gasUsed || 0)
 
-    const commitNetFee = commitGasUsed.mul(commitReceipt!.effectiveGasPrice)
+    // const commitNetFee = commitGasUsed.mul(commitReceipt!.effectiveGasPrice)
     const registerNetFee = registerGasUsed.mul(registerReceipt!.effectiveGasPrice)
-    const totalNetFee = registerNetFee ? commitNetFee?.add(registerNetFee) : BigNumber.from(0)
+    const totalNetFee = registerNetFee || BigNumber.from(0)
 
     return (
       <Invoice
@@ -141,8 +142,8 @@ export const useEthInvoice = (
         totalLabel={t('invoice.totalPaid')}
       />
     )
-  }, [isLoading, registrationValue, commitReceipt, registerReceipt, data?.value, t])
-
+  }, [isLoading, registrationValue, registerReceipt, data?.value, t])
+  console.log('InvoiceFilled', InvoiceFilled)
   if (isMoonpayFlow) return { InvoiceFilled: null, avatarSrc }
 
   return { InvoiceFilled, avatarSrc }

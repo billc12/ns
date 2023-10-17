@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
@@ -6,7 +7,7 @@ import { Button, Heading, Typography, mq } from '@ensdomains/thorin'
 
 import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
 import { BackButton, NextButton } from '@app/components/Awns/Dialog'
-import { InterText } from '@app/components/Awns_Header'
+// import { InterText } from '@app/components/Awns_Header'
 import { Card } from '@app/components/Card'
 import { useEstimateFullRegistration } from '@app/hooks/useEstimateRegistration'
 import { useNameDetails } from '@app/hooks/useNameDetails'
@@ -26,7 +27,7 @@ const StyledCard = styled(Card)(
     flex-direction: column;
     gap: 10px;
     /* padding: ${theme.space['4']}; */
-
+    width: 100%;
     ${mq.sm.min(css`
       /* padding: ${theme.space['6']} ${theme.space['18']}; */
       gap: 40px;
@@ -102,8 +103,10 @@ const ButtonBox = styled(MobileFullWidth)(
     & > div,
     & {
       width: 260px;
-      ${mq.sm.min(css`
-        min-width: 260px;
+      min-width: 260px;
+      ${mq.sm.max(css`
+        min-width: 160px;
+        width: 160px;
       `)}
     }
   `,
@@ -118,7 +121,19 @@ const FullInvoiceBox = styled.div`
   border-radius: 10px;
   background: #f7fafc;
   padding: 30px;
+  ${mq.sm.max(css`
+    width: 100%;
+  `)}
 `
+// const ContentStyled = styled.div`
+//   height: auto;
+//   width: auto;
+//   ${mq.sm.max(css`
+//     width: 100%;
+//     padding: 0 16px;
+//   `)}
+// `
+
 const infoItemArr = Array.from({ length: 3 }, (_, i) => `steps.info.ethItems.${i}`)
 
 type Props = {
@@ -140,27 +155,52 @@ const Info = ({ registrationData, nameDetails, callback, onProfileClick }: Props
   const { address } = useAccount()
   const keySuffix = `${nameDetails.normalisedName}-${address}`
   const registerKey = `register-${keySuffix}`
+
   const registrationParams = useRegistrationParams({
     name: nameDetails.normalisedName,
     owner: address!,
     registrationData,
   })
-  const { createTransactionFlow } = useTransactionFlow()
+  const { createTransactionFlow, getLatestTransaction, resumeTransactionFlow } =
+    useTransactionFlow()
+  const registerTx = getLatestTransaction(registerKey)
   const makeRegisterNameFlow = () => {
     createTransactionFlow(registerKey, {
       transactions: [makeTransactionItem('registerName', registrationParams)],
       requiresManualCleanup: true,
       autoClose: true,
-      resumeLink: `/register/${nameDetails.normalisedName}`,
+      // resumeLink: `/register/${nameDetails.normalisedName}`,
     })
+  }
+  const showRegisterTransaction = () => {
+    resumeTransactionFlow(registerKey)
+  }
+  useEffect(() => {
+    if (registerTx?.stage === 'complete') {
+      callback({ back: false })
+    }
+  }, [callback, registerTx?.stage])
+  const auctionBtn = () => {
+    if (registerTx?.stage === 'sent') {
+      return (
+        <NextButton data-testid="next-button" onClick={showRegisterTransaction}>
+          {t('steps.transactions.transactionProgress')}
+        </NextButton>
+      )
+    }
+    return (
+      <NextButton data-testid="next-button" onClick={makeRegisterNameFlow}>
+        Register
+      </NextButton>
+    )
   }
   return (
     <StyledCard>
       <PremiumTitle nameDetails={nameDetails} />
-      <LineProgress curSelect={1} />
-      <InterText $textColor="#000" $w={500}>
+      {/* <LineProgress curSelect={1} /> */}
+      {/* <InterText $textColor="#000" $w={500}>
         Complete a transaction to begin the timer
-      </InterText>
+      </InterText> */}
       <FullInvoiceBox>
         <FullInvoice {...estimate} />
       </FullInvoiceBox>
@@ -178,11 +218,7 @@ const Info = ({ registrationData, nameDetails, callback, onProfileClick }: Props
             {t('action.back', { ns: 'common' })}
           </BackButton>
         </ButtonBox>
-        <ButtonBox>
-          <NextButton data-testid="next-button" onClick={makeRegisterNameFlow}>
-            {t('action.begin', { ns: 'common' })}
-          </NextButton>
-        </ButtonBox>
+        <ButtonBox>{auctionBtn()}</ButtonBox>
       </ButtonContainer>
     </StyledCard>
   )

@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-import { Dialog, Input } from '@ensdomains/thorin'
+import { Dialog, Input, mq } from '@ensdomains/thorin'
 
 import { BackButton, NextButton } from '@app/components/Awns/Dialog'
 import { DisInfo } from '@app/components/pages/profile/[name]/registration/steps/Pricing/Pricing'
@@ -50,6 +50,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  ${mq.sm.max(css`
+    width: 100%;
+  `)}
 `
 const Row = styled.div`
   display: flex;
@@ -58,6 +61,9 @@ const Row = styled.div`
   align-items: center;
   gap: 18px;
   margin-top: 50px;
+  ${mq.sm.max(css`
+    margin-top: 30px;
+  `)}
 `
 const Title = styled.p`
   color: #3f5170;

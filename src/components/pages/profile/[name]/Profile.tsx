@@ -21,6 +21,7 @@ import { useProtectedRoute } from '@app/hooks/useProtectedRoute'
 import { useQueryParameterState } from '@app/hooks/useQueryParameterState'
 import { useRouterWithHistory } from '@app/hooks/useRouterWithHistory'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
+import { emptyAddress } from '@app/utils/constants'
 // import { Content, ContentWarning } from '@app/layouts/Content'
 import { formatFullExpiry, makeEtherscanLink, shortenAddress } from '@app/utils/utils'
 
@@ -221,22 +222,24 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
   const chainName = useChainName()
   const tableList = useMemo(() => {
     if (!result || !result.length) return []
-    return result.map(({ eventTime, owner, preOwner, transactionID }) => [
-      <TableContentStyle>{shortenAddress(preOwner.id)}</TableContentStyle>,
-      <TableContentStyle
-        style={{ cursor: 'pointer', textDecoration: 'underline' }}
-        onClick={() => window.open(makeEtherscanLink(transactionID, chainName), '_blank')}
-      >
-        {shortenAddress(owner.id)}
-      </TableContentStyle>,
-      <TableContentStyle>{new Date(eventTime * 1000).toLocaleString()}</TableContentStyle>,
-      <TableContentStyle
-        style={{ cursor: 'pointer', textDecoration: 'underline' }}
-        onClick={() => window.open(makeEtherscanLink(transactionID, chainName), '_blank')}
-      >
-        {shortenAddress(transactionID)}
-      </TableContentStyle>,
-    ])
+    return result
+      .filter(({ owner }) => owner.id !== emptyAddress)
+      .map(({ eventTime, owner, preOwner, transactionID }) => [
+        <TableContentStyle>{shortenAddress(preOwner.id)}</TableContentStyle>,
+        <TableContentStyle
+          style={{ cursor: 'pointer', textDecoration: 'underline' }}
+          onClick={() => window.open(makeEtherscanLink(transactionID, chainName), '_blank')}
+        >
+          {shortenAddress(owner.id)}
+        </TableContentStyle>,
+        <TableContentStyle>{new Date(eventTime * 1000).toLocaleString()}</TableContentStyle>,
+        <TableContentStyle
+          style={{ cursor: 'pointer', textDecoration: 'underline' }}
+          onClick={() => window.open(makeEtherscanLink(transactionID, chainName), '_blank')}
+        >
+          {shortenAddress(transactionID)}
+        </TableContentStyle>,
+      ])
   }, [chainName, result])
   const router = useRouterWithHistory()
   const { t } = useTranslation('profile')

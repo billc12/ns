@@ -44,6 +44,10 @@ const NameLabel = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  max-width: 150px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `
 const SvgBtn = styled.button`
   width: 16px;

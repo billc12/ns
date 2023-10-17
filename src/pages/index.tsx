@@ -10,7 +10,8 @@ import { LeadingHeading } from '@app/components/LeadingHeading'
 import useSignName from '@app/hooks/names/useSignName'
 
 // import ENSFull from '../assets/ENSFull.svg'
-import StpLogo from '../assets/StpLogo.svg'
+// import StpLogo from '../assets/StpLogo.svg'
+import StpLogoWhite from '../assets/StpLogo_white.svg'
 
 // const GradientTitle = styled.h1(
 //   ({ theme }) => css`
@@ -97,6 +98,11 @@ const BoldTitle = styled(Typography)<{ $size?: string; $fontW?: number; $family?
   line-height: 67px;
   white-space: nowrap;
   font-family: ${(props) => props.$family || 'Passion One'};
+  ${mq.sm.max(
+    css`
+      font-size: 20px;
+    `,
+  )}
 `
 export default function Page() {
   const { t } = useTranslation('awns_common')
@@ -110,7 +116,7 @@ export default function Page() {
       </Head>
       <StyledLeadingHeading>
         <LogoAndLanguage>
-          <StyledENS as={StpLogo} />
+          <StyledENS as={StpLogoWhite} />
         </LogoAndLanguage>
         <Hamburger />
       </StyledLeadingHeading>

@@ -1,8 +1,8 @@
 import { formatFixed } from '@ethersproject/bignumber'
 import { useState } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-import { Dialog, Input, Skeleton } from '@ensdomains/thorin'
+import { Dialog, Input, Skeleton, mq } from '@ensdomains/thorin'
 
 import { BackButton, NextButton } from '@app/components/Awns/Dialog'
 import { DisInfo } from '@app/components/pages/profile/[name]/registration/steps/Pricing/Pricing'
@@ -73,6 +73,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  ${mq.sm.max(css`
+    width: 100%;
+  `)}
 `
 const Row = styled.div`
   display: flex;
@@ -81,9 +84,17 @@ const Row = styled.div`
   align-items: center;
   gap: 18px;
   margin-top: 50px;
+  ${mq.sm.max(css`
+    margin-top: 30px;
+  `)}
 `
+const setInitCode = (i: string) => {
+  if (!i) return ''
+  if (!Number(i)) return ''
+  return i
+}
 const DiscountCode = ({ data: { info, setCodeCallback, name }, onDismiss }: Props) => {
-  const [disCode, setDisCode] = useState(info.discountCode)
+  const [disCode, setDisCode] = useState(setInitCode(info.discountCode))
 
   const { data: signData, isLoading } = useSignName(name, disCode)
   const saveCode = () => {
@@ -93,6 +104,7 @@ const DiscountCode = ({ data: { info, setCodeCallback, name }, onDismiss }: Prop
       discountCode: signData?.discountCode!,
       discountCount: signData?.discountCount!,
       timestamp: signData?.timestamp!,
+      signature: signData?.signature!,
     })
     onDismiss()
   }

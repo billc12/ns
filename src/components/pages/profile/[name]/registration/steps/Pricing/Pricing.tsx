@@ -27,7 +27,7 @@ import { AvatarViewManager } from '@app/components/@molecules/ProfileEditor/Avat
 import { NextButton } from '@app/components/Awns/Dialog'
 import { Card } from '@app/components/Card'
 import { ConnectButton } from '@app/components/ConnectButton'
-import useSignName from '@app/hooks/names/useSignName'
+import useSignName, { fetchedGetSignName } from '@app/hooks/names/useSignName'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useChainId } from '@app/hooks/useChainId'
 import { useContractAddress } from '@app/hooks/useContractAddress'
@@ -560,6 +560,9 @@ const ContentStyle = styled(Row)`
   justify-content: space-between;
   padding: 0 30px;
   gap: 20px;
+  ${mq.sm.max(css`
+    display: grid;
+  `)}
 `
 
 const UpButton = styled(Button)`
@@ -583,6 +586,9 @@ const PremiumImgRound = styled.div<{ $premium: boolean }>(
       border-radius: 8px;
       border: 4px solid #e49700;
     `}
+    ${mq.sm.max(css`
+      padding: 20px;
+    `)}
   `,
 )
 
@@ -687,6 +693,7 @@ export const defaultDisInfo: DisInfo = {
   referral: '',
   invitationName: '',
 }
+
 const Pricing = ({
   nameDetails,
   callback,
@@ -769,12 +776,29 @@ const Pricing = ({
     invitationName: registrationData.invitationName,
     signature: registrationData.signature,
   })
-
+  useEffect(() => {
+    if (!registrationData.discountCode || !Number(registrationData.discountCode)) {
+      fetchedGetSignName(normalisedName, '').then(
+        ({ discountCode, discountCount, discountRate, signature, timestamp }) => {
+          setDisInfo({
+            ...disInfo,
+            discount: discountRate,
+            discountCode,
+            discountCount,
+            signature,
+            timestamp,
+          })
+        },
+      )
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [normalisedName, registrationData.discountCode])
   const { data: signData } = useSignName(nameDetails.normalisedName, disInfo.discountCode)
   const isPremium = !!signData?.isPremium
   const handleDisInfo = (d: DisInfo) => {
     setDisInfo(d)
   }
+
   const discountCodeLabel = (
     <DiscountCodeLabel
       info={disInfo}
