@@ -23,10 +23,10 @@ export const usePrice = (nameOrNames: string | string[], years = 1, legacy?: boo
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     isFetching,
   } = useQuery(
-    useQueryKeys().getPrice(type, names),
+    useQueryKeys().getPrice(type, names, [signName?.discountCode || '']),
     async () =>
       getPrice(
-        names.map((n) => n.split('.')[0]),
+        names.map((n) => n.split('.')[0])?.[0],
         yearsToSeconds(1),
         signName?.signature || '0x',
         signName?.discountRate!,
@@ -35,7 +35,7 @@ export const usePrice = (nameOrNames: string | string[], years = 1, legacy?: boo
         signName?.timestamp!,
       ).then((d) => d || null),
     {
-      enabled: !!(ready && nameOrNames && nameOrNames.length > 0 && signName?.signature),
+      enabled: !!(ready && names && names.length > 0 && signName),
     },
   )
 

@@ -212,7 +212,7 @@ export type Props = {
 const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) => {
   const { t } = useTranslation('transactionFlow')
   const { address } = useAccount()
-  const { data: balance } = useBalance({
+  const { data: balance, isLoading: balanceIsLoading } = useBalance({
     address,
   })
 
@@ -345,7 +345,12 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
             <NextButton
               {...trailingButtonProps}
               data-testid="extend-names-confirm"
-              disabled={isEstimateGasLoading}
+              loading={isEstimateGasLoading || balanceIsLoading}
+              disabled={
+                isEstimateGasLoading ||
+                !!estimateGasLimitError ||
+                (estimatedGasLimit && balance?.value.lt(estimatedGasLimit))
+              }
             />
           }
         />

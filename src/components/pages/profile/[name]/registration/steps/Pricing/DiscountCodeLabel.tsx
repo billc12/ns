@@ -32,6 +32,10 @@ const RightTitle = styled(Typography)<{ $weight?: number }>`
   font-style: normal;
   font-weight: ${(props) => props.$weight || 500};
   line-height: normal;
+  max-width: 150px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `
 const SvgBtn = styled.button`
   width: 16px;
