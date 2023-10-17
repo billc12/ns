@@ -43,6 +43,14 @@ const BarContainer = styled.div(
   `,
 )
 
+const ErrorText = styled.div`
+  color: #f00;
+  font-size: 14px;
+  font-weight: 500;
+  width: 100%;
+  padding-left: 6px;
+`
+
 const WalletIcon = styled.svg(
   ({ theme }) => css`
     width: ${theme.space['12']};
@@ -635,7 +643,7 @@ export const TransactionStageModal = ({
       <Dialog.Heading title={t(`transaction.dialog.${stage}.title`)} />
       <InnerDialog data-testid="transaction-modal-inner">
         {MiddleContent}
-        {upperError && <Helper type="error">{t(upperError)}</Helper>}
+        {upperError && <ErrorText>{t(upperError)}</ErrorText>}
         {FilledDisplayItems}
         {HelperContent}
         {transaction.hash && (
@@ -643,7 +651,7 @@ export const TransactionStageModal = ({
             {t('transaction.viewEtherscan')}
           </Outlink>
         )}
-        {lowerError && <Helper type="error">{lowerError}</Helper>}
+        {lowerError && <ErrorText>{lowerError}</ErrorText>}
       </InnerDialog>
       <Dialog.Footer
         currentStep={currentStep}
