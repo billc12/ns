@@ -82,8 +82,13 @@ const Row = styled.div`
   gap: 18px;
   margin-top: 50px;
 `
+const setInitCode = (i: string) => {
+  if (!i) return ''
+  if (!Number(i)) return ''
+  return i
+}
 const DiscountCode = ({ data: { info, setCodeCallback, name }, onDismiss }: Props) => {
-  const [disCode, setDisCode] = useState(info.discountCode)
+  const [disCode, setDisCode] = useState(setInitCode(info.discountCode))
 
   const { data: signData, isLoading } = useSignName(name, disCode)
   const saveCode = () => {
@@ -93,6 +98,7 @@ const DiscountCode = ({ data: { info, setCodeCallback, name }, onDismiss }: Prop
       discountCode: signData?.discountCode!,
       discountCount: signData?.discountCount!,
       timestamp: signData?.timestamp!,
+      signature: signData?.signature!,
     })
     onDismiss()
   }

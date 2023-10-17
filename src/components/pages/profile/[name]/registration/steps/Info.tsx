@@ -6,7 +6,7 @@ import { Button, Heading, Typography, mq } from '@ensdomains/thorin'
 
 import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
 import { BackButton, NextButton } from '@app/components/Awns/Dialog'
-import { InterText } from '@app/components/Awns_Header'
+// import { InterText } from '@app/components/Awns_Header'
 import { Card } from '@app/components/Card'
 import { useEstimateFullRegistration } from '@app/hooks/useEstimateRegistration'
 import { useNameDetails } from '@app/hooks/useNameDetails'
@@ -157,10 +157,10 @@ const Info = ({ registrationData, nameDetails, callback, onProfileClick }: Props
   return (
     <StyledCard>
       <PremiumTitle nameDetails={nameDetails} />
-      <LineProgress curSelect={1} />
-      <InterText $textColor="#000" $w={500}>
+      {/* <LineProgress curSelect={1} /> */}
+      {/* <InterText $textColor="#000" $w={500}>
         Complete a transaction to begin the timer
-      </InterText>
+      </InterText> */}
       <FullInvoiceBox>
         <FullInvoice {...estimate} />
       </FullInvoiceBox>
