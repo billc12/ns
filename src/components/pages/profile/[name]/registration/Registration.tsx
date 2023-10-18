@@ -253,6 +253,17 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, step, selected, router.asPath])
 
+  useEffect(() => {
+    const handleRouteChange = (e: string) => {
+      if (e === router.asPath) {
+        router.push('/')
+      }
+    }
+    router.events.on('routeChangeStart', handleRouteChange)
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange)
+    }
+  })
   const onDismissMoonpayModal = () => {
     if (moonpayTransactionStatus === 'waitingAuthorization') {
       return

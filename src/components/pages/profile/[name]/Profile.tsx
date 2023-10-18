@@ -182,7 +182,8 @@ const CardTitleStyle = styled(Typography)(
 )
 
 // const tabs = ['profile', 'records', 'subnames', 'permissions', 'more'] as const
-const tabs = ['detail', 'assets', 'invitationCode'] as const
+// const tabs = ['detail', 'assets', 'invitationCode'] as const
+const tabs = ['detail', 'assets'] as const
 type Tab = typeof tabs[number]
 
 type Props = {
@@ -432,7 +433,7 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
                       </TabButton>
                     ))
                   : tabs
-                      .filter((item) => item !== 'invitationCode')
+                      // .filter((item) => item !== 'invitationCode')
                       .map((tabItem) => (
                         <TabButton
                           key={tabItem}
