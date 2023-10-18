@@ -11,6 +11,9 @@ import { Invoice, InvoiceItem } from '@app/components/@atoms/Invoice/Invoice'
 import { PlusMinusControl } from '@app/components/@atoms/PlusMinusControl/Awns_PlusMinusControl'
 import { StyledName } from '@app/components/@atoms/StyledName/StyledName'
 import { BackButton, NameInfo, NextButton } from '@app/components/Awns/Dialog'
+import DiscountCodeLabelProvider, {
+  DefaultDis,
+} from '@app/components/pages/profile/[name]/registration/steps/Pricing/DiscountCodeLabel'
 import { YEAR_DISCOUNT } from '@app/components/pages/profile/[name]/registration/types'
 import { formatDateString } from '@app/components/pages/profile/[name]/tabs/ProfileTab'
 import gasLimitDictionary from '@app/constants/gasLimits'
@@ -234,9 +237,17 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
 
   const { total: rentFee, totalYearlyFee } = usePrice(names, years, false)
 
+  const { disInfo, disLabel } = DiscountCodeLabelProvider(DefaultDis, names[0])
+
   // const totalRentFee = rentFee ? rentFee.mul(years) : undefined
   const transactions = [
-    makeTransactionItem('extendNames', { names, duration, rentPrice: totalYearlyFee!, isSelf }),
+    makeTransactionItem('extendNames', {
+      names,
+      duration,
+      rentPrice: totalYearlyFee!,
+      isSelf,
+      ...disInfo,
+    }),
   ]
   const currentExpiry = useMemo(() => {
     if (!nameDetail || !nameDetail.expiryDate) {
@@ -326,6 +337,7 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
                       unit={currencyDisplay}
                       totalLabel="Estimated total"
                       discount={discountInvoiceItems}
+                      discountCodeLabel={disLabel}
                     />
                     {(!!estimateGasLimitError ||
                       (estimatedGasLimit && balance?.value.lt(estimatedGasLimit))) && (

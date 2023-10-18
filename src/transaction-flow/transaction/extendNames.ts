@@ -2,7 +2,7 @@ import type { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
 import type { JsonRpcSigner } from '@ethersproject/providers'
 import type { TFunction } from 'react-i18next'
 
-import { fetchedGetSignName } from '@app/hooks/names/useSignName'
+import { DisInfo } from '@app/components/pages/profile/[name]/registration/steps/Pricing/DiscountCodeLabel'
 import { HelperProps, PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
 import { makeDisplay } from '@app/utils/currency'
 
@@ -13,7 +13,7 @@ type Data = {
   duration: number
   rentPrice: BigNumber
   isSelf?: boolean
-}
+} & DisInfo
 
 const toSingleDecimal = (duration: number) => parseFloat(secondsToYears(duration).toFixed(1))
 
@@ -52,7 +52,7 @@ const helper = (data: Data, t: TFunction<'translation', undefined>): HelperProps
 }
 
 const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) => {
-  const { names, duration } = data
+  const { names, duration, signature, discount, discountCount, discountCode, timestamp } = data
   const labels = names.map((name) => {
     const parts = name.split('.')
     if (parts.length > 2) throw new Error('Currently only supports 1st level names')
@@ -60,16 +60,14 @@ const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) =>
     return parts[0]
   })
 
-  const signData = await fetchedGetSignName(names.toString(), '')
-
   const price = await ens.getPrice(
     labels,
     duration,
-    signData.signature || '0x',
-    signData?.discountRate!,
-    signData?.discountCount!,
-    signData?.discountCode!,
-    signData?.timestamp!,
+    signature,
+    discount,
+    discountCount,
+    discountCode,
+    timestamp,
   )
   if (!price) throw new Error('No price found')
 
@@ -77,12 +75,12 @@ const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) =>
   return ens.renewNames.populateTransaction(names, {
     duration,
     value: priceWithBuffer,
-    signature: signData.signature || '0x',
     signer,
-    discount: signData.discountRate,
-    discountCode: signData.discountCode,
-    discountCount: signData.discountCount,
-    timestamp: signData.timestamp,
+    signature,
+    discount,
+    discountCount,
+    discountCode,
+    timestamp,
   })
 }
 export default { transaction, displayItems, helper } as Transaction<Data>

@@ -6,8 +6,8 @@ import { Typography } from '@ensdomains/thorin'
 
 import AddRoundSVG from '@app/assets/add-round.svg'
 import DelRoundSVG from '@app/assets/del-round.svg'
+import DisCodeDialog from '@app/components/Awns/Dialog/DisCodeDialog'
 import { fetchedGetSignName } from '@app/hooks/names/useSignName'
-import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { TDiscountCode } from '@app/transaction-flow/input/DiscountCode-flow'
 
 const Row = styled.div`
@@ -58,18 +58,18 @@ export const DefaultDis: DisInfo = {
   timestamp: 0,
 }
 const DiscountCodeLabel = ({ info, setCodeCallback, name }: TDiscountCode) => {
-  const { prepareDataInput } = useTransactionFlow()
-  const showDiscountCodeInput = prepareDataInput('DiscountCode')
+  const [showDia, setShowDia] = useState(false)
+  const hideDia = () => {
+    setShowDia(false)
+  }
+  const openDia = () => {
+    setShowDia(true)
+  }
+
   const code = info.discountCode
   const hasDiscount = !!code && Number(formatFixed(info?.discount, 18)) < 1
   const discount = !!info?.discount && Number(formatFixed(info?.discount, 18)) * 100
-  const handleDiscountCode = () => {
-    showDiscountCodeInput(`discount-code-${code}`, {
-      info,
-      setCodeCallback,
-      name,
-    })
-  }
+
   const cleanCode = async () => {
     fetchedGetSignName(name, '').then(
       ({ discountCode, discountCount, discountRate, signature, timestamp }) => {
@@ -93,13 +93,21 @@ const DiscountCodeLabel = ({ info, setCodeCallback, name }: TDiscountCode) => {
             {code} <span style={{ fontWeight: 700 }}> ({discount}% OFF) </span>
           </RightTitle>
         )}
-        <SvgBtn onClick={() => (!hasDiscount ? handleDiscountCode() : cleanCode())} type="button">
+        <SvgBtn onClick={() => (!hasDiscount ? openDia() : cleanCode())} type="button">
           {auctionBtn}
         </SvgBtn>
       </Row>
+      <DisCodeDialog
+        info={info}
+        show={showDia}
+        onCancel={hideDia}
+        setCodeCallback={setCodeCallback}
+        name={name}
+      />
     </Row>
   )
 }
+
 const DiscountCodeLabelProvider = (initData: DisInfo, name: string) => {
   const [disInfo, setDisInfo] = useState<DisInfo>({
     discount: initData.discount,
