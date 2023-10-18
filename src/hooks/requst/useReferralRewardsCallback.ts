@@ -45,6 +45,7 @@ const useReferralRewards = (name: string) => {
     },
     {
       enabled: !!name,
+      refetchOnWindowFocus: 'always',
     },
   )
   return { data, isLoading }
