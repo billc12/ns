@@ -16,7 +16,12 @@ import { UpdateCallback, useCallbackOnTransaction } from '@app/utils/SyncProvide
 import { TransactionDialogManager } from '../components/@molecules/TransactionDialogManager/TransactionDialogManager'
 import { DataInputComponent, DataInputComponents } from './input'
 import { helpers, initialState, reducer } from './reducer'
-import { GenericTransaction, InternalTransactionFlow, TransactionFlowItem } from './types'
+import {
+  GenericTransaction,
+  InternalTransactionFlow,
+  TSelectedKey,
+  TransactionFlowItem,
+} from './types'
 
 type ShowDataInput<C extends keyof DataInputComponent> = (
   key: string,
@@ -79,6 +84,7 @@ export const TransactionFlowProvider = ({ children }: { children: ReactNode }) =
       }
     },
   )
+  console.log('state123', state)
 
   const getTransactionIndex = useCallback(
     (key: string) => state.items[key]?.currentTransaction || 0,
@@ -194,7 +200,7 @@ export const TransactionFlowProvider = ({ children }: { children: ReactNode }) =
     getTransaction,
   ])
 
-  const [selectedKey, setSelectedKey] = useState<string | null>(null)
+  const [selectedKey, setSelectedKey] = useState<TSelectedKey>(null)
 
   useEffect(() => {
     let timeout: NodeJS.Timeout
@@ -205,12 +211,12 @@ export const TransactionFlowProvider = ({ children }: { children: ReactNode }) =
         setSelectedKey((prev) => {
           if (prev) {
             if (
-              state.items[prev].transactions[0]?.stage &&
-              state.items[prev].transactions[0]?.stage !== 'complete'
+              state.items[prev as string].transactions[0]?.stage &&
+              state.items[prev as string].transactions[0]?.stage !== 'complete'
             ) {
               return prev
             }
-            dispatch({ name: 'cleanupTransaction', payload: prev })
+            dispatch({ name: 'cleanupTransaction', payload: prev as string })
           }
           return null
         })
@@ -220,11 +226,18 @@ export const TransactionFlowProvider = ({ children }: { children: ReactNode }) =
       clearTimeout(timeout)
     }
   }, [state.selectedKey, dispatch, state.items])
-
+  const TransactionDialogManagerList = useMemo(() => {
+    if (Array.isArray(selectedKey)) {
+      return selectedKey.map((i) => (
+        <TransactionDialogManager key={i} {...{ state, dispatch, selectedKey: i }} />
+      ))
+    }
+    return <TransactionDialogManager key={selectedKey} {...{ state, dispatch, selectedKey }} />
+  }, [dispatch, selectedKey, state])
   return (
     <TransactionContext.Provider value={providerValue}>
       {children}
-      <TransactionDialogManager {...{ state, dispatch, selectedKey }} />
+      {TransactionDialogManagerList}
     </TransactionContext.Provider>
   )
 }

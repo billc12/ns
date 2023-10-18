@@ -12,7 +12,11 @@ import { transactions } from '@app/transaction-flow/transaction'
 import { wagmiClientWithRefetch } from '@app/utils/query'
 
 import { DataInputComponents } from '../../../transaction-flow/input'
-import { InternalTransactionFlow, TransactionFlowAction } from '../../../transaction-flow/types'
+import {
+  InternalTransactionFlow,
+  TSelectedKey,
+  TransactionFlowAction,
+} from '../../../transaction-flow/types'
 // import InputComponentWrapper from './InputComponentWrapper'
 import { IntroStageModal } from './stage/Intro'
 import { TransactionStageModal } from './stage/TransactionStageModal'
@@ -48,11 +52,16 @@ export const TransactionDialogManager = ({
 }: {
   state: InternalTransactionFlow
   dispatch: Dispatch<TransactionFlowAction>
-  selectedKey: string | null
+  selectedKey: TSelectedKey
 }) => {
   const { t } = useTranslation()
   const selectedItem = useMemo(
-    () => (selectedKey ? state.items[selectedKey] : null),
+    () =>
+      selectedKey
+        ? state.items[
+            Array.isArray(selectedKey) ? selectedKey[selectedKey.length - 1] : selectedKey
+          ]
+        : null,
     [selectedKey, state.items],
   )
 
@@ -66,19 +75,23 @@ export const TransactionDialogManager = ({
     if (selectedKey && selectedItem) {
       if (selectedItem.input && selectedItem.currentFlowStage === 'input') {
         const Component = DataInputComponents[selectedItem.input.name]
+
         return (
-          <WagmiConfig client={wagmiClientWithRefetch}>
-            <Component
-              {...{
-                data: selectedItem.input.data,
-                transactions: selectedItem.transactions,
-                dispatch,
-                onDismiss,
-              }}
-            />
-            {/* <InputComponentWrapper>
-            </InputComponentWrapper> */}
-          </WagmiConfig>
+          <>
+            <WagmiConfig client={wagmiClientWithRefetch}>
+              <Component
+                {...{
+                  data: selectedItem.input.data,
+                  transactions: selectedItem.transactions,
+                  dispatch,
+                  onDismiss,
+                }}
+              />
+
+              {/* <InputComponentWrapper>
+          </InputComponentWrapper> */}
+            </WagmiConfig>
+          </>
         )
       }
       if (selectedItem.intro && selectedItem.currentFlowStage === 'intro') {

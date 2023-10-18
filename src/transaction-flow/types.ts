@@ -65,9 +65,9 @@ export type InternalTransactionFlowItem =
       currentFlowStage: 'input'
       input: GenericDataInput
     })
-
+export type TSelectedKey = string | null | string[]
 export type InternalTransactionFlow = {
-  selectedKey: string | null
+  selectedKey: TSelectedKey
   items: { [key: string]: InternalTransactionFlowItem }
 }
 
@@ -167,7 +167,7 @@ export type ManagedDialogPropsTwo = {
   onDismiss: () => void
   transaction: GenericTransaction
   actionName: string
-  txKey: string | null
+  txKey: TSelectedKey
   currentStep: number
   stepCount: number
   displayItems: TransactionDisplayItem[]

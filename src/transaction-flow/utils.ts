@@ -6,6 +6,9 @@ export const getSelectedFlowItem = (state: InternalTransactionFlow) => {
   if (!selectedKey) {
     return null
   }
+  if (Array.isArray(selectedKey)) {
+    return state.items[selectedKey[selectedKey.length - 1]]
+  }
 
   return state.items[selectedKey]
 }

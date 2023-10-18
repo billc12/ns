@@ -12,9 +12,15 @@ export const initialState: InternalTransactionFlow = {
   selectedKey: null,
   items: {},
 }
+/*
+There are three situations in the transaction pop-up window:
+1.null means no pop-up window is opened.
+2.string indicates that there is currently a pop-up window
+3.array indicates that another pop-up window is opened in the pop-up window
+*/
 
 export const helpers = (draft: InternalTransactionFlow) => {
-  const getSelectedItem = () => draft.items[draft.selectedKey!]
+  const getSelectedItem = () => draft.items[draft.selectedKey! as string]
   const getCurrentTransaction = (item: InternalTransactionFlowItem) =>
     item.transactions[item.currentTransaction]
   const getAllTransactionsComplete = (item: InternalTransactionFlowItem) =>
@@ -49,10 +55,23 @@ export const reducer = (draft: InternalTransactionFlow, action: TransactionFlowA
         disableBackgroundClick: action.payload.disableBackgroundClick || undefined,
         transactions: [],
       }
-      draft.selectedKey = action.key
+      if (!draft.selectedKey) {
+        draft.selectedKey = action.key
+        break
+      }
+      if (typeof draft.selectedKey === 'string') {
+        draft.selectedKey = [draft.selectedKey, action.key]
+        break
+      }
+      if (Array.isArray(draft.selectedKey)) {
+        draft.selectedKey.push(action.key)
+        break
+      }
       break
     }
     case 'startFlow': {
+      console.log('startFlow', action.key)
+
       let currentFlowStage: TransactionFlowStage = 'transaction'
       if (action.payload.intro) {
         currentFlowStage = 'intro'
@@ -65,7 +84,18 @@ export const reducer = (draft: InternalTransactionFlow, action: TransactionFlowA
         currentTransaction: 0,
         currentFlowStage,
       }
-      draft.selectedKey = action.key
+      if (!draft.selectedKey) {
+        draft.selectedKey = action.key
+        break
+      }
+      if (typeof draft.selectedKey === 'string') {
+        draft.selectedKey = [draft.selectedKey, action.key]
+        break
+      }
+      if (Array.isArray(draft.selectedKey)) {
+        draft.selectedKey.push(action.key)
+        break
+      }
       break
     }
     case 'resumeFlowWithCheck': {
@@ -89,7 +119,19 @@ export const reducer = (draft: InternalTransactionFlow, action: TransactionFlowA
         item.currentFlowStage = 'intro'
       }
       draft.items[key] = item
-      draft.selectedKey = key
+
+      if (!draft.selectedKey) {
+        draft.selectedKey = action.key
+        break
+      }
+      if (typeof draft.selectedKey === 'string') {
+        draft.selectedKey = [draft.selectedKey, action.key]
+        break
+      }
+      if (Array.isArray(draft.selectedKey)) {
+        draft.selectedKey.push(action.key)
+        break
+      }
       break
     }
     case 'setTransactions': {
@@ -101,7 +143,16 @@ export const reducer = (draft: InternalTransactionFlow, action: TransactionFlowA
       break
     }
     case 'stopFlow': {
-      draft.selectedKey = null
+      if (typeof draft.selectedKey === 'string' || !draft.selectedKey) {
+        draft.selectedKey = null
+      }
+      if (typeof Array.isArray(draft.selectedKey)) {
+        draft.selectedKey?.pop()
+        if (draft.selectedKey?.length === 1) {
+          const key = draft.selectedKey[0]
+          draft.selectedKey = key
+        }
+      }
       break
     }
     case 'setFailedTransaction': {
@@ -161,9 +212,11 @@ export const reducer = (draft: InternalTransactionFlow, action: TransactionFlowA
         transaction.minedData = minedData
         transaction.finaliseTime = minedData?.timestamp
         if (
-          key === draft.selectedKey &&
-          selectedItem.autoClose &&
-          getAllTransactionsComplete(selectedItem)
+          Array.isArray(draft.selectedKey) && key
+            ? draft.selectedKey.includes(key)
+            : key === draft.selectedKey &&
+              selectedItem.autoClose &&
+              getAllTransactionsComplete(selectedItem)
         ) {
           draft.selectedKey = null
         }

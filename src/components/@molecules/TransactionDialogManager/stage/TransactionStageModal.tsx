@@ -24,6 +24,7 @@ import { useIsSafeApp } from '@app/hooks/useIsSafeApp'
 import { transactions } from '@app/transaction-flow/transaction'
 import {
   ManagedDialogPropsTwo,
+  TSelectedKey,
   TransactionFlowAction,
   TransactionStage,
 } from '@app/transaction-flow/types'
@@ -284,7 +285,7 @@ export const transactionSuccessHandler =
   (dependencies: {
     provider: Provider
     actionName: ManagedDialogPropsTwo['actionName']
-    txKey: string | null
+    txKey: TSelectedKey
     request: PopulatedTransaction | undefined
     addRecentTransaction: ReturnType<typeof useAddRecentTransaction>
     dispatch: Dispatch<TransactionFlowAction>
@@ -305,7 +306,7 @@ export const transactionSuccessHandler =
       ...transactionData,
       hash: tx.hash,
       action: actionName,
-      key: txKey!,
+      key: Array.isArray(txKey) ? txKey[txKey.length - 1] : txKey!,
       input: request?.data,
       timestamp: Math.floor(Date.now() / 1000),
       isSafeTx: !!isSafeApp,
