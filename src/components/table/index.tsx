@@ -94,8 +94,8 @@ function Row({ row, RowHeight }: { row: (string | number | JSX.Element)[]; RowHe
   return (
     <>
       <TrStyle style={{ height: RowHeight || 58, lineHeight: `${RowHeight}px` || '58px' }}>
-        {row.map((item) => (
-          <td>{item}</td>
+        {row.map((item, index) => (
+          <td key={+index.toString()}>{item}</td>
         ))}
       </TrStyle>
     </>
@@ -141,7 +141,7 @@ export const Table = ({
         <>
           {!!rows.length &&
             rows.map((data, ind) => (
-              <Card key={ind.toLocaleString()}>
+              <Card key={+ind.toString()}>
                 <div
                   style={{
                     display: 'grid',
@@ -184,14 +184,14 @@ export const Table = ({
             <TableStyle style={{ width: '100%' }}>
               <thead>
                 <tr>
-                  {labels.map((item) => (
-                    <th>{item}</th>
+                  {labels.map((item, v) => (
+                    <th key={+v.toString()}>{item}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {rows.map((item) => (
-                  <Row row={item} RowHeight={RowHeight} />
+                {rows.map((item, i) => (
+                  <Row key={+i.toString()} row={item} RowHeight={RowHeight} />
                 ))}
               </tbody>
             </TableStyle>
