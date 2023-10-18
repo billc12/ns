@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import styled, { css } from 'styled-components'
 
-import { Dialog, Input, mq } from '@ensdomains/thorin'
+import { Dialog, Input, Skeleton, mq } from '@ensdomains/thorin'
 
 import { BackButton, NextButton } from '@app/components/Awns/Dialog'
+import { useBasicName } from '@app/hooks/useBasicName'
 
 import { TransactionDialogPassthrough } from '../types'
 
@@ -72,9 +73,19 @@ const Title = styled.p`
   font-weight: 400;
   line-height: 152.523%; /* 21.353px */
 `
+const ErrTip = styled.p`
+  color: #f00;
+
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150.5%; /* 24.08px */
+`
 const InvitationName = ({ data: { setNameCallback, name }, onDismiss }: Props) => {
   const [nameInp, setNameInp] = useState(name)
-
+  const { registrationStatus, isLoading } = useBasicName(nameInp)
+  const isUse = registrationStatus === 'registered'
   const saveName = () => {
     setNameCallback(nameInp)
     onDismiss()
@@ -91,14 +102,19 @@ const InvitationName = ({ data: { setNameCallback, name }, onDismiss }: Props) =
           value={nameInp}
           onChange={(e) => setNameInp(e.target.value)}
         />
-
+        <Skeleton loading={isLoading} style={{ minWidth: 120, height: 20 }}>
+          {!isUse && registrationStatus && <ErrTip>The AWNS name is invalid</ErrTip>}{' '}
+        </Skeleton>
         <Title>
           Signing up for AWNS with an invitation code entitles the inviter and invitee to a 10%
           commission bonus on ETH, respectively.
         </Title>
         <Row>
           <BackButton onClick={onDismiss}>Close</BackButton>
-          <NextButton onClick={saveName} disabled={!nameInp}>
+          <NextButton
+            onClick={saveName}
+            disabled={!nameInp || !isUse || !registrationStatus || isLoading}
+          >
             Save
           </NextButton>
         </Row>
