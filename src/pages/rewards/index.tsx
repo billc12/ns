@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
 import styled from 'styled-components'
 
-import Reawrds from './referralReawrds'
+import Rewards from './referralReawrds'
 
 const ContentStyle = styled.div`
   flex-grow: 1;
@@ -16,7 +16,7 @@ const ContentStyle = styled.div`
 `
 
 export default function Page() {
-  return <Reawrds />
+  return <Rewards />
 }
 
 Page.getLayout = function getLayout(page: ReactElement) {
