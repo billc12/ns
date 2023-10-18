@@ -190,5 +190,12 @@ export const useQueryKeys = () => {
     ],
     getUserNFTList: (name: string) => [...globalKeys, name, 'getUserNFTList'],
     getSignReferral: (name: string) => [...globalKeys, 'getSignReferral', name],
+    getReferralRewards: (name: string, offset: number, limit: number) => [
+      ...globalKeys,
+      'getReferralRewards',
+      name,
+      offset,
+      limit,
+    ],
   }
 }
