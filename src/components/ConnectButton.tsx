@@ -18,8 +18,8 @@ import {
 } from '@ensdomains/thorin'
 import { DropdownItem } from '@ensdomains/thorin/dist/types/components/molecules/Dropdown/Dropdown'
 
-import DefaultUser from '@app/assets/DefaultUser.svg'
 import InfoSVG from '@app/assets/Info.svg'
+import DefaultAva from '@app/assets/default-avatar.png'
 import useHasPendingTransactions from '@app/hooks/transactions/useHasPendingTransactions'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useAvatar } from '@app/hooks/useAvatar'
@@ -32,6 +32,7 @@ import { shortenAddress } from '@app/utils/utils'
 
 import BaseLink from './@atoms/BaseLink'
 import { InterText } from './Awns_Header'
+import { useEthInvoice } from './pages/profile/[name]/registration/steps/Awns_Complete'
 
 const StyledButtonWrapper = styled.div<{ $isTabBar?: boolean; $large?: boolean }>(
   ({ theme, $isTabBar, $large }) => [
@@ -115,6 +116,11 @@ const RoundProfile = styled(Profile)`
     background: 'red';
   }
 `
+const ImgRound = styled.img`
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+`
 type Props = {
   isTabBar?: boolean
   large?: boolean
@@ -157,6 +163,7 @@ const HeaderProfile = ({ address }: { address: string }) => {
   const primary = usePrimary(address!, !address)
   const chainId = useChainId()
   const { avatar } = useAvatar(primary.data?.name, chainId)
+  const { avatarSrc } = useEthInvoice(primary.data?.name || '', false)
   const zorb = useZorb(address, 'address')
   const { disconnect } = useDisconnect()
   const { copy, copied } = useCopied(300)
@@ -239,7 +246,9 @@ const HeaderProfile = ({ address }: { address: string }) => {
       }
     >
       <UserButton>
-        <DefaultUser />
+        {/* <DefaultUser /> */}
+        {/*  eslint-disable-next-line @next/next/no-img-element */}
+        <ImgRound src={avatarSrc || DefaultAva.src} alt="NFT img" />
         <InterText style={{ fontWeight: 500 }}>{mainText}</InterText>
       </UserButton>
     </Dropdown>
