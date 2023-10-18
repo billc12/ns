@@ -95,7 +95,7 @@ const InvitationNameLabel = ({ name, setNameCallback }: TInvitationName) => {
         </Tooltip>
       </Row>
       <Row className="content">
-        {name && <NameLabel>{`${name}.aw`}</NameLabel>}
+        {name && <NameLabel>{name}</NameLabel>}
         <SvgBtn onClick={handleAuctionFn}>{auctionBtn}</SvgBtn>
       </Row>
     </Row>

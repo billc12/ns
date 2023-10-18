@@ -50,6 +50,13 @@ export type DisInfo = {
   discountCount: number
   timestamp: number
 }
+export const DefaultDis: DisInfo = {
+  discountCode: '',
+  signature: '',
+  discount: '',
+  discountCount: 0,
+  timestamp: 0,
+}
 const DiscountCodeLabel = ({ info, setCodeCallback, name }: TDiscountCode) => {
   const { prepareDataInput } = useTransactionFlow()
   const showDiscountCodeInput = prepareDataInput('DiscountCode')

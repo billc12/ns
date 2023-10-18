@@ -40,7 +40,6 @@ const defaultData: RegistrationReducerDataItem = {
   referral: '',
   timestamp: 0,
   signature: '',
-  invitationName: '',
 }
 
 const isBrowser = !!(
@@ -67,7 +66,6 @@ const makeDefaultData = (selected: SelectedItemProperties): RegistrationReducerD
   referral: '',
   timestamp: 0,
   signature: '',
-  invitationName: '',
   ...selected,
 })
 
@@ -140,7 +138,6 @@ const reducer = (state: RegistrationReducerData, action: RegistrationReducerActi
       item.referral = action.payload.referral
       item.signature = action.payload.signature
       item.timestamp = action.payload.timestamp
-      item.invitationName = action.payload.invitationName
       break
     }
     case 'setTransactionsData': {
