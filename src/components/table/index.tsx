@@ -139,29 +139,31 @@ export const Table = ({
     <>
       {isSmDown ? (
         <>
-          {rows.map((data, ind) => (
-            <Card key={ind.toLocaleString()}>
-              <div
-                style={{
-                  display: 'grid',
-                  gap: '16px',
-                }}
-              >
-                {labels.map((headerString, index) => (
-                  <CardRow key={headerString}>
-                    <Typography
-                      style={{
-                        color: '#000000',
-                      }}
-                    >
-                      {headerString}
-                    </Typography>
-                    <Typography style={{ color: '#80829F' }}>{data[index] ?? null}</Typography>
-                  </CardRow>
-                ))}
-              </div>
-            </Card>
-          ))}
+          {!!rows.length &&
+            rows.map((data, ind) => (
+              <Card key={ind.toLocaleString()}>
+                <div
+                  style={{
+                    display: 'grid',
+                    gap: '16px',
+                  }}
+                >
+                  {labels.map((headerString, index) => (
+                    <CardRow key={headerString}>
+                      <Typography
+                        style={{
+                          color: '#000000',
+                        }}
+                      >
+                        {headerString}
+                      </Typography>
+                      <Typography style={{ color: '#80829F' }}>{data[index] ?? null}</Typography>
+                    </CardRow>
+                  ))}
+                </div>
+              </Card>
+            ))}
+          {!rows.length && <EmptyData />}
         </>
       ) : (
         <div
@@ -169,9 +171,10 @@ export const Table = ({
             width: '100%',
             minHeight: minHeight || 285,
             height: TableHeight || '100%',
-            borderRadius: noneBorder ? '0' : '10px',
+            borderRadius: '0 0 10px 10px',
             border: noneBorder ? 'none' : '1px solid var(--line, #D4D7E2)',
             background: '#FFF',
+            padding: '0 0 20px 0',
             boxShadow: noneBorder ? 'none' : '0px 4px 14px 0px rgba(40, 79, 115, 0.10)',
             overflow: 'hidden',
           }}

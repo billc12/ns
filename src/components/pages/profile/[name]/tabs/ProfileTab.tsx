@@ -113,6 +113,9 @@ const ButtonsStyle = styled.div(
     gap: 10px;
     justify-content: end;
     margin-top: 20px;
+    ${mq.sm.max(css`
+      flex-direction: column;
+    `)}
   `,
 )
 
@@ -131,13 +134,12 @@ const ButtonStyle = styled(Button)(
       height: auto;
     }
     ${mq.sm.max(css`
-      width: auto;
+      width: 100%;
       gap: 6px;
       padding: 0 6px;
-      height: 32px;
       svg {
-        width: 12px;
-        height: 12px;
+        width: 16px;
+        height: 16px;
       }
     `)}
   `,
@@ -146,9 +148,12 @@ const BtnSetAdd = styled(Button)(
   () => css`
     width: 265px;
     height: 40px;
-
     border-radius: 6px;
     background: #0049c6;
+    ${mq.sm.max(css`
+      width: 100%;
+      font-size: 14px;
+    `)}
   `,
 )
 const TimeRound = styled(Button)`

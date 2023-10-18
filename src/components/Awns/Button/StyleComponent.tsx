@@ -21,13 +21,12 @@ export const ButtonStyle = styled(Button)<{ $loading?: boolean }>(
     }
 
     ${mq.sm.max(css`
-      width: auto;
+      width: 100%;
       gap: 6px;
       padding: 0 6px;
-      height: 32px;
       svg {
-        width: 12px;
-        height: 12px;
+        width: 16px;
+        height: 16px;
       }
     `)}
   `,

@@ -114,17 +114,18 @@ const HistoryTokenList = [
 
 const AssetsTokens = styled.div(
   () => css`
-    padding-bottom: 150px;
+    /* padding-bottom: 150px; */
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     width: 100%;
     height: 100%;
-
     ${mq.sm.max(css`
-      padding: 0 20px 100px;
+      padding: 0 20px;
       display: grid;
+      align-items: unset;
+      justify-content: unset;
       gap: 10px;
     `)}
   `,
@@ -134,7 +135,7 @@ const NFTsCard = styled.div(
   () => css`
     width: 100%;
     height: 100%;
-    padding: 0 64px 100px;
+    padding: 0 64px 20px;
     display: flex;
     justify-content: flex-start;
     gap: 18px;

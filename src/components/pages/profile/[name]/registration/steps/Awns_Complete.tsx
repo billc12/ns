@@ -35,10 +35,9 @@ const StyledCard = styled(Card)(
     canvas {
       max-width: ${theme.space.full};
     }
-
-    ${mq.sm.min(css`
-      /* padding: ${theme.space['6']} ${theme.space['18']};
-      gap: ${theme.space['6']}; */
+    ${mq.sm.max(css`
+      width: 100%;
+      max-width: 100%;
     `)}
   `,
 )
@@ -199,6 +198,10 @@ const Container = styled.div`
   & .btn {
     grid-column: 2;
   }
+  ${mq.sm.max(css`
+    display: flex;
+    flex-direction: column;
+  `)}
 `
 const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
   const { normalisedName: name, beautifiedName } = nameDetails

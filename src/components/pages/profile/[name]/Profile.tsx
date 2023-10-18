@@ -113,6 +113,8 @@ const ContentStyle = styled.div(
     min-height: 500px;
     border-radius: 10px;
     border: 1px solid var(--line, #d4d7e2);
+    display: flex;
+    flex-direction: column;
   `,
 )
 
@@ -120,6 +122,7 @@ const CardsStyle = styled.div(
   () => css`
     display: flex;
     height: 80px;
+    min-height: 80px;
     justify-content: space-between;
     align-items: center;
     padding: 0 80px 0 30px;

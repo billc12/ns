@@ -4,9 +4,7 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { useQuery, useQueryClient } from 'wagmi'
-
-import { Input } from '@ensdomains/thorin'
-
+import { Input ,mq} from '@ensdomains/thorin'
 import { Spacer } from '@app/components/@atoms/Spacer'
 import { useEns } from '@app/utils/EnsProvider'
 import useDebouncedCallback from '@app/hooks/useDebouncedCallback';
@@ -14,8 +12,7 @@ import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 import { DisplayItems } from './TransactionDialogManager/DisplayItems'
 
 
-const InnerContainer = styled.div(() => [
-  css`
+const InnerContainer = styled.div `
     width: 100%;
     border-radius: 10px;
     border: 1px solid  #D4D7E2;
@@ -28,8 +25,10 @@ const InnerContainer = styled.div(() => [
       }
       
     }
-  `,
-])
+    ${mq.sm.max(css`
+      margin-bottom:0;
+    `)}
+  `
 const AddressInput = styled(Input)`
 border:none;
 `
