@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components'
 
 import { Button, mq } from '@ensdomains/thorin'
 
+import { LoadingOverlay } from '@app/components/LoadingOverlay'
 import { Table } from '@app/components/table'
 import useReferralRewards from '@app/hooks/requst/useReferralRewardsCallback'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
@@ -179,7 +180,7 @@ export default function Rewards() {
   const { address } = useAccountSafely()
   const primary = usePrimary(address!, !address)
 
-  const { data: RewardsDetails } = useReferralRewards(
+  const { data: RewardsDetails, isLoading } = useReferralRewards(
     primary.data?.beautifiedName ? primary.data?.beautifiedName.slice(0, -3) : '',
   )
 
@@ -202,76 +203,83 @@ export default function Rewards() {
       </TableContentStyle>,
     ])
   }, [RewardsDetails?.list])
-
+  console.log('isLoading=>', isLoading)
   return (
     <>
-      <ContentStyle>
-        <HeaderTitles>
-          <TitleStyle>Referral Rewards</TitleStyle>
-          <SubtitleStyle>
-            Apply for AWNS and enter the AWNS of the referrer to get rewards.
-          </SubtitleStyle>
-        </HeaderTitles>
-        <BodyStyle>
-          <CenterLeftStyle>
-            <ClaimStyle>
-              <ContentTitleStyle>Available rewards</ContentTitleStyle>
-              <LeftContentStyle>0.04ETH</LeftContentStyle>
-              <ButtonStyle>Claim</ButtonStyle>
-            </ClaimStyle>
-            <LeftItemStyle>
-              <ContentTitleStyle>Total rewards</ContentTitleStyle>
-              <LeftContentStyle>
-                {totalNum ? makeDisplay(totalNum, undefined, 'eth', 18) : '0ETH'}
-              </LeftContentStyle>
-            </LeftItemStyle>
-            <LeftItemStyle>
-              <ContentTitleStyle>Direct referrals</ContentTitleStyle>
-              <LeftContentStyle>{RewardsDetails?.countDirect || '0'}</LeftContentStyle>
-            </LeftItemStyle>
-            <LeftItemStyle>
-              <ContentTitleStyle>Indirect referrals</ContentTitleStyle>
-              <LeftContentStyle>{RewardsDetails?.countIndirect || '0'}</LeftContentStyle>
-            </LeftItemStyle>
-            <LeftItemStyle>
-              <ContentTitleStyle>Number of lucky draws</ContentTitleStyle>
-              <LeftOpenStyle>
-                <LeftContentStyle>0</LeftContentStyle>
-                <ButtonStyle style={{ width: '100px' }}>Open</ButtonStyle>
-              </LeftOpenStyle>
-            </LeftItemStyle>
-          </CenterLeftStyle>
-          <CenterRightStyle>
-            <BottomTitleStyle style={{ padding: '20px 30px' }}>Rewards details</BottomTitleStyle>
-            <StyledTable>
-              <Table
-                labels={['Date', 'AWNS', 'Type', 'Rewards']}
-                rows={RewardsDetailsTableList}
-                noneBorder
-              />
-            </StyledTable>
-          </CenterRightStyle>
-        </BodyStyle>
-        <BottomStyle>
-          <BottomTitleStyle>Terms & Conditions</BottomTitleStyle>
-          <BottomContentStyle>
-            <>1.Each user will get an invitation code after registering AWNS.</>
-            <br />
-            <>
-              2.Signing up for AWNS with an invitation code entitles the inviter and invitee to a
-              10% commission bonus on ETH,
-            </>
-            <br />
+      {RewardsDetails && !isLoading ? (
+        <ContentStyle>
+          <HeaderTitles>
+            <TitleStyle>Referral Rewards</TitleStyle>
+            <SubtitleStyle>
+              Apply for AWNS and enter the AWNS of the referrer to get rewards.
+            </SubtitleStyle>
+          </HeaderTitles>
+          <BodyStyle>
+            <CenterLeftStyle>
+              <ClaimStyle>
+                <ContentTitleStyle>Available rewards</ContentTitleStyle>
+                <LeftContentStyle>0.04ETH</LeftContentStyle>
+                <ButtonStyle>Claim</ButtonStyle>
+              </ClaimStyle>
+              <LeftItemStyle>
+                <ContentTitleStyle>Total rewards</ContentTitleStyle>
+                <LeftContentStyle>
+                  {totalNum ? makeDisplay(totalNum, undefined, 'eth', 18) : '0ETH'}
+                </LeftContentStyle>
+              </LeftItemStyle>
+              <LeftItemStyle>
+                <ContentTitleStyle>Direct referrals</ContentTitleStyle>
+                <LeftContentStyle>{RewardsDetails?.countDirect || '0'}</LeftContentStyle>
+              </LeftItemStyle>
+              <LeftItemStyle>
+                <ContentTitleStyle>Indirect referrals</ContentTitleStyle>
+                <LeftContentStyle>{RewardsDetails?.countIndirect || '0'}</LeftContentStyle>
+              </LeftItemStyle>
+              <LeftItemStyle>
+                <ContentTitleStyle>Number of lucky draws</ContentTitleStyle>
+                <LeftOpenStyle>
+                  <LeftContentStyle>0</LeftContentStyle>
+                  <ButtonStyle style={{ width: '100px' }}>Open</ButtonStyle>
+                </LeftOpenStyle>
+              </LeftItemStyle>
+            </CenterLeftStyle>
+            <CenterRightStyle>
+              <BottomTitleStyle style={{ padding: '20px 30px' }}>Rewards details</BottomTitleStyle>
+              <StyledTable>
+                <Table
+                  labels={['Date', 'AWNS', 'Type', 'Rewards']}
+                  rows={RewardsDetailsTableList}
+                  noneBorder
+                />
+              </StyledTable>
+            </CenterRightStyle>
+          </BodyStyle>
+          <BottomStyle>
+            <BottomTitleStyle>Terms & Conditions</BottomTitleStyle>
+            <BottomContentStyle>
+              <>1.Each user will get an invitation code after registering AWNS.</>
+              <br />
+              <>
+                2.Signing up for AWNS with an invitation code entitles the inviter and invitee to a
+                10% commission bonus on ETH,
+              </>
+              <br />
 
-            <>
-              3.respectively Whitelisted users will receive 20% commission on their invitation code.
-            </>
-            <br />
+              <>
+                3.respectively Whitelisted users will receive 20% commission on their invitation
+                code.
+              </>
+              <br />
 
-            <>4.Invitation code used up to 5 times will get a chance to win a lucky draw.</>
-          </BottomContentStyle>
-        </BottomStyle>
-      </ContentStyle>
+              <>4.Invitation code used up to 5 times will get a chance to win a lucky draw.</>
+            </BottomContentStyle>
+          </BottomStyle>
+        </ContentStyle>
+      ) : (
+        <>
+          <LoadingOverlay />
+        </>
+      )}
     </>
   )
 }
