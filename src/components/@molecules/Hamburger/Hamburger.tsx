@@ -4,7 +4,7 @@ import styled, { css, keyframes } from 'styled-components'
 import { CrossSVG, DynamicPopover, MenuSVG, Modal, Spinner } from '@ensdomains/thorin'
 
 import { useInitial } from '@app/hooks/useInitial'
-import { useBreakpoint } from '@app/utils/BreakpointProvider'
+// import { useBreakpoint } from '@app/utils/BreakpointProvider'
 import { useGraphOutOfSync } from '@app/utils/SyncProvider/SyncProvider'
 
 import LanguageMenu from './LanguageMenu'
@@ -128,7 +128,7 @@ const SlideContainer = styled.div<{ $direction: 'backwards' | 'forwards' }>(
 type View = 'main' | 'language'
 
 const Hamburger = () => {
-  const breakpoints = useBreakpoint()
+  // const breakpoints = useBreakpoint()
 
   const containerRef = useRef<HTMLDivElement>(null)
   const btnRef = useRef<HTMLButtonElement>(null)
@@ -239,26 +239,26 @@ const Hamburger = () => {
       {animation?.direction === 'forwards' ? animation.component : currentComponent}
     </>
   )
-
+  const isShow = false
   return (
     <>
       {button}
-      {breakpoints.sm ? (
-        <DynamicPopover
-          isOpen={isOpen}
-          anchorRef={btnRef}
-          popover={
-            <DesktopDropdownCard ref={containerRef} style={{ height: height || undefined }}>
-              {componentWithAnimation}
-            </DesktopDropdownCard>
-          }
-          onShowCallback={renderCallback}
-          placement="bottom"
-          width={320}
-          transitionDuration={150}
-          align="end"
-        />
-      ) : (
+
+      <DynamicPopover
+        isOpen={isOpen}
+        anchorRef={btnRef}
+        popover={
+          <DesktopDropdownCard ref={containerRef} style={{ height: height || undefined }}>
+            {componentWithAnimation}
+          </DesktopDropdownCard>
+        }
+        onShowCallback={renderCallback}
+        placement="bottom"
+        width={320}
+        transitionDuration={150}
+        align="end"
+      />
+      {isShow && (
         <Modal
           renderCallback={renderCallback}
           open={isOpen}

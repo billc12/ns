@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components'
 
 import { CrossSVG, LeftChevronSVG, PersonSVG, mq } from '@ensdomains/thorin'
 
-import useHasPendingTransactions from '@app/hooks/transactions/useHasPendingTransactions'
+// import useHasPendingTransactions from '@app/hooks/transactions/useHasPendingTransactions'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useAvatar } from '@app/hooks/useAvatar'
 import { useChainId } from '@app/hooks/useChainId'
@@ -188,7 +188,7 @@ const TabBarProfile = ({
   const chainId = useChainId()
   const { avatar } = useAvatar(name, chainId)
   const zorb = useZorb(address, 'address')
-  const hasPendingTransactions = useHasPendingTransactions()
+  // const hasPendingTransactions = useHasPendingTransactions()
 
   return (
     <ExtraNavWrapper $isOpen={isOpen}>
@@ -209,7 +209,7 @@ const TabBarProfile = ({
           active={router.asPath === getDestination(`/profile/${name}`)}
         />
       )}
-      <RouteItem route={getRoute('settings')} hasNotification={hasPendingTransactions} />
+      {/* <RouteItem route={getRoute('settings')} hasNotification={hasPendingTransactions} /> */}
       <DisconnectButton />
     </ExtraNavWrapper>
   )
