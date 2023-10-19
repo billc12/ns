@@ -70,6 +70,9 @@ export const DialogStyle = styled(Dialog)`
     padding: 25px 28px;
     align-items: flex-start;
     justify-content: flex-start;
+    ${mq.sm.max(css`
+      width: 100%;
+    `)}
     & > div:first-child > div {
       color: #3f5170;
       font-size: 14px;
