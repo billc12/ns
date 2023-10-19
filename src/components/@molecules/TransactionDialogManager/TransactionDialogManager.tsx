@@ -4,9 +4,12 @@
 import { Dispatch, useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import usePrevious from 'react-use/lib/usePrevious'
+import styled from 'styled-components'
 import { WagmiConfig, useAccount } from 'wagmi'
 
-import { DialogStyle } from '@app/components/Awns/Dialog'
+import { Dialog } from '@ensdomains/thorin'
+
+// import { DialogStyle } from '@app/components/Awns/Dialog'
 import { useChainId } from '@app/hooks/useChainId'
 import { transactions } from '@app/transaction-flow/transaction'
 import { wagmiClientWithRefetch } from '@app/utils/query'
@@ -16,6 +19,30 @@ import { InternalTransactionFlow, TransactionFlowAction } from '../../../transac
 // import InputComponentWrapper from './InputComponentWrapper'
 import { IntroStageModal } from './stage/Intro'
 import { TransactionStageModal } from './stage/TransactionStageModal'
+
+export const DialogStyle = styled(Dialog)`
+  & > div > div:nth-child(1) {
+    background: #f0f0f0;
+    display: none;
+  }
+  & > div > div:nth-child(2) {
+    align-items: start;
+    width: 100%;
+    > div {
+      color: var(--word-color, #3f5170);
+      font-family: Poppins;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 24px;
+    }
+  }
+  & > div > button {
+    top: 13px;
+    right: 13px;
+    width: 24px;
+    height: 24px;
+  }
+`
 
 export const useResetSelectedKey = (dispatch: any) => {
   const { address } = useAccount()

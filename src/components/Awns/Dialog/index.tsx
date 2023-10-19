@@ -86,11 +86,10 @@ export const DialogStyle = styled(Dialog)`
   }
 
   & > div > button {
-    top: 2.5rem;
-    & svg {
-      width: 20px;
-      height: 20px;
-    }
+    top: 13px;
+    right: 13px;
+    width: 24px;
+    height: 24px;
   }
   ${mq.sm.max(css`
     width: 100%;
