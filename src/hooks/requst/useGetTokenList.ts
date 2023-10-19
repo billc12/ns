@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useQuery } from 'wagmi'
 
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
@@ -21,15 +22,20 @@ const fetchGetTokenList = async (_params: Params) => {
   return result.json<{ data: any[] }>()
 }
 const useGetTokenList = ({ name, chain = 'eth' }: IFnProps) => {
+  const [loading, setLoading] = useState<boolean>(false)
+
   const { accountAddress: account } = useGetNftAddress(name)
   const queryKey = useQueryKeys().getUserTokenList
-  const { data, isLoading } = useQuery(
+  const { data } = useQuery(
     queryKey(name, account!, chain),
     async () => {
+      setLoading(true)
       try {
         const res = await fetchGetTokenList({ account: account!, chain })
+        setLoading(false)
         return res.data
       } catch {
+        setLoading(false)
         return undefined
       }
     },
@@ -37,6 +43,6 @@ const useGetTokenList = ({ name, chain = 'eth' }: IFnProps) => {
       enabled: !!account,
     },
   )
-  return { data, isLoading }
+  return { data, loading }
 }
 export default useGetTokenList
