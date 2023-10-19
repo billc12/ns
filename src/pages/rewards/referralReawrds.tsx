@@ -2,13 +2,14 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { useMemo } from 'react'
 import styled, { css } from 'styled-components'
 
-import { Button, mq } from '@ensdomains/thorin'
+import { Button, Skeleton, mq } from '@ensdomains/thorin'
 
 import { LoadingOverlay } from '@app/components/LoadingOverlay'
 import { Table } from '@app/components/table'
 import useReferralRewards from '@app/hooks/requst/useReferralRewardsCallback'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { usePrimary } from '@app/hooks/usePrimary'
+import { useRewardsInfo } from '@app/hooks/useRewardsInfo'
 import { timestampToDateFormat } from '@app/utils'
 import { makeDisplay } from '@app/utils/currency'
 
@@ -180,18 +181,12 @@ export default function Rewards() {
   const { address } = useAccountSafely()
   const primary = usePrimary(address!, !address)
 
-  const { data: RewardsDetails, isLoading } = useReferralRewards(
+  const { data: RewardsDetails, isLoading: rewardsLoading } = useReferralRewards(
     primary.data?.beautifiedName ? primary.data?.beautifiedName.slice(0, -3) : '',
   )
-
-  const totalNum = useMemo(() => {
-    if (!RewardsDetails?.list.length) return
-    return RewardsDetails?.list.reduce((accumulator, currentValue) => {
-      return accumulator.add(currentValue.reward)
-    }, BigNumber.from(0))
-  }, [RewardsDetails?.list])
-
-  console.log('RewardsDetailsList=>', RewardsDetails)
+  const { vailableRewards, loading } = useRewardsInfo(
+    RewardsDetails?.totalRewards || BigNumber.from(0),
+  )
   const RewardsDetailsTableList = useMemo(() => {
     if (!RewardsDetails?.list) return []
     return RewardsDetails?.list?.map(({ referral, reward, timestamp, type }) => [
@@ -203,10 +198,9 @@ export default function Rewards() {
       </TableContentStyle>,
     ])
   }, [RewardsDetails?.list])
-  console.log('isLoading=>', isLoading)
   return (
     <>
-      {RewardsDetails && !isLoading ? (
+      {RewardsDetails && !rewardsLoading ? (
         <ContentStyle>
           <HeaderTitles>
             <TitleStyle>Referral Rewards</TitleStyle>
@@ -218,14 +212,22 @@ export default function Rewards() {
             <CenterLeftStyle>
               <ClaimStyle>
                 <ContentTitleStyle>Available rewards</ContentTitleStyle>
-                <LeftContentStyle>0.04ETH</LeftContentStyle>
+                <Skeleton loading={loading}>
+                  <LeftContentStyle>
+                    {makeDisplay(vailableRewards, undefined, 'eth', 18)}
+                  </LeftContentStyle>
+                </Skeleton>
                 <ButtonStyle>Claim</ButtonStyle>
               </ClaimStyle>
               <LeftItemStyle>
                 <ContentTitleStyle>Total rewards</ContentTitleStyle>
-                <LeftContentStyle>
-                  {totalNum ? makeDisplay(totalNum, undefined, 'eth', 18) : '0ETH'}
-                </LeftContentStyle>
+                <Skeleton loading={rewardsLoading}>
+                  <LeftContentStyle>
+                    {RewardsDetails.totalRewards
+                      ? makeDisplay(RewardsDetails.totalRewards, undefined, 'eth', 18)
+                      : '0ETH'}
+                  </LeftContentStyle>
+                </Skeleton>
               </LeftItemStyle>
               <LeftItemStyle>
                 <ContentTitleStyle>Direct referrals</ContentTitleStyle>
@@ -250,6 +252,7 @@ export default function Rewards() {
                   labels={['Date', 'AWNS', 'Type', 'Rewards']}
                   rows={RewardsDetailsTableList}
                   noneBorder
+                  isLoading={rewardsLoading}
                 />
               </StyledTable>
             </CenterRightStyle>

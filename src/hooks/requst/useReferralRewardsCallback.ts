@@ -1,3 +1,4 @@
+import { BigNumber } from '@ethersproject/bignumber'
 import { useQuery } from 'wagmi'
 
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
@@ -20,6 +21,7 @@ interface IResult {
   countDirect: number
   countIndirect: number
   list: ResListProp[]
+  totalRewards: BigNumber
 }
 const BaseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`
 const fetchGetRewards = async (params: Params) => {
@@ -33,12 +35,15 @@ const useReferralRewards = (name: string) => {
   const offset = 0
   const limit = 10
   const queryKey = useQueryKeys().getReferralRewards
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     queryKey(name, offset, limit),
     async () => {
       try {
         const result = await fetchGetRewards({ name, offset, limit })
-        return result.data
+        const totalRewards = result.data?.list.reduce((accumulator, currentValue) => {
+          return accumulator.add(currentValue.reward)
+        }, BigNumber.from(0))
+        return { ...result.data, totalRewards }
       } catch {
         return undefined
       }
@@ -48,7 +53,7 @@ const useReferralRewards = (name: string) => {
       refetchOnWindowFocus: 'always',
     },
   )
-  return { data, isLoading }
+  return { data, isLoading, refetch }
 }
 
 export default useReferralRewards
