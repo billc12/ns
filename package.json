@@ -227,5 +227,6 @@
       "next-dev-https@0.1.2": "patches/next-dev-https@0.1.2.patch",
       "@rainbow-me/rainbowkit@0.12.15": "patches/@rainbow-me__rainbowkit@0.12.15.patch"
     }
-  }
+  },
+  "packageManager": "pnpm@8.7.4"
 }
