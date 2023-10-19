@@ -31,6 +31,7 @@ const useSignName = (name: string, discountCode?: string) => {
 
         return {
           ...result,
+          discountRate: result.discountRate || (1e18).toString(),
           isPremium: result.signature === '0x',
           hasDiscount: Number(formatFixed(result.discountRate, 18)) < 1,
         }
