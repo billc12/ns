@@ -52,12 +52,21 @@ export const NextButton = styled(Button)`
 `
 
 export const DialogStyle = styled(Dialog)`
-  width: max-content;
+  /* width: max-content; */
   border-radius: 10px;
   border: 1px solid #d4d7e2;
-  background: #fff;
+
+  /* background: #fff; */
+
   box-shadow: 0 6px 10px 0 rgba(0, 73, 198, 0.1);
+  width: 100vw !important;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(16px);
+
   & > div:first-child {
+    width: max-content;
     padding: 25px 28px;
     align-items: flex-start;
     justify-content: flex-start;

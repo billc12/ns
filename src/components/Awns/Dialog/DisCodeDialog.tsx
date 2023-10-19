@@ -89,7 +89,7 @@ const Row = styled.div`
     margin-top: 30px;
   `)}
 `
-const Mark = styled.div``
+
 const setInitCode = (i: string) => {
   if (!i) return ''
   if (!Number(i)) return ''
@@ -119,8 +119,7 @@ const DiscountCode = ({ info, setCodeCallback, name, show, onCancel }: Props) =>
   const discount = hasDiscount && Number(formatFixed(signData?.discountRate || '0', 18)) * 100
 
   return (
-    <DialogStyle variant="actionable" open={show} onDismiss={onDismiss}>
-      <Mark />
+    <DialogStyle variant="closable" open={show} onDismiss={onDismiss}>
       <Dialog.Heading title="Discount Code" />
       <Container>
         <Label>Please enter the discount code</Label>
