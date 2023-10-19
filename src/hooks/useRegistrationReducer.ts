@@ -40,6 +40,8 @@ const defaultData: RegistrationReducerDataItem = {
   referral: '',
   timestamp: 0,
   signature: '',
+  premium: false,
+  booker: '0x0000000000000000000000000000000000000000',
 }
 
 const isBrowser = !!(
@@ -66,6 +68,8 @@ const makeDefaultData = (selected: SelectedItemProperties): RegistrationReducerD
   referral: '',
   timestamp: 0,
   signature: '',
+  premium: false,
+  booker: '0x0000000000000000000000000000000000000000',
   ...selected,
 })
 

@@ -27,9 +27,11 @@ export const usePrice = (nameOrNames: string | string[], years = 1, legacy?: boo
     async () =>
       getPrice(
         names.map((n) => n.split('.')[0])?.[0],
+        signName?.premium!,
+        signName?.booker!,
         yearsToSeconds(1),
-        signName?.signature || '0x',
-        signName?.discountRate!,
+        signName?.signature!,
+        signName?.discount!,
         signName?.discountCount!,
         signName?.discountCode!,
         signName?.timestamp!,

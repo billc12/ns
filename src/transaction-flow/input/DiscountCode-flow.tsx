@@ -100,7 +100,7 @@ const DiscountCode = ({ data: { info, setCodeCallback, name }, onDismiss }: Prop
   const saveCode = () => {
     setCodeCallback({
       ...info,
-      discount: signData?.discountRate!,
+      discount: signData?.discount!,
       discountCode: signData?.discountCode!,
       discountCount: signData?.discountCount!,
       timestamp: signData?.timestamp!,
@@ -109,7 +109,7 @@ const DiscountCode = ({ data: { info, setCodeCallback, name }, onDismiss }: Prop
     onDismiss()
   }
   const hasDiscount = signData && signData.hasDiscount
-  const discount = hasDiscount && Number(formatFixed(signData?.discountRate || '0', 18)) * 100
+  const discount = hasDiscount && Number(formatFixed(signData?.discount || '0', 18)) * 100
 
   return (
     <>

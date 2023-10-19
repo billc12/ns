@@ -175,11 +175,13 @@ export const useEstimateFullRegistration = ({ registrationData, price, name }: F
       fuses,
       records,
       reverseRecord,
-      discount: signData?.discountRate!,
+      discount: signData?.discount!,
       discountCode: signData?.discountCode!,
       discountCount: signData?.discountCount!,
       referral: referralData?.reward!,
       timestamp: signData?.timestamp!,
+      booker: signData?.booker!,
+      premium: signData?.premium!,
     })
   const estimatedGasLoading = gasPriceLoading || registrationGasLoading
   const estimatedGasFee = useMemo(() => {

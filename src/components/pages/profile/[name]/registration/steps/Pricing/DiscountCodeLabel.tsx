@@ -49,6 +49,8 @@ export type DisInfo = {
   discount: string
   discountCount: number
   timestamp: number
+  premium: boolean
+  booker: string
 }
 export const DefaultDis: DisInfo = {
   discountCode: '',
@@ -56,6 +58,8 @@ export const DefaultDis: DisInfo = {
   discount: '',
   discountCount: 0,
   timestamp: 0,
+  premium: false,
+  booker: '0x0000000000000000000000000000000000000000',
 }
 const DiscountCodeLabel = ({ info, setCodeCallback, name }: TDiscountCode) => {
   const [showDia, setShowDia] = useState(false)
@@ -72,13 +76,23 @@ const DiscountCodeLabel = ({ info, setCodeCallback, name }: TDiscountCode) => {
 
   const cleanCode = async () => {
     fetchedGetSignName(name, '').then(
-      ({ discountCode, discountCount, discountRate, signature, timestamp }) => {
+      ({
+        discountCode,
+        discountCount,
+        discount: _discount,
+        signature,
+        timestamp,
+        booker,
+        premium,
+      }) => {
         setCodeCallback({
-          discount: discountRate,
+          discount: _discount,
           discountCode,
           discountCount,
           signature,
           timestamp,
+          booker,
+          premium,
         })
       },
     )
@@ -110,29 +124,18 @@ const DiscountCodeLabel = ({ info, setCodeCallback, name }: TDiscountCode) => {
 
 const DiscountCodeLabelProvider = (initData: DisInfo, name: string) => {
   const [disInfo, setDisInfo] = useState<DisInfo>({
-    discount: initData.discount,
-    discountCode: initData.discountCode,
-    discountCount: initData.discountCount,
-    timestamp: initData.timestamp,
-    signature: initData.signature,
+    ...initData,
   })
   const handleDisInfo = (d: DisInfo) => {
     setDisInfo(d)
   }
   useEffect(() => {
     if (!initData.discountCode || !Number(initData.discountCode)) {
-      fetchedGetSignName(name, '').then(
-        ({ discountCode, discountCount, discountRate, signature, timestamp }) => {
-          setDisInfo({
-            ...disInfo,
-            discount: discountRate,
-            discountCode,
-            discountCount,
-            signature,
-            timestamp,
-          })
-        },
-      )
+      fetchedGetSignName(name, '').then((info) => {
+        setDisInfo({
+          ...info,
+        })
+      })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

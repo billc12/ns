@@ -4,21 +4,29 @@ import { useQuery } from 'wagmi'
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 
 type Result = {
-  data: {
-    signature: string
-    discountCode: string
-    discountRate: string
-    discountCount: number
-    timestamp: number
-  }
+  signature: string
+  discountCode: string
+  discount: string
+  discountCount: number
+  timestamp: number
+  premium: boolean
+  booker: string
 }
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/sign/name`
 
-export const fetchedGetSignName = async (n: string, d: string) => {
-  const response = await fetch(`${BASE_URL}?name=${n}&discountCode=${d}`).then((res) =>
-    res.json<Result>(),
+export const fetchedGetSignName = async (n: string, d: string): Promise<Result> => {
+  const { data } = await fetch(`${BASE_URL}?name=${n}&discountCode=${d}`).then((res) =>
+    res.json<any>(),
   )
-  return response.data
+  return {
+    signature: data.signature,
+    discountCode: data.discountCode,
+    discount: data.discountRate,
+    discountCount: data.discountCount,
+    timestamp: data.timestamp,
+    premium: data.premium,
+    booker: data.booker,
+  }
 }
 
 const useSignName = (name: string, discountCode?: string) => {
@@ -31,9 +39,8 @@ const useSignName = (name: string, discountCode?: string) => {
 
         return {
           ...result,
-          discountRate: result.discountRate || (1e18).toString(),
           isPremium: result.signature === '0x',
-          hasDiscount: Number(formatFixed(result.discountRate, 18)) < 1,
+          hasDiscount: Number(formatFixed(result.discount, 18)) < 1,
         }
       } catch {
         return null

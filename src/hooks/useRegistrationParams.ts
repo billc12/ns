@@ -24,6 +24,8 @@ type Props = {
     | 'timestamp'
     | 'referral'
     | 'signature'
+    | 'booker'
+    | 'premium'
   >
 }
 
@@ -54,6 +56,8 @@ const useRegistrationParams = ({ name, owner, registrationData }: Props) => {
       referral: registrationData.referral,
       timestamp: registrationData.timestamp,
       signature: registrationData.signature,
+      booker: registrationData.booker,
+      premium: registrationData.premium,
     }),
     [owner, name, registrationData],
   )

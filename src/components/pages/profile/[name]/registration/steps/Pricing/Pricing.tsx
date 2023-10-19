@@ -753,6 +753,8 @@ const Pricing = ({
     discountCount: registrationData.discountCount,
     timestamp: registrationData.timestamp,
     signature: registrationData.signature,
+    booker: registrationData.booker,
+    premium: registrationData.premium,
   }
   const { disLabel, disInfo } = DiscountCodeLabelProvider(initDis, nameDetails.normalisedName)
   const { data: signData } = useSignName(nameDetails.normalisedName, disInfo.discountCode)

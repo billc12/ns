@@ -10,6 +10,7 @@ import { Accounts, User } from 'playwright/fixtures/accounts'
 import { Contracts } from 'playwright/fixtures/contracts'
 import { Provider } from 'playwright/fixtures/provider'
 
+import { DisInfo } from '@app/components/pages/profile/[name]/registration/steps/Pricing/DiscountCodeLabel'
 import { NAMEWRAPPER_AWARE_RESOLVERS } from '@app/utils/constants'
 
 import { generateRecords } from './generateRecords'
@@ -31,11 +32,7 @@ export type Name = {
   subnames?: Omit<WrappedSubname, 'name' | 'nameOwner'>[]
   offset?: number
   referral: string
-  discount: string
-  discountCount: number
-  discountCode: string
-  timestamp: number
-}
+} & DisInfo
 
 type Dependencies = {
   accounts: Accounts
@@ -61,6 +58,8 @@ export const generateWrappedName =
     discountCount,
     timestamp,
     referral,
+    booker,
+    premium,
   }: Name) => {
     const name = `${label}.eth`
     console.log('generating wrapped name:', name)
@@ -98,6 +97,8 @@ export const generateWrappedName =
       discountCount,
       timestamp,
       referral,
+      booker,
+      premium,
     })
     const commitTx = await controller.commit(commitment)
     await commitTx.wait()
@@ -123,6 +124,8 @@ export const generateWrappedName =
         discountCount,
         referral,
         timestamp,
+        booker,
+        premium,
       }),
       {
         value: price[0],

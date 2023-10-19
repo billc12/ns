@@ -38,30 +38,7 @@ const getBatchData = async (
   const signData = await fetchedGetSignName(name, '')
 
   const labels = name.split('.')
-  try {
-    const res = await ens.getPrice(
-      labels[0],
-      yearsToSeconds(1),
-      signData.signature,
-      signData.discountRate,
-      signData.discountCount,
-      signData.discountCode,
-      signData.timestamp,
-    )
-    console.log(
-      'ss',
-      yearsToSeconds(1),
-      signData.signature,
-      signData.discountRate,
-      signData.discountCount,
-      signData.discountCode,
-      signData.timestamp,
-    )
 
-    console.log('resresres', res)
-  } catch (error) {
-    console.log('errorerror111', error)
-  }
   if (validation.isETH && validation.is2LD) {
     if (validation.isShort) {
       return Promise.resolve([])
@@ -72,9 +49,11 @@ const getBatchData = async (
       ens.getExpiry.batch(name),
       ens.getPrice.batch(
         labels[0],
+        signData.premium,
+        signData.booker,
         yearsToSeconds(1),
         signData.signature,
-        signData.discountRate,
+        signData.discount,
         signData.discountCount,
         signData.discountCode,
         signData.timestamp,

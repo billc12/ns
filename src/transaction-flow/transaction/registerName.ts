@@ -2,7 +2,6 @@ import type { JsonRpcSigner } from '@ethersproject/providers'
 import { BaseRegistrationParams } from '@myclique/awnsjs/utils/registerHelpers'
 import type { TFunction } from 'react-i18next'
 
-import { fetchedGetSignName } from '@app/hooks/names/useSignName'
 import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
 import { calculateValueWithBuffer, secondsToYears } from '@app/utils/utils'
 
@@ -30,15 +29,16 @@ const displayItems = (
 ]
 
 const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) => {
-  const signData = await fetchedGetSignName(data.name, '')
   const price = await ens.getPrice(
     data.name.split('.')[0],
+    data.premium,
+    data.booker,
     data.duration,
-    signData.signature || '0x',
-    signData?.discountRate!,
-    signData?.discountCount!,
-    signData?.discountCode!,
-    signData?.timestamp!,
+    data.signature,
+    data?.discount as string,
+    data?.discountCount as number,
+    data?.discountCode as string,
+    data?.timestamp as number,
   )
 
   const value = price!.base.add(price!.premium)

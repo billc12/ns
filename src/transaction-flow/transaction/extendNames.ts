@@ -52,7 +52,17 @@ const helper = (data: Data, t: TFunction<'translation', undefined>): HelperProps
 }
 
 const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) => {
-  const { names, duration, signature, discount, discountCount, discountCode, timestamp } = data
+  const {
+    names,
+    duration,
+    signature,
+    discount,
+    discountCount,
+    discountCode,
+    timestamp,
+    booker,
+    premium,
+  } = data
   const labels = names.map((name) => {
     const parts = name.split('.')
     if (parts.length > 2) throw new Error('Currently only supports 1st level names')
@@ -62,6 +72,8 @@ const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) =>
 
   const price = await ens.getPrice(
     labels,
+    premium,
+    booker,
     duration,
     signature,
     discount,
@@ -73,6 +85,8 @@ const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) =>
 
   const priceWithBuffer = calculateValueWithBuffer(price.base)
   return ens.renewNames.populateTransaction(names, {
+    premium,
+    booker,
     duration,
     value: priceWithBuffer,
     signer,

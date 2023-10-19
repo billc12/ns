@@ -193,7 +193,7 @@ type Data = {
 export type Props = {
   data: Data
 } & TransactionDialogPassthrough
-
+// Deprecated
 const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) => {
   const { t } = useTranslation('transactionFlow')
 
@@ -216,7 +216,19 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
 
   // const totalRentFee = rentFee ? rentFee.mul(years) : undefined
   const transactions = [
-    makeTransactionItem('extendNames', { names, duration, rentPrice: totalYearlyFee!, isSelf }),
+    makeTransactionItem('extendNames', {
+      names,
+      duration,
+      rentPrice: totalYearlyFee!,
+      isSelf,
+      discountCode: '',
+      signature: '',
+      discount: '',
+      discountCount: 0,
+      timestamp: 0,
+      premium: false,
+      booker: '0x0',
+    }),
   ]
 
   const {
