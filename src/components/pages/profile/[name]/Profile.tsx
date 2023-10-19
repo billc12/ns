@@ -28,8 +28,8 @@ import { formatFullExpiry, makeEtherscanLink, shortenAddress } from '@app/utils/
 import { shouldShowSuccessPage } from '../../import/[name]/shared'
 import { AccountHeader } from '../AccountHeader'
 import { BigPremiumText } from './registration/PremiumTitle'
-import { AssetsTab } from './tabs/AssetsTab'
 import { InvitationCode } from './tabs/InvitationCodeTab'
+import { ProflieAssetsTab } from './tabs/ProAssetsTab'
 // import MoreTab from './tabs/MoreTab/MoreTab'
 // import { PermissionsTab } from './tabs/PermissionsTab/PermissionsTab'
 import ProfileTab from './tabs/ProfileTab'
@@ -450,7 +450,7 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
             {tab === 'detail' ? (
               <ProfileTab name={normalisedName} nameDetails={nameDetails} />
             ) : tab === 'assets' ? (
-              <AssetsTab nameDetails={nameDetails} />
+              <ProflieAssetsTab name={nameDetails.beautifiedName} />
             ) : (
               <>
                 <InvitationCode />

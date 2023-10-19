@@ -197,5 +197,12 @@ export const useQueryKeys = () => {
       offset,
       limit,
     ],
+    getAssetsHistory: (
+      chain: string,
+      account: string,
+      tokenId?: string,
+      startTime?: string,
+      pageCount?: string,
+    ) => [...globalKeys, 'getAssetsHistory', chain, account, tokenId, startTime, pageCount],
   }
 }
