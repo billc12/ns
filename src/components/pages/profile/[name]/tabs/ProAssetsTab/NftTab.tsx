@@ -119,7 +119,7 @@ const SpinnerBox = styled.div`
 `
 
 export function NftTab({ name }: { name: string }) {
-  const { data, isLoading } = useGetUserNFT({
+  const { data, loading } = useGetUserNFT({
     name,
   })
   const refresh = useRefreshNFTScan()
@@ -143,7 +143,7 @@ export function NftTab({ name }: { name: string }) {
     })
   }
 
-  if (isLoading) {
+  if (loading) {
     return (
       <SpinnerBox>
         <Spinner color="accent" size="large" />

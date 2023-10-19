@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { useQuery } from 'wagmi'
 
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
@@ -38,6 +38,7 @@ const useGetUserNFT = ({
   limit = 10,
 }: HookParams) => {
   const { accountAddress: account } = useGetNftAddress(name)
+  const [loading, setLoading] = useState<boolean>(false)
   const params: Params = {
     chainId,
     ercType,
@@ -49,13 +50,16 @@ const useGetUserNFT = ({
     params.contractAddress = contractAddress
   }
   const queryKey = useQueryKeys().getUserNFTList
-  const { data, isLoading } = useQuery(
+  const { data } = useQuery(
     queryKey(name),
     async () => {
+      setLoading(true)
       try {
         const result = await fetchGetUserNFT(params)
+        setLoading(false)
         return result.data
       } catch {
+        setLoading(false)
         return undefined
       }
     },
@@ -63,7 +67,7 @@ const useGetUserNFT = ({
       enabled: !!name && !!account,
     },
   )
-  return { data, isLoading }
+  return { data, loading }
 }
 export interface IRefreshParams {
   contractAddress: string
