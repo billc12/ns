@@ -39,7 +39,7 @@ const useSignName = (name: string, discountCode?: string) => {
 
         return {
           ...result,
-          isPremium: result.signature === '0x',
+          isPremium: result.premium,
           hasDiscount: Number(formatFixed(result.discount, 18)) < 1,
         }
       } catch {
