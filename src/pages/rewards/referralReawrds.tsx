@@ -2,14 +2,14 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { useMemo } from 'react'
 import styled, { css } from 'styled-components'
 
-import { Button, Skeleton, mq } from '@ensdomains/thorin'
+import { Skeleton, mq } from '@ensdomains/thorin'
 
+import ClaimRewards from '@app/components/Awns/ClaimRewards'
 import { LoadingOverlay } from '@app/components/LoadingOverlay'
 import { Table } from '@app/components/table'
 import useReferralRewards from '@app/hooks/requst/useReferralRewardsCallback'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { usePrimary } from '@app/hooks/usePrimary'
-import { useRewardsInfo } from '@app/hooks/useRewardsInfo'
 import { timestampToDateFormat } from '@app/utils'
 import { makeDisplay } from '@app/utils/currency'
 
@@ -79,25 +79,11 @@ const CenterLeftStyle = styled.div`
   `)}
 `
 
-const ClaimStyle = styled.div`
-  height: auto;
-  width: 100%;
-  display: grid;
-  gap: 10px;
-`
-
 const LeftItemStyle = styled.div`
   height: auto;
   width: 100%;
   display: grid;
   gap: 10px;
-`
-
-const LeftOpenStyle = styled.div`
-  width: 100%;
-  height: auto;
-  display: flex;
-  justify-content: space-between;
 `
 
 const CenterRightStyle = styled.div`
@@ -142,10 +128,6 @@ const BottomContentStyle = styled.div`
   font-weight: 400;
   line-height: 36px;
 `
-
-const ButtonStyle = styled(Button)`
-  height: 40px;
-`
 const StyledTable = styled.div`
   width: 100%;
   height: 100%;
@@ -184,9 +166,7 @@ export default function Rewards() {
   const { data: RewardsDetails, isLoading: rewardsLoading } = useReferralRewards(
     primary.data?.beautifiedName ? primary.data?.beautifiedName.slice(0, -3) : '',
   )
-  const { vailableRewards, loading } = useRewardsInfo(
-    RewardsDetails?.totalRewards || BigNumber.from(0),
-  )
+
   const RewardsDetailsTableList = useMemo(() => {
     if (!RewardsDetails?.list) return []
     return RewardsDetails?.list?.map(({ referral, reward, timestamp, type }) => [
@@ -198,6 +178,7 @@ export default function Rewards() {
       </TableContentStyle>,
     ])
   }, [RewardsDetails?.list])
+
   return (
     <>
       {RewardsDetails && !rewardsLoading ? (
@@ -210,15 +191,7 @@ export default function Rewards() {
           </HeaderTitles>
           <BodyStyle>
             <CenterLeftStyle>
-              <ClaimStyle>
-                <ContentTitleStyle>Available rewards</ContentTitleStyle>
-                <Skeleton loading={loading}>
-                  <LeftContentStyle>
-                    {makeDisplay(vailableRewards, undefined, 'eth', 18)}
-                  </LeftContentStyle>
-                </Skeleton>
-                <ButtonStyle>Claim</ButtonStyle>
-              </ClaimStyle>
+              <ClaimRewards totalRewards={RewardsDetails.totalRewards} />
               <LeftItemStyle>
                 <ContentTitleStyle>Total rewards</ContentTitleStyle>
                 <Skeleton loading={rewardsLoading}>
@@ -237,13 +210,13 @@ export default function Rewards() {
                 <ContentTitleStyle>Indirect referrals</ContentTitleStyle>
                 <LeftContentStyle>{RewardsDetails?.countIndirect || '0'}</LeftContentStyle>
               </LeftItemStyle>
-              <LeftItemStyle>
+              {/* <LeftItemStyle>
                 <ContentTitleStyle>Number of lucky draws</ContentTitleStyle>
                 <LeftOpenStyle>
                   <LeftContentStyle>0</LeftContentStyle>
                   <ButtonStyle style={{ width: '100px' }}>Open</ButtonStyle>
                 </LeftOpenStyle>
-              </LeftItemStyle>
+              </LeftItemStyle> */}
             </CenterLeftStyle>
             <CenterRightStyle>
               <BottomTitleStyle style={{ padding: '20px 30px' }}>Rewards details</BottomTitleStyle>

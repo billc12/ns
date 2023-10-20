@@ -247,7 +247,9 @@
       "cost": "费用",
       "update": "更新",
       "resolver": "解析器",
-      "information": "信息"
+      "information": "信息",
+      "claim": "推荐奖励",
+      "remaining": "剩余奖励"
     },
     "itemValue": {
       "records_one": "{{count}} 条记录",

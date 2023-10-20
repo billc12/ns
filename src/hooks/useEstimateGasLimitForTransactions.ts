@@ -1,6 +1,7 @@
 // import { BigNumber } from '@ethersproject/bignumber'
 import type { JsonRpcSigner } from '@ethersproject/providers'
 import { formatEther } from '@ethersproject/units'
+import { ETHRegistrarController } from '@myclique/awnsjs/generated/index'
 import { useMemo } from 'react'
 import { useQuery, useSigner } from 'wagmi'
 
@@ -15,19 +16,27 @@ import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 
 // import { fetchTenderlyEstimate } from '@app/utils/tenderly'
 import { useChainId } from './useChainId'
+import { useEthRegistrarControllerContract } from './useContract'
 import useGasPrice from './useGasPrice'
 
 type ENS = ReturnType<typeof useEns>
 type TransactionItem = ReturnType<typeof makeTransactionItem>
 
 export const fetchEstimateWithConfig =
-  (chainId: number, transactionsObj: Transaction, signer: JsonRpcSigner, ens: ENS) =>
+  (
+    chainId: number,
+    transactionsObj: Transaction,
+    signer: JsonRpcSigner,
+    ens: ENS,
+    contract: ETHRegistrarController,
+  ) =>
   async (transaction: TransactionItem) => {
     const transactionName = transaction.name as TransactionName
     const populatedTransaction = await transactionsObj[transactionName].transaction(
       signer as JsonRpcSigner,
       ens,
       transaction.data,
+      contract,
     )
 
     const gasLimit = await signer!.estimateGas(populatedTransaction)
@@ -74,7 +83,7 @@ export const useEstimateGasLimitForTransactions = (
   const { gasPrice, isLoading: gasPriceLoading, isFetching: gasPriceFetching } = useGasPrice()
   const { data: signer, isLoading: isSignerLoading } = useSigner()
   const chainId = useChainId()
-
+  const contract = useEthRegistrarControllerContract()
   const { data, isLoading, isFetching, ...results } = useQuery(
     useQueryKeys().estimateGasLimitForTransactions(transactions, extraKeys),
     async () => {
@@ -83,6 +92,7 @@ export const useEstimateGasLimitForTransactions = (
         _transactions,
         signer as JsonRpcSigner,
         ens as ENS,
+        contract!,
       )
       const estimates = await Promise.all(transactions.map(fetchEstimate))
       const total = estimates.map((r) => r.gasLimit).reduce((a, b) => a.add(b))
@@ -93,7 +103,7 @@ export const useEstimateGasLimitForTransactions = (
       }
     },
     {
-      enabled: ensReady && !isSignerLoading && !!signer && isEnabled,
+      enabled: ensReady && !isSignerLoading && !!signer && isEnabled && !!contract,
       onError: console.error,
     },
   )
