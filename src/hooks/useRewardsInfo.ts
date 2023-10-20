@@ -1,6 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { useEffect, useState } from 'react'
 
+import { useAccountSafely } from './useAccountSafely'
 import { useEthRegistrarControllerContract } from './useContract'
 import { usePrimary } from './usePrimary'
 
@@ -11,9 +12,11 @@ export const useRewardsInfo = (total: BigNumber) => {
   })
   const [loading, setLoading] = useState(false)
   const contract = useEthRegistrarControllerContract()
-  const primary = usePrimary()
+  const { address } = useAccountSafely()
+  const primary = usePrimary(address)
+
   useEffect(() => {
-    if (!primary.data?.beautifiedName.split('.')[0]) {
+    if (!primary.data || !primary.data.beautifiedName.split('.')[0]) {
       return
     }
     setLoading(true)
@@ -24,7 +27,7 @@ export const useRewardsInfo = (total: BigNumber) => {
       })
       setLoading(false)
     })
-  }, [contract, primary.data?.beautifiedName, total])
+  }, [contract, primary.data, primary.data?.beautifiedName, total])
   return {
     ...rewardsObj,
     loading,
