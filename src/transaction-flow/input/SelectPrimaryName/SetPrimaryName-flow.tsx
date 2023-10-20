@@ -75,7 +75,7 @@ const SetPrimaryName = ({ data: { address, name }, dispatch, onDismiss }: Props)
   }
   return (
     <>
-      <Dialog.Heading title="Set AWNS for this address" />
+      <Dialog.Heading title="Set AWNS Address" />
       <NameInfo name={normalisedName} expiryDate={expiryDate} />
       <Column>
         <LabelInput

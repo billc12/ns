@@ -240,7 +240,8 @@ export const SendName = ({ data, dispatch, onDismiss }: Props) => {
                 }
                 trailing={
                   <NextButton type="submit" disabled={!hasChoice || hasErrors}>
-                    {t('action.next', { ns: 'common' })}
+                    {/* {t('action.next', { ns: 'common' })} */}
+                    Transfer
                   </NextButton>
                 }
               />

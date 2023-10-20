@@ -11,6 +11,7 @@ import useReferralRewards from '@app/hooks/requst/useReferralRewardsCallback'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { usePrimary } from '@app/hooks/usePrimary'
 import { timestampToDateFormat } from '@app/utils'
+import { useBreakpoint } from '@app/utils/BreakpointProvider'
 import { makeDisplay } from '@app/utils/currency'
 
 const ContentStyle = styled.div`
@@ -160,6 +161,7 @@ const TableContentStyle = styled.div(
 // ]
 
 export default function Rewards() {
+  const breakpoints = useBreakpoint()
   const { address } = useAccountSafely()
   const primary = usePrimary(address!, !address)
 
@@ -169,16 +171,22 @@ export default function Rewards() {
 
   const RewardsDetailsTableList = useMemo(() => {
     if (!RewardsDetails?.list) return []
-    return RewardsDetails?.list?.map(({ referral, reward, timestamp, type }) => [
+    return RewardsDetails?.list?.map(({ registrant, reward, timestamp, type }) => [
       <TableContentStyle>{timestamp ? timestampToDateFormat(timestamp) : '--'}</TableContentStyle>,
-      <TableContentStyle>{referral}</TableContentStyle>,
+      <TableContentStyle
+        style={{
+          width: breakpoints.sm ? '100px' : 'auto',
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+        }}
+      >{`${registrant}.aw`}</TableContentStyle>,
       <TableContentStyle>{type}</TableContentStyle>,
       <TableContentStyle style={{ justifyContent: 'end' }}>
         {makeDisplay(BigNumber.from(reward), undefined, 'eth', 18)}
       </TableContentStyle>,
     ])
-  }, [RewardsDetails?.list])
-
+  }, [RewardsDetails?.list, breakpoints.sm])
   return (
     <>
       {RewardsDetails && !rewardsLoading ? (

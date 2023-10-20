@@ -13,7 +13,8 @@ import { useEthInvoice } from './pages/profile/[name]/registration/steps/Awns_Co
 
 const AddressItemStyle = styled.div(
   () => css`
-    height: 124px;
+    height: auto;
+    min-height: 124px;
     width: 100%;
     border-bottom: 1px solid #dce6ed;
     padding: 20px 50px;
@@ -44,9 +45,6 @@ const StyledImg = styled.img(
 
 const AddressNameStyle = styled(Typography)(
   () => css`
-    color: var(--word-color, #3f5170);
-    font-size: 20px;
-    font-weight: 600;
     display: flex;
     gap: 10px;
     ${mq.sm.max(css`
@@ -85,6 +83,7 @@ const NetworkTagStyle = styled.div(
     line-height: 17px;
     font-weight: 600;
     text-align: center;
+    height: 25px;
     ${mq.sm.max(css`
       font-size: 13px;
       padding: 3px 5px;
@@ -131,7 +130,19 @@ export const AddressItem = ({ AddressRow }: { AddressRow: ReturnedName }) => {
           <StyledImg src={avatarSrc || TestImg.src} />
           <AddressContent>
             <AddressNameStyle>
-              {AddressRow.name}
+              <Typography
+                style={{
+                  width: 'auto',
+                  maxWidth: '350px',
+                  color: ' var(--word-color, #3f5170)',
+                  fontSize: '20px',
+                  fontWeight: '600',
+                }}
+                ellipsis
+              >
+                {AddressRow.name}
+              </Typography>
+
               <NetworkTagStyle>{chain?.name || 'Ethereum'} </NetworkTagStyle>
             </AddressNameStyle>
             <AddressTimeStyle>
