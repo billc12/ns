@@ -1,6 +1,6 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-import { Typography } from '@ensdomains/thorin'
+import { Typography, mq } from '@ensdomains/thorin'
 
 import useSignName from '@app/hooks/names/useSignName'
 import { useNameDetails } from '@app/hooks/useNameDetails'
@@ -35,6 +35,14 @@ const HeadName = styled(Row)`
 export const BigPremiumText = styled(PremiumText)`
   font-size: 24px;
   font-weight: 800;
+  text-align: left;
+  max-width: 70%;
+  word-wrap: break-word;
+  ${mq.sm.max(css`
+    font-size: 18px;
+    max-width: 60vw;
+    word-wrap: break-word;
+  `)}
 `
 const InterText = styled(Typography)<{ $size?: string; $color?: string; $weight?: number }>`
   width: max-content;
@@ -44,7 +52,8 @@ const InterText = styled(Typography)<{ $size?: string; $color?: string; $weight?
   font-style: normal;
   font-weight: ${(props) => props.$weight || 600};
   line-height: normal;
-  white-space: pre-wrap;
+  max-width: 70%;
+  word-wrap: break-word;
 `
 const PremiumTitle = ({ nameDetails }: { nameDetails: ReturnType<typeof useNameDetails> }) => {
   const { beautifiedName, registrationStatus, normalisedName } = nameDetails

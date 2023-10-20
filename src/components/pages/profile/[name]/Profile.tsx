@@ -121,7 +121,7 @@ const ContentStyle = styled.div(
 const CardsStyle = styled.div(
   () => css`
     display: flex;
-    height: 80px;
+    height: auto;
     min-height: 80px;
     justify-content: space-between;
     align-items: center;
@@ -129,7 +129,7 @@ const CardsStyle = styled.div(
     border-bottom: 1px solid #dce6ed;
     ${mq.sm.max(css`
       padding: 0 10px 0;
-      height: 60px;
+      min-height: 60px;
     `)}
   `,
 )
@@ -175,8 +175,12 @@ const CardTitleStyle = styled(Typography)(
     font-size: 24px;
     font-weight: 600;
     line-height: normal;
+    max-width: 70%;
+    word-wrap: break-word;
     ${mq.sm.max(css`
       font-size: 18px;
+      max-width: 60vw;
+      word-wrap: break-word;
     `)}
   `,
 )

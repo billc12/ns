@@ -469,7 +469,8 @@ export const ActionButton = ({
       }
       disabled={!paymentMethodChoice}
     >
-      {t('action.next', { ns: 'common' })}
+      {/* {t('action.next', { ns: 'common' })} */}
+      Register
     </NextButton>
   )
 }
@@ -568,6 +569,7 @@ const ContentStyle = styled(Row)`
 
 const UpButton = styled(Button)`
   width: 150px;
+  height: 40px;
   padding: 10px 18px;
   border-radius: 8px;
   border: 1px solid #d4d7e2;

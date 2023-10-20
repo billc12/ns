@@ -35,12 +35,13 @@ export const BackButton = styled(Button)`
   border: 1px solid #0049c6;
   background: #fff;
   color: #0049c6;
-
+  height: 40px;
   &:hover {
     background: #fff;
   }
 `
 export const NextButton = styled(Button)`
+  height: 40px;
   background: #0049c6;
   color: #fff;
   &:hover {
@@ -182,11 +183,11 @@ export const NameInfo = ({ name, expiryDate }: { name: string; expiryDate: Date 
           style={{ width: '100%', height: '100%' }}
           alt="User Avatar"
         />
-        <InfoImgText>{name}</InfoImgText>
+        <InfoImgText>asdas{name}</InfoImgText>
       </InfoImgRound>
       <InfoRight>
         <FlexRow>
-          <InterText $color="#3F5170" ellipsis>
+          <InterText style={{ maxWidth: '180px' }} $color="#3F5170" ellipsis>
             {name}
           </InterText>
           <ChainRound>{chain?.name || 'Ethereum'}</ChainRound>
