@@ -205,5 +205,6 @@ export const useQueryKeys = () => {
       pageCount?: string,
     ) => [...globalKeys, 'getAssetsHistory', chain, account, tokenId, startTime, pageCount],
     getRewardsSignature: (name: string) => [...globalKeys, 'getRewardsSignature', name],
+    getReferralRewardsInfo: (name: string) => [...globalKeys, 'getReferralRewardsInfo', name],
   }
 }

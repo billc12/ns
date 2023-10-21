@@ -1,35 +1,33 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { useEffect, useState } from 'react'
+import { useQuery } from 'wagmi'
+
+import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 
 import { useAccountSafely } from './useAccountSafely'
 import { useEthRegistrarControllerContract } from './useContract'
+import useGetSignReferral from './useGetSignReferral'
 import { usePrimary } from './usePrimary'
 
-export const useRewardsInfo = (total: BigNumber) => {
-  const [rewardsObj, setRewardsObj] = useState({
-    vailableRewards: BigNumber.from(0),
-    usedRewards: BigNumber.from(0),
-  })
-  const [loading, setLoading] = useState(false)
-  const contract = useEthRegistrarControllerContract()
+export const useRewardsInfo = () => {
   const { address } = useAccountSafely()
   const primary = usePrimary(address)
+  const name = primary.data?.beautifiedName.split('.')[0] || ''
+  const { data: rewardData } = useGetSignReferral(name)
+  const reward = rewardData?.reward
+  const key = useQueryKeys().getReferralRewardsInfo(name)
+  const contract = useEthRegistrarControllerContract()
+  const { data: rewardInfo, isLoading } = useQuery(
+    key,
+    async () => {
+      const res = await contract?.referralRewards(name)
 
-  useEffect(() => {
-    if (!primary.data || !primary.data.beautifiedName.split('.')[0]) {
-      return
-    }
-    setLoading(true)
-    contract?.referralRewards(primary.data.beautifiedName.split('.')[0]).then((res: any) => {
-      setRewardsObj({
+      return {
         usedRewards: res,
-        vailableRewards: !total ? BigNumber.from(0) : total.sub(res),
-      })
-      setLoading(false)
-    })
-  }, [contract, primary.data, primary.data?.beautifiedName, total])
-  return {
-    ...rewardsObj,
-    loading,
-  }
+        vailableRewards: BigNumber.from(reward).sub(res || BigNumber.from('0')),
+        totalRewards: BigNumber.from(reward),
+      }
+    },
+    { enabled: !!name && !!reward && !!contract },
+  )
+  return { rewardInfo, isLoading }
 }

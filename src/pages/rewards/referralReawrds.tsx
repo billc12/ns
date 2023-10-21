@@ -9,6 +9,7 @@ import { LoadingOverlay } from '@app/components/LoadingOverlay'
 import { Table } from '@app/components/table'
 import useReferralRewards from '@app/hooks/requst/useReferralRewardsCallback'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
+import useGetSignReferral from '@app/hooks/useGetSignReferral'
 import { usePrimary } from '@app/hooks/usePrimary'
 import { timestampToDateFormat } from '@app/utils'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
@@ -168,7 +169,6 @@ export default function Rewards() {
   const { data: RewardsDetails, isLoading: rewardsLoading } = useReferralRewards(
     primary.data?.beautifiedName ? primary.data?.beautifiedName.slice(0, -3) : '',
   )
-
   const RewardsDetailsTableList = useMemo(() => {
     if (!RewardsDetails?.list) return []
     return RewardsDetails?.list?.map(({ registrant, reward, timestamp, type }) => [
@@ -187,6 +187,8 @@ export default function Rewards() {
       </TableContentStyle>,
     ])
   }, [RewardsDetails?.list, breakpoints.sm])
+  const { data } = useGetSignReferral()
+  const totalRewards = BigNumber.from(data?.reward || '0')
   return (
     <>
       {RewardsDetails && !rewardsLoading ? (
@@ -199,14 +201,12 @@ export default function Rewards() {
           </HeaderTitles>
           <BodyStyle>
             <CenterLeftStyle>
-              <ClaimRewards totalRewards={RewardsDetails.totalRewards} />
+              <ClaimRewards />
               <LeftItemStyle>
                 <ContentTitleStyle>Total rewards</ContentTitleStyle>
                 <Skeleton loading={rewardsLoading}>
                   <LeftContentStyle>
-                    {RewardsDetails.totalRewards
-                      ? makeDisplay(RewardsDetails.totalRewards, undefined, 'eth', 18)
-                      : '0ETH'}
+                    {totalRewards ? makeDisplay(totalRewards, undefined, 'eth', 18) : '0ETH'}
                   </LeftContentStyle>
                 </Skeleton>
               </LeftItemStyle>

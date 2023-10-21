@@ -13,9 +13,6 @@ import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvide
 import { makeTransactionItem } from '@app/transaction-flow/transaction'
 import { makeDisplay } from '@app/utils/currency'
 
-type Props = {
-  totalRewards: BigNumber
-}
 const ButtonStyle = styled(Button)`
   height: 40px;
 `
@@ -37,10 +34,10 @@ const LeftContentStyle = styled.div`
   font-weight: 700;
   height: 44px;
 `
-const ClaimRewards = ({ totalRewards }: Props) => {
-  const { vailableRewards, loading } = useRewardsInfo(totalRewards || BigNumber.from(0))
-  console.log('loadingloading', loading)
-
+const ClaimRewards = () => {
+  const { rewardInfo, isLoading: loading } = useRewardsInfo()
+  const vailableRewards = rewardInfo?.vailableRewards || BigNumber.from('0')
+  const totalRewards = rewardInfo?.vailableRewards || BigNumber.from('0')
   const { createTransactionFlow } = useTransactionFlow()
   const { address } = useAccountSafely()
   const primary = usePrimary(address, !address)
