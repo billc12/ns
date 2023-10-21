@@ -14,20 +14,22 @@ export const useRewardsInfo = () => {
   const name = primary.data?.beautifiedName.split('.')[0] || ''
   const { data: rewardData } = useGetSignReferral(name)
   const reward = rewardData?.reward
+
+  const signature = rewardData?.signature || ''
   const key = useQueryKeys().getReferralRewardsInfo(name)
   const contract = useEthRegistrarControllerContract()
   const { data: rewardInfo, isLoading } = useQuery(
     key,
     async () => {
       const res = await contract?.referralRewards(name)
-
       return {
         usedRewards: res,
         vailableRewards: BigNumber.from(reward).sub(res || BigNumber.from('0')),
         totalRewards: BigNumber.from(reward),
+        signature,
       }
     },
-    { enabled: !!name && !!reward && !!contract },
+    { enabled: !!name && !!reward && !!contract && !!signature },
   )
   return { rewardInfo, isLoading }
 }

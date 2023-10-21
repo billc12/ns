@@ -4,9 +4,7 @@ import styled from 'styled-components'
 
 import { Button, Skeleton } from '@ensdomains/thorin'
 
-import useGetRewardsSignature from '@app/hooks/requst/useGetRewardsSignature'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
-// import { useEthRegistrarControllerContract } from '@app/hooks/useContract'
 import { usePrimary } from '@app/hooks/usePrimary'
 import { useRewardsInfo } from '@app/hooks/useRewardsInfo'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
@@ -37,22 +35,22 @@ const LeftContentStyle = styled.div`
 const ClaimRewards = () => {
   const { rewardInfo, isLoading: loading } = useRewardsInfo()
   const vailableRewards = rewardInfo?.vailableRewards || BigNumber.from('0')
-  const totalRewards = rewardInfo?.vailableRewards || BigNumber.from('0')
+  const totalRewards = rewardInfo?.totalRewards || BigNumber.from('0')
+
+  const signature = rewardInfo?.signature || ''
   const { createTransactionFlow } = useTransactionFlow()
   const { address } = useAccountSafely()
   const primary = usePrimary(address, !address)
-  const { data } = useGetRewardsSignature(primary.data?.beautifiedName.split('.')[0] || '')
-
-  const signature = data?.signature
-  const claimKey = `claim-${primary.data?.beautifiedName}-${address}`
+  const name = primary.data?.beautifiedName.split('.')[0]
+  const claimKey = `claim-${name}-${address}`
 
   const handleClaim = useCallback(() => {
     return createTransactionFlow(claimKey, {
       transactions: [
         makeTransactionItem('claimRewards', {
-          name: primary.data?.beautifiedName || '',
+          name: name || '',
           canClaimReferralRewards: vailableRewards,
-          referralReward: BigNumber.from(data?.reward || '0'),
+          referralReward: totalRewards,
           signature: signature!,
           totalReferralRewards: totalRewards,
         }),
@@ -60,22 +58,9 @@ const ClaimRewards = () => {
       requiresManualCleanup: true,
       autoClose: true,
     })
-  }, [
-    claimKey,
-    createTransactionFlow,
-    data?.reward,
-    primary.data?.beautifiedName,
-    signature,
-    totalRewards,
-    vailableRewards,
-  ])
+  }, [claimKey, createTransactionFlow, name, signature, totalRewards, vailableRewards])
   const auctionBtn = useMemo(() => {
-    if (loading || !signature || !primary || !data) {
-      console.log(
-        'loading || !signature || !primary || !data',
-        loading || !signature || !primary || !data,
-      )
-
+    if (loading || !signature || !primary) {
       return (
         <ButtonStyle loading disabled>
           Claim
@@ -83,10 +68,10 @@ const ClaimRewards = () => {
       )
     }
     if (vailableRewards.lte(BigNumber.from(0))) {
-      return <ButtonStyle disabled>Not Enough Rewards</ButtonStyle>
+      return <ButtonStyle disabled>Claim</ButtonStyle>
     }
     return <ButtonStyle onClick={handleClaim}>Claim</ButtonStyle>
-  }, [data, handleClaim, loading, primary, signature, vailableRewards])
+  }, [handleClaim, loading, primary, signature, vailableRewards])
 
   return (
     <ClaimStyle>

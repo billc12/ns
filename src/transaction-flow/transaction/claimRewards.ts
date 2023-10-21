@@ -22,11 +22,12 @@ type Data = ClaimReferralParams & {
 const displayItems = ({
   referralReward,
   canClaimReferralRewards,
+  totalReferralRewards,
 }: Data): //   t: TFunction<'translation', undefined>,
 TransactionDisplayItem[] => [
   {
     label: 'claim',
-    value: `${makeDisplay(referralReward as BigNumber, undefined, 'eth', 18)}`,
+    value: `${makeDisplay(canClaimReferralRewards as BigNumber, undefined, 'eth', 18)}`,
   },
   {
     label: 'action',
@@ -35,7 +36,7 @@ TransactionDisplayItem[] => [
   {
     label: 'remaining',
     value: `${makeDisplay(
-      canClaimReferralRewards.sub(referralReward as BigNumber),
+      totalReferralRewards.sub(referralReward as BigNumber),
       undefined,
       'eth',
       18,
@@ -49,8 +50,11 @@ const transaction = async (
   data: Data,
   contract: ETHRegistrarController,
 ) => {
-  const name = data.name.split('.')[0]
-  return contract.populateTransaction.claimReferralReward(name, data.referralReward, data.signature)
+  return contract.populateTransaction.claimReferralReward(
+    data.name,
+    data.referralReward,
+    data.signature,
+  )
 }
 
 export default { displayItems, transaction } as Transaction<Data>
