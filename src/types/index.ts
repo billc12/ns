@@ -1,6 +1,7 @@
 import type { PopulatedTransaction } from '@ethersproject/contracts'
 import type { JsonRpcSigner, TransactionReceipt } from '@ethersproject/providers'
 import type { ChildFuses, ENS } from '@myclique/awnsjs'
+import { ETHRegistrarController } from '@myclique/awnsjs/generated/index'
 import { DecodedContentHash } from '@myclique/awnsjs/utils/contentHash'
 import { ComponentProps } from 'react'
 import type { TFunction } from 'react-i18next'
@@ -78,7 +79,12 @@ export type ReturnedENS = { [key in keyof PublicENS]: Awaited<ReturnType<PublicE
 
 export interface Transaction<Data> {
   displayItems: (data: any, t: TFunction<'translation', undefined>) => TransactionDisplayItem[]
-  transaction: (signer: JsonRpcSigner, ens: PublicENS, data: Data) => Promise<PopulatedTransaction>
+  transaction: (
+    signer: JsonRpcSigner,
+    ens: PublicENS,
+    data: Data,
+    contract: ETHRegistrarController,
+  ) => Promise<PopulatedTransaction>
   helper?: (data: any, t: TFunction<'translation', undefined>) => undefined | HelperProps
   backToInput?: boolean
 }

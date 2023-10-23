@@ -285,7 +285,7 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
   ]
   const trailingButtonProps =
     view === 'name-list'
-      ? { onClick: () => setView('registration'), children: t('action.next', { ns: 'common' }) }
+      ? { onClick: () => setView('registration'), children: 'Extend' }
       : {
           disabled: !!estimateGasLimitError,
           onClick: () => {
@@ -296,7 +296,8 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
             })
             dispatch({ name: 'setFlowStage', payload: 'transaction' })
           },
-          children: t('action.next', { ns: 'common' }),
+          children: 'Extend',
+          // t('action.next', { ns: 'common' })
         }
 
   return (

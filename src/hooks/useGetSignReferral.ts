@@ -2,6 +2,9 @@ import { useQuery } from 'wagmi'
 
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 
+import { useAccountSafely } from './useAccountSafely'
+import { usePrimary } from './usePrimary'
+
 type Result = {
   data: {
     reward: string
@@ -15,19 +18,23 @@ export const fetchedGetSignReferral = async (n: string) => {
   return response.data
 }
 
-const useGetSignReferral = (name: string) => {
-  const queryKey = useQueryKeys().getSignReferral(name)
+const useGetSignReferral = (name?: string) => {
+  const { address } = useAccountSafely()
+  const primary = usePrimary(address)
+  const beautifiedName = primary.data?.beautifiedName.split('.')[0]
+  const _name = beautifiedName || name || ''
+  const queryKey = useQueryKeys().getSignReferral(_name)
   const { data } = useQuery(
     queryKey,
     async () => {
       try {
-        const result = await fetchedGetSignReferral(name)
+        const result = await fetchedGetSignReferral(_name)
         return result
       } catch {
         return null
       }
     },
-    { enabled: !!name },
+    { enabled: !!_name },
   )
 
   return { data }

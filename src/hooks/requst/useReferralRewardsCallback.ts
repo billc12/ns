@@ -40,10 +40,8 @@ const useReferralRewards = (name: string) => {
     async () => {
       try {
         const result = await fetchGetRewards({ name, offset, limit })
-        const totalRewards = result.data?.list.reduce((accumulator, currentValue) => {
-          return accumulator.add(currentValue.reward)
-        }, BigNumber.from(0))
-        return { ...result.data, totalRewards }
+
+        return { ...result.data }
       } catch {
         return undefined
       }

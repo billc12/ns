@@ -19,6 +19,7 @@ import { Outlink } from '@app/components/Outlink'
 import { useAddRecentTransaction } from '@app/hooks/transactions/useAddRecentTransaction'
 import { useRecentTransactions } from '@app/hooks/transactions/useRecentTransactions'
 import { useChainName } from '@app/hooks/useChainName'
+import { useEthRegistrarControllerContract } from '@app/hooks/useContract'
 import { useInvalidateOnBlock } from '@app/hooks/useInvalidateOnBlock'
 import { useIsSafeApp } from '@app/hooks/useIsSafeApp'
 import { transactions } from '@app/transaction-flow/transaction'
@@ -412,7 +413,7 @@ export const TransactionStageModal = ({
     () => Object.values(uniqueTxIdentifiers).every((val) => typeof val === 'number' || !!val),
     [uniqueTxIdentifiers],
   )
-
+  const contract = useEthRegistrarControllerContract()
   const canEnableTransactionRequest = useMemo(
     () =>
       !!transaction &&
@@ -437,6 +438,7 @@ export const TransactionStageModal = ({
         signer as JsonRpcSigner,
         ens,
         transaction.data,
+        contract!,
       )
       console.error(
         '🚀 ~ file: TransactionStageModal.tsx:432 ~ transaction.data:222',
@@ -467,7 +469,7 @@ export const TransactionStageModal = ({
       }
     },
     {
-      enabled: canEnableTransactionRequest,
+      enabled: canEnableTransactionRequest && !!contract,
       onError: console.error,
     },
   )
@@ -585,7 +587,7 @@ export const TransactionStageModal = ({
     )
     return (
       <Button
-        style={{ background: '#0049C6' }}
+        style={{ background: '#0049C6', height: '40px' }}
         loading={
           !canEnableTransactionRequest || requestLoading || !sendTransaction || !!requestError
         }

@@ -13,7 +13,9 @@ export const useEthRegistrarControllerContract = () => {
     const func = async () => {
       const ethRegistrarController = await ens.contracts?.getEthRegistrarController()
       if (signer.data) {
-        ethRegistrarController?.connect(signer.data)
+        const controller = ethRegistrarController?.connect(signer.data)
+        setContract(controller)
+        return
       }
       setContract(ethRegistrarController)
     }

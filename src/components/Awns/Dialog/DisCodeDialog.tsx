@@ -2,7 +2,7 @@ import { formatFixed } from '@ethersproject/bignumber'
 import { useState } from 'react'
 import styled, { css } from 'styled-components'
 
-import { Dialog, Input, Skeleton, mq } from '@ensdomains/thorin'
+import { Input, Skeleton, mq } from '@ensdomains/thorin'
 
 import { BackButton, DialogStyle, NextButton } from '@app/components/Awns/Dialog'
 import { DisInfo } from '@app/components/pages/profile/[name]/registration/steps/Pricing/DiscountCodeLabel'
@@ -111,6 +111,8 @@ const DiscountCode = ({ info, setCodeCallback, name, show, onCancel }: Props) =>
       discountCount: signData?.discountCount!,
       timestamp: signData?.timestamp!,
       signature: signData?.signature!,
+      booker: signData?.booker!,
+      premium: signData?.premium!,
     })
     onDismiss()
   }
@@ -119,8 +121,7 @@ const DiscountCode = ({ info, setCodeCallback, name, show, onCancel }: Props) =>
   const discount = hasDiscount && Number(formatFixed(signData?.discount || '0', 18)) * 100
 
   return (
-    <DialogStyle variant="closable" open={show} onDismiss={onDismiss}>
-      <Dialog.Heading title="Discount Code" />
+    <DialogStyle variant="closable" open={show} onDismiss={onDismiss} title="Discount Code">
       <Container>
         <Label>Please enter the discount code</Label>
         <CodeInput

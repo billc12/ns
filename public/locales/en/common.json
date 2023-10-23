@@ -249,7 +249,9 @@
       "cost": "Cost",
       "update": "Update",
       "resolver": "Resolver",
-      "information": "Information"
+      "information": "Information",
+      "claim": "Claim Rewards",
+      "remaining": "Remaining Rewards"
     },
     "itemValue": {
       "records_one": "{{count}} record",

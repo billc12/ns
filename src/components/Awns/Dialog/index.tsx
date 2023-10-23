@@ -35,12 +35,13 @@ export const BackButton = styled(Button)`
   border: 1px solid #0049c6;
   background: #fff;
   color: #0049c6;
-
+  height: 40px;
   &:hover {
     background: #fff;
   }
 `
 export const NextButton = styled(Button)`
+  height: 40px;
   background: #0049c6;
   color: #fff;
   &:hover {
@@ -70,6 +71,9 @@ export const DialogStyle = styled(Dialog)`
     padding: 25px 28px;
     align-items: flex-start;
     justify-content: flex-start;
+    ${mq.sm.max(css`
+      width: 100%;
+    `)}
     & > div:first-child > div {
       color: #3f5170;
       font-size: 14px;
@@ -86,11 +90,10 @@ export const DialogStyle = styled(Dialog)`
   }
 
   & > div > button {
-    top: 2.5rem;
-    & svg {
-      width: 20px;
-      height: 20px;
-    }
+    top: 13px;
+    right: 13px;
+    width: 24px;
+    height: 24px;
   }
   ${mq.sm.max(css`
     width: 100%;
@@ -180,11 +183,11 @@ export const NameInfo = ({ name, expiryDate }: { name: string; expiryDate: Date 
           style={{ width: '100%', height: '100%' }}
           alt="User Avatar"
         />
-        <InfoImgText>{name}</InfoImgText>
+        <InfoImgText>asdas{name}</InfoImgText>
       </InfoImgRound>
       <InfoRight>
         <FlexRow>
-          <InterText $color="#3F5170" ellipsis>
+          <InterText style={{ maxWidth: '180px' }} $color="#3F5170" ellipsis>
             {name}
           </InterText>
           <ChainRound>{chain?.name || 'Ethereum'}</ChainRound>
