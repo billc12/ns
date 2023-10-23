@@ -782,8 +782,8 @@ const Pricing = ({
     })
   }
   const isPremium = !!signData?.isPremium
-
-  const [invitationName, setInvitationName] = useState(registrationData.referral)
+  const initName = registrationData.referral ? `${registrationData.referral}.aw` : ''
+  const [invitationName, setInvitationName] = useState(initName)
   const referral = invitationName.split('.')[0]
   const handleInviName = (n: string) => {
     setInvitationName(n)
@@ -791,6 +791,14 @@ const Pricing = ({
   const invitationNameLabel = (
     <InvitationNameLabel name={invitationName} setNameCallback={handleInviName} />
   )
+  useEffect(() => {
+    setPricingData({
+      ...registrationData,
+      ...disInfo,
+      referral,
+      paymentMethodChoice,
+    })
+  }, [disInfo, paymentMethodChoice, referral, registrationData, setPricingData])
 
   return (
     <StyledCard>
