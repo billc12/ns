@@ -414,11 +414,7 @@ export const ActionButton = ({
   if (!address) {
     return <ConnectButton large />
   }
-  if (
-    discountInfo.premium &&
-    discountInfo.booker !== emptyAddress &&
-    discountInfo.booker !== address
-  ) {
+  if (discountInfo.booker !== emptyAddress && discountInfo.booker !== address) {
     return (
       <NextButton data-testid="next-button" disabled>
         {/* {t('action.next', { ns: 'common' })} */}
