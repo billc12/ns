@@ -142,6 +142,8 @@ const reducer = (state: RegistrationReducerData, action: RegistrationReducerActi
       item.referral = action.payload.referral
       item.signature = action.payload.signature
       item.timestamp = action.payload.timestamp
+      item.booker = action.payload.booker
+      item.premium = action.payload.premium
       break
     }
     case 'setTransactionsData': {

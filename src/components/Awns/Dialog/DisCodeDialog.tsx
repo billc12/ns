@@ -111,6 +111,8 @@ const DiscountCode = ({ info, setCodeCallback, name, show, onCancel }: Props) =>
       discountCount: signData?.discountCount!,
       timestamp: signData?.timestamp!,
       signature: signData?.signature!,
+      booker: signData?.booker!,
+      premium: signData?.premium!,
     })
     onDismiss()
   }
