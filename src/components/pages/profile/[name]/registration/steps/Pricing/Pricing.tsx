@@ -36,6 +36,7 @@ import { useNameDetails } from '@app/hooks/useNameDetails'
 import { useProfileEditorForm } from '@app/hooks/useProfileEditorForm'
 import useRegistrationReducer from '@app/hooks/useRegistrationReducer'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
+import { emptyAddress } from '@app/utils/constants'
 
 import FullInvoice from '../../FullInvoice'
 import PremiumTitle from '../../PremiumTitle'
@@ -412,6 +413,18 @@ export const ActionButton = ({
   const { t } = useTranslation('register')
   if (!address) {
     return <ConnectButton large />
+  }
+  if (
+    discountInfo.premium &&
+    discountInfo.booker !== emptyAddress &&
+    discountInfo.booker !== address
+  ) {
+    return (
+      <NextButton data-testid="next-button" disabled>
+        {/* {t('action.next', { ns: 'common' })} */}
+        Register
+      </NextButton>
+    )
   }
   if (hasPendingMoonpayTransaction) {
     return (
