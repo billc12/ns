@@ -1,4 +1,3 @@
-import { formatFixed } from '@ethersproject/bignumber'
 import { useQuery } from 'wagmi'
 
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
@@ -47,8 +46,6 @@ const useSignName = (name: string, discountCode?: string) => {
         }
         return {
           ...result,
-          isPremium: result.premium,
-          hasDiscount: Number(formatFixed(result.discount, 18)) < 1,
         }
       } catch {
         return null

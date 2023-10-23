@@ -108,7 +108,7 @@ const DiscountCode = ({ data: { info, setCodeCallback, name }, onDismiss }: Prop
     })
     onDismiss()
   }
-  const hasDiscount = signData && signData.hasDiscount
+  const hasDiscount = signData && Number(formatFixed(signData?.discount || '0', 18)) < 1
   const discount = hasDiscount && Number(formatFixed(signData?.discount || '0', 18)) * 100
 
   return (

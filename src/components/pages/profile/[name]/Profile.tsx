@@ -418,7 +418,7 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
             }}
           >
             <CardsStyle>
-              {data?.isPremium ? (
+              {data?.premium ? (
                 <BigPremiumText>{beautifiedName}</BigPremiumText>
               ) : (
                 <CardTitleStyle>{beautifiedName}</CardTitleStyle>
