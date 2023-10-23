@@ -27,7 +27,7 @@ import { AvatarViewManager } from '@app/components/@molecules/ProfileEditor/Avat
 import { NextButton } from '@app/components/Awns/Dialog'
 import { Card } from '@app/components/Card'
 import { ConnectButton } from '@app/components/ConnectButton'
-import useSignName from '@app/hooks/names/useSignName'
+import useSignName, { defaultDis } from '@app/hooks/names/useSignName'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useChainId } from '@app/hooks/useChainId'
 import { useContractAddress } from '@app/hooks/useContractAddress'
@@ -499,6 +499,7 @@ type Props = {
   initiateMoonpayRegistrationMutation: ReturnType<
     typeof useMoonpayRegistration
   >['initiateMoonpayRegistrationMutation']
+  setPricingData: (p: RegistrationStepData['pricing']) => void
 }
 
 const PremiumText = styled.div`
@@ -697,11 +698,11 @@ const Pricing = ({
   resolverExists,
   moonpayTransactionStatus,
   initiateMoonpayRegistrationMutation,
+  setPricingData,
 }: Props) => {
   // const { t } = useTranslation('register')
   console.log('isPrimaryLoading', isPrimaryLoading)
   console.log('registrationData', registrationData)
-
   const { normalisedName, beautifiedName } = nameDetails
 
   const { address } = useAccountSafely()
@@ -771,8 +772,19 @@ const Pricing = ({
     booker: registrationData.booker,
     premium: registrationData.premium,
   }
-  const { disLabel, disInfo } = DiscountCodeLabelProvider(initDis, nameDetails.normalisedName)
+  const { disLabel, disInfo } = DiscountCodeLabelProvider(
+    { ...initDis },
+    nameDetails.normalisedName,
+  )
   const { data: signData } = useSignName(nameDetails.normalisedName, disInfo.discountCode)
+  if (signData?.discount !== registrationData.discount) {
+    setPricingData({
+      ...registrationData,
+      discount: signData?.discount || defaultDis,
+      discountCode: '',
+      paymentMethodChoice,
+    })
+  }
   const isPremium = !!signData?.isPremium
 
   const [invitationName, setInvitationName] = useState(registrationData.referral)
