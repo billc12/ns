@@ -27,7 +27,6 @@ import { AvatarViewManager } from '@app/components/@molecules/ProfileEditor/Avat
 import { NextButton } from '@app/components/Awns/Dialog'
 import { Card } from '@app/components/Card'
 import { ConnectButton } from '@app/components/ConnectButton'
-import useSignName, { defaultDis } from '@app/hooks/names/useSignName'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useChainId } from '@app/hooks/useChainId'
 import { useContractAddress } from '@app/hooks/useContractAddress'
@@ -772,16 +771,8 @@ const Pricing = ({
     { ...initDis },
     nameDetails.normalisedName,
   )
-  const { data: signData } = useSignName(nameDetails.normalisedName, disInfo.discountCode)
-  if (signData?.discount !== registrationData.discount) {
-    setPricingData({
-      ...registrationData,
-      discount: signData?.discount || defaultDis,
-      discountCode: '',
-      paymentMethodChoice,
-    })
-  }
-  const isPremium = !!signData?.isPremium
+
+  const isPremium = disInfo.premium
   const initName = registrationData.referral ? `${registrationData.referral}.aw` : ''
   const [invitationName, setInvitationName] = useState(initName)
   const referral = invitationName.split('.')[0]
@@ -798,7 +789,8 @@ const Pricing = ({
       referral,
       paymentMethodChoice,
     })
-  }, [disInfo, paymentMethodChoice, referral, registrationData, setPricingData])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [disInfo, paymentMethodChoice, referral, registrationData])
 
   return (
     <StyledCard>
