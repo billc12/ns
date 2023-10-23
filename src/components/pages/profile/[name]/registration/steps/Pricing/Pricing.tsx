@@ -417,7 +417,7 @@ export const ActionButton = ({
     return (
       <NextButton data-testid="next-button" disabled>
         {/* {t('action.next', { ns: 'common' })} */}
-        Register
+        Already Booked
       </NextButton>
     )
   }
