@@ -1,3 +1,5 @@
+import { formatFixed } from '@ethersproject/bignumber'
+import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
 import { useQuery } from 'wagmi'
 
 import { useEns } from '@app/utils/EnsProvider'
@@ -6,7 +8,12 @@ import { yearsToSeconds } from '@app/utils/utils'
 
 import useSignName from './names/useSignName'
 
-export const usePrice = (nameOrNames: string | string[], years = 1, legacy?: boolean) => {
+export const usePrice = (
+  nameOrNames: string | string[],
+  years = 1,
+  legacy?: boolean,
+  discount?: string,
+) => {
   const { ready, getPrice } = useEns()
   const { data: signName } = useSignName(nameOrNames.toString(), '')
 
@@ -47,7 +54,9 @@ export const usePrice = (nameOrNames: string | string[], years = 1, legacy?: boo
   const hasPremium = data?.premium.gt(0)
   const discountRate = 100 - (years - 1) * 5
   const totalYearlyFee = total?.mul(years).mul(discountRate).div(100)
-
+  const _discount = Number(formatFixed(BigNumber.from(discount || '0'), 18)) * 100
+  const isHasDiscount = _discount < 100
+  const discountedPrice = totalYearlyFee?.mul(_discount).div(100)
   return {
     base,
     premium,
@@ -57,5 +66,7 @@ export const usePrice = (nameOrNames: string | string[], years = 1, legacy?: boo
     isCachedData: status === 'success' && isFetched && !isFetchedAfterMount,
     loading,
     error,
+    isHasDiscount,
+    discountedPrice,
   }
 }
