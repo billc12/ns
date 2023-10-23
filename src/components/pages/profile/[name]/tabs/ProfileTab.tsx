@@ -8,6 +8,7 @@ import { Button, Tooltip, Typography, mq } from '@ensdomains/thorin'
 import LinkIcon from '@app/assets/LinkIcon.svg'
 import TestImg from '@app/assets/TestImage.png'
 import TransferIcon from '@app/assets/TransferIcon.svg'
+import BaseLink from '@app/components/@atoms/BaseLink'
 import ExtendBtn from '@app/components/Awns/Button/Extend'
 import { CopyButton } from '@app/components/Copy'
 // import { Outlink } from '@app/components/Outlink'
@@ -284,6 +285,10 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
   const { accountAddress } = useGetNftAddress(normalisedName)
 
   const hide = false
+
+  const nameDetailRoute = useMemo(() => {
+    return `/my/nameDetail?name=${name}`
+  }, [name])
   return (
     <DetailsWrapper>
       <div
@@ -368,6 +373,11 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
           </ContentStyled>
         </div>
         <ButtonsStyle>
+          <ButtonStyle colorStyle="background">
+            <BaseLink passHref href={nameDetailRoute}>
+              more Detail
+            </BaseLink>
+          </ButtonStyle>
           {profileActions.canSetMainName && (
             <BtnSetAdd onClick={handleSelectPrimaryName}>Set AWNS for this address</BtnSetAdd>
           )}

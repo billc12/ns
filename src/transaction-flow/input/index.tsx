@@ -18,7 +18,9 @@ import type { Props as ResetPrimaryNameProps } from './ResetPrimaryName/ResetPri
 import type { Props as RevokePermissionsProps } from './RevokePermissions/RevokePermissions-flow'
 import type { Props as SelectPrimaryNameProps } from './SelectPrimaryName/SelectPrimaryName-flow'
 import type { Props as SetPrimaryNameProps } from './SelectPrimaryName/SetPrimaryName-flow'
+import type { Props as SendNFTProps } from './SendNFT-flow'
 import type { Props as SendNameProps } from './SendName-flow'
+import type { Props as SendTokenProps } from './SendToken-flow'
 import type { Props as TransferProfileProps } from './TransferProfile/TransferProfile-flow'
 import type { Props as UnknownLabelsProps } from './UnknownLabels/UnknownLabels-flow'
 
@@ -60,6 +62,8 @@ const ExtendNames = dynamicHelper<ExtendNamesProps>('ExtendNames/ExtendNames')
 const AwnsExtendNames = dynamicHelper<ExtendNamesProps>('ExtendNames/Awns_ExtendNames')
 const BurnFuses = dynamicHelper<BurnFusesProps>('BurnFuses/BurnFuses')
 const SendName = dynamicHelper<SendNameProps>('SendName')
+const SendToken = dynamicHelper<SendTokenProps>('SendToken')
+const SendNFT = dynamicHelper<SendNFTProps>('SendNFT')
 const AwnsSendName = dynamicHelper<SendNameProps>('Awns_SendName')
 const RevokePermissions = dynamicHelper<RevokePermissionsProps>(
   'RevokePermissions/RevokePermissions',
@@ -85,6 +89,8 @@ export const DataInputComponents = {
   ExtendNames,
   BurnFuses,
   SendName,
+  SendToken,
+  SendNFT,
   RevokePermissions,
   UnknownLabels,
   DeleteEmancipatedSubnameWarning,

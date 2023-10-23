@@ -10,6 +10,8 @@ import { checkDNSName } from '@app/utils/utils'
 export default function Page() {
   const router = useRouterWithHistory()
   const _name = router.query.name as string
+  console.log('_name=>', _name)
+
   const isSelf = router.query.connected === 'true'
   const isViewingExpired = router.query.expired === 'true'
 
