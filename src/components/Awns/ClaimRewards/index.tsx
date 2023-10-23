@@ -32,6 +32,12 @@ const LeftContentStyle = styled.div`
   font-weight: 700;
   height: 44px;
 `
+const LeftItemStyle = styled.div`
+  height: auto;
+  width: 100%;
+  display: grid;
+  gap: 10px;
+`
 const ClaimRewards = () => {
   const { rewardInfo, isLoading: loading } = useRewardsInfo()
   const vailableRewards = rewardInfo?.vailableRewards || BigNumber.from('0')
@@ -43,9 +49,9 @@ const ClaimRewards = () => {
   const primary = usePrimary(address, !address)
   const name = primary.data?.beautifiedName.split('.')[0]
   const claimKey = `claim-${name}-${address}`
-
-  const handleClaim = useCallback(() => {
-    return createTransactionFlow(claimKey, {
+  const handleClaim = useCallback(async () => {
+    // await refetch()
+    createTransactionFlow(claimKey, {
       transactions: [
         makeTransactionItem('claimRewards', {
           name: name || '',
@@ -72,15 +78,24 @@ const ClaimRewards = () => {
     }
     return <ButtonStyle onClick={handleClaim}>Claim</ButtonStyle>
   }, [handleClaim, loading, primary, signature, vailableRewards])
-
   return (
-    <ClaimStyle>
-      <ContentTitleStyle>Available rewards</ContentTitleStyle>
-      <Skeleton loading={loading}>
-        <LeftContentStyle>{makeDisplay(vailableRewards, undefined, 'eth', 18)}</LeftContentStyle>
-      </Skeleton>
-      {auctionBtn}
-    </ClaimStyle>
+    <>
+      <ClaimStyle>
+        <ContentTitleStyle>Available rewards</ContentTitleStyle>
+        <Skeleton loading={loading}>
+          <LeftContentStyle>{makeDisplay(vailableRewards, undefined, 'eth', 18)}</LeftContentStyle>
+        </Skeleton>
+        {auctionBtn}
+      </ClaimStyle>
+      <LeftItemStyle>
+        <ContentTitleStyle>Total rewards</ContentTitleStyle>
+        <Skeleton loading={loading}>
+          <LeftContentStyle>
+            {totalRewards ? makeDisplay(totalRewards, undefined, 'eth', 18) : '0ETH'}
+          </LeftContentStyle>
+        </Skeleton>
+      </LeftItemStyle>
+    </>
   )
 }
 export default ClaimRewards
