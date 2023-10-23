@@ -24,7 +24,7 @@ const useGetSignReferral = (name?: string) => {
   const beautifiedName = primary.data?.beautifiedName.split('.')[0]
   const _name = beautifiedName || name || ''
   const queryKey = useQueryKeys().getSignReferral(_name)
-  const { data } = useQuery(
+  const { data, refetch } = useQuery(
     queryKey,
     async () => {
       try {
@@ -37,6 +37,6 @@ const useGetSignReferral = (name?: string) => {
     { enabled: !!_name },
   )
 
-  return { data }
+  return { data, refetch }
 }
 export default useGetSignReferral

@@ -1,4 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
+import { useMemo } from 'react'
 import styled, { css } from 'styled-components'
 
 import { Colors, Skeleton, Typography } from '@ensdomains/thorin'
@@ -49,6 +50,20 @@ const RightTitle = styled(Typography)<{ $weight?: number }>`
   font-weight: ${(props) => props.$weight || 500};
   line-height: normal;
 `
+const OldPrice = styled.p`
+  color: rgba(63, 81, 112, 0.46);
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-decoration: line-through;
+`
+const OldPriceBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`
 export type InvoiceItem = {
   label: string
   value?: BigNumber
@@ -65,9 +80,13 @@ type Props = {
   discountCodeLabel?: JSX.Element
   invitationNameLabel?: JSX.Element
   totalTitle?: string
+  isHasDiscount?: boolean
+  discountedPrice?: BigNumber
+  totalYearlyFee?: BigNumber
 }
 
 export const Invoice = ({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   totalLabel = 'Estimated total',
   unit = 'eth',
   items,
@@ -75,21 +94,24 @@ export const Invoice = ({
   discountCodeLabel,
   invitationNameLabel,
   totalTitle,
+  isHasDiscount,
+  discountedPrice,
+  totalYearlyFee,
 }: Props) => {
-  console.log('items', items)
-
   const filteredItems = items
     .map(({ value, bufferPercentage }) =>
       value && unit === 'eth' && bufferPercentage ? value.mul(bufferPercentage).div(100) : value,
     )
     .filter((x) => !!x)
   const total = filteredItems.reduce((a, b) => a!.add(b!), BigNumber.from(0))
-  console.log('total', total?.toString())
-
   const hasEmptyItems = filteredItems.length !== items.length
-  console.log('hasEmptyItems', items)
+  const disTotal = useMemo(() => {
+    if (total && totalYearlyFee && isHasDiscount && discountedPrice) {
+      return total.sub(totalYearlyFee).add(discountedPrice)
+    }
+    return BigNumber.from('0')
+  }, [discountedPrice, isHasDiscount, total, totalYearlyFee])
 
-  console.log('totalLabel', totalLabel)
   return (
     <Container>
       {items.slice(0, 1).map(({ label, value, bufferPercentage, color }, inx) => (
@@ -141,11 +163,20 @@ export const Invoice = ({
       <Total>
         <LeftTitle>{totalTitle || 'Estimated Total'}</LeftTitle>
         <Skeleton loading={hasEmptyItems}>
-          {/* <div data-testid="invoice-total"> */}
-          <RightTitle $weight={800}>
-            <CurrencyText eth={hasEmptyItems ? BigNumber.from(0) : total} currency={unit} />
-          </RightTitle>
-          {/* </div> */}
+          {!!isHasDiscount && !!disTotal ? (
+            <OldPriceBox>
+              <OldPrice>
+                <CurrencyText eth={hasEmptyItems ? BigNumber.from(0) : total} currency={unit} />
+              </OldPrice>
+              <RightTitle $weight={800}>
+                <CurrencyText eth={hasEmptyItems ? BigNumber.from(0) : disTotal} currency={unit} />
+              </RightTitle>
+            </OldPriceBox>
+          ) : (
+            <RightTitle $weight={800}>
+              <CurrencyText eth={hasEmptyItems ? BigNumber.from(0) : total} currency={unit} />
+            </RightTitle>
+          )}
         </Skeleton>
       </Total>
     </Container>

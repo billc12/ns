@@ -234,10 +234,13 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
 
   const { userConfig } = useUserConfig()
   const currencyDisplay = userConfig.currency === 'fiat' ? userConfig.fiat : 'eth'
-
-  const { total: rentFee, totalYearlyFee } = usePrice(names, years, false)
-
   const { disInfo, disLabel } = DiscountCodeLabelProvider(DefaultDis, names[0])
+  const {
+    total: rentFee,
+    totalYearlyFee,
+    discountedPrice,
+    isHasDiscount,
+  } = usePrice(names, years, false, disInfo.discount)
 
   // const totalRentFee = rentFee ? rentFee.mul(years) : undefined
   const transactions = [
@@ -339,6 +342,9 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
                       totalLabel="Estimated total"
                       discount={discountInvoiceItems}
                       discountCodeLabel={disLabel}
+                      discountedPrice={discountedPrice}
+                      isHasDiscount={isHasDiscount}
+                      totalYearlyFee={totalYearlyFee}
                     />
                     {(!!estimateGasLimitError ||
                       (estimatedGasLimit && balance?.value.lt(estimatedGasLimit))) && (

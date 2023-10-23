@@ -245,7 +245,7 @@ const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
             <InterText $color="#8D8EA5" $size="16px" $weight={500}>
               Name
             </InterText>
-            {data?.isPremium ? (
+            {data?.premium ? (
               <BigPremiumText>{name}</BigPremiumText>
             ) : (
               <InterText $color="#3F5170" $size="18px" $weight={600}>

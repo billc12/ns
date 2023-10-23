@@ -8,19 +8,26 @@ import { useEthRegistrarControllerContract } from './useContract'
 import useGetSignReferral from './useGetSignReferral'
 import { usePrimary } from './usePrimary'
 
+const refetchTime = 2500
 export const useRewardsInfo = () => {
   const { address } = useAccountSafely()
   const primary = usePrimary(address)
   const name = primary.data?.beautifiedName.split('.')[0] || ''
-  const { data: rewardData } = useGetSignReferral(name)
+  const { data: rewardData, refetch: rewardRefetch } = useGetSignReferral(name)
   const reward = rewardData?.reward
 
   const signature = rewardData?.signature || ''
   const key = useQueryKeys().getReferralRewardsInfo(name)
   const contract = useEthRegistrarControllerContract()
-  const { data: rewardInfo, isLoading } = useQuery(
+  const {
+    data: rewardInfo,
+    isLoading,
+    refetch,
+    isFetching,
+  } = useQuery(
     key,
     async () => {
+      await rewardRefetch()
       const res = await contract?.referralRewards(name)
       return {
         usedRewards: res,
@@ -29,7 +36,7 @@ export const useRewardsInfo = () => {
         signature,
       }
     },
-    { enabled: !!name && !!reward && !!contract && !!signature },
+    { enabled: !!name && !!reward && !!contract && !!signature, refetchInterval: refetchTime },
   )
-  return { rewardInfo, isLoading }
+  return { rewardInfo, isLoading, refetch, isFetching }
 }

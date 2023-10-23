@@ -1,3 +1,4 @@
+import { formatFixed } from '@ethersproject/bignumber'
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
 import { toUtf8Bytes } from '@ethersproject/strings/lib/utf8'
 import {
@@ -159,7 +160,6 @@ type FullProps = {
 
 export const useEstimateFullRegistration = ({ registrationData, price, name }: FullProps) => {
   const { gasPrice, isLoading: gasPriceLoading } = useGasPrice()
-
   const { address } = useAccountSafely()
   const { owner, fuses, records, reverseRecord } = useRegistrationParams({
     name,
@@ -187,13 +187,14 @@ export const useEstimateFullRegistration = ({ registrationData, price, name }: F
   const estimatedGasFee = useMemo(() => {
     return registrationGasFee ? registrationGasFee.add(gasLimitDictionary.COMMIT) : undefined
   }, [registrationGasFee])
-  console.log('price', registrationGasFee?.toString())
   const yearlyFee = price?.base
   const premiumFee = price?.premium
   const hasPremium = premiumFee?.gt(0)
   const discountRate = 100 - (registrationData.years - 1) * 5
   const totalYearlyFee = yearlyFee?.mul(registrationData.years).mul(discountRate).div(100)
-
+  const discount = Number(formatFixed(BigNumber.from(registrationData.discount), 18)) * 100
+  const isHasDiscount = discount < 100
+  const discountedPrice = totalYearlyFee?.mul(discount).div(100)
   return {
     estimatedGasFee,
     estimatedGasLoading,
@@ -203,6 +204,8 @@ export const useEstimateFullRegistration = ({ registrationData, price, name }: F
     premiumFee,
     gasPrice,
     years: registrationData.years,
+    isHasDiscount,
+    discountedPrice,
   }
 }
 

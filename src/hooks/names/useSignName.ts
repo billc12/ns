@@ -1,7 +1,8 @@
-import { formatFixed } from '@ethersproject/bignumber'
 import { useQuery } from 'wagmi'
 
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
+
+import { useEthRegistrarControllerContract } from '../useContract'
 
 type Result = {
   signature: string
@@ -28,8 +29,9 @@ export const fetchedGetSignName = async (n: string, d: string): Promise<Result> 
     booker: data.booker,
   }
 }
-
+export const defaultDis = '1000000000000000000'
 const useSignName = (name: string, discountCode?: string) => {
+  const contract = useEthRegistrarControllerContract()
   const queryKey = useQueryKeys().getSignName(name, discountCode || '')
   const { data, isLoading } = useQuery(
     queryKey,
@@ -37,16 +39,19 @@ const useSignName = (name: string, discountCode?: string) => {
       try {
         const result = await fetchedGetSignName(name, discountCode || '')
 
+        const disUseCount = await contract?.discountsUsed(discountCode!)
+        const isUsed = disUseCount === result.discountCount
+        if (isUsed) {
+          result.discount = defaultDis
+        }
         return {
           ...result,
-          isPremium: result.premium,
-          hasDiscount: Number(formatFixed(result.discount, 18)) < 1,
         }
       } catch {
         return null
       }
     },
-    { enabled: !!name },
+    { enabled: !!name && !!contract && !!discountCode },
   )
 
   return { data, isLoading }

@@ -2,14 +2,14 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { useMemo } from 'react'
 import styled, { css } from 'styled-components'
 
-import { Skeleton, mq } from '@ensdomains/thorin'
+import { mq } from '@ensdomains/thorin'
 
 import ClaimRewards from '@app/components/Awns/ClaimRewards'
 import { LoadingOverlay } from '@app/components/LoadingOverlay'
 import { Table } from '@app/components/table'
 import useReferralRewards from '@app/hooks/requst/useReferralRewardsCallback'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
-import useGetSignReferral from '@app/hooks/useGetSignReferral'
+// import useGetSignReferral from '@app/hooks/useGetSignReferral'
 import { usePrimary } from '@app/hooks/usePrimary'
 import { timestampToDateFormat } from '@app/utils'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
@@ -187,8 +187,8 @@ export default function Rewards() {
       </TableContentStyle>,
     ])
   }, [RewardsDetails?.list, breakpoints.sm])
-  const { data } = useGetSignReferral()
-  const totalRewards = BigNumber.from(data?.reward || '0')
+  // const { data } = useGetSignReferral()
+  // const totalRewards = BigNumber.from(data?.reward || '0')
   return (
     <>
       {RewardsDetails && !rewardsLoading ? (
@@ -202,14 +202,14 @@ export default function Rewards() {
           <BodyStyle>
             <CenterLeftStyle>
               <ClaimRewards />
-              <LeftItemStyle>
+              {/* <LeftItemStyle>
                 <ContentTitleStyle>Total rewards</ContentTitleStyle>
                 <Skeleton loading={rewardsLoading}>
                   <LeftContentStyle>
                     {totalRewards ? makeDisplay(totalRewards, undefined, 'eth', 18) : '0ETH'}
                   </LeftContentStyle>
                 </Skeleton>
-              </LeftItemStyle>
+              </LeftItemStyle> */}
               <LeftItemStyle>
                 <ContentTitleStyle>Direct referrals</ContentTitleStyle>
                 <LeftContentStyle>{RewardsDetails?.countDirect || '0'}</LeftContentStyle>

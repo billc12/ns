@@ -27,7 +27,6 @@ import { AvatarViewManager } from '@app/components/@molecules/ProfileEditor/Avat
 import { NextButton } from '@app/components/Awns/Dialog'
 import { Card } from '@app/components/Card'
 import { ConnectButton } from '@app/components/ConnectButton'
-import useSignName from '@app/hooks/names/useSignName'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useChainId } from '@app/hooks/useChainId'
 import { useContractAddress } from '@app/hooks/useContractAddress'
@@ -36,6 +35,7 @@ import { useNameDetails } from '@app/hooks/useNameDetails'
 import { useProfileEditorForm } from '@app/hooks/useProfileEditorForm'
 import useRegistrationReducer from '@app/hooks/useRegistrationReducer'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
+import { emptyAddress } from '@app/utils/constants'
 
 import FullInvoice from '../../FullInvoice'
 import PremiumTitle from '../../PremiumTitle'
@@ -413,6 +413,14 @@ export const ActionButton = ({
   if (!address) {
     return <ConnectButton large />
   }
+  if (discountInfo.booker !== emptyAddress && discountInfo.booker !== address) {
+    return (
+      <NextButton data-testid="next-button" disabled>
+        {/* {t('action.next', { ns: 'common' })} */}
+        Already Booked
+      </NextButton>
+    )
+  }
   if (hasPendingMoonpayTransaction) {
     return (
       <Button data-testid="next-button" disabled loading>
@@ -486,6 +494,7 @@ type Props = {
   initiateMoonpayRegistrationMutation: ReturnType<
     typeof useMoonpayRegistration
   >['initiateMoonpayRegistrationMutation']
+  setPricingData: (p: RegistrationStepData['pricing']) => void
 }
 
 const PremiumText = styled.div`
@@ -684,11 +693,11 @@ const Pricing = ({
   resolverExists,
   moonpayTransactionStatus,
   initiateMoonpayRegistrationMutation,
+  setPricingData,
 }: Props) => {
   // const { t } = useTranslation('register')
   console.log('isPrimaryLoading', isPrimaryLoading)
   console.log('registrationData', registrationData)
-
   const { normalisedName, beautifiedName } = nameDetails
 
   const { address } = useAccountSafely()
@@ -758,11 +767,14 @@ const Pricing = ({
     booker: registrationData.booker,
     premium: registrationData.premium,
   }
-  const { disLabel, disInfo } = DiscountCodeLabelProvider(initDis, nameDetails.normalisedName)
-  const { data: signData } = useSignName(nameDetails.normalisedName, disInfo.discountCode)
-  const isPremium = !!signData?.isPremium
+  const { disLabel, disInfo } = DiscountCodeLabelProvider(
+    { ...initDis },
+    nameDetails.normalisedName,
+  )
 
-  const [invitationName, setInvitationName] = useState(registrationData.referral)
+  const isPremium = disInfo.premium
+  const initName = registrationData.referral ? `${registrationData.referral}.aw` : ''
+  const [invitationName, setInvitationName] = useState(initName)
   const referral = invitationName.split('.')[0]
   const handleInviName = (n: string) => {
     setInvitationName(n)
@@ -770,6 +782,15 @@ const Pricing = ({
   const invitationNameLabel = (
     <InvitationNameLabel name={invitationName} setNameCallback={handleInviName} />
   )
+  useEffect(() => {
+    setPricingData({
+      ...registrationData,
+      ...disInfo,
+      referral,
+      paymentMethodChoice,
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [disInfo, paymentMethodChoice, referral, registrationData])
 
   return (
     <StyledCard>
