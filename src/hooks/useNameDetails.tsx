@@ -1,10 +1,12 @@
-import { ReactNode, useMemo } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useEns } from '@app/utils/EnsProvider'
+import { makeDisplay } from '@app/utils/currency'
 import { formatFullExpiry } from '@app/utils/utils'
 
 import { useBasicName } from './useBasicName'
+import { useErc20Contract, useErc721Contract } from './useContract'
 import useDNSOwner from './useDNSOwner'
 import { useGetABI } from './useGetABI'
 import { useProfile } from './useProfile'
@@ -159,5 +161,83 @@ export const useNameDetails = (name: string, skipGraph = false) => {
     gracePeriodEndDate,
     expiryDate,
     ...basicName,
+  }
+}
+
+export const useNameErc20Assets = (address: string | undefined) => {
+  const contractAddress = '0xcFC0398D38B6F19AB110B98EE97e5689936cAff0' as `0x${string}`
+  const contract = useErc20Contract(contractAddress)
+  const [tokenBalance, setTokenBalance] = useState<string>()
+  const [tokenSymbol, setTokenSymbol] = useState<string>()
+  const [tokenName, setTokenName] = useState<string>()
+  const [decimals, setDecimals] = useState<number>()
+  useEffect(() => {
+    if (!address || !contract) {
+      return
+    }
+    ;(async () => {
+      try {
+        const [balanceRes, decimalsRes, symbolRes, nameRes] = await Promise.all([
+          contract.balanceOf(address),
+          contract.decimals(),
+          contract.symbol(),
+          contract?.name(),
+        ])
+
+        console.log(
+          'balanceRes=>',
+          symbolRes,
+          decimalsRes,
+          makeDisplay(balanceRes, undefined, `eth`, decimalsRes),
+        )
+        setTokenBalance(makeDisplay(balanceRes, undefined, 'eth', decimalsRes))
+        setTokenSymbol(symbolRes)
+        setTokenName(nameRes)
+        setDecimals(decimalsRes)
+      } catch (error) {
+        console.error(error)
+      }
+    })()
+  }, [address, contract])
+
+  return {
+    tokenBalance,
+    tokenSymbol,
+    tokenName,
+    contractAddress,
+    decimals,
+  }
+}
+
+export const useNameErc721Assets = (address: string | undefined) => {
+  // const [contractAddress, setContractAddress] = useState<`0x${string}`>(
+  //   '0x8F116BEFAf0a26E1B9e4Dd29F85EA1f48a7a0Ff2',
+  // )
+  const contractAddress = '0x8F116BEFAf0a26E1B9e4Dd29F85EA1f48a7a0Ff2' as `0x${string}`
+  const contract = useErc721Contract(contractAddress)
+  const [nftId, setNftId] = useState<string[]>()
+  const [loading, setLoading] = useState<boolean>()
+  useEffect(() => {
+    if (!address || !contract) {
+      return
+    }
+    ;(async () => {
+      setLoading(true)
+      try {
+        const ownerIdRes = await contract.tokenIdsByOwner(address)
+        setNftId(ownerIdRes.toString().split(','))
+        console.log('ownerIdRes=>', ownerIdRes.toString())
+
+        setLoading(false)
+      } catch (error) {
+        setLoading(false)
+        console.error(error)
+      }
+    })()
+  }, [address, contract])
+  return {
+    loading,
+    nftId,
+    contractAddress,
   }
 }

@@ -1,11 +1,16 @@
-import { isAddress } from '@ethersproject/address'
+// import { isAddress } from '@ethersproject/address'
+import { TokenboundClient } from '@tokenbound/sdk'
 import { useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
+import { useSigner } from 'wagmi'
 
 import { Dialog, Input, Select, Typography, mq } from '@ensdomains/thorin'
 
+import placeholder from '@app/assets/placeholder.png'
 import { BackButton, NextButton } from '@app/components/Awns/Dialog'
-import useGetTokenList from '@app/hooks/requst/useGetTokenList'
+import { useChainId } from '@app/hooks/useChainId'
+// import useGetTokenList from '@app/hooks/requst/useGetTokenList'
+import { useNameErc20Assets } from '@app/hooks/useNameDetails'
 
 import { TransactionDialogPassthrough } from '../types'
 
@@ -83,23 +88,76 @@ const MaxButtonStyle = styled(Typography)`
 `
 
 const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
-  console.log('address=>', address)
+  console.log('address=>', address, name)
+  const signer = useSigner()
+
+  const { tokenBalance, tokenSymbol, tokenName, contractAddress, decimals } =
+    useNameErc20Assets(address)
+
   const [receiveAddress, setReceiveAddress] = useState<string>('')
   const [sendAmount, setSendAmount] = useState<string>('')
   const [senToken, setSenToken] = useState<string>('')
-  const { data: tokenList } = useGetTokenList({
-    name: name || '',
+  const chainId = useChainId()
+
+  const BalanceNum = useMemo(() => {
+    return tokenBalance && Number(tokenBalance?.slice(0, -3))
+  }, [tokenBalance])
+  const tokenboundClient = new TokenboundClient({
+    signer: signer.data,
+    chainId,
+    implementationAddress: '0x2d25602551487c3f3354dd80d76d54383a243358',
+    registryAddress: '0x02101dfB77FDE026414827Fdc604ddAF224F0921',
   })
 
-  const network = useMemo(() => {
-    if (senToken) {
-      return tokenList?.find((v) => v.id === senToken)
-    }
-    return ''
-  }, [senToken, tokenList])
+  // const { data: tokenList } = useGetTokenList({
+  //   name: name || '',
+  // })
 
-  console.log('tokenList=>', name, tokenList)
-  const SendTokenCallback = () => {
+  // const network = useMemo(() => {
+  //   if (senToken) {
+  //     return tokenList?.find((v) => v.id === senToken)
+  //   }
+  //   return ''
+  // }, [senToken, tokenList])
+
+  // console.log('tokenList=>', name, tokenList)
+  // const tokenBoundAccount = tokenboundClient.getAccount({
+  //   tokenContract,
+  //   tokenId,
+  // })
+
+  const SendTokenCallback = async () => {
+    const params = {
+      address,
+      amount: Number(sendAmount),
+      recipientAddress: receiveAddress,
+      erc20tokenAddress: contractAddress,
+      erc20tokenDecimals: decimals,
+    }
+    console.log('transferData=>', params)
+
+    tokenboundClient.executeCall({
+      account: address as any,
+      to: '0xF2da7b9CDb35Dc7c8e875DE0241b02376825CF86',
+      value: BigInt(100000000000),
+      data: '0x',
+    })
+
+    // const ress = await tokenboundClient?.transferETH({
+    //   account: address as `0x${string}`,
+    //   amount: Number(sendAmount),
+    //   recipientAddress: receiveAddress as `0x${string}`,
+    // })
+
+    // const ress = await tokenboundClient?.transferERC20({
+    //   account: address as `0x${string}`,
+    //   amount: Number(sendAmount),
+    //   recipientAddress: receiveAddress as `0x${string}`,
+    //   erc20tokenAddress: contractAddress as `0x${string}`,
+    //   erc20tokenDecimals: decimals || 18,
+    // })
+    // console.log('🚀 ~ file: SendToken-flow.tsx:138 ~ SendTokenCallback ~ res:', ress)
+
     console.log(1)
     onDismiss()
   }
@@ -125,14 +183,36 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
           }}
         >
           <Label>Select Token</Label>
-          {network && (
+          {senToken && (
             <Label>
-              balance:{network?.amount || '--'} {network?.symbol || '--'}
+              {/* balance:{network?.amount || '--'} {network?.symbol || '--'} */}
+              Balance:{BalanceNum || '0.00'} {tokenSymbol || '--'}
             </Label>
           )}
         </div>
 
         <Select
+          label=""
+          autocomplete
+          value={senToken}
+          options={[
+            {
+              value: contractAddress,
+              label: tokenName,
+              prefix: (
+                <div style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
+                  <StyledImg src={placeholder.src} />
+                </div>
+              ),
+            },
+          ]}
+          placeholder="Select Token"
+          onChange={(e) => {
+            setSenToken(e.target.value)
+            console.log('checkToken=>', e.target.value)
+          }}
+        />
+        {/* <Select
           label=""
           autocomplete
           value={senToken}
@@ -143,7 +223,10 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
                     value: item.id,
                     label: item.symbol,
                     prefix: (
-                      <div style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
+                      <div
+                        key={item.id}
+                        style={{ height: '100%', display: 'flex', alignItems: 'center' }}
+                      >
                         <StyledImg src={item.logo_url} />
                       </div>
                     ),
@@ -156,7 +239,7 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
             setSenToken(e.target.value)
             console.log('checkToken=>', e.target.value)
           }}
-        />
+        /> */}
 
         <div
           style={{
@@ -166,10 +249,10 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
           }}
         >
           <Label>Send Amount</Label>
-          {network && (
+          {!!BalanceNum && (
             <MaxButtonStyle
               onClick={() => {
-                setSendAmount(network?.amount.toString())
+                setSendAmount(BalanceNum?.toString())
               }}
             >
               Max
@@ -184,11 +267,11 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
           value={sendAmount}
           onChange={(e) => {
             const value = e.target.value as string
-            const balance = network?.amount
-
-            if (typeof Number(value) === 'number' || !value) {
+            // const balance = network?.amount
+            const balance = BalanceNum
+            if (!value || !Number.isNaN(value)) {
               if (balance && Number(value) >= Number(balance)) {
-                setSendAmount(network?.amount.toString())
+                setSendAmount(BalanceNum.toString())
               } else {
                 setSendAmount(value)
               }
@@ -199,7 +282,7 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
         <Row>
           <BackButton onClick={onDismiss}>Close</BackButton>
           <NextButton
-            disabled={!network || !sendAmount || !receiveAddress || !isAddress(receiveAddress)}
+            // disabled={!BalanceNum || !sendAmount || !receiveAddress || !isAddress(receiveAddress)}
             onClick={() => SendTokenCallback()}
           >
             Send

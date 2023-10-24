@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 import { Typography } from '@ensdomains/thorin'
 
 import TestImg from '@app/assets/TestImage.png'
+import { useNameErc20Assets } from '@app/hooks/useNameDetails'
 
 const AssetsItemStyle = styled.div`
   width: 100%;
@@ -45,19 +46,23 @@ const StyledImg = styled.img(
   `,
 )
 
-export function Tokens() {
+export function Tokens({ accountAddress }: { accountAddress: string }) {
+  const { tokenBalance, tokenSymbol, tokenName } = useNameErc20Assets(accountAddress)
+
   return (
     <AssetsItemStyle>
       <LeftStyle>
         <StyledImg src={TestImg.src} />
         <div style={{ display: 'grid', gap: '12px' }}>
-          <NameStyle>Ethereum</NameStyle>
-          <ContentTextStyle>ETH</ContentTextStyle>
+          <NameStyle>{tokenName}</NameStyle>
+          <ContentTextStyle>{tokenSymbol}</ContentTextStyle>
         </div>
       </LeftStyle>
       <RightStyle>
-        <NameStyle style={{ textAlign: 'right' }}>0.3441 ETH</NameStyle>
-        <ContentTextStyle style={{ textAlign: 'right' }}>$100.32 USD</ContentTextStyle>
+        <NameStyle style={{ textAlign: 'right' }}>
+          {tokenBalance?.slice(0, -3)} {tokenSymbol}
+        </NameStyle>
+        <ContentTextStyle style={{ textAlign: 'right' }}>$00.00 USD</ContentTextStyle>
       </RightStyle>
     </AssetsItemStyle>
   )

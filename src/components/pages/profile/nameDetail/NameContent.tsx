@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styled, { css } from 'styled-components'
 
-import { Button, Typography, mq } from '@ensdomains/thorin'
+import { Button, Skeleton, Typography, mq } from '@ensdomains/thorin'
 
 import AssetsIcon from '@app/assets/AssetsIcon.svg'
 import ColumnBarIcon from '@app/assets/ColumnBarIcon.svg'
@@ -15,6 +15,7 @@ import { CopyButton } from '@app/components/Copy'
 import { LoadingOverlay } from '@app/components/LoadingOverlay'
 // import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import useGetNftAddress from '@app/hooks/useGetNftAddress'
+import { useNameErc721Assets } from '@app/hooks/useNameDetails'
 import { useRouterWithHistory } from '@app/hooks/useRouterWithHistory'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { shortenAddress } from '@app/utils/utils'
@@ -250,12 +251,11 @@ export default function NameContent() {
   const _name = router.query.name as string
   //   const breakpoints = useBreakpoint()
   const [isShowAll, setIsShowAll] = useState<boolean>(true)
-  const [isPackUp, setIsPackUp] = useState<boolean>(true)
+  const [isPackUp, setIsPackUp] = useState<boolean>(false)
   const { avatarSrc } = useEthInvoice(_name, false)
   const { accountAddress } = useGetNftAddress(_name)
-
   // const { address } = useAccountSafely()
-
+  const { nftId, loading: NftLoading } = useNameErc721Assets(accountAddress)
   const { prepareDataInput } = useTransactionFlow()
 
   const showSendTokenInput = prepareDataInput('SendToken')
@@ -271,6 +271,7 @@ export default function NameContent() {
   const handleSendNFT = () => {
     showSendNFTInput(`send-NFT-${accountAddress}`, {
       address: accountAddress,
+      name: _name,
     })
   }
   return (
@@ -324,10 +325,7 @@ export default function NameContent() {
                   <Typography className="tab-title">Trancaction</Typography>
                 </TabTitleBoxStyle>
                 <TokensStyle>
-                  <Tokens />
-                  <Tokens />
-                  <Tokens />
-                  <Tokens />
+                  <Tokens accountAddress={accountAddress} />
                 </TokensStyle>
               </div>
             </ProFileStyle>
@@ -338,7 +336,7 @@ export default function NameContent() {
               <ButtonStyle onClick={() => handleSendNFT()}>Send NFT</ButtonStyle>
             </ButtonsStyle>
             <TabTitleStyle>
-              <SubTitleStyle>Assets (3)</SubTitleStyle>
+              <SubTitleStyle>Assets ({nftId?.length || 0})</SubTitleStyle>
               <SubButtonStyle
                 onClick={() => {
                   setIsShowAll(!isShowAll)
@@ -354,10 +352,13 @@ export default function NameContent() {
                 overflow: isShowAll ? 'unset' : 'hidden',
               }}
             >
-              <Assets />
-              <Assets />
-              <Assets />
-              <Assets />
+              <>
+                {nftId?.map((item) => (
+                  <Skeleton loading={NftLoading} key={item}>
+                    <Assets NftId={item} />
+                  </Skeleton>
+                ))}
+              </>
             </AssetsStyle>
             <TabTitleStyle>
               <SubTitleStyle>Traits (23)</SubTitleStyle>
