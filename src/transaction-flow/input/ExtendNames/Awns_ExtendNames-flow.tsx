@@ -250,6 +250,7 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
       rentPrice: totalYearlyFee!,
       isSelf,
       ...disInfo,
+      discountedPrice,
     }),
   ]
   const currentExpiry = useMemo(() => {

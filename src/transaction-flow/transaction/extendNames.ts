@@ -13,12 +13,13 @@ type Data = {
   duration: number
   rentPrice: BigNumber
   isSelf?: boolean
+  discountedPrice?: BigNumber
 } & DisInfo
 
 const toSingleDecimal = (duration: number) => parseFloat(secondsToYears(duration).toFixed(1))
 
 const displayItems = (
-  { names, rentPrice, duration }: Data,
+  { names, rentPrice, duration, discountedPrice }: Data,
   t: TFunction<'translation', undefined>,
 ): TransactionDisplayItem[] => [
   {
@@ -38,7 +39,7 @@ const displayItems = (
     label: 'cost',
     value: t('transaction.extendNames.costValue', {
       ns: 'transactionFlow',
-      value: makeDisplay(calculateValueWithBuffer(rentPrice), 5, 'eth'),
+      value: makeDisplay(calculateValueWithBuffer(discountedPrice || rentPrice), 5, 'eth'),
     }),
   },
 ]
