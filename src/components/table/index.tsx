@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import styled, { css } from 'styled-components'
 
-import { Spinner, Typography } from '@ensdomains/thorin'
+import { PageButtons, Spinner, Typography } from '@ensdomains/thorin'
 
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
 
@@ -89,7 +89,16 @@ const TrStyle = styled.tr(
     height: auto;
   `,
 )
-
+const PaginationContainer = styled.div`
+  padding-top: 15px;
+`
+const SpinnerContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 function Row({ row, RowHeight }: { row: (string | number | JSX.Element)[]; RowHeight?: number }) {
   return (
     <>
@@ -101,7 +110,11 @@ function Row({ row, RowHeight }: { row: (string | number | JSX.Element)[]; RowHe
     </>
   )
 }
-
+type PaginationParams = {
+  currentPage: number
+  total: number
+  onChange: (v: number) => void
+}
 export const Table = ({
   labels,
   rows,
@@ -111,6 +124,8 @@ export const Table = ({
   minHeight,
   noneBorder,
   isLoading,
+  isEnablePagination,
+  paginationParams,
 }: {
   labels: string[]
   rows: (string | number | JSX.Element)[][]
@@ -120,6 +135,8 @@ export const Table = ({
   minHeight?: number
   noneBorder?: boolean
   isLoading?: boolean
+  isEnablePagination?: boolean
+  paginationParams?: PaginationParams
 }) => {
   const breakpoints = useBreakpoint()
   const isSmDown = useMemo(() => {
@@ -130,9 +147,9 @@ export const Table = ({
   }, [breakpoints.sm])
   if (isLoading) {
     return (
-      <>
+      <SpinnerContainer>
         <Spinner color="accent" size="large" />
-      </>
+      </SpinnerContainer>
     )
   }
   return (
@@ -196,7 +213,18 @@ export const Table = ({
               </tbody>
             </TableStyle>
           )}
-
+          {!!isEnablePagination && paginationParams && (
+            <PaginationContainer>
+              <PageButtons
+                alwaysShowFirst
+                alwaysShowLast
+                current={paginationParams.currentPage}
+                total={paginationParams.total}
+                onChange={paginationParams.onChange}
+                size="small"
+              />
+            </PaginationContainer>
+          )}
           {!rows.length && <EmptyData />}
         </div>
       )}

@@ -31,11 +31,9 @@ const fetchGetRewards = async (params: Params) => {
   return result.json<{ data: IResult }>()
 }
 
-const useReferralRewards = (name: string) => {
-  const offset = 0
-  const limit = 10
+const useReferralRewards = (name: string, offset: number = 0, limit: number = 7) => {
   const queryKey = useQueryKeys().getReferralRewards
-  const { data, isLoading, refetch } = useQuery(
+  const { data, isLoading, refetch, isFetching } = useQuery(
     queryKey(name, offset, limit),
     async () => {
       try {
@@ -49,9 +47,10 @@ const useReferralRewards = (name: string) => {
     {
       enabled: !!name,
       refetchOnWindowFocus: 'always',
+      keepPreviousData: true,
     },
   )
-  return { data, isLoading, refetch }
+  return { data, isLoading, refetch, isFetching }
 }
 
 export default useReferralRewards
