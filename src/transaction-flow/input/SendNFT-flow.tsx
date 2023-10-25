@@ -1,6 +1,8 @@
 import { isAddress } from '@ethersproject/address'
-import { useState } from 'react'
+import { TokenboundClient } from '@tokenbound/sdk'
+import { useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
+import { useChainId, useSigner } from 'wagmi'
 
 import { Dialog, Input, Select, mq } from '@ensdomains/thorin'
 
@@ -81,7 +83,9 @@ const SelectStyle = styled(Select)`
 
 const SendNFT = ({ data: { address, name }, onDismiss }: Props) => {
   console.log('address=>', address)
-  const { nftId } = useNameErc721Assets(address)
+  const { nftId, contractAddress } = useNameErc721Assets(address)
+  const signer = useSigner()
+  const chainId = useChainId()
 
   const [receiveAddress, setReceiveAddress] = useState<string>('')
   const [senNFTId, SetSenNFTId] = useState<string>('')
@@ -89,9 +93,35 @@ const SendNFT = ({ data: { address, name }, onDismiss }: Props) => {
     name: name || '',
   })
 
-  console.log('data=>', name, data)
-  const SendTokenCallback = () => {
-    console.log(1)
+  const tokenboundClient = useMemo(
+    () =>
+      new TokenboundClient({
+        signer: signer.data,
+        chainId,
+        implementationAddress: '0x2d25602551487c3f3354dd80d76d54383a243358',
+        registryAddress: '0x02101dfB77FDE026414827Fdc604ddAF224F0921',
+      }),
+    [chainId, signer.data],
+  )
+
+  console.log('data=>', nftId, data)
+  const SendTokenCallback = async () => {
+    const params = {
+      address,
+      senNFTId,
+      recipientAddress: receiveAddress,
+      erc20tokenAddress: contractAddress,
+    }
+    console.log('params=>', params)
+
+    const res = await tokenboundClient?.transferNFT({
+      account: address as `0x${string}`,
+      tokenType: 'ERC721',
+      tokenContract: contractAddress as `0x${string}`,
+      tokenId: senNFTId,
+      recipientAddress: receiveAddress as `0x${string}`,
+    })
+    console.log('transferNFTRes=>', res)
     onDismiss()
   }
 
@@ -115,14 +145,14 @@ const SendNFT = ({ data: { address, name }, onDismiss }: Props) => {
           autocomplete
           value={senNFTId}
           options={
-            nftId
+            nftId?.length
               ? nftId?.map((item) => {
                   return {
-                    value: item,
+                    value: item.toString(),
                     label: `${'NftName' || '-'} #${item} `,
                     prefix: (
                       <div
-                        key={item}
+                        key={item.toString()}
                         style={{ height: '100%', display: 'flex', alignItems: 'center' }}
                       >
                         <StyledImg src={placeholder.src} />

@@ -1,7 +1,8 @@
 // import { isAddress } from '@ethersproject/address'
+import { TokenboundClient } from '@tokenbound/sdk'
 import { useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
-import { useSigner } from 'wagmi'
+import { useBalance, useSigner } from 'wagmi'
 
 import { Dialog, Input, Select, Typography, mq } from '@ensdomains/thorin'
 
@@ -11,6 +12,8 @@ import { useChainId } from '@app/hooks/useChainId'
 // import useGetTokenList from '@app/hooks/requst/useGetTokenList'
 import { useNameErc20Assets } from '@app/hooks/useNameDetails'
 import { makeTransactionItem } from '@app/transaction-flow/transaction'
+import { makeDisplay } from '@app/utils/currency'
+import isZero from '@app/utils/isZero'
 
 import { useTransactionFlow } from '../TransactionFlowProvider'
 import { TransactionDialogPassthrough } from '../types'
@@ -94,6 +97,7 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
 
   const { tokenBalance, tokenSymbol, tokenName, contractAddress, decimals } =
     useNameErc20Assets(address)
+  const { data: balance } = useBalance({ address: address as `0x${string}` | undefined })
   const { createTransactionFlow } = useTransactionFlow()
 
   const [receiveAddress, setReceiveAddress] = useState<string>('')
@@ -101,9 +105,39 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
   const [senToken, setSenToken] = useState<string>('')
   const chainId = useChainId()
 
-  const BalanceNum = useMemo(() => {
-    return tokenBalance && Number(tokenBalance?.slice(0, -3))
-  }, [tokenBalance])
+  const checkToken: { tokenBalance: number; tokenSymbol: string | undefined } | undefined =
+    useMemo(() => {
+      if (contractAddress && contractAddress === senToken) {
+        return {
+          tokenBalance: Number(tokenBalance?.slice(0, -3)),
+          tokenSymbol,
+        }
+      }
+      if (senToken && isZero(senToken)) {
+        return {
+          tokenBalance: Number(
+            makeDisplay(balance?.value!, undefined, 'eth', balance?.decimals).slice(0, -3),
+          ),
+          tokenSymbol: balance?.symbol,
+        }
+      }
+      return undefined
+    }, [
+      balance?.decimals,
+      balance?.symbol,
+      balance?.value,
+      contractAddress,
+      senToken,
+      tokenBalance,
+      tokenSymbol,
+    ])
+
+  const tokenboundClient = new TokenboundClient({
+    signer: signer.data,
+    chainId,
+    implementationAddress: '0x2d25602551487c3f3354dd80d76d54383a243358',
+    registryAddress: '0x02101dfB77FDE026414827Fdc604ddAF224F0921',
+  })
 
   // const { data: tokenList } = useGetTokenList({
   //   name: name || '',
@@ -122,8 +156,30 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
   //   tokenId,
   // })
 
-  const sendKey = `send-token`
   const SendTokenCallback = async () => {
+    if (isZero(senToken)) {
+      const ethRes = await tokenboundClient?.transferETH({
+        account: address as `0x${string}`,
+        amount: Number(sendAmount),
+        recipientAddress: receiveAddress as `0x${string}`,
+      })
+      console.log('senToken=>', ethRes)
+    } else {
+      const erc20Res = await tokenboundClient?.transferERC20({
+        account: address as `0x${string}`,
+        amount: Number(sendAmount),
+        recipientAddress: receiveAddress as `0x${string}`,
+        erc20tokenAddress: contractAddress as `0x${string}`,
+        erc20tokenDecimals: decimals,
+      })
+
+      console.log('senToken=>', erc20Res)
+    }
+
+    onDismiss()
+    return
+    const sendKey = `send-token`
+
     createTransactionFlow(sendKey, {
       transactions: [
         makeTransactionItem('sendToken', {
@@ -149,7 +205,6 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
       erc20tokenDecimals: decimals,
     }
     console.log('🚀 ~ file: SendToken-flow.tsx:158 ~ SendTokenCallback ~ params:', params)
-    onDismiss()
   }
 
   return (
@@ -176,7 +231,7 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
           {senToken && (
             <Label>
               {/* balance:{network?.amount || '--'} {network?.symbol || '--'} */}
-              Balance:{BalanceNum || '0.00'} {tokenSymbol || '--'}
+              Balance:{checkToken?.tokenBalance || '0.00'} {checkToken?.tokenSymbol || '--'}
             </Label>
           )}
         </div>
@@ -189,6 +244,15 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
             {
               value: contractAddress,
               label: tokenName,
+              prefix: (
+                <div style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
+                  <StyledImg src={placeholder.src} />
+                </div>
+              ),
+            },
+            {
+              value: '0x0000000000000000000000000000000000000000',
+              label: 'SepoliaETH',
               prefix: (
                 <div style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                   <StyledImg src={placeholder.src} />
@@ -239,10 +303,10 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
           }}
         >
           <Label>Send Amount</Label>
-          {!!senToken && BalanceNum && (
+          {!!senToken && checkToken && (
             <MaxButtonStyle
               onClick={() => {
-                setSendAmount(BalanceNum?.toString())
+                setSendAmount(checkToken.tokenBalance.toString())
               }}
             >
               Max
@@ -258,10 +322,9 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
           onChange={(e) => {
             const value = e.target.value as string
             // const balance = network?.amount
-            const balance = BalanceNum
             if (!value || !Number.isNaN(value)) {
-              if (balance && Number(value) >= Number(balance)) {
-                setSendAmount(BalanceNum.toString())
+              if (checkToken?.tokenBalance && Number(value) >= Number(checkToken.tokenBalance)) {
+                setSendAmount(checkToken.tokenBalance.toString())
               } else {
                 setSendAmount(value)
               }

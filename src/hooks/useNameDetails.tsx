@@ -215,7 +215,7 @@ export const useNameErc721Assets = (address: string | undefined) => {
   // )
   const contractAddress = '0x8F116BEFAf0a26E1B9e4Dd29F85EA1f48a7a0Ff2' as `0x${string}`
   const contract = useErc721Contract(contractAddress)
-  const [nftId, setNftId] = useState<string[]>()
+  const [nftId, setNftId] = useState<string[]>([])
   const [loading, setLoading] = useState<boolean>()
   useEffect(() => {
     if (!address || !contract) {
@@ -225,9 +225,9 @@ export const useNameErc721Assets = (address: string | undefined) => {
       setLoading(true)
       try {
         const ownerIdRes = await contract.tokenIdsByOwner(address)
-        setNftId(ownerIdRes.toString().split(','))
-        console.log('ownerIdRes=>', ownerIdRes.toString())
-
+        if (ownerIdRes.length) {
+          setNftId(ownerIdRes.map((item) => item.toString()))
+        }
         setLoading(false)
       } catch (error) {
         setLoading(false)
