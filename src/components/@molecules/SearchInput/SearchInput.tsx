@@ -219,7 +219,7 @@ export const SearchInput = ({
   const [selected, setSelected] = useState(0)
   const [usingPlaceholder, setUsingPlaceholder] = useState(false)
 
-  const [history, setHistory] = useLocalStorage<HistoryItem[]>('search-history', [])
+  const [history, setHistory] = useLocalStorage<HistoryItem[]>('search-history-v1', [])
 
   const isEmpty = inputVal === ''
   const inputIsAddress = useMemo(() => isAddress(inputVal), [inputVal])
