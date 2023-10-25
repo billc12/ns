@@ -1,4 +1,5 @@
 // import { isAddress } from '@ethersproject/address'
+import { isAddress } from '@ethersproject/address'
 import { TokenboundClient } from '@tokenbound/sdk'
 import { useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
@@ -263,6 +264,7 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
           placeholder="Select Token"
           onChange={(e) => {
             setSenToken(e.target.value)
+            setSendAmount('')
             console.log('checkToken=>', e.target.value)
           }}
         />
@@ -321,8 +323,8 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
           value={sendAmount}
           onChange={(e) => {
             const value = e.target.value as string
-            // const balance = network?.amount
-            if (!value || !Number.isNaN(value)) {
+            // eslint-disable-next-line no-restricted-globals
+            if (!value || !isNaN(Number(value))) {
               if (checkToken?.tokenBalance && Number(value) >= Number(checkToken.tokenBalance)) {
                 setSendAmount(checkToken.tokenBalance.toString())
               } else {
@@ -335,7 +337,12 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
         <Row>
           <BackButton onClick={onDismiss}>Close</BackButton>
           <NextButton
-            // disabled={!BalanceNum || !sendAmount || !receiveAddress || !isAddress(receiveAddress)}
+            disabled={
+              !checkToken?.tokenBalance ||
+              !sendAmount ||
+              !receiveAddress ||
+              !isAddress(receiveAddress)
+            }
             onClick={() => SendTokenCallback()}
           >
             Send
