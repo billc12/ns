@@ -205,7 +205,7 @@ export const useNameErc20Assets = (address: string | undefined) => {
     tokenSymbol,
     tokenName,
     contractAddress,
-    decimals,
+    decimals: decimals || 18,
   }
 }
 

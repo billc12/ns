@@ -1,5 +1,4 @@
 // import { isAddress } from '@ethersproject/address'
-import { TokenboundClient } from '@tokenbound/sdk'
 import { useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { useSigner } from 'wagmi'
@@ -11,7 +10,9 @@ import { BackButton, NextButton } from '@app/components/Awns/Dialog'
 import { useChainId } from '@app/hooks/useChainId'
 // import useGetTokenList from '@app/hooks/requst/useGetTokenList'
 import { useNameErc20Assets } from '@app/hooks/useNameDetails'
+import { makeTransactionItem } from '@app/transaction-flow/transaction'
 
+import { useTransactionFlow } from '../TransactionFlowProvider'
 import { TransactionDialogPassthrough } from '../types'
 
 export type SendAddressProps = {
@@ -93,6 +94,7 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
 
   const { tokenBalance, tokenSymbol, tokenName, contractAddress, decimals } =
     useNameErc20Assets(address)
+  const { createTransactionFlow } = useTransactionFlow()
 
   const [receiveAddress, setReceiveAddress] = useState<string>('')
   const [sendAmount, setSendAmount] = useState<string>('')
@@ -102,12 +104,6 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
   const BalanceNum = useMemo(() => {
     return tokenBalance && Number(tokenBalance?.slice(0, -3))
   }, [tokenBalance])
-  const tokenboundClient = new TokenboundClient({
-    signer: signer.data,
-    chainId,
-    implementationAddress: '0x2d25602551487c3f3354dd80d76d54383a243358',
-    registryAddress: '0x02101dfB77FDE026414827Fdc604ddAF224F0921',
-  })
 
   // const { data: tokenList } = useGetTokenList({
   //   name: name || '',
@@ -126,7 +122,25 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
   //   tokenId,
   // })
 
+  const sendKey = `send-token`
   const SendTokenCallback = async () => {
+    createTransactionFlow(sendKey, {
+      transactions: [
+        makeTransactionItem('sendToken', {
+          fromAddress: address || '0x',
+          amount: Number(sendAmount),
+          toAddress: receiveAddress,
+          contractAddress,
+          decimals,
+          symbol: tokenSymbol!,
+          chainId,
+          signer: signer.data,
+        }),
+      ],
+      requiresManualCleanup: true,
+      autoClose: true,
+    })
+
     const params = {
       address,
       amount: Number(sendAmount),
@@ -134,31 +148,7 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
       erc20tokenAddress: contractAddress,
       erc20tokenDecimals: decimals,
     }
-    console.log('transferData=>', params)
-
-    tokenboundClient.executeCall({
-      account: address as any,
-      to: '0xF2da7b9CDb35Dc7c8e875DE0241b02376825CF86',
-      value: BigInt(100000000000),
-      data: '0x',
-    })
-
-    // const ress = await tokenboundClient?.transferETH({
-    //   account: address as `0x${string}`,
-    //   amount: Number(sendAmount),
-    //   recipientAddress: receiveAddress as `0x${string}`,
-    // })
-
-    // const ress = await tokenboundClient?.transferERC20({
-    //   account: address as `0x${string}`,
-    //   amount: Number(sendAmount),
-    //   recipientAddress: receiveAddress as `0x${string}`,
-    //   erc20tokenAddress: contractAddress as `0x${string}`,
-    //   erc20tokenDecimals: decimals || 18,
-    // })
-    // console.log('🚀 ~ file: SendToken-flow.tsx:138 ~ SendTokenCallback ~ res:', ress)
-
-    console.log(1)
+    console.log('🚀 ~ file: SendToken-flow.tsx:158 ~ SendTokenCallback ~ params:', params)
     onDismiss()
   }
 
@@ -249,7 +239,7 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
           }}
         >
           <Label>Send Amount</Label>
-          {!!BalanceNum && (
+          {!!senToken && BalanceNum && (
             <MaxButtonStyle
               onClick={() => {
                 setSendAmount(BalanceNum?.toString())

@@ -13,6 +13,7 @@ import migrateProfileWithReset from './migrateProfileWithReset'
 import registerName from './registerName'
 import resetPrimaryName from './resetPrimaryName'
 import resetProfile from './resetProfile'
+import sendToken from './sendToken'
 import setPrimaryName from './setPrimaryName'
 import syncManager from './syncManager'
 import testSendName from './testSendName'
@@ -54,6 +55,7 @@ export const transactions = {
   updateResolver,
   wrapName,
   claimRewards,
+  sendToken,
 }
 
 export type Transaction = typeof transactions
