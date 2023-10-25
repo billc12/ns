@@ -48,11 +48,7 @@ const CenterLeftStyle = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;
-  overflow-y: auto;
   gap: 10px;
-  &::-webkit-scrollbar {
-    display: none;
-  }
   ${mq.sm.max(css`
     width: 100%;
     height: auto;
@@ -169,10 +165,14 @@ const TabTitleBoxStyle = styled.div`
 
 const TokensStyle = styled.div`
   margin-top: 18px;
-  height: auto;
+  max-height: 285px;
   width: 100%;
   display: grid;
   gap: 10px;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 
 const CenterRightStyle = styled.div`
@@ -260,11 +260,17 @@ export default function NameContent() {
 
   const showSendTokenInput = prepareDataInput('SendToken')
   const showSendNFTInput = prepareDataInput('SendNFT')
+  const showReceiveInput = prepareDataInput('ReceiveAssets')
 
   const handleSendToken = () => {
     showSendTokenInput(`send-token-${accountAddress}`, {
       address: accountAddress,
       name: _name,
+    })
+  }
+  const handleReceive = () => {
+    showReceiveInput(`receive-token`, {
+      address: accountAddress,
     })
   }
 
@@ -334,6 +340,7 @@ export default function NameContent() {
             <ButtonsStyle>
               <ButtonStyle onClick={() => handleSendToken()}>Send Assets</ButtonStyle>
               <ButtonStyle onClick={() => handleSendNFT()}>Send NFT</ButtonStyle>
+              <ButtonStyle onClick={() => handleReceive()}>Receive</ButtonStyle>
             </ButtonsStyle>
             <TabTitleStyle>
               <SubTitleStyle>Assets ({nftId?.length || 0})</SubTitleStyle>

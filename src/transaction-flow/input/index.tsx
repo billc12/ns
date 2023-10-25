@@ -14,6 +14,7 @@ import type { Props as EditResolverProps } from './EditResolver/EditResolver-flo
 import type { Props as ExtendNamesProps } from './ExtendNames/ExtendNames-flow'
 import type { Props as InvitationNameProps } from './InvitationName-flow'
 import type { Props as ProfileEditorProps } from './ProfileEditor/ProfileEditor-flow'
+import type { Props as ReceiveAssetsProps } from './ReceiveAssets-flow'
 import type { Props as ResetPrimaryNameProps } from './ResetPrimaryName/ResetPrimaryName-flow'
 import type { Props as RevokePermissionsProps } from './RevokePermissions/RevokePermissions-flow'
 import type { Props as SelectPrimaryNameProps } from './SelectPrimaryName/SelectPrimaryName-flow'
@@ -64,6 +65,7 @@ const BurnFuses = dynamicHelper<BurnFusesProps>('BurnFuses/BurnFuses')
 const SendName = dynamicHelper<SendNameProps>('SendName')
 const SendToken = dynamicHelper<SendTokenProps>('SendToken')
 const SendNFT = dynamicHelper<SendNFTProps>('SendNFT')
+const ReceiveAssets = dynamicHelper<ReceiveAssetsProps>('ReceiveAssets')
 const AwnsSendName = dynamicHelper<SendNameProps>('Awns_SendName')
 const RevokePermissions = dynamicHelper<RevokePermissionsProps>(
   'RevokePermissions/RevokePermissions',
@@ -90,6 +92,7 @@ export const DataInputComponents = {
   BurnFuses,
   SendName,
   SendToken,
+  ReceiveAssets,
   SendNFT,
   RevokePermissions,
   UnknownLabels,
