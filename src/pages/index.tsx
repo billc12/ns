@@ -44,12 +44,14 @@ import StpLogoWhite from '../assets/StpLogo_white.svg'
 
 const Container = styled.div(
   () => css`
+    position: relative;
     margin-top: 60px;
     flex-grow: 1;
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
     width: 100%;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
   `,
 )
 
@@ -104,6 +106,16 @@ const BoldTitle = styled(Typography)<{ $size?: string; $fontW?: number; $family?
     `,
   )}
 `
+const BGBox = styled.div`
+  width: 100%;
+  height: calc(100vh - 300px);
+  background: url('/search-bg.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+`
 export default function Page() {
   const { t } = useTranslation('awns_common')
   const { data } = useSignName('stp.aw')
@@ -132,14 +144,9 @@ export default function Page() {
           <BoldTitle $size="24px" $fontW={500} $family="Inter">
             {t('business')}
           </BoldTitle>
-          {/* <GradientTitle>{t('title')}</GradientTitle>
-          <SubtitleWrapper>
-            <Typography fontVariant="large" color="grey">
-              {t('description')}
-            </Typography>
-          </SubtitleWrapper> */}
           <SearchInput />
         </Stack>
+        <BGBox />
       </Container>
     </>
   )

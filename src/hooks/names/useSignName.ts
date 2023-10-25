@@ -38,9 +38,11 @@ const useSignName = (name: string, discountCode?: string) => {
     async () => {
       try {
         const result = await fetchedGetSignName(name, discountCode || '')
-
-        const disUseCount = await contract?.discountsUsed(discountCode!)
-        const isUsed = disUseCount === result.discountCount
+        let isUsed = false
+        if (discountCode) {
+          const disUseCount = (await contract?.discountsUsed(discountCode)) || 0
+          isUsed = disUseCount === result.discountCount && result.discountCount > 0
+        }
         if (isUsed) {
           result.discount = defaultDis
         }
@@ -51,7 +53,7 @@ const useSignName = (name: string, discountCode?: string) => {
         return null
       }
     },
-    { enabled: !!name && !!contract && !!discountCode },
+    { enabled: !!name && !!contract },
   )
 
   return { data, isLoading }

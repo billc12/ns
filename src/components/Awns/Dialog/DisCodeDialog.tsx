@@ -104,16 +104,12 @@ const DiscountCode = ({ info, setCodeCallback, name, show, onCancel }: Props) =>
     onCancel()
   }
   const saveCode = () => {
-    setCodeCallback({
-      ...info,
-      discount: signData?.discount!,
-      discountCode: signData?.discountCode!,
-      discountCount: signData?.discountCount!,
-      timestamp: signData?.timestamp!,
-      signature: signData?.signature!,
-      booker: signData?.booker!,
-      premium: signData?.premium!,
-    })
+    if (signData) {
+      setCodeCallback({
+        ...info,
+        ...signData,
+      })
+    }
     onDismiss()
   }
 

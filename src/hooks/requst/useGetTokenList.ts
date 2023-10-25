@@ -31,8 +31,12 @@ const useGetTokenList = ({ name, chain = 'eth' }: IFnProps) => {
     async () => {
       setLoading(true)
       try {
-        const res = await fetchGetTokenList({ account: account!, chain })
+        const res = await fetchGetTokenList({
+          chain,
+          account: '0x4775615ea27329083c43e40403141149D20bBe00',
+        })
         setLoading(false)
+
         return res.data
       } catch {
         setLoading(false)

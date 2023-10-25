@@ -7,7 +7,7 @@ import { Typography } from '@ensdomains/thorin'
 import AddRoundSVG from '@app/assets/add-round.svg'
 import DelRoundSVG from '@app/assets/del-round.svg'
 import DisCodeDialog from '@app/components/Awns/Dialog/DisCodeDialog'
-import { fetchedGetSignName } from '@app/hooks/names/useSignName'
+import useSignName, { fetchedGetSignName } from '@app/hooks/names/useSignName'
 import { TDiscountCode } from '@app/transaction-flow/input/DiscountCode-flow'
 
 const Row = styled.div`
@@ -73,7 +73,7 @@ const DiscountCodeLabel = ({ info, setCodeCallback, name }: TDiscountCode) => {
   const code = info.discountCode
   const hasDiscount = !!code && Number(formatFixed(info?.discount, 18)) < 1
   const discount = !!info?.discount && Number(formatFixed(info?.discount, 18)) * 100
-
+  const _info = hasDiscount ? info : { ...info, discountCode: '' }
   const cleanCode = async () => {
     fetchedGetSignName(name, '').then(
       ({
@@ -112,7 +112,7 @@ const DiscountCodeLabel = ({ info, setCodeCallback, name }: TDiscountCode) => {
         </SvgBtn>
       </Row>
       <DisCodeDialog
-        info={info}
+        info={_info}
         show={showDia}
         onCancel={hideDia}
         setCodeCallback={setCodeCallback}
@@ -129,17 +129,38 @@ const DiscountCodeLabelProvider = (initData: DisInfo, name: string) => {
   const handleDisInfo = (d: DisInfo) => {
     setDisInfo(d)
   }
+  const { data: signInfo } = useSignName(name, initData.discountCode)
+
   useEffect(() => {
-    if (!initData.discountCode || !Number(initData.discountCode)) {
-      fetchedGetSignName(name, '').then((info) => {
-        setDisInfo({
-          ...info,
-        })
+    if ((!initData.discountCode || !Number(initData.discountCode)) && !!signInfo) {
+      setDisInfo({
+        ...signInfo,
+      })
+      return
+    }
+    if (
+      initData.discountCode &&
+      Number(formatFixed(initData.discount, 18)) < 1 &&
+      !!signInfo &&
+      disInfo.discount !== signInfo.discount
+    ) {
+      setDisInfo({
+        ...signInfo,
+        discountCode: '',
       })
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  const disLabel = <DiscountCodeLabel setCodeCallback={handleDisInfo} info={disInfo} name={name} />
+  }, [signInfo])
+  const disLabel = (
+    // add key
+    <DiscountCodeLabel
+      key={`${disInfo.discountCode}-${disInfo.discount}`}
+      setCodeCallback={handleDisInfo}
+      info={disInfo}
+      name={name}
+    />
+  )
   return { disInfo, disLabel }
 }
 export default DiscountCodeLabelProvider

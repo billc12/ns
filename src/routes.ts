@@ -234,6 +234,12 @@ export const rewrites = [
     destination: '/address?address=$2',
     flattenedDestination: '/$2',
   },
+  {
+    source: '/nameDetail/:name',
+    destination: '/my/nameDetail?name=$2',
+    flattenedDestination: '/nameDetail/$2',
+    tldPrefix: true,
+  },
 ]
 export const getDestination = (url: UrlObject | string) => {
   const isIPFS = !!process.env.NEXT_PUBLIC_IPFS

@@ -14,11 +14,14 @@ import type { Props as EditResolverProps } from './EditResolver/EditResolver-flo
 import type { Props as ExtendNamesProps } from './ExtendNames/ExtendNames-flow'
 import type { Props as InvitationNameProps } from './InvitationName-flow'
 import type { Props as ProfileEditorProps } from './ProfileEditor/ProfileEditor-flow'
+import type { Props as ReceiveAssetsProps } from './ReceiveAssets-flow'
 import type { Props as ResetPrimaryNameProps } from './ResetPrimaryName/ResetPrimaryName-flow'
 import type { Props as RevokePermissionsProps } from './RevokePermissions/RevokePermissions-flow'
 import type { Props as SelectPrimaryNameProps } from './SelectPrimaryName/SelectPrimaryName-flow'
 import type { Props as SetPrimaryNameProps } from './SelectPrimaryName/SetPrimaryName-flow'
+import type { Props as SendNFTProps } from './SendNFT-flow'
 import type { Props as SendNameProps } from './SendName-flow'
+import type { Props as SendTokenProps } from './SendToken-flow'
 import type { Props as TransferProfileProps } from './TransferProfile/TransferProfile-flow'
 import type { Props as UnknownLabelsProps } from './UnknownLabels/UnknownLabels-flow'
 
@@ -60,6 +63,9 @@ const ExtendNames = dynamicHelper<ExtendNamesProps>('ExtendNames/ExtendNames')
 const AwnsExtendNames = dynamicHelper<ExtendNamesProps>('ExtendNames/Awns_ExtendNames')
 const BurnFuses = dynamicHelper<BurnFusesProps>('BurnFuses/BurnFuses')
 const SendName = dynamicHelper<SendNameProps>('SendName')
+const SendToken = dynamicHelper<SendTokenProps>('SendToken')
+const SendNFT = dynamicHelper<SendNFTProps>('SendNFT')
+const ReceiveAssets = dynamicHelper<ReceiveAssetsProps>('ReceiveAssets')
 const AwnsSendName = dynamicHelper<SendNameProps>('Awns_SendName')
 const RevokePermissions = dynamicHelper<RevokePermissionsProps>(
   'RevokePermissions/RevokePermissions',
@@ -85,6 +91,9 @@ export const DataInputComponents = {
   ExtendNames,
   BurnFuses,
   SendName,
+  SendToken,
+  ReceiveAssets,
+  SendNFT,
   RevokePermissions,
   UnknownLabels,
   DeleteEmancipatedSubnameWarning,

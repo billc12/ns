@@ -29,7 +29,7 @@ export const makeDisplay = (
   } else {
     options.maximumFractionDigits = 2
     options.minimumFractionDigits = 2
-    options.currencyDisplay = symbol === 'usd' ? 'narrowSymbol' : 'symbol'
+    options.currencyDisplay = symbol === 'usd' ? 'narrowSymbol' : 'symbol' || symbol
   }
   return new Intl.NumberFormat(undefined, options).format(number) + customSymbol
 }
