@@ -61,11 +61,20 @@ const SubTitleStyle = styled(Typography)`
 `
 
 const TypeStyle = styled(Typography)`
-  color: var(--word-color, #3f5170);
+  width: max-content;
+  height: max-content;
+  padding: 5px 18px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  background: #497de3;
+  color: #fff;
+  font-feature-settings: 'clig' off, 'liga' off;
   font-family: Inter;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 20px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-align: center;
 `
 
 export function Traits() {
@@ -78,10 +87,30 @@ export function Traits() {
         </TagsStyle>
       </TopStyle>
       <ContentStyle>
-        <NameStyle ellipsis>Hajksdkjqhwjkd laksjdklasjkl</NameStyle>
+        <NameStyle ellipsis>Kubz #3789</NameStyle>
         <div>
           <SubTitleStyle>Chest Armor</SubTitleStyle>
-          <TypeStyle>Ring Mail</TypeStyle>
+          <TypeStyle>ERC 721</TypeStyle>
+        </div>
+      </ContentStyle>
+    </TraitsItemStyle>
+  )
+}
+export function Traits2() {
+  return (
+    <TraitsItemStyle>
+      <TopStyle>
+        {/* <TagsStyle>
+          Wear
+          <CheckIcon />
+        </TagsStyle> */}
+      </TopStyle>
+      <ContentStyle
+        style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+      >
+        <NameStyle ellipsis>Kubz #3789</NameStyle>
+        <div>
+          <TypeStyle>ERC 721</TypeStyle>
         </div>
       </ContentStyle>
     </TraitsItemStyle>

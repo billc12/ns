@@ -375,7 +375,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
         <ButtonsStyle>
           <ButtonStyle colorStyle="background">
             <BaseLink passHref href={nameDetailRoute}>
-              more Detail
+              More Detail
             </BaseLink>
           </ButtonStyle>
           {profileActions.canSetMainName && (

@@ -11,6 +11,9 @@ import OmitIcon from '@app/assets/OmitIcon.svg'
 import SwordIcon from '@app/assets/SwordIcon.svg'
 import TestImg from '@app/assets/TestImage.png'
 import UpDisplayicon from '@app/assets/UpDisplayicon.svg'
+import Icon1 from '@app/assets/nameDetail/icon1.svg'
+import Icon2 from '@app/assets/nameDetail/icon2.svg'
+import Icon3 from '@app/assets/nameDetail/icon3.svg'
 import { CopyButton } from '@app/components/Copy'
 import { LoadingOverlay } from '@app/components/LoadingOverlay'
 // import { useAccountSafely } from '@app/hooks/useAccountSafely'
@@ -24,7 +27,7 @@ import { useEthInvoice } from '../[name]/registration/steps/Awns_Complete'
 // import { useBreakpoint } from '@app/utils/BreakpointProvider'
 import { Assets } from './children/Assets'
 import { Tokens } from './children/Tokens'
-import { Traits } from './children/Traits'
+import { Traits, Traits2 } from './children/Traits'
 
 const ContentStyle = styled.div`
   height: 100%;
@@ -43,7 +46,7 @@ const CenterLeftStyle = styled.div`
   background: #fff;
   box-shadow: 0 4px 14px 0 rgba(40, 79, 115, 0.1);
   width: 430px;
-  height: 700px;
+  height: 800px;
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -112,8 +115,8 @@ const ProFileStyle = styled.div`
 `
 const StyledImg = styled.img(
   () => css`
-    width: 180px;
-    height: 180px;
+    width: 112px;
+    height: 112px;
     border-radius: 8px;
   `,
 )
@@ -122,8 +125,8 @@ const AddressStyle = styled.div`
   width: 180px;
   height: 32px;
   border-radius: 6px;
-  background: #15275d;
-  color: #fff;
+  background: #f8fbff;
+  color: #3f5170;
   font-family: Inter;
   font-size: 14px;
   font-weight: 500;
@@ -181,7 +184,7 @@ const CenterRightStyle = styled.div`
   background: #fff;
   box-shadow: 0 4px 14px 0 rgba(40, 79, 115, 0.1);
   width: 750px;
-  height: 700px;
+  height: 800px;
   display: flex;
   padding: 24px;
   gap: 20px;
@@ -220,10 +223,9 @@ const TabTitleStyle = styled.div`
   justify-content: space-between;
 `
 const AssetsStyle = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 10px;
-  column-gap: 12px;
+
   transition: all 1s;
 `
 const TraitsStyle = styled.div`
@@ -234,18 +236,44 @@ const TraitsStyle = styled.div`
   transition: all 1s;
 `
 
-const ButtonsStyle = styled.div`
-  width: 100%;
-  height: auto;
+const AddressBox = styled.div`
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
 `
-
-const ButtonStyle = styled(Button)`
+const AuctionTitle = styled.p`
+  color: #3f5170;
+  text-align: center;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 125% */
+`
+const AuctionBtn = styled(Button)`
+  width: 123px;
   height: 40px;
-  max-width: 200px;
+  border-radius: 8px;
+  border: 1px solid #d4d7e2;
+  background: #fff;
+  padding: 0;
+  &:hover {
+  }
 `
-
+const PaginationBtn = styled(Button)`
+  display: flex;
+  width: 206px;
+  height: 36px;
+  padding: 8px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: #0049c6;
+`
 export default function NameContent() {
   const router = useRouterWithHistory()
   const _name = router.query.name as string
@@ -280,6 +308,8 @@ export default function NameContent() {
       name: _name,
     })
   }
+  console.log('handleSendNFT', handleSendNFT)
+
   return (
     <>
       {_name && accountAddress ? (
@@ -299,13 +329,13 @@ export default function NameContent() {
               </TabIconStyle>
             </HeaderStyle>
             <ProFileStyle>
-              <div style={{ display: 'grid', gap: '6px' }}>
+              <AddressBox>
                 <StyledImg src={avatarSrc || TestImg.src} />
                 <AddressStyle>
                   {shortenAddress(accountAddress)}
                   <CopyButton value={accountAddress} />
                 </AddressStyle>
-              </div>
+              </AddressBox>
               <div
                 style={{
                   display: 'flex',
@@ -317,13 +347,25 @@ export default function NameContent() {
                   $100.00
                 </AssetsItemStyle>
                 <AssetsItemStyle>
-                  <AssetsIcon />
+                  <Icon1 />
                   12
                 </AssetsItemStyle>
                 <AssetsItemStyle>
-                  <AssetsIcon />4
+                  <SwordIcon />4
                 </AssetsItemStyle>
               </div>
+              <div style={{ display: 'flex', gap: 5 }}>
+                <AuctionBtn prefix={<Icon2 />} onClick={() => handleReceive()}>
+                  <AuctionTitle>Receive</AuctionTitle>
+                </AuctionBtn>
+                <AuctionBtn prefix={<Icon3 />} onClick={() => handleSendToken()}>
+                  <AuctionTitle>Send</AuctionTitle>
+                </AuctionBtn>
+                <AuctionBtn>
+                  <AuctionTitle>Login dApp</AuctionTitle>
+                </AuctionBtn>
+              </div>
+
               <div>
                 <TabTitleBoxStyle>
                   <Typography className="check">Token</Typography>
@@ -337,13 +379,29 @@ export default function NameContent() {
             </ProFileStyle>
           </CenterLeftStyle>
           <CenterRightStyle>
-            <ButtonsStyle>
-              <ButtonStyle onClick={() => handleSendToken()}>Send Assets</ButtonStyle>
-              <ButtonStyle onClick={() => handleSendNFT()}>Send NFT</ButtonStyle>
-              <ButtonStyle onClick={() => handleReceive()}>Receive</ButtonStyle>
-            </ButtonsStyle>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderBottom: '1px solid #D4D7E2',
+                paddingBottom: '24px',
+              }}
+            >
+              <PaginationBtn>Knapsack</PaginationBtn>
+              <PaginationBtn
+                style={{
+                  background: '#fff',
+                  color: '#80829F',
+                  border: '1px solid #D4D7E2',
+                  borderLeft: 'none',
+                }}
+              >
+                Actions
+              </PaginationBtn>
+            </div>
             <TabTitleStyle>
-              <SubTitleStyle>Assets ({nftId?.length || 0})</SubTitleStyle>
+              <SubTitleStyle>Account (3)</SubTitleStyle>
               <SubButtonStyle
                 onClick={() => {
                   setIsShowAll(!isShowAll)
@@ -365,10 +423,12 @@ export default function NameContent() {
                     <Assets NftId={item} />
                   </Skeleton>
                 ))}
+                <Traits2 />
+                <Traits2 />
               </>
             </AssetsStyle>
             <TabTitleStyle>
-              <SubTitleStyle>Traits (23)</SubTitleStyle>
+              <SubTitleStyle>Gaming (23)</SubTitleStyle>
               <SubButtonStyle
                 onClick={() => {
                   setIsPackUp(!isPackUp)
@@ -384,10 +444,6 @@ export default function NameContent() {
                 overflow: isPackUp ? 'unset' : 'hidden',
               }}
             >
-              <Traits />
-              <Traits />
-              <Traits />
-              <Traits />
               <Traits />
               <Traits />
             </TraitsStyle>
