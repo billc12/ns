@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
 
 import { Button, Skeleton, mq } from '@ensdomains/thorin'
@@ -11,7 +11,7 @@ import { useNameErc721Assets } from '@app/hooks/useNameDetails'
 import { useRouterWithHistory } from '@app/hooks/useRouterWithHistory'
 
 import { Assets } from './children/Assets'
-import { Traits, Traits2 } from './children/Traits'
+import { Traits } from './children/Traits'
 import NameInfo from './components/nameInfo'
 
 const ContentStyle = styled.div`
@@ -37,7 +37,7 @@ const CenterRightStyle = styled.div`
   gap: 20px;
   flex-direction: column;
   justify-content: start;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   &::-webkit-scrollbar {
     display: none;
   }
@@ -72,7 +72,7 @@ const TabTitleStyle = styled.div`
 const AssetsStyle = styled.div`
   display: flex;
   gap: 10px;
-
+  flex-wrap: wrap;
   transition: all 1s;
 `
 const TraitsStyle = styled.div`
@@ -95,16 +95,31 @@ const PaginationBtn = styled(Button)`
   border-radius: 8px;
   background: #0049c6;
 `
+const ListCenter = styled.div`
+  width: 100%;
+  height: calc(100% - 84px);
+  overflow: scroll;
+  overflow-x: hidden;
+`
 export default function NameContent() {
   const router = useRouterWithHistory()
   const _name = router.query.name as string
   //   const breakpoints = useBreakpoint()
-  const [isShowAll, setIsShowAll] = useState<boolean>(true)
-  const [isPackUp, setIsPackUp] = useState<boolean>(false)
+  const [isShowAll, setIsShowAll] = useState<boolean>(false)
+  const [isPackUp, setIsPackUp] = useState<boolean>(true)
 
   const { accountAddress } = useGetNftAddress(_name)
   // const { address } = useAccountSafely()
   const { nftId, loading: NftLoading } = useNameErc721Assets(accountAddress)
+  const nftList = useMemo(() => {
+    if (!isShowAll) {
+      if (nftId.length > 4) {
+        return nftId.slice(0, 4)
+      }
+    }
+    return nftId
+  }, [isShowAll, nftId])
+  console.log('nftList', nftList)
 
   return (
     <>
@@ -133,53 +148,50 @@ export default function NameContent() {
                 Actions
               </PaginationBtn>
             </div>
-            <TabTitleStyle>
-              <SubTitleStyle>Account (3)</SubTitleStyle>
-              <SubButtonStyle
-                onClick={() => {
-                  setIsShowAll(!isShowAll)
+            <ListCenter>
+              <TabTitleStyle>
+                <SubTitleStyle>Account ({nftId.length})</SubTitleStyle>
+                <SubButtonStyle
+                  onClick={() => {
+                    setIsShowAll(!isShowAll)
+                  }}
+                >
+                  Show All
+                  {isShowAll ? <DownShowicon /> : <UpDisplayicon />}
+                </SubButtonStyle>
+              </TabTitleStyle>
+              <AssetsStyle>
+                <>
+                  {nftList?.map((item) => (
+                    <Skeleton loading={NftLoading} key={item}>
+                      <Assets NftId={item} />
+                    </Skeleton>
+                  ))}
+                </>
+              </AssetsStyle>
+              <TabTitleStyle style={{ marginTop: 10 }}>
+                <SubTitleStyle style={{ marginBottom: 10 }}>Gaming (4)</SubTitleStyle>
+                <SubButtonStyle
+                  onClick={() => {
+                    setIsPackUp(!isPackUp)
+                  }}
+                >
+                  Pack Up
+                  {isPackUp ? <DownShowicon /> : <UpDisplayicon />}
+                </SubButtonStyle>
+              </TabTitleStyle>
+              <TraitsStyle
+                style={{
+                  height: isPackUp ? 'auto' : 0,
+                  overflow: isPackUp ? 'unset' : 'hidden',
                 }}
               >
-                Show All
-                {isShowAll ? <DownShowicon /> : <UpDisplayicon />}
-              </SubButtonStyle>
-            </TabTitleStyle>
-            <AssetsStyle
-              style={{
-                height: isShowAll ? 'auto' : 0,
-                overflow: isShowAll ? 'unset' : 'hidden',
-              }}
-            >
-              <>
-                {nftId?.map((item) => (
-                  <Skeleton loading={NftLoading} key={item}>
-                    <Assets NftId={item} />
-                  </Skeleton>
-                ))}
-                <Traits2 />
-                <Traits2 />
-              </>
-            </AssetsStyle>
-            <TabTitleStyle>
-              <SubTitleStyle>Gaming (23)</SubTitleStyle>
-              <SubButtonStyle
-                onClick={() => {
-                  setIsPackUp(!isPackUp)
-                }}
-              >
-                Pack Up
-                {isPackUp ? <DownShowicon /> : <UpDisplayicon />}
-              </SubButtonStyle>
-            </TabTitleStyle>
-            <TraitsStyle
-              style={{
-                height: isPackUp ? 'auto' : 0,
-                overflow: isPackUp ? 'unset' : 'hidden',
-              }}
-            >
-              <Traits />
-              <Traits />
-            </TraitsStyle>
+                <Traits />
+                <Traits />
+                <Traits />
+                <Traits />
+              </TraitsStyle>
+            </ListCenter>
           </CenterRightStyle>
         </ContentStyle>
       ) : (
