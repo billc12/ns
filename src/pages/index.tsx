@@ -115,6 +115,7 @@ const BGBox = styled.div`
   position: absolute;
   bottom: 0;
   left: 0;
+  z-index: 1;
 `
 export default function Page() {
   const { t } = useTranslation('awns_common')
@@ -133,7 +134,7 @@ export default function Page() {
         <Hamburger />
       </StyledLeadingHeading>
       <Container>
-        <Stack>
+        <Stack style={{ zIndex: 2 }}>
           <BoldTitle>{t('title')}</BoldTitle>
           <BoldTitle>
             {t('title_name')}
