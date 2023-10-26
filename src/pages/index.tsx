@@ -52,6 +52,9 @@ const Container = styled.div(
     flex-direction: column;
     justify-content: start;
     align-items: center;
+    @media (max-height: 800px) {
+      margin-top: 0;
+    }
   `,
 )
 
@@ -106,17 +109,17 @@ const BoldTitle = styled(Typography)<{ $size?: string; $fontW?: number; $family?
     `,
   )}
 `
-const BGBox = styled.div`
-  width: 100%;
-  height: calc(100vh - 300px);
-  background: url('/search-bg.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  z-index: 1;
-`
+// const BGBox = styled.div`
+//   width: 100%;
+//   height: calc(100vh - 300px);
+//   background: url('/search-bg.jpg');
+//   background-repeat: no-repeat;
+//   background-position: center;
+//   position: absolute;
+//   bottom: 0;
+//   left: 0;
+//   z-index: 1;
+// `
 export default function Page() {
   const { t } = useTranslation('awns_common')
   const { data } = useSignName('stp.aw')
@@ -147,7 +150,7 @@ export default function Page() {
           </BoldTitle>
           <SearchInput />
         </Stack>
-        <BGBox />
+        {/* <BGBox /> */}
       </Container>
     </>
   )

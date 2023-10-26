@@ -26,6 +26,10 @@ const Container = styled.div<{ $IsIndex?: boolean }>(
           background-size: cover;
           background-repeat: no-repeat;
           background-position: center center;
+          @media (max-height: 1050px) {
+            height: 100vh;
+            overflow: hidden;
+          }
         `
       : css`
           background: #f8fcff;
@@ -61,16 +65,16 @@ const ContentWrapper = styled.div(
   `,
 )
 
-const BottomPlaceholder = styled.div(
-  ({ theme }) => css`
-    height: ${theme.space['14']};
-    ${mq.sm.min(
-      css`
-        height: ${theme.space['12']};
-      `,
-    )}
-  `,
-)
+// const BottomPlaceholder = styled.div(
+//   ({ theme }) => css`
+//     height: ${theme.space['14']};
+//     ${mq.sm.min(
+//       css`
+//         height: ${theme.space['12']};
+//       `,
+//     )}
+//   `,
+// )
 
 export const StyledFeedbackSVG = styled(FeedbackSVG)(() => css``)
 
@@ -120,7 +124,7 @@ export const Basic = withErrorBoundary(({ children }: { children: React.ReactNod
         <ContentWrapper>
           {error ? <ErrorScreen errorType="application-error" /> : children}
         </ContentWrapper>
-        <BottomPlaceholder />
+        {/* <BottomPlaceholder /> */}
       </Container>
     </div>
   )

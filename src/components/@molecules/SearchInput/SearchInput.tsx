@@ -59,11 +59,17 @@ const SearchResultsContainer = styled.div<{
     &[data-error='true'] {
       border-color: ${theme.colors.red};
     }
-    @media (min-height: 500px) and (max-height: 1100px) and (min-width: 700px) {
-      position: initial;
-      margin-top: 20px;
-    }
 
+    @media (max-height: 1050px) {
+      height: calc(100vh - 400px - 60px);
+      overflow: scroll;
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      @media (max-height: 800px) {
+        height: calc(100vh - 400px);
+      }
+    }
     overflow: hidden;
 
     opacity: 0;
