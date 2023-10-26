@@ -37,7 +37,7 @@ const CenterRightStyle = styled.div`
   gap: 20px;
   flex-direction: column;
   justify-content: start;
-  /* overflow-y: auto; */
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -100,6 +100,9 @@ const ListCenter = styled.div`
   height: calc(100% - 84px);
   overflow: scroll;
   overflow-x: hidden;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 export default function NameContent() {
   const router = useRouterWithHistory()
