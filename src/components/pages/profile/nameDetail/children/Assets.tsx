@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components'
 
+import { Typography } from '@ensdomains/thorin'
+
 import TestImg from '@app/assets/TestImage.png'
 
 const AssetsItemStyle = styled.div`
@@ -28,7 +30,7 @@ const StyledImg = styled.img(
   `,
 )
 
-const NameStyle = styled.div`
+const NameStyle = styled(Typography)`
   color: var(--word-color, #3f5170);
   font-family: Inter;
   font-size: 18px;
@@ -74,7 +76,7 @@ function ErcTag(tag: string) {
   }
 }
 
-export function Assets() {
+export function Assets({ NftId }: { NftId: string }) {
   return (
     <AssetsItemStyle>
       <LeftStyle>
@@ -82,16 +84,18 @@ export function Assets() {
       </LeftStyle>
       <RightStyle>
         <div style={{ display: 'grid', gap: '8px' }}>
-          <NameStyle>Bag # rows</NameStyle>
-          <TagsStyle style={{ background: ErcTag('ERCTYPE') || '#51C7A3' }}>
-            {ERCTYPE.ERC1155}
+          <NameStyle ellipsis>NftName # {NftId || '0'}</NameStyle>
+          <TagsStyle style={{ background: ErcTag('ERC 721') || '#51C7A3' }}>
+            {ERCTYPE.ERC721}
           </TagsStyle>
         </div>
 
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <AssetsCountStyle>Assets</AssetsCountStyle>
-          <NameStyle>$50.22</NameStyle>
-        </div>
+        {false && (
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <AssetsCountStyle>Assets</AssetsCountStyle>
+            <NameStyle>$50.22</NameStyle>
+          </div>
+        )}
       </RightStyle>
     </AssetsItemStyle>
   )

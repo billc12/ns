@@ -240,6 +240,7 @@
     },
     "itemLabel": {
       "name": "Name",
+      "from":"From",
       "address": "Address",
       "action": "Action",
       "info": "Info",
@@ -251,7 +252,8 @@
       "resolver": "Resolver",
       "information": "Information",
       "claim": "Claim Rewards",
-      "remaining": "Remaining Rewards"
+      "remaining": "Remaining Rewards",
+      "amount":"Amount"
     },
     "itemValue": {
       "records_one": "{{count}} record",

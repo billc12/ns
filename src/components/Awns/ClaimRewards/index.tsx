@@ -40,6 +40,7 @@ const LeftItemStyle = styled.div`
 `
 const ClaimRewards = () => {
   const { rewardInfo, isLoading: loading } = useRewardsInfo()
+  console.log('rewardInfo=>', rewardInfo)
   const vailableRewards = rewardInfo?.vailableRewards || BigNumber.from('0')
   const totalRewards = rewardInfo?.totalRewards || BigNumber.from('0')
 

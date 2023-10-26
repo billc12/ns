@@ -25,7 +25,7 @@ const useGetNftAddress = (_name: string) => {
     const _tokenId = BigNumber.from(_hex).toString()
     return { tokenContract: _contractAddress, tokenId: _tokenId }
   }, [isWrapped, name, registrarAddress, wrapperAddress])
-
+  console.log('tokenContract, tokenId=>>', tokenContract, tokenId)
   if (!name || !hasToken) {
     return { accountAddress: undefined }
   }

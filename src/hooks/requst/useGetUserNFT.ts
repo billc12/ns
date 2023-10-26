@@ -44,7 +44,7 @@ const useGetUserNFT = ({
     ercType,
     cursor,
     limit,
-    account: account || '',
+    account: '0x5aEFAA34EaDaC483ea542077D30505eF2472cfe3' || '',
   }
   if (contractAddress) {
     params.contractAddress = contractAddress

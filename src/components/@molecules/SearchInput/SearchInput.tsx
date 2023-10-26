@@ -31,6 +31,7 @@ const Container = styled.div<{ $size: 'medium' | 'extraLarge' }>(
     width: auto;
     position: relative;
     margin-top: 20px;
+    z-index: 999;
     ${$size === 'extraLarge' &&
     mq.sm.min(css`
       width: 600px;

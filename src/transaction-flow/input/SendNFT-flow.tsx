@@ -1,14 +1,21 @@
-import { useState } from 'react'
+import { isAddress } from '@ethersproject/address'
+import { TokenboundClient } from '@tokenbound/sdk'
+import { useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
+import { useChainId, useSigner } from 'wagmi'
 
 import { Dialog, Input, Select, mq } from '@ensdomains/thorin'
 
+import placeholder from '@app/assets/placeholder.png'
 import { BackButton, NextButton } from '@app/components/Awns/Dialog'
+import useGetUserNFT from '@app/hooks/requst/useGetUserNFT'
+import { useNameErc721Assets } from '@app/hooks/useNameDetails'
 
 import { TransactionDialogPassthrough } from '../types'
 
 export type SendAddressProps = {
   address: string | undefined
+  name: string | undefined
 }
 export type Props = {
   data: SendAddressProps
@@ -57,13 +64,64 @@ const Row = styled.div`
     margin-top: 30px;
   `)}
 `
+const StyledImg = styled.img(
+  () => css`
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  `,
+)
 
-const SendNFT = ({ data: { address }, onDismiss }: Props) => {
+const SelectStyle = styled(Select)`
+  button {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 480px;
+  }
+`
+
+const SendNFT = ({ data: { address, name }, onDismiss }: Props) => {
   console.log('address=>', address)
+  const { nftId, contractAddress } = useNameErc721Assets(address)
+  const signer = useSigner()
+  const chainId = useChainId()
+
   const [receiveAddress, setReceiveAddress] = useState<string>('')
-  const [senToken, setSenToken] = useState<string>('')
-  const SendNFTCallback = () => {
-    console.log(1)
+  const [senNFTId, SetSenNFTId] = useState<string>('')
+  const { data } = useGetUserNFT({
+    name: name || '',
+  })
+
+  const tokenboundClient = useMemo(
+    () =>
+      new TokenboundClient({
+        signer: signer.data,
+        chainId,
+        implementationAddress: '0x2d25602551487c3f3354dd80d76d54383a243358',
+        registryAddress: '0x02101dfB77FDE026414827Fdc604ddAF224F0921',
+      }),
+    [chainId, signer.data],
+  )
+
+  console.log('data=>', nftId, data)
+  const SendTokenCallback = async () => {
+    const params = {
+      address,
+      senNFTId,
+      recipientAddress: receiveAddress,
+      erc20tokenAddress: contractAddress,
+    }
+    console.log('params=>', params)
+
+    const res = await tokenboundClient?.transferNFT({
+      account: address as `0x${string}`,
+      tokenType: 'ERC721',
+      tokenContract: contractAddress as `0x${string}`,
+      tokenId: senNFTId,
+      recipientAddress: receiveAddress as `0x${string}`,
+    })
+    console.log('transferNFTRes=>', res)
     onDismiss()
   }
 
@@ -79,25 +137,74 @@ const SendNFT = ({ data: { address }, onDismiss }: Props) => {
           value={receiveAddress}
           onChange={(e) => setReceiveAddress(e.target.value)}
         />
-        <Select
-          label="NFT"
+
+        <Label>Select NFT</Label>
+
+        <SelectStyle
+          label=""
           autocomplete
-          value={senToken}
-          options={[
-            { value: '1', label: 'One' },
-            { value: '2', label: 'Two' },
-            { value: '3', label: 'Three' },
-          ]}
-          placeholder="Select NFT"
+          value={senNFTId}
+          options={
+            nftId?.length
+              ? nftId?.map((item) => {
+                  return {
+                    value: item.toString(),
+                    label: `${'NftName' || '-'} #${item} `,
+                    prefix: (
+                      <div
+                        key={item.toString()}
+                        style={{ height: '100%', display: 'flex', alignItems: 'center' }}
+                      >
+                        <StyledImg src={placeholder.src} />
+                      </div>
+                    ),
+                  }
+                })
+              : []
+          }
+          placeholder="Select Token"
           onChange={(e) => {
-            setSenToken(e.target.value)
-            console.log('NFT=>', e.target.value)
+            SetSenNFTId(e.target.value)
+            console.log('checkToken=>', e.target.value)
           }}
         />
+        {/* <SelectStyle
+          label=""
+          autocomplete
+          value={senNFTHash}
+          options={
+            data
+              ? data.content.map((item) => {
+                  return {
+                    value: item.mint_transaction_hash,
+                    label: `${item?.name || item?.contract_name || '-'} #${item?.token_id} `,
+                    prefix: (
+                      <div
+                        key={item.id}
+                        style={{ height: '100%', display: 'flex', alignItems: 'center' }}
+                      >
+                        <StyledImg src={item.image_uri || placeholder.src} />
+                      </div>
+                    ),
+                  }
+                })
+              : []
+          }
+          placeholder="Select Token"
+          onChange={(e) => {
+            SetSenNFTHash(e.target.value)
+            console.log('checkToken=>', e.target.value)
+          }}
+        /> */}
 
         <Row>
           <BackButton onClick={onDismiss}>Close</BackButton>
-          <NextButton onClick={() => SendNFTCallback()}>Send</NextButton>
+          <NextButton
+            disabled={!senNFTId || !receiveAddress || !isAddress(receiveAddress)}
+            onClick={() => SendTokenCallback()}
+          >
+            Send
+          </NextButton>
         </Row>
       </Container>
     </>
