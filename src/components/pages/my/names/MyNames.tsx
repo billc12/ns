@@ -108,7 +108,7 @@ const MyNames = () => {
   const [searchQuery, setSearchQuery] = useQueryParameterState<string>('search', '')
 
   const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(10)
+  const [pageSize, setPageSize] = useState(40)
 
   const {
     data: namesData,
