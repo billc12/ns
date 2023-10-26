@@ -194,9 +194,11 @@ const MobileSearchInput = ({
 export const SearchInput = ({
   size = 'extraLarge',
   setSearchState,
+  setBgShow,
 }: {
   size?: 'medium' | 'extraLarge'
   setSearchState?: (value: TransitionState) => void
+  setBgShow?: (v: boolean) => void
 }) => {
   const { t } = useTranslation('common')
   const router = useRouterWithHistory()
@@ -229,6 +231,13 @@ export const SearchInput = ({
   const [history, setHistory] = useLocalStorage<HistoryItem[]>('search-history-v1', [])
 
   const isEmpty = inputVal === ''
+  useEffect(() => {
+    if (isEmpty && state === 'unmounted') {
+      setBgShow?.(true)
+      return
+    }
+    setBgShow?.(false)
+  }, [isEmpty, setBgShow, state])
   const inputIsAddress = useMemo(() => isAddress(inputVal), [inputVal])
   const { isValid, isETH, is2LD, isShort, type, name } = useValidate(
     inputVal,
