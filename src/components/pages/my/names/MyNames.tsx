@@ -66,6 +66,11 @@ const AddressList = styled.div(
   () => css`
     width: 840px;
     min-height: 560px;
+    max-height: 800px;
+    overflow: scroll;
+    &::-webkit-scrollbar {
+      display: none;
+    }
     border-radius: 10px;
     border: 1px solid var(--line, #d4d7e2);
     background: #fff;

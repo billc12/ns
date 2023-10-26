@@ -1,11 +1,12 @@
+import router from 'next/router'
 import styled, { css } from 'styled-components'
 
-import { Button, Typography, mq } from '@ensdomains/thorin'
+import { Button, LeftArrowSVG, Typography, mq } from '@ensdomains/thorin'
 
 import AssetsIcon from '@app/assets/AssetsIcon.svg'
 import ColumnBarIcon from '@app/assets/ColumnBarIcon.svg'
 import ListWhiteIcon from '@app/assets/List-white.svg'
-import OmitIcon from '@app/assets/OmitIcon.svg'
+// import OmitIcon from '@app/assets/OmitIcon.svg'
 import SwordIcon from '@app/assets/SwordIcon.svg'
 import TestImg from '@app/assets/TestImage.png'
 import Icon1 from '@app/assets/nameDetail/icon1.svg'
@@ -180,11 +181,13 @@ export const AuctionBtn = styled(Button)`
 `
 const Page = ({ accountAddress, _name }: { accountAddress: string; _name: string }) => {
   const { avatarSrc } = useEthInvoice(_name, false)
+
   return (
     <CenterLeftStyle>
       <HeaderStyle>
-        <OmitButtonStyle>
-          <OmitIcon />
+        <OmitButtonStyle onClick={() => router.back()}>
+          {/* <OmitIcon /> */}
+          <LeftArrowSVG />
         </OmitButtonStyle>
         <NameStyle>{_name || '--'}</NameStyle>
 
