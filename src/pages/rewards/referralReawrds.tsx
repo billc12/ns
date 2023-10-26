@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
 
 import { mq } from '@ensdomains/thorin'
@@ -160,15 +160,22 @@ const TableContentStyle = styled.div(
 //     Rewards: 0.004,
 //   },
 // ]
-
+const limit = 7
 export default function Rewards() {
   const breakpoints = useBreakpoint()
   const { address } = useAccountSafely()
   const primary = usePrimary(address!, !address)
-
-  const { data: RewardsDetails, isLoading: rewardsLoading } = useReferralRewards(
+  const [rewardsPage, setRewardsPage] = useState(1)
+  const {
+    data: RewardsDetails,
+    isLoading: rewardsLoading,
+    isFetching,
+  } = useReferralRewards(
     primary.data?.beautifiedName ? primary.data?.beautifiedName.slice(0, -3) : '',
+    rewardsPage - 1,
+    limit,
   )
+
   const RewardsDetailsTableList = useMemo(() => {
     if (!RewardsDetails?.list) return []
     return RewardsDetails?.list?.map(({ registrant, reward, timestamp, type }) => [
@@ -187,8 +194,18 @@ export default function Rewards() {
       </TableContentStyle>,
     ])
   }, [RewardsDetails?.list, breakpoints.sm])
-  // const { data } = useGetSignReferral()
-  // const totalRewards = BigNumber.from(data?.reward || '0')
+  const handleChangePage = (v: number) => {
+    setRewardsPage(v)
+  }
+  const paginationParams = useMemo(() => {
+    return {
+      currentPage: rewardsPage,
+      total: RewardsDetails
+        ? (RewardsDetails.countDirect + RewardsDetails.countIndirect) / limit
+        : 0,
+      onChange: handleChangePage,
+    }
+  }, [RewardsDetails, rewardsPage])
   return (
     <>
       {RewardsDetails && !rewardsLoading ? (
@@ -233,7 +250,9 @@ export default function Rewards() {
                   labels={['Date', 'AWNS', 'Type', 'Rewards']}
                   rows={RewardsDetailsTableList}
                   noneBorder
-                  isLoading={rewardsLoading}
+                  isLoading={rewardsLoading || isFetching}
+                  isEnablePagination
+                  paginationParams={paginationParams}
                 />
               </StyledTable>
             </CenterRightStyle>
