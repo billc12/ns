@@ -10,7 +10,7 @@ const ContentStyle = styled.div`
 
   display: flex;
   justify-content: center;
-  padding: 0 120px;
+  padding: 0 60px;
 `
 
 export default function Page() {

@@ -5,15 +5,20 @@ import { Typography } from '@ensdomains/thorin'
 import TestImg from '@app/assets/TestImage.png'
 
 const AssetsItemStyle = styled.div`
-  width: 346px;
-  height: 134px;
+  width: 162px;
+  height: 250px;
   flex-shrink: 0;
   border-radius: 10px;
   background: #f7fafc;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 
 const LeftStyle = styled.div`
+  width: 162px;
+  height: 162px;
   padding: 7px;
   padding-right: 0;
 `
@@ -24,17 +29,21 @@ const RightStyle = styled.div`
 `
 const StyledImg = styled.img(
   () => css`
-    width: 120px;
-    height: 120px;
+    width: 162px;
+    height: 162px;
+
     border-radius: 8px;
   `,
 )
 
 const NameStyle = styled(Typography)`
   color: var(--word-color, #3f5170);
+  font-feature-settings: 'clig' off, 'liga' off;
   font-family: Inter;
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 142.857% */
 `
 
 const TagsStyle = styled.div`

@@ -324,14 +324,14 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
               additionalGap={0}
               content={
                 <RowValueStyle style={{ justifyContent: 'center' }}>
-                  {registrationData?.registrationDate?.toUTCString()}
+                  {registrationData?.registrationDate?.toString()}
                 </RowValueStyle>
               }
               mobilePlacement="top"
               placement="top"
             >
               <TimeRound id="buttonIdTop">
-                <RowValueStyle>{registrationData?.registrationDate?.toString()}</RowValueStyle>
+                <RowValueStyle>{registrationData?.registrationDate?.toUTCString()}</RowValueStyle>
               </TimeRound>
             </Tooltip>
 
@@ -341,14 +341,14 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
               additionalGap={0}
               content={
                 <RowValueStyle style={{ justifyContent: 'center' }}>
-                  {nameDetails.expiryDate?.toUTCString()}
+                  {nameDetails.expiryDate?.toString()}
                 </RowValueStyle>
               }
               mobilePlacement="top"
               placement="top"
             >
               <TimeRound id="buttonIdTop">
-                <RowValueStyle>{nameDetails.expiryDate?.toString()}</RowValueStyle>
+                <RowValueStyle>{nameDetails.expiryDate?.toUTCString()}</RowValueStyle>
               </TimeRound>
             </Tooltip>
 
@@ -373,11 +373,6 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
           </ContentStyled>
         </div>
         <ButtonsStyle>
-          <ButtonStyle colorStyle="background">
-            <BaseLink passHref href={nameDetailRoute}>
-              More Detail
-            </BaseLink>
-          </ButtonStyle>
           {profileActions.canSetMainName && (
             <BtnSetAdd onClick={handleSelectPrimaryName}>Set AWNS for this address</BtnSetAdd>
           )}
@@ -408,6 +403,11 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
               Transfer
             </ButtonStyle>
           )}
+          <ButtonStyle colorStyle="background">
+            <BaseLink passHref href={nameDetailRoute}>
+              More Detail
+            </BaseLink>
+          </ButtonStyle>
         </ButtonsStyle>
       </div>
 

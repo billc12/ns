@@ -66,6 +66,11 @@ const AddressList = styled.div(
   () => css`
     width: 840px;
     min-height: 560px;
+    max-height: 800px;
+    overflow: scroll;
+    &::-webkit-scrollbar {
+      display: none;
+    }
     border-radius: 10px;
     border: 1px solid var(--line, #d4d7e2);
     background: #fff;
@@ -103,7 +108,7 @@ const MyNames = () => {
   const [searchQuery, setSearchQuery] = useQueryParameterState<string>('search', '')
 
   const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(10)
+  const [pageSize, setPageSize] = useState(40)
 
   const {
     data: namesData,

@@ -12,11 +12,9 @@ import { BackButton, NextButton } from '@app/components/Awns/Dialog'
 import { useChainId } from '@app/hooks/useChainId'
 // import useGetTokenList from '@app/hooks/requst/useGetTokenList'
 import { useNameErc20Assets } from '@app/hooks/useNameDetails'
-import { makeTransactionItem } from '@app/transaction-flow/transaction'
 import { makeDisplay } from '@app/utils/currency'
 import isZero from '@app/utils/isZero'
 
-import { useTransactionFlow } from '../TransactionFlowProvider'
 import { TransactionDialogPassthrough } from '../types'
 
 export type SendAddressProps = {
@@ -99,7 +97,6 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
   const { tokenBalance, tokenSymbol, tokenName, contractAddress, decimals } =
     useNameErc20Assets(address)
   const { data: balance } = useBalance({ address: address as `0x${string}` | undefined })
-  const { createTransactionFlow } = useTransactionFlow()
 
   const [receiveAddress, setReceiveAddress] = useState<string>('')
   const [sendAmount, setSendAmount] = useState<string>('')
@@ -140,23 +137,6 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
     registryAddress: '0x02101dfB77FDE026414827Fdc604ddAF224F0921',
   })
 
-  // const { data: tokenList } = useGetTokenList({
-  //   name: name || '',
-  // })
-
-  // const network = useMemo(() => {
-  //   if (senToken) {
-  //     return tokenList?.find((v) => v.id === senToken)
-  //   }
-  //   return ''
-  // }, [senToken, tokenList])
-
-  // console.log('tokenList=>', name, tokenList)
-  // const tokenBoundAccount = tokenboundClient.getAccount({
-  //   tokenContract,
-  //   tokenId,
-  // })
-
   const SendTokenCallback = async () => {
     if (isZero(senToken)) {
       const ethRes = await tokenboundClient?.transferETH({
@@ -173,39 +153,8 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
         erc20tokenAddress: contractAddress as `0x${string}`,
         erc20tokenDecimals: decimals,
       })
-
       console.log('senToken=>', erc20Res)
     }
-
-    onDismiss()
-    return
-    const sendKey = `send-token`
-
-    createTransactionFlow(sendKey, {
-      transactions: [
-        makeTransactionItem('sendToken', {
-          fromAddress: address || '0x',
-          amount: Number(sendAmount),
-          toAddress: receiveAddress,
-          contractAddress,
-          decimals,
-          symbol: tokenSymbol!,
-          chainId,
-          signer: signer.data,
-        }),
-      ],
-      requiresManualCleanup: true,
-      autoClose: true,
-    })
-
-    const params = {
-      address,
-      amount: Number(sendAmount),
-      recipientAddress: receiveAddress,
-      erc20tokenAddress: contractAddress,
-      erc20tokenDecimals: decimals,
-    }
-    console.log('🚀 ~ file: SendToken-flow.tsx:158 ~ SendTokenCallback ~ params:', params)
   }
 
   return (
@@ -231,7 +180,6 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
           <Label>Select Token</Label>
           {senToken && (
             <Label>
-              {/* balance:{network?.amount || '--'} {network?.symbol || '--'} */}
               Balance:{checkToken?.tokenBalance || '0.00'} {checkToken?.tokenSymbol || '--'}
             </Label>
           )}
@@ -268,35 +216,6 @@ const SendToken = ({ data: { address, name }, onDismiss }: Props) => {
             console.log('checkToken=>', e.target.value)
           }}
         />
-        {/* <Select
-          label=""
-          autocomplete
-          value={senToken}
-          options={
-            tokenList
-              ? tokenList?.map((item) => {
-                  return {
-                    value: item.id,
-                    label: item.symbol,
-                    prefix: (
-                      <div
-                        key={item.id}
-                        style={{ height: '100%', display: 'flex', alignItems: 'center' }}
-                      >
-                        <StyledImg src={item.logo_url} />
-                      </div>
-                    ),
-                  }
-                })
-              : []
-          }
-          placeholder="Select Token"
-          onChange={(e) => {
-            setSenToken(e.target.value)
-            console.log('checkToken=>', e.target.value)
-          }}
-        /> */}
-
         <div
           style={{
             display: 'flex',
