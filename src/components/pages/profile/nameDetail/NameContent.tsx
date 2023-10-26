@@ -259,8 +259,6 @@ const AuctionBtn = styled(Button)`
   border: 1px solid #d4d7e2;
   background: #fff;
   padding: 0;
-  &:hover {
-  }
 `
 const PaginationBtn = styled(Button)`
   display: flex;
