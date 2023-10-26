@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components'
 
 import { Typography } from '@ensdomains/thorin'
 
-import TestImg from '@app/assets/TestImage.png'
+import Img1 from '@app/assets/nameDetail/img1.png'
 
 const AssetsItemStyle = styled.div`
   width: 162px;
@@ -89,7 +89,7 @@ export function Assets({ NftId }: { NftId: string }) {
   return (
     <AssetsItemStyle>
       <LeftStyle>
-        <StyledImg src={TestImg.src} />
+        <StyledImg src={Img1.src} />
       </LeftStyle>
       <RightStyle>
         <div style={{ display: 'grid', gap: '8px' }}>

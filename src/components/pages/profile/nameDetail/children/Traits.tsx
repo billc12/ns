@@ -4,6 +4,9 @@ import { Typography } from '@ensdomains/thorin'
 
 import TestImg from '@app/assets/TestImage.png'
 import CheckIcon from '@app/assets/check-whiteIcon.svg'
+import Img2 from '@app/assets/nameDetail/img2.png'
+import Img3 from '@app/assets/nameDetail/img3.png'
+import Img4 from '@app/assets/nameDetail/img4.png'
 
 const TraitsItemStyle = styled.div`
   width: 164px;
@@ -50,6 +53,9 @@ const TagsStyle = styled.div`
   font-family: Inter;
   font-size: 14px;
   font-weight: 700;
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
 `
 
 const SubTitleStyle = styled(Typography)`
@@ -79,21 +85,132 @@ const TypeStyle = styled(Typography)`
 
 export function Traits() {
   return (
-    <TraitsItemStyle>
-      <TopStyle>
-        <TagsStyle>
-          Wear
-          <CheckIcon />
-        </TagsStyle>
-      </TopStyle>
-      <ContentStyle>
-        <NameStyle ellipsis>Kubz #3789</NameStyle>
-        <div>
-          <SubTitleStyle>Chest Armor</SubTitleStyle>
-          <TypeStyle>ERC 721</TypeStyle>
+    <>
+      <TraitsItemStyle>
+        {/* <TopStyle> */}
+        <div style={{ width: 162, height: 162, background: '#000', position: 'relative' }}>
+          {/* eslint-disable-next-line jsx-a11y/alt-text, @next/next/no-img-element */}
+          <img
+            src={Img2.src}
+            alt="default img"
+            style={{
+              width: 75,
+              height: 75,
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%,-50%)',
+            }}
+          />
+          <TagsStyle>
+            Wear
+            <CheckIcon />
+          </TagsStyle>
         </div>
-      </ContentStyle>
-    </TraitsItemStyle>
+
+        {/* </TopStyle> */}
+        <ContentStyle>
+          <NameStyle ellipsis>Kubz #3789</NameStyle>
+          <div>
+            <SubTitleStyle>Chest Armor</SubTitleStyle>
+            <TypeStyle>ERC 721</TypeStyle>
+          </div>
+        </ContentStyle>
+      </TraitsItemStyle>
+      <TraitsItemStyle>
+        {/* <TopStyle> */}
+        <div style={{ width: 162, height: 162, background: '#000', position: 'relative' }}>
+          {/* eslint-disable-next-line jsx-a11y/alt-text, @next/next/no-img-element */}
+          <img
+            src={Img2.src}
+            alt="default img"
+            style={{
+              width: 75,
+              height: 75,
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%,-50%)',
+            }}
+          />
+          <TagsStyle>
+            Wear
+            <CheckIcon />
+          </TagsStyle>
+        </div>
+
+        {/* </TopStyle> */}
+        <ContentStyle>
+          <NameStyle ellipsis>Kubz #3789</NameStyle>
+          <div>
+            <SubTitleStyle>Chest Armor</SubTitleStyle>
+            <TypeStyle>ERC 721</TypeStyle>
+          </div>
+        </ContentStyle>
+      </TraitsItemStyle>
+      <TraitsItemStyle>
+        {/* <TopStyle> */}
+        <div style={{ width: 162, height: 162, background: '#000', position: 'relative' }}>
+          {/* eslint-disable-next-line jsx-a11y/alt-text, @next/next/no-img-element */}
+          <img
+            src={Img3.src}
+            alt="default img"
+            style={{
+              width: 75,
+              height: 75,
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%,-50%)',
+            }}
+          />
+          <TagsStyle>
+            Wear
+            <CheckIcon />
+          </TagsStyle>
+        </div>
+
+        {/* </TopStyle> */}
+        <ContentStyle>
+          <NameStyle ellipsis>Kubz #3789</NameStyle>
+          <div>
+            <SubTitleStyle>Chest Armor</SubTitleStyle>
+            <TypeStyle>ERC 721</TypeStyle>
+          </div>
+        </ContentStyle>
+      </TraitsItemStyle>
+      <TraitsItemStyle>
+        {/* <TopStyle> */}
+        <div style={{ width: 162, height: 162, background: '#000', position: 'relative' }}>
+          {/* eslint-disable-next-line jsx-a11y/alt-text, @next/next/no-img-element */}
+          <img
+            src={Img4.src}
+            alt="default img"
+            style={{
+              width: 75,
+              height: 75,
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%,-50%)',
+            }}
+          />
+          <TagsStyle>
+            Wear
+            <CheckIcon />
+          </TagsStyle>
+        </div>
+
+        {/* </TopStyle> */}
+        <ContentStyle>
+          <NameStyle ellipsis>Kubz #3789</NameStyle>
+          <div>
+            <SubTitleStyle>Chest Armor</SubTitleStyle>
+            <TypeStyle>ERC 721</TypeStyle>
+          </div>
+        </ContentStyle>
+      </TraitsItemStyle>
+    </>
   )
 }
 export function Traits2() {

@@ -1,7 +1,7 @@
 import router from 'next/router'
 import styled, { css } from 'styled-components'
 
-import { Button, LeftArrowSVG, Typography, mq } from '@ensdomains/thorin'
+import { Button, Dropdown, LeftArrowSVG, Typography, mq } from '@ensdomains/thorin'
 
 import AssetsIcon from '@app/assets/AssetsIcon.svg'
 import ColumnBarIcon from '@app/assets/ColumnBarIcon.svg'
@@ -10,7 +10,8 @@ import ListWhiteIcon from '@app/assets/List-white.svg'
 import SwordIcon from '@app/assets/SwordIcon.svg'
 import TestImg from '@app/assets/TestImage.png'
 import Icon1 from '@app/assets/nameDetail/icon1.svg'
-// import Icon4 from '@app/assets/nameDetail/icon4.svg'
+import Icon3 from '@app/assets/nameDetail/icon3.svg'
+import Icon4 from '@app/assets/nameDetail/icon4.svg'
 import { CopyButton } from '@app/components/Copy'
 import { shortenAddress } from '@app/utils/utils'
 
@@ -226,11 +227,25 @@ const Page = ({ accountAddress, _name }: { accountAddress: string; _name: string
         </div>
         <div style={{ display: 'flex', gap: 5 }}>
           <ReceiveBtn accountAddress={accountAddress} />
-          <SendTokenBtn accountAddress={accountAddress} _name={_name} />
-          <SendNFTBtn accountAddress={accountAddress} _name={_name} />
-          {/* <AuctionBtn prefix={<Icon4 />}>
+          <Dropdown
+            shortThrow
+            align="left"
+            items={[
+              <div>
+                <SendTokenBtn accountAddress={accountAddress} _name={_name} />
+              </div>,
+              <div>
+                <SendNFTBtn accountAddress={accountAddress} _name={_name} />
+              </div>,
+            ]}
+          >
+            <AuctionBtn prefix={<Icon3 />}>
+              <AuctionTitle>Send</AuctionTitle>
+            </AuctionBtn>
+          </Dropdown>
+          <AuctionBtn prefix={<Icon4 />}>
             <AuctionTitle>Connect</AuctionTitle>
-          </AuctionBtn> */}
+          </AuctionBtn>
         </div>
 
         <div>

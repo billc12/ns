@@ -187,7 +187,7 @@ const CardTitleStyle = styled(Typography)(
 
 // const tabs = ['profile', 'records', 'subnames', 'permissions', 'more'] as const
 // const tabs = ['detail', 'assets', 'invitationCode'] as const
-const tabs = ['detail', 'assets'] as const
+const tabs = ['detail'] as const
 type Tab = typeof tabs[number]
 
 type Props = {
@@ -372,27 +372,9 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
       router.push(`/import/${name}`)
     }
   }, [name, router, transactions])
-
-  // const infoBanner = useMemo(() => {
-  //   if (
-  //     registrationStatus !== 'gracePeriod' &&
-  //     gracePeriodEndDate &&
-  //     gracePeriodEndDate < new Date()
-  //   ) {
-  //     return <NameAvailableBanner {...{ normalisedName, expiryDate }} />
-  //   }
-  //   return undefined
-  // }, [registrationStatus, gracePeriodEndDate, normalisedName, expiryDate])
-
-  // const warning: ContentWarning = useMemo(() => {
-  //   if (error)
-  //     return {
-  //       type: 'warning',
-  //       message: error,
-  //       title: errorTitle,
-  //     }
-  //   return undefined
-  // }, [error, errorTitle])
+  const nameDetailRoute = useMemo(() => {
+    return `/my/nameDetail?name=${name}`
+  }, [name])
   console.log(titleContent, descriptionContent)
   return (
     <>
@@ -448,6 +430,9 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
                           {t(`tabs.${tabItem}.name`)}
                         </TabButton>
                       ))}
+                <BaseLink passHref href={nameDetailRoute}>
+                  {t(`tabs.assets.name`)}
+                </BaseLink>
               </TabButtonContainer>
             </CardsStyle>
 

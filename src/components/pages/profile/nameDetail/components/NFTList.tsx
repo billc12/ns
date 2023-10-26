@@ -144,6 +144,12 @@ const Page = ({ accountAddress }: { accountAddress: string }) => {
                 <Assets NftId={item} />
               </Skeleton>
             ))}
+            {!nftList.length && (
+              <>
+                <Assets NftId="test1" />
+                <Assets NftId="test1" />
+              </>
+            )}
           </>
         </AssetsStyle>
         <TabTitleStyle style={{ marginTop: 10 }}>
@@ -163,9 +169,6 @@ const Page = ({ accountAddress }: { accountAddress: string }) => {
             overflow: isPackUp ? 'unset' : 'hidden',
           }}
         >
-          <Traits />
-          <Traits />
-          <Traits />
           <Traits />
         </TraitsStyle>
       </ListCenter>

@@ -1,4 +1,4 @@
-import Icon3 from '@app/assets/nameDetail/icon3.svg'
+// import Icon3 from '@app/assets/nameDetail/icon3.svg'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 
 import { AuctionBtn, AuctionTitle } from '../components/nameInfo'
@@ -13,8 +13,8 @@ const Page = ({ accountAddress, _name }: { accountAddress: string; _name: string
     })
   }
   return (
-    <AuctionBtn prefix={<Icon3 />} onClick={() => handleSendToken()}>
-      <AuctionTitle>Send</AuctionTitle>
+    <AuctionBtn style={{ border: 'none' }} onClick={() => handleSendToken()}>
+      <AuctionTitle>Fungible Token</AuctionTitle>
     </AuctionBtn>
   )
 }
