@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 
@@ -52,6 +53,9 @@ const Container = styled.div(
     flex-direction: column;
     justify-content: start;
     align-items: center;
+    @media (max-height: 800px) {
+      margin-top: 0;
+    }
   `,
 )
 
@@ -106,21 +110,35 @@ const BoldTitle = styled(Typography)<{ $size?: string; $fontW?: number; $family?
     `,
   )}
 `
-const BGBox = styled.div`
-  width: 100%;
-  height: calc(100vh - 300px);
-  background: url('/search-bg.jpg');
+const BGBox1 = styled.div`
+  background: url('/bg1.png');
   background-repeat: no-repeat;
   background-position: center;
   position: absolute;
-  bottom: 0;
-  left: 0;
+  width: 720px;
+  height: 676px;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 10%;
+  z-index: 1;
+`
+const BGBox2 = styled.div`
+  width: 720px;
+  height: 676px;
+  background: url('/bg2.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  left: 50%;
+  top: 15%;
+  transform: translateX(-50%);
   z-index: 1;
 `
 export default function Page() {
   const { t } = useTranslation('awns_common')
   const { data } = useSignName('stp.aw')
   console.log('data', data)
+  const [showBg2, setShowBg2] = useState(true)
 
   return (
     <>
@@ -145,9 +163,12 @@ export default function Page() {
           <BoldTitle $size="24px" $fontW={500} $family="Inter">
             {t('business')}
           </BoldTitle>
-          <SearchInput />
+          <SearchInput setBgShow={(v: boolean) => setShowBg2(v)} />
         </Stack>
-        <BGBox />
+        <>
+          <BGBox1 />
+          {showBg2 && <BGBox2 />}
+        </>
       </Container>
     </>
   )
