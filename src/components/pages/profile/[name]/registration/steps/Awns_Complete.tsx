@@ -255,11 +255,9 @@ const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
           <FullInvoiceBox>{InvoiceFilled}</FullInvoiceBox>
         </div>
         <ButtonContainer className="btn">
-          <MobileFullWidth>
-            <NextButton data-testid="view-name" onClick={() => callback(true)}>
-              {t('steps.complete.viewName')}
-            </NextButton>
-          </MobileFullWidth>
+          <NextButton data-testid="view-name" onClick={() => callback(true)}>
+            {t('steps.complete.viewName')}
+          </NextButton>
         </ButtonContainer>
       </Container>
       <Confetti
