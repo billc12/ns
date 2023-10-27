@@ -1,10 +1,9 @@
 import router from 'next/router'
 import styled, { css } from 'styled-components'
 
-import { Button, Dropdown, LeftArrowSVG, Typography, mq } from '@ensdomains/thorin'
+import { Button, Dropdown, LeftArrowSVG, mq } from '@ensdomains/thorin'
 
 import AssetsIcon from '@app/assets/AssetsIcon.svg'
-import ColumnBarIcon from '@app/assets/ColumnBarIcon.svg'
 import ListWhiteIcon from '@app/assets/List-white.svg'
 // import OmitIcon from '@app/assets/OmitIcon.svg'
 import SwordIcon from '@app/assets/SwordIcon.svg'
@@ -19,7 +18,7 @@ import { useEthInvoice } from '../../[name]/registration/steps/Awns_Complete'
 import ReceiveBtn from '../children/Receive'
 import SendNFTBtn from '../children/SendNFT'
 import SendTokenBtn from '../children/SendToken'
-import { Tokens } from '../children/Tokens'
+import TokenInfo from '../children/TokenInfo'
 
 const CenterLeftStyle = styled.div`
   border-radius: 10px;
@@ -27,7 +26,7 @@ const CenterLeftStyle = styled.div`
   background: #fff;
   box-shadow: 0 4px 14px 0 rgba(40, 79, 115, 0.1);
   width: 430px;
-  height: 800px;
+  height: 700px;
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -125,37 +124,6 @@ const AssetsItemStyle = styled.div`
   font-weight: 700;
 `
 
-const TabTitleBoxStyle = styled.div`
-  width: 100%;
-  padding: 0 62px 0 85px;
-  display: flex;
-  align-items: center;
-  gap: 62px;
-  .tab-title {
-    color: var(--tile-grey, #80829f);
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-  }
-  .check {
-    color: var(--word-color, #3f5170);
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-`
-
-const TokensStyle = styled.div`
-  margin-top: 18px;
-  max-height: 285px;
-  width: 100%;
-  display: grid;
-  gap: 10px;
-  overflow-y: auto;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`
 const AddressBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -249,14 +217,7 @@ const Page = ({ accountAddress, _name }: { accountAddress: string; _name: string
         </div>
 
         <div>
-          <TabTitleBoxStyle>
-            <Typography className="check">Token</Typography>
-            <ColumnBarIcon />
-            <Typography className="tab-title">Trancaction</Typography>
-          </TabTitleBoxStyle>
-          <TokensStyle>
-            <Tokens accountAddress={accountAddress} />
-          </TokensStyle>
+          <TokenInfo accountAddress={accountAddress} />
         </div>
       </ProFileStyle>
     </CenterLeftStyle>

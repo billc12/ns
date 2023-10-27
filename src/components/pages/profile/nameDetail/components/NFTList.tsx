@@ -16,7 +16,7 @@ const CenterRightStyle = styled.div`
   background: #fff;
   box-shadow: 0 4px 14px 0 rgba(40, 79, 115, 0.1);
   width: 750px;
-  height: 800px;
+  height: 700px;
   display: flex;
   padding: 24px;
   gap: 20px;
