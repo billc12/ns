@@ -1,9 +1,10 @@
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { useBalance } from 'wagmi'
 
 import { Typography } from '@ensdomains/thorin'
 
-import TestImg from '@app/assets/TestImage.png'
+import ETHSvg from '@app/assets/ETH-img.png'
+import USDTSvg from '@app/assets/USDT.svg'
 import { useNameErc20Assets } from '@app/hooks/useNameDetails'
 import { makeDisplay } from '@app/utils/currency'
 
@@ -40,13 +41,6 @@ const RightStyle = styled.div`
   display: grid;
   gap: 12px;
 `
-const StyledImg = styled.img(
-  () => css`
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-  `,
-)
 
 export function Tokens({ accountAddress }: { accountAddress: string }) {
   const { tokenBalance, tokenSymbol, tokenName } = useNameErc20Assets(accountAddress)
@@ -56,7 +50,7 @@ export function Tokens({ accountAddress }: { accountAddress: string }) {
     <>
       <AssetsItemStyle>
         <LeftStyle>
-          <StyledImg src={TestImg.src} />
+          <USDTSvg />
           <div style={{ display: 'grid', gap: '12px' }}>
             <NameStyle>{tokenName}</NameStyle>
             <ContentTextStyle>{tokenSymbol}</ContentTextStyle>
@@ -71,7 +65,9 @@ export function Tokens({ accountAddress }: { accountAddress: string }) {
       </AssetsItemStyle>
       <AssetsItemStyle>
         <LeftStyle>
-          <StyledImg src={TestImg.src} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={ETHSvg.src} alt="eth" />
+
           <div style={{ display: 'grid', gap: '12px' }}>
             <NameStyle>SepoliaETH</NameStyle>
             <ContentTextStyle>{balance?.symbol}</ContentTextStyle>

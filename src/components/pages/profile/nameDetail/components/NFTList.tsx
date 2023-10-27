@@ -16,10 +16,8 @@ const CenterRightStyle = styled.div`
   background: #fff;
   box-shadow: 0 4px 14px 0 rgba(40, 79, 115, 0.1);
   width: 750px;
-  height: 800px;
+  height: 700px;
   display: flex;
-  padding: 24px;
-  gap: 20px;
   flex-direction: column;
   justify-content: start;
 
@@ -79,31 +77,95 @@ const PaginationBtn = styled(Button)`
   gap: 10px;
   flex-shrink: 0;
   border-radius: 8px;
-  background: #0049c6;
+  background: #fff;
+  color: #80829f;
+
+  &:hover {
+    transform: translateY(0);
+  }
+  &.select {
+    background: #0049c6;
+    color: #fff;
+  }
 `
 const ListCenter = styled.div`
   width: 100%;
   height: calc(100% - 84px);
   overflow: scroll;
   overflow-x: hidden;
+  padding: 24px;
   &::-webkit-scrollbar {
     display: none;
   }
 `
-const Page = ({ accountAddress }: { accountAddress: string }) => {
+const ButtonGroup = styled.div`
+  display: flex;
+  width: max-content;
+  height: max-content;
+  border-radius: 8px;
+  border: 1px solid var(--line, #d4d7e2);
+  background: #fff;
+`
+const GameList = ({ accountAddress }: { accountAddress: string }) => {
+  const [isPackUp, setIsPackUp] = useState<boolean>(false)
   const [isShowAll, setIsShowAll] = useState<boolean>(false)
-  const [isPackUp, setIsPackUp] = useState<boolean>(true)
   const { nftId, loading: NftLoading } = useNameErc721Assets(accountAddress)
   const nftList = useMemo(() => {
-    return []
-    if (!isShowAll) {
+    if (!isPackUp) {
       if (nftId.length > 4) {
         return nftId.slice(0, 4)
       }
     }
     return nftId
-  }, [isShowAll, nftId])
-  console.log('nftList', nftList)
+  }, [isPackUp, nftId])
+  return (
+    <>
+      <TabTitleStyle>
+        {/* <SubTitleStyle>Account ({nftId.length})</SubTitleStyle> */}
+        <SubTitleStyle>Account ({2})</SubTitleStyle>
+        <SubButtonStyle
+          onClick={() => {
+            setIsShowAll(!isShowAll)
+          }}
+        >
+          {isShowAll ? 'Collapse' : 'Show All'}
+          {isShowAll ? <DownShowicon /> : <UpDisplayicon />}
+        </SubButtonStyle>
+      </TabTitleStyle>
+      <AssetsStyle>
+        <>
+          <Assets NftId="test1" />
+          <Assets NftId="test1" />
+        </>
+      </AssetsStyle>
+      <TabTitleStyle style={{ marginTop: 24 }}>
+        <SubTitleStyle>Gaming ({nftId.length + 4})</SubTitleStyle>
+        <SubButtonStyle
+          onClick={() => {
+            setIsPackUp(!isPackUp)
+          }}
+        >
+          {isPackUp ? 'Collapse' : 'Show All'}
+
+          {isPackUp ? <DownShowicon /> : <UpDisplayicon />}
+        </SubButtonStyle>
+      </TabTitleStyle>
+      <TraitsStyle>
+        {nftList?.map((item) => (
+          <Skeleton loading={NftLoading} key={item}>
+            <Assets NftId={item} />
+          </Skeleton>
+        ))}
+        <Traits />
+      </TraitsStyle>
+    </>
+  )
+}
+// enum Tab {
+//   Gaming:''
+// }
+const Page = ({ accountAddress }: { accountAddress: string }) => {
+  // const
   return (
     <CenterRightStyle>
       <div
@@ -112,71 +174,16 @@ const Page = ({ accountAddress }: { accountAddress: string }) => {
           justifyContent: 'center',
           alignItems: 'center',
           borderBottom: '1px solid #D4D7E2',
-          paddingBottom: '24px',
+          padding: '16px 0',
         }}
       >
-        <PaginationBtn>Knapsack</PaginationBtn>
-        <PaginationBtn
-          style={{
-            background: '#fff',
-            color: '#80829F',
-            border: '1px solid #D4D7E2',
-            borderLeft: 'none',
-          }}
-        >
-          Actions
-        </PaginationBtn>
+        <ButtonGroup>
+          <PaginationBtn className="select">Gaming Center</PaginationBtn>
+          <PaginationBtn>Actions</PaginationBtn>
+        </ButtonGroup>
       </div>
       <ListCenter>
-        <TabTitleStyle>
-          {/* <SubTitleStyle>Account ({nftId.length})</SubTitleStyle> */}
-          <SubTitleStyle>Account (2)</SubTitleStyle>
-          <SubButtonStyle
-            onClick={() => {
-              setIsShowAll(!isShowAll)
-            }}
-          >
-            {isShowAll ? 'Collapse' : 'Show All'}
-            {isShowAll ? <DownShowicon /> : <UpDisplayicon />}
-          </SubButtonStyle>
-        </TabTitleStyle>
-        <AssetsStyle>
-          <>
-            {nftList?.map((item) => (
-              <Skeleton loading={NftLoading} key={item}>
-                <Assets NftId={item} />
-              </Skeleton>
-            ))}
-            {!nftList.length && (
-              <>
-                <Assets NftId="test1" />
-                <Assets NftId="test1" />
-              </>
-            )}
-          </>
-        </AssetsStyle>
-        <TabTitleStyle style={{ marginTop: 24 }}>
-          <SubTitleStyle>Gaming (4)</SubTitleStyle>
-          <SubButtonStyle
-            onClick={() => {
-              setIsPackUp(!isPackUp)
-            }}
-          >
-            {isPackUp ? 'Collapse' : 'Show All'}
-
-            {isPackUp ? <DownShowicon /> : <UpDisplayicon />}
-          </SubButtonStyle>
-        </TabTitleStyle>
-        <TraitsStyle
-          style={
-            {
-              // height: isPackUp ? 'auto' : 0,
-              // overflow: isPackUp ? 'unset' : 'hidden',
-            }
-          }
-        >
-          <Traits />
-        </TraitsStyle>
+        <GameList accountAddress={accountAddress} />
       </ListCenter>
     </CenterRightStyle>
   )
