@@ -57,7 +57,7 @@
   },
   "navigation": {
     "home": "Home",
-    "names": "My Names",
+    "names": "My AWNS",
     "favourites": "Favourites",
     "settings": "Settings",
     "governance": "Governance",
@@ -240,7 +240,7 @@
     },
     "itemLabel": {
       "name": "Name",
-      "from":"From",
+      "from": "From",
       "address": "Address",
       "action": "Action",
       "info": "Info",
@@ -253,7 +253,7 @@
       "information": "Information",
       "claim": "Claim Rewards",
       "remaining": "Remaining Rewards",
-      "amount":"Amount"
+      "amount": "Amount"
     },
     "itemValue": {
       "records_one": "{{count}} record",

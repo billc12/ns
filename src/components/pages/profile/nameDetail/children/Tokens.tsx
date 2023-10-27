@@ -66,7 +66,7 @@ export function Tokens({ accountAddress }: { accountAddress: string }) {
           <NameStyle style={{ textAlign: 'right' }}>
             {tokenBalance?.slice(0, -3)} {tokenSymbol}
           </NameStyle>
-          <ContentTextStyle style={{ textAlign: 'right' }}>$00.00 USD</ContentTextStyle>
+          <ContentTextStyle style={{ textAlign: 'right' }}>$0.00 USD</ContentTextStyle>
         </RightStyle>
       </AssetsItemStyle>
       <AssetsItemStyle>
@@ -84,7 +84,7 @@ export function Tokens({ accountAddress }: { accountAddress: string }) {
               : '--'}
             {balance?.symbol}
           </NameStyle>
-          <ContentTextStyle style={{ textAlign: 'right' }}>$00.00 USD</ContentTextStyle>
+          <ContentTextStyle style={{ textAlign: 'right' }}>$0.00 USD</ContentTextStyle>
         </RightStyle>
       </AssetsItemStyle>
     </>

@@ -53,6 +53,7 @@ const TabTitleStyle = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  padding-bottom: 12px;
 `
 const AssetsStyle = styled.div`
   display: flex;
@@ -94,6 +95,7 @@ const Page = ({ accountAddress }: { accountAddress: string }) => {
   const [isPackUp, setIsPackUp] = useState<boolean>(true)
   const { nftId, loading: NftLoading } = useNameErc721Assets(accountAddress)
   const nftList = useMemo(() => {
+    return []
     if (!isShowAll) {
       if (nftId.length > 4) {
         return nftId.slice(0, 4)
@@ -127,13 +129,14 @@ const Page = ({ accountAddress }: { accountAddress: string }) => {
       </div>
       <ListCenter>
         <TabTitleStyle>
-          <SubTitleStyle>Account ({nftId.length})</SubTitleStyle>
+          {/* <SubTitleStyle>Account ({nftId.length})</SubTitleStyle> */}
+          <SubTitleStyle>Account (2)</SubTitleStyle>
           <SubButtonStyle
             onClick={() => {
               setIsShowAll(!isShowAll)
             }}
           >
-            Show All
+            {isShowAll ? 'Collapse' : 'Show All'}
             {isShowAll ? <DownShowicon /> : <UpDisplayicon />}
           </SubButtonStyle>
         </TabTitleStyle>
@@ -152,22 +155,25 @@ const Page = ({ accountAddress }: { accountAddress: string }) => {
             )}
           </>
         </AssetsStyle>
-        <TabTitleStyle style={{ marginTop: 10 }}>
-          <SubTitleStyle style={{ marginBottom: 10 }}>Gaming (4)</SubTitleStyle>
+        <TabTitleStyle style={{ marginTop: 24 }}>
+          <SubTitleStyle>Gaming (4)</SubTitleStyle>
           <SubButtonStyle
             onClick={() => {
               setIsPackUp(!isPackUp)
             }}
           >
-            Pack Up
+            {isPackUp ? 'Collapse' : 'Show All'}
+
             {isPackUp ? <DownShowicon /> : <UpDisplayicon />}
           </SubButtonStyle>
         </TabTitleStyle>
         <TraitsStyle
-          style={{
-            height: isPackUp ? 'auto' : 0,
-            overflow: isPackUp ? 'unset' : 'hidden',
-          }}
+          style={
+            {
+              // height: isPackUp ? 'auto' : 0,
+              // overflow: isPackUp ? 'unset' : 'hidden',
+            }
+          }
         >
           <Traits />
         </TraitsStyle>
