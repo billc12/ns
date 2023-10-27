@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components'
 
 import { Typography, mq } from '@ensdomains/thorin'
 
+import PremiumSvg from '@app/assets/premium-icon.svg'
 import useSignName from '@app/hooks/names/useSignName'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 
@@ -31,6 +32,7 @@ const HeadName = styled(Row)`
   justify-content: space-between;
   padding: 23px 30px;
   border-bottom: 1px solid #dce6ed;
+  align-items: center;
 `
 export const BigPremiumText = styled(PremiumText)`
   font-size: 24px;
@@ -62,14 +64,17 @@ const PremiumTitle = ({ nameDetails }: { nameDetails: ReturnType<typeof useNameD
   return (
     <HeadName>
       {isPremium ? (
-        <BigPremiumText>{beautifiedName}</BigPremiumText>
+        <div style={{ display: 'flex', flex: 1, gap: 8 }}>
+          <PremiumSvg />
+          <BigPremiumText>{beautifiedName}</BigPremiumText>
+        </div>
       ) : (
         <InterText>{beautifiedName}</InterText>
       )}
 
       {registrationStatus && (
         <InterText $color="#21C331" $size="16px">
-          Available
+          Available for registration
         </InterText>
       )}
     </HeadName>

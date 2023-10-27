@@ -10,6 +10,7 @@ import { useAccount, useTransaction } from 'wagmi'
 import { Typography, mq } from '@ensdomains/thorin'
 
 import UserAvatar from '@app/assets/TestImage.png'
+import RegistrSuccess from '@app/assets/registr-success.png'
 import { Invoice } from '@app/components/@atoms/Invoice/Invoice'
 import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
 import { InterText } from '@app/components/@molecules/SearchInput/SearchResult'
@@ -163,8 +164,9 @@ const HeadStyle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 80px;
+  padding: 40px 0;
   border-bottom: 1px solid #dce6ed;
+  flex-direction: column;
 `
 const HeadTitle = styled(Typography)<{ $color?: string }>`
   color: ${(props) => props.$color || '#3f5170'};
@@ -215,17 +217,14 @@ const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
   return (
     <StyledCard>
       <HeadStyle>
-        <HeadTitle>{`Congratulations! Here's your AWNS`}</HeadTitle>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={RegistrSuccess.src} alt="registr success img" />
+        <HeadTitle style={{ marginTop: 10 }}>Congrats to your new AWNS!</HeadTitle>
+        <HeadTitle>Start traversing in AW</HeadTitle>
+        <MobileFullWidth style={{ marginTop: 20 }}>
+          <BackButton onClick={() => callback(false)}>Register Another</BackButton>
+        </MobileFullWidth>
       </HeadStyle>
-      {/* <CenterBox>
-        {data?.isPremium ? (
-          <BigPremiumText>{name}</BigPremiumText>
-        ) : (
-          <InterText $color="#3F5170" $size="16px" $weight={500}>
-            {name}
-          </InterText>
-        )}
-      </CenterBox> */}
       <Container>
         <Round>
           <UserImg>
@@ -256,11 +255,6 @@ const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
           <FullInvoiceBox>{InvoiceFilled}</FullInvoiceBox>
         </div>
         <ButtonContainer className="btn">
-          <MobileFullWidth>
-            <BackButton onClick={() => callback(false)}>
-              {t('steps.complete.registerAnother')}
-            </BackButton>
-          </MobileFullWidth>
           <MobileFullWidth>
             <NextButton data-testid="view-name" onClick={() => callback(true)}>
               {t('steps.complete.viewName')}

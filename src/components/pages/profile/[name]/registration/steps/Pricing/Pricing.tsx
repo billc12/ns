@@ -583,11 +583,14 @@ const UpButton = styled(Button)`
   border-radius: 8px;
   border: 1px solid #d4d7e2;
   background: #fff;
-  opacity: 0.8;
   &:hover {
-    opacity: 1;
+    opacity: 0.8;
     background: #fff;
   }
+  position: absolute;
+  bottom: 35px;
+  left: 50%;
+  transform: translateX(-50%);
 `
 const PremiumImgRound = styled.div<{ $premium: boolean }>(
   ({ $premium }) => css`
@@ -652,7 +655,7 @@ const UpImage = ({ isPremium, name }: { isPremium: boolean; name: string }) => {
           }}
         />
       </Dialog>
-      <GrayRoundRow $p="15px" onClick={openInput}>
+      <GrayRoundRow $p="15px" onClick={openInput} style={{ position: 'relative' }}>
         <PremiumImgRound $premium={isPremium}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -661,12 +664,19 @@ const UpImage = ({ isPremium, name }: { isPremium: boolean; name: string }) => {
             src={avatarSrc || imgUrl}
           />
         </PremiumImgRound>
+        {!avatarSrc && (
+          <UpButton
+            onClick={(e) => {
+              e.stopPropagation()
+              openInput()
+            }}
+          >
+            <InterText $size="14px" $weight={500}>
+              + Upload image
+            </InterText>
+          </UpButton>
+        )}
       </GrayRoundRow>
-      <UpButton onClick={openInput}>
-        <InterText $size="14px" $weight={500}>
-          + Upload image
-        </InterText>
-      </UpButton>
       <input
         type="file"
         style={{ display: 'none' }}
@@ -816,9 +826,6 @@ const Pricing = ({
               Normal
             </InterText>
           )}
-          {/* <InterText $color="#3F5170" $size="16px" $weight={500}>
-            {MAX_YEAR} years
-          </InterText> */}
         </GrayRoundRow>
       </ContentStyle>
       <ContentStyle>
