@@ -12,26 +12,26 @@ const AssetsItemStyle = styled.div`
   background: #f7fafc;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `
 
 const LeftStyle = styled.div`
   width: 162px;
   height: 162px;
-  padding: 7px;
   padding-right: 0;
 `
 const RightStyle = styled.div`
-  padding: 18px 0 18px 25px;
-  display: grid;
-  gap: 22px;
+  padding-left: 10px;
+  padding-top: 8px;
+  padding-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 `
 const StyledImg = styled.img(
   () => css`
     width: 162px;
     height: 162px;
-
     border-radius: 8px;
   `,
 )
@@ -85,6 +85,7 @@ function ErcTag(tag: string) {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function Assets({ NftId }: { NftId: string }) {
   return (
     <AssetsItemStyle>
@@ -92,12 +93,12 @@ export function Assets({ NftId }: { NftId: string }) {
         <StyledImg src={Img1.src} />
       </LeftStyle>
       <RightStyle>
-        <div style={{ display: 'grid', gap: '8px' }}>
-          <NameStyle ellipsis>NftName # {NftId || '0'}</NameStyle>
-          <TagsStyle style={{ background: ErcTag('ERC 721') || '#51C7A3' }}>
-            {ERCTYPE.ERC721}
-          </TagsStyle>
-        </div>
+        {/* <NameStyle ellipsis>NftName # {NftId || '0'}</NameStyle> */}
+        <NameStyle ellipsis>Kubz #3789</NameStyle>
+
+        <TagsStyle style={{ background: ErcTag('ERC 6551') || '#51C7A3' }}>
+          {ERCTYPE.ERC6551}
+        </TagsStyle>
 
         {false && (
           <div style={{ display: 'flex', gap: '8px' }}>

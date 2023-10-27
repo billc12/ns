@@ -7,6 +7,7 @@ import CheckIcon from '@app/assets/check-whiteIcon.svg'
 import Img2 from '@app/assets/nameDetail/img2.png'
 import Img3 from '@app/assets/nameDetail/img3.png'
 import Img4 from '@app/assets/nameDetail/img4.png'
+import Img5 from '@app/assets/nameDetail/img5.png'
 
 const TraitsItemStyle = styled.div`
   width: 164px;
@@ -27,9 +28,10 @@ const TopStyle = styled.div`
   background-size: 162px 162px;
 `
 const ContentStyle = styled.div`
-  padding: 8px 6px 11px 9px;
+  padding-left: 10px;
+  padding-top: 8px;
+  padding-bottom: 15px;
   display: grid;
-  gap: 8px;
 `
 
 const NameStyle = styled(Typography)`
@@ -82,7 +84,44 @@ const TypeStyle = styled(Typography)`
   line-height: normal;
   text-align: center;
 `
-
+const RoundGold = styled.div`
+  position: absolute;
+  bottom: 47px;
+  right: 37px;
+  width: 30px;
+  height: 30px;
+  background: url(${Img5.src});
+  background-position: center;
+  background-repeat: no-repeat;
+  text-align: center;
+  line-height: 28px;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.9px;
+`
+const RoundOrange = styled.div`
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: #f4ae44;
+  color: #fff;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-align: center;
+  line-height: 30px;
+  position: absolute;
+  left: 15px;
+  top: 15px;
+`
+const AmountRoundGold = (v: number) => {
+  return <RoundGold>{v}x</RoundGold>
+}
 export function Traits() {
   return (
     <>
@@ -106,13 +145,14 @@ export function Traits() {
             Wear
             <CheckIcon />
           </TagsStyle>
+          {AmountRoundGold(4)}
         </div>
 
         {/* </TopStyle> */}
         <ContentStyle>
-          <NameStyle ellipsis>Kubz #3789</NameStyle>
+          <NameStyle ellipsis>Aspiration of God</NameStyle>
           <div>
-            <SubTitleStyle>Chest Armor</SubTitleStyle>
+            <SubTitleStyle>Amulet</SubTitleStyle>
             <TypeStyle>ERC 721</TypeStyle>
           </div>
         </ContentStyle>
@@ -137,13 +177,14 @@ export function Traits() {
             Wear
             <CheckIcon />
           </TagsStyle>
+          {AmountRoundGold(2)}
         </div>
 
         {/* </TopStyle> */}
         <ContentStyle>
-          <NameStyle ellipsis>Kubz #3789</NameStyle>
+          <NameStyle ellipsis>Aspiration of God</NameStyle>
           <div>
-            <SubTitleStyle>Chest Armor</SubTitleStyle>
+            <SubTitleStyle>Amulet</SubTitleStyle>
             <TypeStyle>ERC 721</TypeStyle>
           </div>
         </ContentStyle>
@@ -172,9 +213,9 @@ export function Traits() {
 
         {/* </TopStyle> */}
         <ContentStyle>
-          <NameStyle ellipsis>Kubz #3789</NameStyle>
+          <NameStyle ellipsis>The Immortal Pendant</NameStyle>
           <div>
-            <SubTitleStyle>Chest Armor</SubTitleStyle>
+            <SubTitleStyle>Ornament</SubTitleStyle>
             <TypeStyle>ERC 721</TypeStyle>
           </div>
         </ContentStyle>
@@ -199,14 +240,15 @@ export function Traits() {
             Wear
             <CheckIcon />
           </TagsStyle>
+          <RoundOrange>x2</RoundOrange>
         </div>
 
         {/* </TopStyle> */}
         <ContentStyle>
-          <NameStyle ellipsis>Kubz #3789</NameStyle>
+          <NameStyle ellipsis>The Cursed Staff</NameStyle>
           <div>
-            <SubTitleStyle>Chest Armor</SubTitleStyle>
-            <TypeStyle>ERC 721</TypeStyle>
+            <SubTitleStyle>Ornament</SubTitleStyle>
+            <TypeStyle style={{ background: '#F4AE44' }}>ERC 1155</TypeStyle>
           </div>
         </ContentStyle>
       </TraitsItemStyle>
