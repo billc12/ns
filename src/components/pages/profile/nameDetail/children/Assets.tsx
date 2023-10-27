@@ -93,11 +93,15 @@ export function Assets({ NftId }: { NftId: string }) {
         <StyledImg src={Img1.src} />
       </LeftStyle>
       <RightStyle>
-        {/* <NameStyle ellipsis>NftName # {NftId || '0'}</NameStyle> */}
-        <NameStyle ellipsis>Kubz #3789</NameStyle>
+        {NftId !== 'test1' && <NameStyle ellipsis>Kubz # {NftId || '0'}</NameStyle>}
+        {NftId === 'test1' && <NameStyle ellipsis>Kubz #3789</NameStyle>}
 
-        <TagsStyle style={{ background: ErcTag('ERC 6551') || '#51C7A3' }}>
-          {ERCTYPE.ERC6551}
+        <TagsStyle
+          style={{
+            background: ErcTag(`${NftId !== 'test1' ? 'ERC 721' : 'ERC 6551'}`) || '#51C7A3',
+          }}
+        >
+          {NftId !== 'test1' ? ERCTYPE.ERC721 : ERCTYPE.ERC6551}
         </TagsStyle>
 
         {false && (
