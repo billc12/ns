@@ -595,7 +595,7 @@ const UpButton = styled(Button)`
   position: absolute;
   bottom: 35px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) !important;
 `
 const PremiumImgRound = styled.div<{ $premium: boolean }>(
   ({ $premium }) => css`

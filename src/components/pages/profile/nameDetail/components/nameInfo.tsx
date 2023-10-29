@@ -1,17 +1,24 @@
-import router from 'next/router'
+import { useMemo } from 'react'
 import styled, { css } from 'styled-components'
+import { useAccount } from 'wagmi'
 
-import { Button, Dropdown, LeftArrowSVG, mq } from '@ensdomains/thorin'
+import { Button, Dropdown, mq } from '@ensdomains/thorin'
+import { DropdownItem } from '@ensdomains/thorin/dist/types/components/molecules/Dropdown/Dropdown'
 
 import AssetsIcon from '@app/assets/AssetsIcon.svg'
 import ListWhiteIcon from '@app/assets/List-white.svg'
-// import OmitIcon from '@app/assets/OmitIcon.svg'
+import OmitIcon from '@app/assets/OmitIcon.svg'
 import SwordIcon from '@app/assets/SwordIcon.svg'
 import TestImg from '@app/assets/TestImage.png'
 import Icon1 from '@app/assets/nameDetail/icon1.svg'
 import Icon3 from '@app/assets/nameDetail/icon3.svg'
 import Icon4 from '@app/assets/nameDetail/icon4.svg'
 import { CopyButton } from '@app/components/Copy'
+import { useAbilities } from '@app/hooks/abilities/useAbilities'
+import { useNameDetails } from '@app/hooks/useNameDetails'
+import { useProfileActions } from '@app/hooks/useProfileActions'
+import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
+import { shouldShowExtendWarning } from '@app/utils/abilities/shouldShowExtendWarning'
 import { shortenAddress } from '@app/utils/utils'
 
 import { useEthInvoice } from '../../[name]/registration/steps/Awns_Complete'
@@ -148,16 +155,102 @@ export const AuctionBtn = styled(Button)`
   background: #fff;
   padding: 0;
 `
+const ActionDropdownStyle = styled(Dropdown)`
+  border-radius: 8px;
+  border: 1px solid var(--button-line, #97b7ef);
+  background: #fff;
+  color: #3f5170;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  & button:hover {
+    background: #f8fbff !important;
+  }
+`
+const ActionDropdown = ({ name }: { name: string }) => {
+  const { address } = useAccount()
+  const nameDetails = useNameDetails(name)
+  const { profile, ownerData, wrapperData, expiryDate } = nameDetails
+  const abilities = useAbilities(name)
+  const profileActions = useProfileActions({
+    address,
+    name,
+    profile,
+    abilities: abilities.data,
+    ownerData,
+    wrapperData,
+    expiryDate,
+  })
+  const { prepareDataInput } = useTransactionFlow()
+  const showSendNameInput = prepareDataInput('AwnsSendName')
+  const handleSend = () => {
+    showSendNameInput(`send-name-${name}`, {
+      name,
+    })
+  }
+  const showSetPrimaryNameInput = prepareDataInput('SetPrimaryName')
+  const handleSelectPrimaryName = () => {
+    if (address && name) {
+      showSetPrimaryNameInput(`edit-resolve-address-${name}`, { address, name })
+    }
+  }
+  const showExtendNamesInput = prepareDataInput('AwnsExtendNames')
+  const handleExtend = () => {
+    showExtendNamesInput(`extend-names-${name}`, {
+      names: [name],
+      isSelf: shouldShowExtendWarning(abilities.data),
+    })
+  }
+  const dropdownItems = useMemo<DropdownItem[]>(() => {
+    console.log('profileActions.canSetMainName', abilities.data, name)
+
+    const items = [] as DropdownItem[]
+    if (profileActions.canSetMainName) {
+      items.push({
+        label: 'Set as main address',
+        onClick: () => handleSelectPrimaryName(),
+        color: 'text',
+      })
+    }
+    if (abilities.data.canExtend) {
+      items.push({
+        label: 'Extend',
+        onClick: handleExtend,
+        color: 'text',
+      })
+    }
+    if (abilities.data.canSend) {
+      items.push({
+        label: 'Transfer',
+        onClick: handleSend,
+        color: 'text',
+      })
+    }
+    items.push({
+      label: 'Information',
+      onClick: () => null,
+      color: 'text',
+    })
+    return items
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [abilities.data, name, profileActions.canSetMainName])
+  return (
+    <ActionDropdownStyle align="left" items={dropdownItems} label="Account" width="182px">
+      <OmitButtonStyle>
+        <OmitIcon />
+      </OmitButtonStyle>
+    </ActionDropdownStyle>
+  )
+}
 const Page = ({ accountAddress, _name }: { accountAddress: string; _name: string }) => {
   const { avatarSrc } = useEthInvoice(_name, false)
 
   return (
     <CenterLeftStyle>
       <HeaderStyle>
-        <OmitButtonStyle onClick={() => router.back()}>
-          {/* <OmitIcon /> */}
-          <LeftArrowSVG />
-        </OmitButtonStyle>
+        <ActionDropdown name={_name} />
         <NameStyle>{_name || '--'}</NameStyle>
 
         <TabIconStyle>
@@ -223,4 +316,5 @@ const Page = ({ accountAddress, _name }: { accountAddress: string; _name: string
     </CenterLeftStyle>
   )
 }
+
 export default Page

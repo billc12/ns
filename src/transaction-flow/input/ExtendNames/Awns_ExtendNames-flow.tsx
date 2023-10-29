@@ -136,6 +136,8 @@ const Row = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding: 25px 38px;
+  background: #f7fafc;
 `
 const NamesListItem = ({ name }: { name: string }) => {
   const chainId = useChainId()
@@ -182,7 +184,6 @@ const Text = styled(Typography)`
 const InfoContainerStyle = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 37px;
   width: 100%;
   border-radius: 10px;
   border: 1px solid #d4d7e2;
