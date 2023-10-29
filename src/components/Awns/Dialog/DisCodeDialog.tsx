@@ -109,7 +109,7 @@ const DiscountCode = ({ info, setCodeCallback, name }: Props) => {
         <CodeInput
           hideLabel
           label
-          placeholder="Discount Code"
+          placeholder="Enter Discount Code"
           value={disCode}
           onChange={(e) => setDisCode(e.target.value)}
           onBlur={saveCode}

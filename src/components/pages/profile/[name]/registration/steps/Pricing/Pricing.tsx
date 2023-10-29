@@ -539,6 +539,8 @@ const Row = styled.div`
 const CenterRow = styled(Row)`
   justify-content: space-between;
   align-items: center;
+  padding: 25px 38px;
+  background: #f7fafc;
 `
 const Column = styled.div`
   display: flex;
@@ -559,9 +561,9 @@ export const GrayRoundRow = styled(Row)<{ $p: string }>`
 const GrayRoundColumn = styled(Column)`
   width: 380px;
   border-radius: 10px;
-  background: #f7fafc;
-  height: 380px;
-  padding-top: 14px;
+  gap: 0;
+  height: max-content;
+
   ${mq.sm.max(css`
     height: auto;
     padding-bottom: 14px;
@@ -829,10 +831,13 @@ const Pricing = ({
         </GrayRoundRow>
       </ContentStyle>
       <ContentStyle>
-        <UpImage name={normalisedName} isPremium={isPremium} />
+        <div>
+          <UpImage name={normalisedName} isPremium={isPremium} />
+          {invitationNameLabel}
+        </div>
         <Column>
           <GrayRoundColumn>
-            <CenterRow style={{ padding: '0 38px' }}>
+            <CenterRow>
               <InterText $color="#8D8EA5" $size="16px" $weight={500}>
                 Chain
               </InterText>
@@ -840,7 +845,7 @@ const Pricing = ({
                 {chain ? chain.name : 'Sepolia'}
               </InterText>
             </CenterRow>
-            <CenterRow style={{ padding: '0 38px' }}>
+            <CenterRow>
               <InterText $color="#8D8EA5" $size="16px" $weight={500}>
                 Registration Year
               </InterText>
@@ -855,13 +860,13 @@ const Pricing = ({
                 highlighted
               />
             </CenterRow>
-            <div style={{ padding: '0 38px' }}>
-              <FullInvoice
-                {...fullEstimate}
-                discountCodeLabel={disLabel}
-                invitationNameLabel={invitationNameLabel}
-              />
-            </div>
+            {/* <div style={{ padding: '0 38px' }}> */}
+            <FullInvoice
+              {...fullEstimate}
+              discountCodeLabel={disLabel}
+              invitationNameLabel={invitationNameLabel}
+            />
+            {/* </div> */}
           </GrayRoundColumn>
           {/* <MobileFullWidth> */}
 

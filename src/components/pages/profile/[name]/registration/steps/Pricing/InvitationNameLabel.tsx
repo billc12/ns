@@ -2,11 +2,10 @@ import styled from 'styled-components'
 
 import { Button, Tooltip } from '@ensdomains/thorin'
 
-import AddRoundSVG from '@app/assets/add-round.svg'
-import DelRoundSVG from '@app/assets/del-round.svg'
 import ToolTipSvg from '@app/assets/tooltip.svg'
-import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 import { TInvitationName } from '@app/transaction-flow/input/InvitationName-flow'
+
+import InvitationName from './InvitationName'
 
 const Row = styled.div`
   display: flex;
@@ -16,6 +15,14 @@ const Row = styled.div`
   &.content {
     width: max-content;
     gap: 5px;
+  }
+  &.round {
+    display: grid;
+    grid-template-columns: 130px auto;
+    margin-top: 16px;
+    padding: 15px 20px;
+    background: #f7fafc;
+    align-items: center;
   }
 `
 const ToolTipRound = styled.div`
@@ -36,37 +43,10 @@ const Label = styled.p`
   font-weight: 500;
   line-height: normal;
 `
-const NameLabel = styled.p`
-  color: #3f5170;
-  text-align: right;
-  font-family: Inter;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  max-width: 150px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-`
-const SvgBtn = styled.button`
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-`
+
 const InvitationNameLabel = ({ name, setNameCallback }: TInvitationName) => {
-  const { prepareDataInput } = useTransactionFlow()
-  const showInvitationNameInput = prepareDataInput('InvitationName')
-  const handleDiscountCode = () => {
-    showInvitationNameInput(`discount-code-${name}`, { name, setNameCallback })
-  }
-  const cleanName = () => {
-    setNameCallback('')
-  }
-  const auctionBtn = name ? <DelRoundSVG /> : <AddRoundSVG />
-  const handleAuctionFn = name ? cleanName : handleDiscountCode
   return (
-    <Row>
+    <Row className="round">
       <Row className="content">
         <Label>Invitation AWNS</Label>
         <Tooltip
@@ -94,10 +74,7 @@ const InvitationNameLabel = ({ name, setNameCallback }: TInvitationName) => {
           </Button>
         </Tooltip>
       </Row>
-      <Row className="content">
-        {name && <NameLabel>{name}</NameLabel>}
-        <SvgBtn onClick={handleAuctionFn}>{auctionBtn}</SvgBtn>
-      </Row>
+      <InvitationName name={name} setNameCallback={setNameCallback} />
     </Row>
   )
 }
