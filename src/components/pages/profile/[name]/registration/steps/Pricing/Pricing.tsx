@@ -18,6 +18,9 @@ import {
 } from '@ensdomains/thorin'
 
 import MoonpayLogo from '@app/assets/MoonpayLogo.svg'
+// import TemporaryPremium from './TemporaryPremium'
+import NoSelectSvg from '@app/assets/no-select.svg'
+import SelectSvg from '@app/assets/select.svg'
 // import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
 import { PlusMinusControl } from '@app/components/@atoms/PlusMinusControl/Awns_PlusMinusControl'
 // import { RegistrationTimeComparisonBanner } from '@app/components/@atoms/RegistrationTimeComparisonBanner/RegistrationTimeComparisonBanner'
@@ -608,7 +611,30 @@ const PremiumImgRound = styled.div<{ $premium: boolean }>(
     `)}
   `,
 )
-
+const SetMainTitle = styled.p`
+  color: #3f5170;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+`
+const SvgBtn = styled(Button)`
+  width: max-content;
+  height: max-content;
+  padding: 0;
+  &,
+  &:hover {
+    background: transparent;
+  }
+`
+const SvgContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 31px;
+  align-items: center;
+  cursor: pointer;
+`
 const imgUrl = `/DefaultUser.png`
 const setLocalStorage = (src: string | undefined, name: string) => {
   if (src) localStorage.setItem(`avatar-src-${name}`, src)
@@ -804,7 +830,7 @@ const Pricing = ({
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [disInfo, paymentMethodChoice, referral, registrationData])
-
+  const [isSetMainAddr, setIsSetMainAddr] = useState(false)
   return (
     <StyledCard>
       <PremiumTitle nameDetails={nameDetails} />
@@ -834,6 +860,17 @@ const Pricing = ({
         <div>
           <UpImage name={normalisedName} isPremium={isPremium} />
           {invitationNameLabel}
+          <SvgContainer
+            onClick={() => {
+              setIsSetMainAddr(!isSetMainAddr)
+            }}
+          >
+            <SvgBtn>
+              {isSetMainAddr && <NoSelectSvg />}
+              {!isSetMainAddr && <SelectSvg />}
+            </SvgBtn>
+            <SetMainTitle>Use as primary name</SetMainTitle>
+          </SvgContainer>
         </div>
         <Column>
           <GrayRoundColumn>
