@@ -4,7 +4,6 @@ import styled, { css } from 'styled-components'
 
 import { Input, Skeleton, mq } from '@ensdomains/thorin'
 
-import { BackButton, DialogStyle, NextButton } from '@app/components/Awns/Dialog'
 import { DisInfo } from '@app/components/pages/profile/[name]/registration/steps/Pricing/DiscountCodeLabel'
 import useSignName from '@app/hooks/names/useSignName'
 
@@ -17,40 +16,41 @@ export type Props = {
   setCodeCallback: (v: DisInfo) => void
   info: DisInfo
   name: string
-  show: boolean
-  onCancel: () => void
 }
-const Label = styled.p`
-  color: #3f5170;
-  /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
-  font-family: Inter;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 150.5%;
-  margin-bottom: 8px;
-`
+
 const ErrTip = styled.p`
-  color: #f00;
-  /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
+  color: #e46767;
   font-family: Inter;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
-  line-height: 150.5%; /* 21.07px */
+  line-height: 150.5%;
+  & > a {
+    color: #e46767;
+    text-align: right;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-decoration-line: underline;
+  }
 `
 const SuccessTip = styled.p`
-  /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
-  font-family: Inter;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  background: linear-gradient(90deg, #f0ac47 0%, #fcc04d 48.73%, #e5983c 85%);
-  background-clip: text;
-  /* stylelint-disable-next-line property-no-vendor-prefix */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  & > a,
+  & {
+    color: #21c331;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+  & > a {
+    text-decoration-line: underline;
+  }
 `
 const CodeInput = styled(Input)`
   width: 100%;
@@ -70,24 +70,16 @@ const CodeInput = styled(Input)`
   }
 `
 const Container = styled.div`
-  width: 480px;
+  width: 179px;
   display: flex;
   flex-direction: column;
   gap: 8px;
   ${mq.sm.max(css`
     width: 100%;
   `)}
-`
-const Row = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  gap: 18px;
-  margin-top: 50px;
-  ${mq.sm.max(css`
-    margin-top: 30px;
-  `)}
+  &>div {
+    height: 32px;
+  }
 `
 
 const setInitCode = (i: string) => {
@@ -95,14 +87,14 @@ const setInitCode = (i: string) => {
   if (!Number(i)) return ''
   return i
 }
-const DiscountCode = ({ info, setCodeCallback, name, show, onCancel }: Props) => {
+const DiscountCode = ({ info, setCodeCallback, name }: Props) => {
   const [disCode, setDisCode] = useState(setInitCode(info.discountCode))
 
   const { data: signData, isLoading } = useSignName(name, disCode)
-  const onDismiss = () => {
-    setDisCode('')
-    onCancel()
-  }
+
+  const hasDiscount = signData && Number(formatFixed(signData?.discount || '0', 18)) < 1
+  const discount = hasDiscount && Number(formatFixed(signData?.discount || '0', 18)) * 100
+
   const saveCode = () => {
     if (signData) {
       setCodeCallback({
@@ -110,41 +102,35 @@ const DiscountCode = ({ info, setCodeCallback, name, show, onCancel }: Props) =>
         ...signData,
       })
     }
-    onDismiss()
   }
-
-  const hasDiscount = signData && Number(formatFixed(signData?.discount || '0', 18)) < 1
-  const discount = hasDiscount && Number(formatFixed(signData?.discount || '0', 18)) * 100
-
   return (
-    <DialogStyle variant="closable" open={show} onDismiss={onDismiss} title="Discount Code">
+    <>
       <Container>
-        <Label>Please enter the discount code</Label>
         <CodeInput
           hideLabel
           label
           placeholder="Discount Code"
           value={disCode}
           onChange={(e) => setDisCode(e.target.value)}
+          onBlur={saveCode}
         />
-        {disCode && (
+      </Container>
+      {disCode && (
+        <div style={{ display: 'flex', justifyContent: 'end', marginTop: 5 }} className="tip">
           <Skeleton loading={isLoading}>
             {hasDiscount ? (
-              <SuccessTip>Discount {discount}% OFF</SuccessTip>
+              <SuccessTip>
+                {discount}% OFF <a href="#">Details</a>
+              </SuccessTip>
             ) : (
-              <ErrTip>Discount code invalid</ErrTip>
+              <ErrTip>
+                The coupon is not available <a href="#">Details</a>
+              </ErrTip>
             )}
           </Skeleton>
-        )}
-
-        <Row>
-          <BackButton onClick={onDismiss}>Close</BackButton>
-          <NextButton onClick={() => hasDiscount && saveCode()} disabled={!hasDiscount}>
-            Save
-          </NextButton>
-        </Row>
-      </Container>
-    </DialogStyle>
+        </div>
+      )}
+    </>
   )
 }
 export default DiscountCode
