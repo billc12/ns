@@ -58,6 +58,7 @@ export const DialogStyle = styled(Dialog)`
   border: 1px solid #d4d7e2;
   background: #fff;
   box-shadow: 0 6px 10px 0 rgba(0, 73, 198, 0.1);
+  justify-content: center;
   & > div:first-child {
     width: max-content;
     padding: 25px 28px;

@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
 
@@ -86,10 +86,19 @@ const ListWhiteStyled = styled.div`
   width: 25px;
   height: 25px;
   border-radius: 4px;
-  background: var(--button-line, #97b7ef);
+  background: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
+  & svg > path {
+    fill: #97b7ef;
+  }
+  &.select {
+    background: #97b7ef;
+    & svg > path {
+      fill: #fff;
+    }
+  }
 `
 
 const ProFileStyle = styled.div`
@@ -169,6 +178,31 @@ const ActionDropdownStyle = styled(Dropdown)`
     background: #f8fbff !important;
   }
 `
+const Round = styled.div`
+  display: flex;
+  flex: 1;
+  border-radius: 10px;
+  background: #f8fbff;
+  padding: 8px 20px 13px;
+  gap: 7px;
+  flex-direction: column;
+`
+const RoundTitle1 = styled.p`
+  color: #3f5170;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+`
+const RoundTitle2 = styled.p`
+  color: #3f5170;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px; /* 125% */
+`
 const ActionDropdown = ({ name }: { name: string }) => {
   const { address } = useAccount()
   const nameDetails = useNameDetails(name)
@@ -244,9 +278,96 @@ const ActionDropdown = ({ name }: { name: string }) => {
     </ActionDropdownStyle>
   )
 }
-const Page = ({ accountAddress, _name }: { accountAddress: string; _name: string }) => {
-  const { avatarSrc } = useEthInvoice(_name, false)
+const NameTokenCard = ({
+  avatarSrc,
+  accountAddress,
+  name,
+}: {
+  avatarSrc: string
+  accountAddress: string
+  name: string
+}) => {
+  return (
+    <ProFileStyle>
+      <AddressBox>
+        <StyledImg src={avatarSrc || TestImg.src} />
+        <AddressStyle>
+          {shortenAddress(accountAddress)}
+          <CopyButton value={accountAddress} />
+        </AddressStyle>
+      </AddressBox>
+      <div
+        style={{
+          display: 'flex',
+          gap: 32,
+        }}
+      >
+        <AssetsItemStyle>
+          <AssetsIcon />
+          $100.00
+        </AssetsItemStyle>
+        <AssetsItemStyle>
+          <Icon1 />
+          12
+        </AssetsItemStyle>
+        <AssetsItemStyle>
+          <SwordIcon />4
+        </AssetsItemStyle>
+      </div>
+      <div style={{ display: 'flex', gap: 5 }}>
+        <ReceiveBtn accountAddress={accountAddress} />
+        <Dropdown
+          shortThrow
+          align="left"
+          items={[
+            <div>
+              <SendTokenBtn accountAddress={accountAddress} _name={name} />
+            </div>,
+            <div>
+              <SendNFTBtn accountAddress={accountAddress} _name={name} />
+            </div>,
+          ]}
+        >
+          <AuctionBtn prefix={<Icon3 />}>
+            <AuctionTitle>Send</AuctionTitle>
+          </AuctionBtn>
+        </Dropdown>
+        <AuctionBtn prefix={<Icon4 />}>
+          <AuctionTitle>Connect</AuctionTitle>
+        </AuctionBtn>
+      </div>
 
+      <div>
+        <TokenInfo accountAddress={accountAddress} />
+      </div>
+    </ProFileStyle>
+  )
+}
+const NameInfoCard = ({ avatarSrc }: { avatarSrc: string }) => {
+  return (
+    <div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img style={{ width: 382, height: 382, borderRadius: 8 }} src={avatarSrc} alt="default img" />
+      <div style={{ marginTop: 20, display: 'flex', gap: 8 }}>
+        <Round>
+          <RoundTitle1>Head Armor</RoundTitle1>
+          <RoundTitle2>Linen Hood</RoundTitle2>
+        </Round>
+        <Round>
+          <RoundTitle1>Foot Armor</RoundTitle1>
+          <RoundTitle2>Shoes</RoundTitle2>
+        </Round>
+      </div>
+    </div>
+  )
+}
+enum Tabs {
+  Token = 'Token',
+  NameInfo = 'NameInfo',
+}
+const Page = ({ accountAddress, _name }: { accountAddress: string; _name: string }) => {
+  const { avatarSrc = TestImg.src } = useEthInvoice(_name, false)
+  const [curTab, setCurTab] = useState(Tabs.Token)
   return (
     <CenterLeftStyle>
       <HeaderStyle>
@@ -254,65 +375,24 @@ const Page = ({ accountAddress, _name }: { accountAddress: string; _name: string
         <NameStyle>{_name || '--'}</NameStyle>
 
         <TabIconStyle>
-          <ListWhiteStyled>
+          <ListWhiteStyled
+            onClick={() => setCurTab(Tabs.Token)}
+            className={curTab === Tabs.Token ? 'select' : ''}
+          >
             <ListWhiteIcon />
           </ListWhiteStyled>
-          <SwordIcon />
+          <ListWhiteStyled
+            onClick={() => setCurTab(Tabs.NameInfo)}
+            className={curTab === Tabs.NameInfo ? 'select' : ''}
+          >
+            <SwordIcon />
+          </ListWhiteStyled>
         </TabIconStyle>
       </HeaderStyle>
-      <ProFileStyle>
-        <AddressBox>
-          <StyledImg src={avatarSrc || TestImg.src} />
-          <AddressStyle>
-            {shortenAddress(accountAddress)}
-            <CopyButton value={accountAddress} />
-          </AddressStyle>
-        </AddressBox>
-        <div
-          style={{
-            display: 'flex',
-            gap: 32,
-          }}
-        >
-          <AssetsItemStyle>
-            <AssetsIcon />
-            $100.00
-          </AssetsItemStyle>
-          <AssetsItemStyle>
-            <Icon1 />
-            12
-          </AssetsItemStyle>
-          <AssetsItemStyle>
-            <SwordIcon />4
-          </AssetsItemStyle>
-        </div>
-        <div style={{ display: 'flex', gap: 5 }}>
-          <ReceiveBtn accountAddress={accountAddress} />
-          <Dropdown
-            shortThrow
-            align="left"
-            items={[
-              <div>
-                <SendTokenBtn accountAddress={accountAddress} _name={_name} />
-              </div>,
-              <div>
-                <SendNFTBtn accountAddress={accountAddress} _name={_name} />
-              </div>,
-            ]}
-          >
-            <AuctionBtn prefix={<Icon3 />}>
-              <AuctionTitle>Send</AuctionTitle>
-            </AuctionBtn>
-          </Dropdown>
-          <AuctionBtn prefix={<Icon4 />}>
-            <AuctionTitle>Connect</AuctionTitle>
-          </AuctionBtn>
-        </div>
-
-        <div>
-          <TokenInfo accountAddress={accountAddress} />
-        </div>
-      </ProFileStyle>
+      {curTab === Tabs.Token && (
+        <NameTokenCard name={_name} accountAddress={accountAddress} avatarSrc={avatarSrc} />
+      )}
+      {curTab === Tabs.NameInfo && <NameInfoCard avatarSrc={avatarSrc} />}
     </CenterLeftStyle>
   )
 }
