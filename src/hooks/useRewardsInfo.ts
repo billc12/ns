@@ -9,10 +9,10 @@ import useGetSignReferral from './useGetSignReferral'
 import { usePrimary } from './usePrimary'
 
 const refetchTime = 2500
-export const useRewardsInfo = () => {
+export const useRewardsInfo = (_name?: string) => {
   const { address } = useAccountSafely()
   const primary = usePrimary(address)
-  const name = primary.data?.beautifiedName.split('.')[0] || ''
+  const name = _name || primary.data?.beautifiedName.split('.')[0] || ''
   const { data: rewardData, refetch: rewardRefetch } = useGetSignReferral(name)
   const reward = rewardData?.reward
 
