@@ -51,12 +51,12 @@ const ErrTip = styled.p`
   line-height: 150.5%;
 `
 const InvitationName = ({ setNameCallback, name }: Props) => {
-  const [nameInp, setNameInp] = useState(name)
+  const [nameInp, setNameInp] = useState(name ? `${name}.aw` : '')
   const { registrationStatus, isLoading } = useBasicName(nameInp)
   const isUse = registrationStatus === 'registered'
   const saveName = () => {
     if (isUse || !nameInp) {
-      setNameCallback(nameInp)
+      setNameCallback(nameInp.split('.')[0])
     }
   }
   return (

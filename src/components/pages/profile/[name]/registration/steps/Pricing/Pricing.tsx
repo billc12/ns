@@ -811,9 +811,8 @@ const Pricing = ({
   )
 
   const isPremium = disInfo.premium
-  const initName = registrationData.referral ? `${registrationData.referral}.aw` : ''
+  const initName = registrationData.referral
   const [invitationName, setInvitationName] = useState(initName)
-  const referral = invitationName.split('.')[0]
   const handleInviName = (n: string) => {
     setInvitationName(n)
   }
@@ -825,11 +824,11 @@ const Pricing = ({
       ...registrationData,
       ...disInfo,
       discountCode: !Number(disInfo.discountCode) ? '' : disInfo.discountCode,
-      referral,
+      referral: invitationName,
       paymentMethodChoice,
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [disInfo, paymentMethodChoice, referral, registrationData])
+  }, [disInfo, paymentMethodChoice, invitationName, registrationData])
   return (
     <StyledCard>
       <PremiumTitle nameDetails={nameDetails} />
@@ -918,7 +917,7 @@ const Pricing = ({
               years,
               balance,
               totalRequiredBalance,
-              discountInfo: { ...disInfo, referral },
+              discountInfo: { ...disInfo, referral: invitationName },
             }}
           />
 
