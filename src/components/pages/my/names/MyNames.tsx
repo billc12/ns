@@ -18,7 +18,7 @@ import {
 import { AddressItem } from '@app/components/AddressItem'
 import { EmptyData } from '@app/components/EmptyData'
 import { LoadingOverlay } from '@app/components/LoadingOverlay'
-import { AccountHeader } from '@app/components/pages/profile/AccountHeader'
+import { RegisterItem } from '@app/components/RegisterNameItem'
 import { TabWrapper } from '@app/components/pages/profile/TabWrapper'
 import {
   ReturnedName,
@@ -30,6 +30,7 @@ import { Content } from '@app/layouts/Content'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
 
 import { useQueryParameterState } from '../../../../hooks/useQueryParameterState'
+import MyNamesHeader from './Header'
 
 const EmptyDetailContainer = styled.div(
   ({ theme }) => css`
@@ -64,10 +65,15 @@ const AccountsLayout = styled.div`
 
 const AddressList = styled.div(
   () => css`
-    width: 840px;
-    min-height: 560px;
-    max-height: 800px;
+    width: 1200px;
+    height: 580px;
+    max-height: 1200px;
+    padding: 29px;
     overflow: scroll;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 25px;
+    column-gap: 20px;
     &::-webkit-scrollbar {
       display: none;
     }
@@ -78,6 +84,9 @@ const AddressList = styled.div(
       width: auto;
       height: auto;
       min-height: 400px;
+      padding: 16px 8px;
+      gap: 10px;
+      justify-content: space-between;
     `)}
   `,
 )
@@ -239,11 +248,12 @@ const MyNames = () => {
         <>
           {!loading ? (
             <AccountsLayout>
-              <AccountHeader />
+              <MyNamesHeader />
               <AddressList>
                 {namesData?.names.map((item) => (
                   <AddressItem AddressRow={item} key={item.name} />
                 ))}
+                <RegisterItem />
                 {!namesData?.names.length && (
                   <div style={{ height: '100%' }}>
                     <EmptyData />
