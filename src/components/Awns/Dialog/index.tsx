@@ -60,12 +60,18 @@ export const DialogStyle = styled(Dialog)`
   /* background: #fff; */
 
   box-shadow: 0 6px 10px 0 rgba(0, 73, 198, 0.1);
-  width: 100vw !important;
+  /* width: 100vw !important;
   height: 100vh;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(16px);
-
+  backdrop-filter: blur(16px); */
+  /* width: max-content; */
+  min-width: 480px;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid #d4d7e2;
+  background: #fff;
+  box-shadow: 0 6px 10px 0 rgba(0, 73, 198, 0.1);
   & > div:first-child {
     width: max-content;
     padding: 25px 28px;

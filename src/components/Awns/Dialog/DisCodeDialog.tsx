@@ -1,136 +1,66 @@
-import { formatFixed } from '@ethersproject/bignumber'
-import { useState } from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 
-import { Input, Skeleton, mq } from '@ensdomains/thorin'
+import { DialogStyle } from '.'
+import { CodeInput } from '../DisCodeLabel'
 
-import { DisInfo } from '@app/components/pages/profile/[name]/registration/steps/Pricing/DiscountCodeLabel'
-import useSignName from '@app/hooks/names/useSignName'
-
-export type TDiscountCode = {
-  setCodeCallback: (v: DisInfo) => void
-  info: DisInfo
-  name: string
+interface Props {
+  code: string
+  discount: string
+  date: string
+  type: string
+  open: boolean
+  close: () => void
 }
-export type Props = {
-  setCodeCallback: (v: DisInfo) => void
-  info: DisInfo
-  name: string
-}
-
-const ErrTip = styled.p`
-  color: #e46767;
-  font-family: Inter;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 150.5%;
-  & > a {
-    color: #e46767;
-    text-align: right;
-    font-feature-settings: 'clig' off, 'liga' off;
-    font-family: Inter;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    text-decoration-line: underline;
-  }
-`
-const SuccessTip = styled.p`
-  & > a,
-  & {
-    color: #21c331;
-    font-feature-settings: 'clig' off, 'liga' off;
-    font-family: Inter;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-  }
-  & > a {
-    text-decoration-line: underline;
-  }
-`
-const CodeInput = styled(Input)`
-  width: 100%;
-  border-radius: 6px;
-  background: #fff;
-  color: #d4d7e2;
-  text-align: center;
-  font-family: Inter;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 19px; /* 135.714% */
-
-  &:focus-within {
-    border: 1px solid #97b7ef;
-    color: #3f5170;
-  }
-`
-const Container = styled.div`
-  width: 179px;
+const Round = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  ${mq.sm.max(css`
-    width: 100%;
-  `)}
-  &>div {
-    height: 32px;
-  }
+  gap: 25px;
+  width: 380px;
+  height: 141px;
+  border-radius: 10px;
+  background: #f7fafc;
+  padding: 20px 24px;
+`
+const LabelStyle = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+const LabelTitle = styled.p`
+  color: #80829f;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+`
+const ContentTitle = styled.p`
+  color: #3f5170;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 `
 
-const setInitCode = (i: string) => {
-  if (!i) return ''
-  if (!Number(i)) return ''
-  return i
-}
-const DiscountCode = ({ info, setCodeCallback, name }: Props) => {
-  const [disCode, setDisCode] = useState(setInitCode(info.discountCode))
-
-  const { data: signData, isLoading } = useSignName(name, disCode)
-
-  const hasDiscount = signData && Number(formatFixed(signData?.discount || '0', 18)) < 1
-  const discount = hasDiscount && Number(formatFixed(signData?.discount || '0', 18)) * 100
-
-  const saveCode = () => {
-    if (signData) {
-      setCodeCallback({
-        ...info,
-        ...signData,
-      })
-    }
-  }
+const Label = ({ title, content }: { title: string; content: string }) => {
   return (
-    <>
-      <Container>
-        <CodeInput
-          hideLabel
-          label
-          placeholder="Enter Discount Code"
-          value={disCode}
-          onChange={(e) => setDisCode(e.target.value)}
-          onBlur={saveCode}
-        />
-      </Container>
-      {disCode && (
-        <div style={{ display: 'flex', justifyContent: 'end', marginTop: 5 }} className="tip">
-          <Skeleton loading={isLoading}>
-            {hasDiscount ? (
-              <SuccessTip>
-                {discount}% OFF <a href="#">Details</a>
-              </SuccessTip>
-            ) : (
-              <ErrTip>
-                The coupon is not available <a href="#">Details</a>
-              </ErrTip>
-            )}
-          </Skeleton>
-        </div>
-      )}
-    </>
+    <LabelStyle>
+      <LabelTitle>{title}</LabelTitle>
+      <ContentTitle>{content}</ContentTitle>
+    </LabelStyle>
   )
 }
-export default DiscountCode
+const Page = ({ code, date, discount, type, open, close }: Props) => {
+  return (
+    <DialogStyle title="Discount Code" open={open} onDismiss={close} variant="closable">
+      <CodeInput value={code} label="" disabled readOnly />
+      <Round>
+        <Label title="Discount" content={discount} />
+        <Label title="Availability date" content={date} />
+        <Label title="Type" content={type} />
+      </Round>
+    </DialogStyle>
+  )
+}
+
+export default Page

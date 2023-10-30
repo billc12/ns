@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { Typography } from '@ensdomains/thorin'
 
-import DisCodeDialog from '@app/components/Awns/Dialog/DisCodeDialog'
+import DisCodeDialog from '@app/components/Awns/DisCodeLabel'
 import useSignName from '@app/hooks/names/useSignName'
 import { TDiscountCode } from '@app/transaction-flow/input/DiscountCode-flow'
 
