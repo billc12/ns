@@ -743,7 +743,7 @@ const Pricing = ({
   const resolverAddress = useContractAddress('PublicResolver')
 
   const [years, setYears] = useState(registrationData.years)
-  const [reverseRecord] = useState(() =>
+  const [reverseRecord, setReverseRecord] = useState(() =>
     registrationData.started ? registrationData.reverseRecord : !hasPrimaryName,
   )
 
@@ -830,7 +830,6 @@ const Pricing = ({
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [disInfo, paymentMethodChoice, referral, registrationData])
-  const [isSetMainAddr, setIsSetMainAddr] = useState(false)
   return (
     <StyledCard>
       <PremiumTitle nameDetails={nameDetails} />
@@ -862,12 +861,12 @@ const Pricing = ({
           {invitationNameLabel}
           <SvgContainer
             onClick={() => {
-              setIsSetMainAddr(!isSetMainAddr)
+              setReverseRecord(!reverseRecord)
             }}
           >
             <SvgBtn>
-              {isSetMainAddr && <NoSelectSvg />}
-              {!isSetMainAddr && <SelectSvg />}
+              {!reverseRecord && <NoSelectSvg />}
+              {reverseRecord && <SelectSvg />}
             </SvgBtn>
             <SetMainTitle>Use as primary name</SetMainTitle>
           </SvgContainer>
