@@ -48,7 +48,7 @@ const InvitationNameLabel = ({ name, setNameCallback }: TInvitationName) => {
   return (
     <Row className="round">
       <Row className="content">
-        <Label>Invitation AWNS</Label>
+        <Label>Referral AWNS</Label>
         <Tooltip
           placement="right"
           content={

@@ -245,12 +245,13 @@ export const PlusMinusControl = forwardRef(
       <Container $highlighted={highlighted}>
         <Button
           type="button"
-          onClick={incrementHandler(1)}
-          data-testid="plus-minus-control-minus"
-          disabled={focused || plusDisabled}
+          onClick={incrementHandler(-1)}
+          data-testid="plus-minus-control-plus"
+          disabled={focused || minusDisabled}
         >
-          <Add />
+          <Minus />
         </Button>
+
         <LabelContainer>
           <LabelInput
             data-testid="plus-minus-control-input"
@@ -280,11 +281,11 @@ export const PlusMinusControl = forwardRef(
         </LabelContainer>
         <Button
           type="button"
-          onClick={incrementHandler(-1)}
-          data-testid="plus-minus-control-plus"
-          disabled={focused || minusDisabled}
+          onClick={incrementHandler(1)}
+          data-testid="plus-minus-control-minus"
+          disabled={focused || plusDisabled}
         >
-          <Minus />
+          <Add />
         </Button>
       </Container>
     )
