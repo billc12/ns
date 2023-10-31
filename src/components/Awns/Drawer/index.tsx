@@ -15,11 +15,15 @@ type Props = {
 const DrawerStyle = styled(Drawer)`
   width: 600px !important;
   padding: 60px 40px;
+  border: 1px solid #d4d7e2;
+  background: #fff;
+  box-shadow: -10px 0 20px 0 rgba(40, 79, 115, 0.25);
 `
 const Header = styled.div`
   display: grid;
   grid-template-columns: auto 24px;
   align-items: center;
+  margin-bottom: 30px;
 `
 const Title = styled.p`
   color: #3f5170;

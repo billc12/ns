@@ -13,7 +13,7 @@ import TestImg from '@app/assets/TestImage.png'
 import Icon1 from '@app/assets/nameDetail/icon1.svg'
 import Icon3 from '@app/assets/nameDetail/icon3.svg'
 import Icon4 from '@app/assets/nameDetail/icon4.svg'
-import InformationDrawer from '@app/components/Awns/Drawer/Information'
+import InformationDrawer from '@app/components/Awns/Drawer/InformationDrawer'
 import { CopyButton } from '@app/components/Copy'
 import { useAbilities } from '@app/hooks/abilities/useAbilities'
 import { useNameDetails } from '@app/hooks/useNameDetails'
@@ -204,7 +204,7 @@ const RoundTitle2 = styled.p`
   font-weight: 700;
   line-height: 20px; /* 125% */
 `
-const ActionDropdown = ({ name }: { name: string }) => {
+const ActionDropdown = ({ name, accountAddress }: { name: string; accountAddress: string }) => {
   const { address } = useAccount()
   const nameDetails = useNameDetails(name)
   const { profile, ownerData, wrapperData, expiryDate } = nameDetails
@@ -280,7 +280,12 @@ const ActionDropdown = ({ name }: { name: string }) => {
           <OmitIcon />
         </OmitButtonStyle>
       </ActionDropdownStyle>
-      <InformationDrawer open={isOpen} onClose={() => setIsOpen(false)} />
+      <InformationDrawer
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        accountAddress={accountAddress}
+        name={name}
+      />
     </>
   )
 }
@@ -377,7 +382,7 @@ const Page = ({ accountAddress, _name }: { accountAddress: string; _name: string
   return (
     <CenterLeftStyle>
       <HeaderStyle>
-        <ActionDropdown name={_name} />
+        <ActionDropdown name={_name} accountAddress={accountAddress} />
         <NameStyle>{_name || '--'}</NameStyle>
 
         <TabIconStyle>
