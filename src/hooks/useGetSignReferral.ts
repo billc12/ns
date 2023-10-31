@@ -22,7 +22,7 @@ const useGetSignReferral = (name?: string) => {
   const { address } = useAccountSafely()
   const primary = usePrimary(address)
   const beautifiedName = primary.data?.beautifiedName.split('.')[0]
-  const _name = beautifiedName || name || ''
+  const _name = name || beautifiedName || ''
   const queryKey = useQueryKeys().getSignReferral(_name)
   const { data, refetch } = useQuery(
     queryKey,

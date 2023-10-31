@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import router from 'next/router'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
 
 import { Dropdown, mq } from '@ensdomains/thorin'
@@ -191,16 +191,6 @@ export default function Rewards() {
   const { address } = useAccountSafely()
   const primary = usePrimary(address!, !address)
   const [rewardsPage, setRewardsPage] = useState(1)
-  const curName = useMemo(() => {
-    if (router.router?.query.name) {
-      return router.router.query.name.slice(0, -3) as string
-    }
-    if (primary.data && primary.data.beautifiedName) {
-      return primary.data?.beautifiedName.slice(0, -3)
-    }
-    return ''
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [primary.data, router.router?.query.name])
   const {
     data: namesData,
     // isLoading: namesLoading,
@@ -212,9 +202,22 @@ export default function Rewards() {
       orderDirection: 'asc',
     },
     page: 1,
-    resultsPerPage: 40,
+    resultsPerPage: 'all',
     search: '',
   })
+  const curName = useMemo(() => {
+    if (router.router?.query.name) {
+      if (namesData?.names.find((i) => i.name === router.router?.query.name)) {
+        return router.router.query.name.slice(0, -3) as string
+      }
+    }
+    if (primary.data && primary.data.beautifiedName) {
+      return primary.data?.beautifiedName.slice(0, -3)
+    }
+    return ''
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [primary.data, router.router?.query.name])
+
   const dropdownList = useMemo<DropdownItem[]>(() => {
     const arr = namesData?.names.map((i) => (
       <div key={i.id} style={{ width: '100%' }}>
@@ -267,6 +270,12 @@ export default function Rewards() {
       onChange: handleChangePage,
     }
   }, [RewardsDetails, rewardsPage])
+  useEffect(() => {
+    const hasName = !!namesData?.names.find((i) => i.name === `${curName}.aw`)
+    if (!hasName && namesData?.nameCount) {
+      router.push('/')
+    }
+  }, [curName, namesData?.nameCount, namesData?.names])
   return (
     <>
       {RewardsDetails && !rewardsLoading ? (
