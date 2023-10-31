@@ -6,6 +6,7 @@ import styled, { css } from 'styled-components'
 import { Dropdown, mq } from '@ensdomains/thorin'
 import { DropdownItem } from '@ensdomains/thorin/dist/types/components/molecules/Dropdown/Dropdown'
 
+import DownChevron from '@app/assets/DownChevron.svg'
 import ClaimRewards from '@app/components/Awns/ClaimRewards'
 import { AvaNameLabel } from '@app/components/ConnectButton'
 import { LoadingOverlay } from '@app/components/LoadingOverlay'
@@ -166,9 +167,22 @@ const DropdownStyle = styled(Dropdown)`
     background: #f7fafc;
   }
 `
-const DropdownBtn = styled.button`
-  & > div {
-    width: 100%;
+const DropdownBtn = styled.div`
+  position: relative;
+  width: 100%;
+  & > button > div {
+    color: #3f5170;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700 !important;
+    line-height: normal;
+  }
+  & > svg {
+    position: absolute;
+    right: 37px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 `
 const limit = 7
@@ -201,10 +215,9 @@ export default function Rewards() {
     resultsPerPage: 40,
     search: '',
   })
-  console.log('namesData123', namesData)
   const dropdownList = useMemo<DropdownItem[]>(() => {
     const arr = namesData?.names.map((i) => (
-      <div key={i.id}>
+      <div key={i.id} style={{ width: '100%' }}>
         <AvaNameLabel
           name={i.name}
           onClick={() => router.push(`/rewards?name=${i.name}`)}
@@ -266,14 +279,20 @@ export default function Rewards() {
           </HeaderTitles>
           <BodyStyle>
             <CenterLeftStyle>
-              <DropdownStyle width={262} align="left" items={dropdownList} shortThrow>
+              <DropdownStyle width={244} align="left" items={dropdownList}>
                 {/* eslint-disable-next-line react/button-has-type */}
                 <DropdownBtn>
                   <AvaNameLabel
-                    name={curName}
-                    styles={{ border: 'none', background: '#F7FAFC', padding: '15px 20px' }}
+                    name={`${curName}.aw`}
+                    styles={{
+                      width: '100%',
+                      border: 'none',
+                      background: '#F7FAFC',
+                      padding: '15px 20px',
+                    }}
                     imgSize={50}
                   />
+                  <DownChevron />
                 </DropdownBtn>
               </DropdownStyle>
               <ClaimRewards _name={curName} />
