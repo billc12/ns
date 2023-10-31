@@ -18,6 +18,7 @@ import { useEstimateGasLimitForTransactions } from '@app/hooks/useEstimateGasLim
 import { useZorb } from '@app/hooks/useZorb'
 import { makeTransactionItem } from '@app/transaction-flow/transaction'
 import { TransactionDialogPassthrough } from '@app/transaction-flow/types'
+import { emptyAddress } from '@app/utils/constants'
 import useUserConfig from '@app/utils/useUserConfig'
 import { yearsToSeconds } from '@app/utils/utils'
 
@@ -227,7 +228,8 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
       discountCount: 0,
       timestamp: 0,
       premium: false,
-      booker: '0x0',
+      booker: emptyAddress,
+      discountBinding: emptyAddress,
     }),
   ]
 

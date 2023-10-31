@@ -158,6 +158,7 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
     timestamp,
     booker,
     premium,
+    discountBinding,
   }: RegistrationStepData['pricing']) => {
     if (paymentMethodChoice === PaymentMethod.moonpay) {
       initiateMoonpayRegistrationMutation.mutate(years)
@@ -176,6 +177,7 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
         signature,
         booker,
         premium,
+        discountBinding,
       },
       selected,
     })

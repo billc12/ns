@@ -57,7 +57,7 @@ const useEstimateRegistration = (
       const resolver = await contracts?.getPublicResolver()
       if (!data?.name) return null
 
-      const signName = await fetchedGetSignName(data.name.toString(), '')
+      const signName = await fetchedGetSignName({ name: data.name.toString() })
 
       if (!resolver || !signName) return null
       const registrationTuple = makeRegistrationData({
@@ -166,7 +166,7 @@ export const useEstimateFullRegistration = ({ registrationData, price, name }: F
     owner: address || '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
     registrationData,
   })
-  const { data: signData } = useSignName(name)
+  const { data: signData } = useSignName({ name })
   const { data: referralData } = useGetSignReferral(name)
   const { estimate: registrationGasFee, isLoading: registrationGasLoading } =
     useEstimateRegistration(gasPrice, {
@@ -182,6 +182,7 @@ export const useEstimateFullRegistration = ({ registrationData, price, name }: F
       timestamp: signData?.timestamp!,
       booker: signData?.booker!,
       premium: signData?.premium!,
+      discountBinding: signData?.discountBinding!,
     })
   const estimatedGasLoading = gasPriceLoading || registrationGasLoading
   const estimatedGasFee = useMemo(() => {

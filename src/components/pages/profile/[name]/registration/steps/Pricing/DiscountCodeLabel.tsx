@@ -7,6 +7,7 @@ import { Typography } from '@ensdomains/thorin'
 import DisCodeDialog from '@app/components/Awns/DisCodeLabel'
 import useSignName from '@app/hooks/names/useSignName'
 import { TDiscountCode } from '@app/transaction-flow/input/DiscountCode-flow'
+import { emptyAddress } from '@app/utils/constants'
 
 const Container = styled.div`
   display: grid;
@@ -34,6 +35,7 @@ export type DisInfo = {
   timestamp: number
   premium: boolean
   booker: string
+  discountBinding: string
 }
 export const DefaultDis: DisInfo = {
   discountCode: '',
@@ -42,7 +44,8 @@ export const DefaultDis: DisInfo = {
   discountCount: 0,
   timestamp: 0,
   premium: false,
-  booker: '0x0000000000000000000000000000000000000000',
+  booker: emptyAddress,
+  discountBinding: emptyAddress,
 }
 const DiscountCodeLabel = ({ info, setCodeCallback, name }: TDiscountCode) => {
   const code = info.discountCode
@@ -66,7 +69,7 @@ const DiscountCodeLabelProvider = (initData: DisInfo, name: string) => {
   const handleDisInfo = (d: DisInfo) => {
     setDisInfo(d)
   }
-  const { data: signInfo } = useSignName(name, initData.discountCode)
+  const { data: signInfo } = useSignName({ name, discountCode: initData.discountCode })
 
   useEffect(() => {
     if ((!initData.discountCode || !Number(initData.discountCode)) && !!signInfo) {

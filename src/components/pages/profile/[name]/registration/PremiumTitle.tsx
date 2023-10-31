@@ -59,7 +59,7 @@ const InterText = styled(Typography)<{ $size?: string; $color?: string; $weight?
 `
 const PremiumTitle = ({ nameDetails }: { nameDetails: ReturnType<typeof useNameDetails> }) => {
   const { beautifiedName, registrationStatus, normalisedName } = nameDetails
-  const { data } = useSignName(normalisedName)
+  const { data } = useSignName({ name: normalisedName })
   const isPremium = !!data?.premium
   return (
     <HeadName>

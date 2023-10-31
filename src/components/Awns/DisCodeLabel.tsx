@@ -96,7 +96,7 @@ const setInitCode = (i: string) => {
 const DiscountCode = ({ info, setCodeCallback, name }: Props) => {
   const [disCode, setDisCode] = useState(setInitCode(info.discountCode))
 
-  const { data: signData, isLoading } = useSignName(name, disCode)
+  const { data: signData, isLoading } = useSignName({ name, discountCode: disCode })
 
   const hasDiscount = signData && Number(formatFixed(signData?.discount || '0', 18)) < 1
   const discount = hasDiscount && Number(formatFixed(signData?.discount || '0', 18)) * 100

@@ -26,6 +26,7 @@ type Props = {
     | 'signature'
     | 'booker'
     | 'premium'
+    | 'discountBinding'
   >
 }
 
@@ -58,6 +59,7 @@ const useRegistrationParams = ({ name, owner, registrationData }: Props) => {
       signature: registrationData.signature,
       booker: registrationData.booker,
       premium: registrationData.premium,
+      discountBinding: registrationData.discountBinding,
     }),
     [owner, name, registrationData],
   )

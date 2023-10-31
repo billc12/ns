@@ -1,6 +1,7 @@
 import { useAccount } from 'wagmi'
 
 import type { uniqueTransactionIdentifierGenerator } from '@app/components/@molecules/TransactionDialogManager/stage/TransactionStageModal'
+import { UseScenes } from '@app/hooks/requst/type'
 import { useChainId } from '@app/hooks/useChainId'
 import type { RegistrationProps } from '@app/hooks/useEstimateRegistration'
 import type { TransactionItem } from '@app/transaction-flow/transaction'
@@ -206,5 +207,12 @@ export const useQueryKeys = () => {
     ) => [...globalKeys, 'getAssetsHistory', chain, account, tokenId, startTime, pageCount],
     getRewardsSignature: (name: string) => [...globalKeys, 'getRewardsSignature', name],
     getReferralRewardsInfo: (name: string) => [...globalKeys, 'getReferralRewardsInfo', name],
+    useQueryDiscount: (discountCode: string, account: string, useScenes: UseScenes) => [
+      ...globalKeys,
+      'useQueryDiscount',
+      discountCode,
+      account,
+      useScenes,
+    ],
   }
 }

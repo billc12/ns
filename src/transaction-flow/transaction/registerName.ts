@@ -38,6 +38,7 @@ const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) =>
     data?.discount as string,
     data?.discountCount as number,
     data?.discountCode as string,
+    data?.discountBinding,
     data?.timestamp as number,
   )
 

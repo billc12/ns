@@ -212,7 +212,7 @@ const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
   console.log('beautifiedName', beautifiedName)
   console.log('isMoonpayFlow', isMoonpayFlow)
   const { avatarSrc, InvoiceFilled } = useEthInvoice(name, false)
-  const { data } = useSignName(name)
+  const { data } = useSignName({ name })
 
   return (
     <StyledCard>

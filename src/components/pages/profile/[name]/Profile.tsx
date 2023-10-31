@@ -273,7 +273,7 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
     // wrapperData,
     // registrationStatus,
   } = nameDetails
-  const { data } = useSignName(normalisedName)
+  const { data } = useSignName({ name: normalisedName })
   const isLoading = _isLoading || detailsLoading
 
   const isSmDown = useMemo(() => {

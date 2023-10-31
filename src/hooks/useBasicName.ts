@@ -35,7 +35,7 @@ const getBatchData = async (
   if (name === '[root]') {
     return Promise.all([ens.getOwner('', { contract: 'registry' })])
   }
-  const signData = await fetchedGetSignName(name, '')
+  const signData = await fetchedGetSignName({ name })
 
   const labels = name.split('.')
 
@@ -56,6 +56,7 @@ const getBatchData = async (
         signData.discount,
         signData.discountCount,
         signData.discountCode,
+        signData.discountBinding,
         signData.timestamp,
       ),
     )

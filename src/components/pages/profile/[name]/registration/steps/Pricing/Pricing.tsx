@@ -804,6 +804,7 @@ const Pricing = ({
     signature: registrationData.signature,
     booker: registrationData.booker,
     premium: registrationData.premium,
+    discountBinding: registrationData.discountBinding,
   }
   const { disLabel, disInfo } = DiscountCodeLabelProvider(
     { ...initDis },

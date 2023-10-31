@@ -15,7 +15,9 @@ export const usePrice = (
   discount?: string,
 ) => {
   const { ready, getPrice } = useEns()
-  const { data: signName } = useSignName(nameOrNames.toString(), '')
+  const { data: signName } = useSignName({
+    name: Array.isArray(nameOrNames) ? nameOrNames[0] : nameOrNames,
+  })
 
   const names = Array.isArray(nameOrNames) ? nameOrNames : [nameOrNames]
   const type = legacy ? 'legacy' : 'new'
@@ -41,6 +43,7 @@ export const usePrice = (
         signName?.discount!,
         signName?.discountCount!,
         signName?.discountCode!,
+        signName?.discountBinding!,
         signName?.timestamp!,
       ).then((d) => d || null),
     {
