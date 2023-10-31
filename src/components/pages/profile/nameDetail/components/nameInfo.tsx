@@ -13,6 +13,7 @@ import TestImg from '@app/assets/TestImage.png'
 import Icon1 from '@app/assets/nameDetail/icon1.svg'
 import Icon3 from '@app/assets/nameDetail/icon3.svg'
 import Icon4 from '@app/assets/nameDetail/icon4.svg'
+import InformationDrawer from '@app/components/Awns/Drawer/Information'
 import { CopyButton } from '@app/components/Copy'
 import { useAbilities } from '@app/hooks/abilities/useAbilities'
 import { useNameDetails } from '@app/hooks/useNameDetails'
@@ -217,6 +218,7 @@ const ActionDropdown = ({ name }: { name: string }) => {
     wrapperData,
     expiryDate,
   })
+  const [isOpen, setIsOpen] = useState(false)
   const { prepareDataInput } = useTransactionFlow()
   const showSendNameInput = prepareDataInput('AwnsSendName')
   const handleSend = () => {
@@ -264,18 +266,22 @@ const ActionDropdown = ({ name }: { name: string }) => {
     }
     items.push({
       label: 'Information',
-      onClick: () => null,
+      onClick: () => setIsOpen(true),
       color: 'text',
     })
     return items
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [abilities.data, name, profileActions.canSetMainName])
+
   return (
-    <ActionDropdownStyle align="left" items={dropdownItems} label="Account" width="182px">
-      <OmitButtonStyle>
-        <OmitIcon />
-      </OmitButtonStyle>
-    </ActionDropdownStyle>
+    <>
+      <ActionDropdownStyle align="left" items={dropdownItems} label="Account" width="182px">
+        <OmitButtonStyle>
+          <OmitIcon />
+        </OmitButtonStyle>
+      </ActionDropdownStyle>
+      <InformationDrawer open={isOpen} onClose={() => setIsOpen(false)} />
+    </>
   )
 }
 const NameTokenCard = ({

@@ -205,6 +205,9 @@ importers:
       react-is:
         specifier: ^17.0.2
         version: 17.0.2
+      react-modern-drawer:
+        specifier: ^1.2.2
+        version: 1.2.2(react@17.0.2)
       react-qr-code:
         specifier: ^2.0.12
         version: 2.0.12(react@17.0.2)
@@ -15724,6 +15727,15 @@ packages:
   /react-is@18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
     dev: true
+
+  /react-modern-drawer@1.2.2(react@17.0.2):
+    resolution: {integrity: sha512-SXUNjofHzeoEas0kdMWWafuF2+vwdtbQD1cpkHxo7oyFj3v+2l2CMeJjc/GodYsnxVhSiYj75xosMJXXed9ykQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>16.0.0'
+    dependencies:
+      react: 17.0.2
+    dev: false
 
   /react-qr-code@2.0.12(react@17.0.2):
     resolution: {integrity: sha512-k+pzP5CKLEGBRwZsDPp98/CAJeXlsYRHM2iZn1Sd5Th/HnKhIZCSg27PXO58zk8z02RaEryg+60xa4vyywMJwg==}
