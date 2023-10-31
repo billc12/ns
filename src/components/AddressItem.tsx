@@ -1,62 +1,46 @@
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 
-import { Typography, mq } from '@ensdomains/thorin'
+import { Typography } from '@ensdomains/thorin'
 
 import TestImg from '@app/assets/TestImage.png'
 import { ReturnedName } from '@app/hooks/names/useNamesFromAddress/useNamesFromAddress'
 
 import BaseLink from './@atoms/BaseLink'
-
-const AddressItemStyle = styled.div(
-  () => css`
-    width: 212px;
-    height: 250px;
-    border-radius: 10px;
-    border: 1px solid var(--line, #d4d7e2);
-    background: var(--light-bg, #f8fbff);
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    ${mq.sm.max(css`
-      padding: 10px;
-      width: 168px;
-      height: 200px;
-    `)}
-  `,
-)
+import { useEthInvoice } from './pages/profile/[name]/registration/steps/Awns_Complete'
 
 const BottomStyle = styled.div`
   height: 40px;
   width: 100%;
-  bottom: 0;
-  left: 0;
-  position: absolute;
   display: flex;
   align-items: center;
   padding: 10px 40px 10px 15px;
   border-radius: 0 0 10px 10px;
-  background: var(--light-bg, #f8fbff);
+  background: #f8fbff;
 `
-
+const RoundImg = styled.img`
+  width: 210px;
+  height: 210px;
+`
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  border: 1px solid #d4d7e2;
+  background: #f8fbff;
+`
 export const AddressItem = ({ AddressRow }: { AddressRow: ReturnedName }) => {
   console.log('AddressRow=>', AddressRow)
-
+  const { avatarSrc } = useEthInvoice(AddressRow.name, false)
   return (
     <>
       <BaseLink href={`/profile/${AddressRow.name}`}>
-        <AddressItemStyle
-          style={{
-            background: `url(${TestImg.src})`,
-            backgroundSize: '100% 100%',
-          }}
-          onClick={() => {
-            console.log(1)
-          }}
-        >
+        <Container>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <RoundImg src={avatarSrc || TestImg.src} alt="default img" />
           <BottomStyle>
             <Typography ellipsis>{AddressRow.name || '--'}</Typography>
           </BottomStyle>
-        </AddressItemStyle>
+        </Container>
       </BaseLink>
     </>
   )

@@ -130,7 +130,7 @@ const MyNames = () => {
       orderDirection: sortDirection,
     },
     page,
-    resultsPerPage: pageSize,
+    resultsPerPage: 'all',
     search: searchQuery,
   })
 
