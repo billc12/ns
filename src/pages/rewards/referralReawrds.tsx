@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import router from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
 
 import { Dropdown, mq } from '@ensdomains/thorin'
@@ -270,12 +270,7 @@ export default function Rewards() {
       onChange: handleChangePage,
     }
   }, [RewardsDetails, rewardsPage])
-  useEffect(() => {
-    const hasName = !!namesData?.names.find((i) => i.name === `${curName}.aw`)
-    if (!hasName && namesData?.nameCount) {
-      router.push('/')
-    }
-  }, [curName, namesData?.nameCount, namesData?.names])
+
   return (
     <>
       {RewardsDetails && !rewardsLoading ? (
