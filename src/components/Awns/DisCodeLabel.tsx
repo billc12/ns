@@ -9,6 +9,7 @@ import { DisInfo } from '@app/components/pages/profile/[name]/registration/steps
 import useSignName from '@app/hooks/names/useSignName'
 import { UseScenes } from '@app/hooks/requst/type'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
+import { emptyAddress } from '@app/utils/constants'
 
 export type TDiscountCode = {
   setCodeCallback: (v: DisInfo) => void
@@ -123,9 +124,11 @@ const DiscountCode = ({ info, setCodeCallback, name, useScenes }: Props) => {
   }
   const params = {
     code: disCode,
-    discount: signData?.discount,
-    date: 'Oct 18, 2023 - Sep 18, 2023',
-    type: 'Public',
+    discount: discount ? `${discount}% OFF` : '---',
+    date: signData?.discountEndTime
+      ? new Date(signData.discountEndTime * 1000).toUTCString()
+      : '---',
+    type: signData?.discountBinding === emptyAddress ? 'Public' : 'Private',
   }
   return (
     <>
