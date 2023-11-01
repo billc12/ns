@@ -60,6 +60,7 @@ export const generateWrappedName =
     referral,
     booker,
     premium,
+    discountBinding,
   }: Name) => {
     const name = `${label}.eth`
     console.log('generating wrapped name:', name)
@@ -99,6 +100,7 @@ export const generateWrappedName =
       referral,
       booker,
       premium,
+      discountBinding,
     })
     const commitTx = await controller.commit(commitment)
     await commitTx.wait()
@@ -126,6 +128,7 @@ export const generateWrappedName =
         timestamp,
         booker,
         premium,
+        discountBinding,
       }),
       {
         value: price[0],

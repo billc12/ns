@@ -17,6 +17,7 @@ import DiscountCodeLabelProvider, {
 import { YEAR_DISCOUNT } from '@app/components/pages/profile/[name]/registration/types'
 import { formatDateString } from '@app/components/pages/profile/[name]/tabs/ProfileTab'
 import gasLimitDictionary from '@app/constants/gasLimits'
+import { UseScenes } from '@app/hooks/requst/type'
 import { useAvatar } from '@app/hooks/useAvatar'
 import { useEstimateGasLimitForTransactions } from '@app/hooks/useEstimateGasLimitForTransactions'
 import { useNameDetails } from '@app/hooks/useNameDetails'
@@ -235,7 +236,7 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
 
   const { userConfig } = useUserConfig()
   const currencyDisplay = userConfig.currency === 'fiat' ? userConfig.fiat : 'eth'
-  const { disInfo, disLabel } = DiscountCodeLabelProvider(DefaultDis, names[0])
+  const { disInfo, disLabel } = DiscountCodeLabelProvider(DefaultDis, names[0], UseScenes.renewal)
   const {
     total: rentFee,
     totalYearlyFee,
