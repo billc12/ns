@@ -1,6 +1,7 @@
 import { useQuery } from 'wagmi'
 
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
+import { emptyAddress } from '@app/utils/constants'
 
 import { UseScenes } from '../requst/type'
 import useQueryDiscount from '../requst/useQueryDiscount'
@@ -79,6 +80,9 @@ const useSignName = ({ name, account, discountCode, useScenes }: Params) => {
           isUsed = disUseCount === result.discountCount && result.discountCount > 0
         }
         if (isUsed) {
+          result.discount = defaultDis
+        }
+        if (result.discountBinding !== emptyAddress && result.discountBinding !== address) {
           result.discount = defaultDis
         }
         return {
