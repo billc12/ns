@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components'
 
 import { Input, Skeleton, mq } from '@ensdomains/thorin'
 
-import DisCodeDialog from '@app/components/Awns/Dialog/disCodeDialog'
+import DisCodeDialog from '@app/components/Awns/Dialog/DisCodeDialog'
 import { DisInfo } from '@app/components/pages/profile/[name]/registration/steps/Pricing/DiscountCodeLabel'
 import useSignName from '@app/hooks/names/useSignName'
 import { UseScenes } from '@app/hooks/requst/type'
@@ -91,13 +91,8 @@ const Container = styled.div`
   }
 `
 
-const setInitCode = (i: string) => {
-  if (!i) return ''
-  if (!Number(i)) return ''
-  return i
-}
 const DiscountCode = ({ info, setCodeCallback, name, useScenes }: Props) => {
-  const [disCode, setDisCode] = useState(setInitCode(info.discountCode))
+  const [disCode, setDisCode] = useState(info.discountCode)
   const { address } = useAccountSafely()
 
   const { data: signData, isLoading } = useSignName({

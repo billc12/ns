@@ -44,7 +44,6 @@ export const fetchedGetSignName = async ({
   }
 
   const query = new URLSearchParams(Object.entries(paramsObj) as string[][]).toString()
-  console.log('paramsObj123', paramsObj, useScenes, query)
   const { data } = await fetch(`${BASE_URL}?${query}`).then((res) => res.json<any>())
   return {
     signature: data.signature,
@@ -74,25 +73,30 @@ const useSignName = ({ name, account, discountCode, useScenes }: Params) => {
     async () => {
       try {
         const result = await fetchedGetSignName({ name, account, discountCode, useScenes })
-        let isUsed = false
-        if (discountCode) {
-          const disUseCount = (await contract?.discountsUsed(discountCode)) || 0
-          isUsed = disUseCount === result.discountCount && result.discountCount > 0
-        }
-        if (isUsed) {
+        // let isUsed = false
+        // if (discountCode) {
+        //   const disUseCount = (await contract?.discountsUsed(discountCode)) || 0
+        //   isUsed = disUseCount === result.discountCount && result.discountCount > 0
+        // }
+        // if (isUsed) {
+        //   result.discount = defaultDis
+        // }
+        if (result.discountBinding !== emptyAddress && result.discountBinding !== address) {
           result.discount = defaultDis
         }
-        if (result.discountBinding !== emptyAddress && result.discountBinding !== address) {
+        if (!isValid) {
           result.discount = defaultDis
         }
         return {
           ...result,
         }
-      } catch {
+      } catch (error) {
+        console.log('useSignName err', error)
+
         return null
       }
     },
-    { enabled: !!name && !!contract && !!isValid },
+    { enabled: !!name && !!contract && !!useScenes?.toString() },
   )
 
   return { data, isLoading: queryLoading || isLoading }
