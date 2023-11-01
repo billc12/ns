@@ -53,6 +53,10 @@ export const usePrice = ({ nameOrNames, signData: signName, legacy, years = 1 }:
     },
   )
 
+  // nian xain bu ru zhekou
+  const originalPrice = data?.oBase ? data.oBase.mul(years) : undefined
+  const discountPrice = data?.base ? data.base.mul(years) : undefined
+
   const base = data?.base
   const premium = data?.premium
   const total = data?.base ? data.base.add(data.premium) : undefined
@@ -64,7 +68,6 @@ export const usePrice = ({ nameOrNames, signData: signName, legacy, years = 1 }:
   const discountedPrice = totalYearlyFee?.mul(_discount).div(100)
   const isUseDiscount = data ? !data.base.eq(data.oBase) : false
   const onBase = data?.oBase
-  console.log('isUseDiscount', isUseDiscount)
 
   return {
     base,
@@ -79,5 +82,7 @@ export const usePrice = ({ nameOrNames, signData: signName, legacy, years = 1 }:
     discountedPrice,
     isUseDiscount,
     onBase,
+    discountPrice,
+    originalPrice,
   }
 }

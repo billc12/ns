@@ -251,19 +251,13 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
     useScenes: UseScenes.renewal,
     years,
   })
-  const {
-    total: rentFee,
-    discountedPrice,
-    isHasDiscount,
-    onBase: totalYearlyFee,
-    totalYearlyFee: discountYearlyFee,
-  } = priceData
+  const { total: rentFee, isHasDiscount, originalPrice, discountPrice: discountedPrice } = priceData
 
   const transactions = [
     makeTransactionItem('extendNames', {
       names,
       duration,
-      rentPrice: totalYearlyFee!,
+      rentPrice: originalPrice!,
       isSelf,
       ...disInfo,
       discountedPrice,
@@ -295,7 +289,7 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
   const items: InvoiceItem[] = [
     {
       label: t('input.extendNames.invoice.extension', { count: years }),
-      value: totalYearlyFee,
+      value: originalPrice,
       bufferPercentage: CURRENCY_FLUCTUATION_BUFFER_PERCENTAGE,
     },
     {
@@ -309,7 +303,7 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
       : {
           disabled: !!estimateGasLimitError,
           onClick: () => {
-            if (!totalYearlyFee) return
+            if (!originalPrice) return
             dispatch({
               name: 'setTransactions',
               payload: transactions,
@@ -361,8 +355,7 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
                       discountCodeLabel={disLabel}
                       discountedPrice={discountedPrice}
                       isHasDiscount={isHasDiscount}
-                      totalYearlyFee={totalYearlyFee}
-                      discountYearlyFee={discountYearlyFee}
+                      originalPrice={originalPrice}
                     />
                     {(!!estimateGasLimitError ||
                       (estimatedGasLimit && balance?.value.lt(estimatedGasLimit))) && (
