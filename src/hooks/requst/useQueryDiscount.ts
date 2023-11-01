@@ -37,7 +37,7 @@ const useQueryDiscount = ({ account, discountCode, useScenes }: Params) => {
         return null
       }
     },
-    { enabled: !!account && !!discountCode && !!useScenes },
+    { enabled: !!account && !!discountCode && !!useScenes.toString() },
   )
 
   return { data, isLoading }

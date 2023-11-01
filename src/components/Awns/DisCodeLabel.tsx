@@ -7,6 +7,8 @@ import { Input, Skeleton, mq } from '@ensdomains/thorin'
 import DisCodeDialog from '@app/components/Awns/Dialog/disCodeDialog'
 import { DisInfo } from '@app/components/pages/profile/[name]/registration/steps/Pricing/DiscountCodeLabel'
 import useSignName from '@app/hooks/names/useSignName'
+import { UseScenes } from '@app/hooks/requst/type'
+import { useAccountSafely } from '@app/hooks/useAccountSafely'
 
 export type TDiscountCode = {
   setCodeCallback: (v: DisInfo) => void
@@ -17,6 +19,7 @@ export type Props = {
   setCodeCallback: (v: DisInfo) => void
   info: DisInfo
   name: string
+  useScenes: UseScenes
 }
 
 const ErrTip = styled.p`
@@ -93,10 +96,16 @@ const setInitCode = (i: string) => {
   if (!Number(i)) return ''
   return i
 }
-const DiscountCode = ({ info, setCodeCallback, name }: Props) => {
+const DiscountCode = ({ info, setCodeCallback, name, useScenes }: Props) => {
   const [disCode, setDisCode] = useState(setInitCode(info.discountCode))
+  const { address } = useAccountSafely()
 
-  const { data: signData, isLoading } = useSignName({ name, discountCode: disCode })
+  const { data: signData, isLoading } = useSignName({
+    name,
+    discountCode: disCode,
+    useScenes,
+    account: address,
+  })
 
   const hasDiscount = signData && Number(formatFixed(signData?.discount || '0', 18)) < 1
   const discount = hasDiscount && Number(formatFixed(signData?.discount || '0', 18)) * 100

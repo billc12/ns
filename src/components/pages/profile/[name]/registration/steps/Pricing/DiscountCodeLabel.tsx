@@ -6,6 +6,7 @@ import { Typography } from '@ensdomains/thorin'
 
 import DisCodeDialog from '@app/components/Awns/DisCodeLabel'
 import useSignName from '@app/hooks/names/useSignName'
+import { UseScenes } from '@app/hooks/requst/type'
 import { TDiscountCode } from '@app/transaction-flow/input/DiscountCode-flow'
 import { emptyAddress } from '@app/utils/constants'
 
@@ -47,7 +48,12 @@ export const DefaultDis: DisInfo = {
   booker: emptyAddress,
   discountBinding: emptyAddress,
 }
-const DiscountCodeLabel = ({ info, setCodeCallback, name }: TDiscountCode) => {
+const DiscountCodeLabel = ({
+  info,
+  setCodeCallback,
+  name,
+  useScenes,
+}: TDiscountCode & { useScenes: UseScenes }) => {
   const code = info.discountCode
   const hasDiscount = !!code && Number(formatFixed(info?.discount, 18)) < 1
 
@@ -57,12 +63,17 @@ const DiscountCodeLabel = ({ info, setCodeCallback, name }: TDiscountCode) => {
     <Container>
       <LeftTitle>Discount Code</LeftTitle>
 
-      <DisCodeDialog info={_info} setCodeCallback={setCodeCallback} name={name} />
+      <DisCodeDialog
+        info={_info}
+        setCodeCallback={setCodeCallback}
+        name={name}
+        useScenes={useScenes}
+      />
     </Container>
   )
 }
 
-const DiscountCodeLabelProvider = (initData: DisInfo, name: string) => {
+const DiscountCodeLabelProvider = (initData: DisInfo, name: string, useScenes: UseScenes) => {
   const [disInfo, setDisInfo] = useState<DisInfo>({
     ...initData,
   })
@@ -99,6 +110,7 @@ const DiscountCodeLabelProvider = (initData: DisInfo, name: string) => {
       setCodeCallback={handleDisInfo}
       info={disInfo}
       name={name}
+      useScenes={useScenes}
     />
   )
   return { disInfo, disLabel }

@@ -3,6 +3,8 @@ import { useQuery } from 'wagmi'
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 
 import { UseScenes } from '../requst/type'
+import useQueryDiscount from '../requst/useQueryDiscount'
+import { useAccountSafely } from '../useAccountSafely'
 import { useEthRegistrarControllerContract } from '../useContract'
 
 interface Params {
@@ -23,18 +25,25 @@ type Result = {
 }
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/sign/name`
 
-export const fetchedGetSignName = async (params: Params): Promise<Result> => {
-  const paramsObj = { ...params }
-  if (paramsObj.account) {
-    delete paramsObj.account
+export const fetchedGetSignName = async ({
+  name,
+  account,
+  discountCode,
+  useScenes,
+}: Params): Promise<Result> => {
+  const paramsObj: Params = { name }
+  if (account) {
+    paramsObj.account = account
   }
-  if (paramsObj.discountCode) {
-    delete paramsObj.discountCode
+  if (discountCode) {
+    paramsObj.discountCode = discountCode
   }
-  if (paramsObj.useScenes?.toString()) {
-    delete paramsObj.useScenes
+  if (useScenes?.toString()) {
+    paramsObj.useScenes = useScenes
   }
+
   const query = new URLSearchParams(Object.entries(paramsObj) as string[][]).toString()
+  console.log('paramsObj123', paramsObj, useScenes, query)
   const { data } = await fetch(`${BASE_URL}?${query}`).then((res) => res.json<any>())
   return {
     signature: data.signature,
@@ -49,8 +58,16 @@ export const fetchedGetSignName = async (params: Params): Promise<Result> => {
 }
 export const defaultDis = '1000000000000000000'
 const useSignName = ({ name, account, discountCode, useScenes }: Params) => {
+  const { address } = useAccountSafely()
   const contract = useEthRegistrarControllerContract()
   const queryKey = useQueryKeys().getSignName(name, discountCode || '')
+  const { data: queryData, isLoading: queryLoading } = useQueryDiscount({
+    account: address || '',
+    discountCode: discountCode || '',
+    useScenes: useScenes || UseScenes.register,
+  })
+  const isValid = queryData?.isValid
+
   const { data, isLoading } = useQuery(
     queryKey,
     async () => {
@@ -71,9 +88,9 @@ const useSignName = ({ name, account, discountCode, useScenes }: Params) => {
         return null
       }
     },
-    { enabled: !!name && !!contract },
+    { enabled: !!name && !!contract && !!isValid },
   )
 
-  return { data, isLoading }
+  return { data, isLoading: queryLoading || isLoading }
 }
 export default useSignName

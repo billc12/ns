@@ -30,6 +30,7 @@ import { AvatarViewManager } from '@app/components/@molecules/ProfileEditor/Avat
 import { NextButton } from '@app/components/Awns/Dialog'
 import { Card } from '@app/components/Card'
 import { ConnectButton } from '@app/components/ConnectButton'
+import { UseScenes } from '@app/hooks/requst/type'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useChainId } from '@app/hooks/useChainId'
 import { useContractAddress } from '@app/hooks/useContractAddress'
@@ -809,6 +810,7 @@ const Pricing = ({
   const { disLabel, disInfo } = DiscountCodeLabelProvider(
     { ...initDis },
     nameDetails.normalisedName,
+    UseScenes.register,
   )
 
   const isPremium = disInfo.premium
