@@ -6,9 +6,10 @@ import { Input, Skeleton, mq } from '@ensdomains/thorin'
 
 import DisCodeDialog from '@app/components/Awns/Dialog/DisCodeDialog'
 import { DisInfo } from '@app/components/pages/profile/[name]/registration/steps/Pricing/DiscountCodeLabel'
-import useSignName from '@app/hooks/names/useSignName'
+// import useSignName from '@app/hooks/names/useSignName'
 import { UseScenes } from '@app/hooks/requst/type'
-import { useAccountSafely } from '@app/hooks/useAccountSafely'
+// import { useAccountSafely } from '@app/hooks/useAccountSafely'
+import useVerifyDiscode from '@app/hooks/useVerifyDiscode'
 import { emptyAddress } from '@app/utils/constants'
 
 export type TDiscountCode = {
@@ -17,7 +18,7 @@ export type TDiscountCode = {
   name: string
 }
 export type Props = {
-  setCodeCallback: (v: DisInfo) => void
+  setCodeCallback: (v: DisInfo, p?: any) => void
   info: DisInfo
   name: string
   useScenes: UseScenes
@@ -92,17 +93,28 @@ const Container = styled.div`
   }
 `
 
-const DiscountCode = ({ info, setCodeCallback, name, useScenes }: Props) => {
+const DiscountCode = ({
+  info,
+  setCodeCallback,
+  name,
+  useScenes,
+  years,
+}: Props & { years: number }) => {
   const [disCode, setDisCode] = useState(info.discountCode)
-  const { address } = useAccountSafely()
+  // const { address } = useAccountSafely()
 
-  const { data: signData, isLoading } = useSignName({
+  // const { data: signData, isLoading } = useSignName({
+  //   name,
+  //   discountCode: disCode,
+  //   useScenes,
+  //   account: address,
+  // })
+  const { signData, isLoading } = useVerifyDiscode({
+    code: disCode,
     name,
-    discountCode: disCode,
     useScenes,
-    account: address,
+    years,
   })
-
   const hasDiscount = signData && Number(formatFixed(signData?.discount || '0', 18)) < 1
   const discount = hasDiscount && Number(formatFixed(signData?.discount || '0', 18)) * 100
 

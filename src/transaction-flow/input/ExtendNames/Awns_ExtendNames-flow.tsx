@@ -21,6 +21,7 @@ import { UseScenes } from '@app/hooks/requst/type'
 import { useAvatar } from '@app/hooks/useAvatar'
 import { useEstimateGasLimitForTransactions } from '@app/hooks/useEstimateGasLimitForTransactions'
 import { useNameDetails } from '@app/hooks/useNameDetails'
+import useVerifyDiscode from '@app/hooks/useVerifyDiscode'
 import { useZorb } from '@app/hooks/useZorb'
 import { makeTransactionItem } from '@app/transaction-flow/transaction'
 import { TransactionDialogPassthrough } from '@app/transaction-flow/types'
@@ -31,7 +32,8 @@ import { yearsToSeconds } from '@app/utils/utils'
 import { ShortExpiry } from '../../../components/@atoms/ExpiryComponents/ExpiryComponents'
 import { useChainId } from '../../../hooks/useChainId'
 import { useExpiry } from '../../../hooks/useExpiry'
-import { usePrice } from '../../../hooks/usePrice'
+
+// import { usePrice } from '../../../hooks/usePrice'
 
 const Container = styled.form(
   ({ theme }) => css`
@@ -236,15 +238,27 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
 
   const { userConfig } = useUserConfig()
   const currencyDisplay = userConfig.currency === 'fiat' ? userConfig.fiat : 'eth'
-  const { disInfo, disLabel } = DiscountCodeLabelProvider(DefaultDis, names[0], UseScenes.renewal)
+  const { disInfo, disLabel } = DiscountCodeLabelProvider(
+    DefaultDis,
+    names[0],
+    UseScenes.renewal,
+    years,
+  )
+
+  const { priceData } = useVerifyDiscode({
+    code: disInfo.discountCode,
+    name: names[0],
+    useScenes: UseScenes.renewal,
+    years,
+  })
   const {
     total: rentFee,
-    totalYearlyFee,
     discountedPrice,
     isHasDiscount,
-  } = usePrice(names, years, false, disInfo.discount)
+    onBase: totalYearlyFee,
+    totalYearlyFee: discountYearlyFee,
+  } = priceData
 
-  // const totalRentFee = rentFee ? rentFee.mul(years) : undefined
   const transactions = [
     makeTransactionItem('extendNames', {
       names,
@@ -348,6 +362,7 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
                       discountedPrice={discountedPrice}
                       isHasDiscount={isHasDiscount}
                       totalYearlyFee={totalYearlyFee}
+                      discountYearlyFee={discountYearlyFee}
                     />
                     {(!!estimateGasLimitError ||
                       (estimatedGasLimit && balance?.value.lt(estimatedGasLimit))) && (

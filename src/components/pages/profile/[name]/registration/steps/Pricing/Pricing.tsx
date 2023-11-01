@@ -811,6 +811,7 @@ const Pricing = ({
     { ...initDis },
     nameDetails.normalisedName,
     UseScenes.register,
+    years,
   )
 
   const isPremium = disInfo.premium

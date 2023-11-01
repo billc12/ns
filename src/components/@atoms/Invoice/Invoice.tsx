@@ -92,6 +92,7 @@ type Props = {
   isHasDiscount?: boolean
   discountedPrice?: BigNumber
   totalYearlyFee?: BigNumber
+  discountYearlyFee?: BigNumber
 }
 
 export const Invoice = ({
@@ -102,8 +103,10 @@ export const Invoice = ({
   discountCodeLabel,
   totalTitle,
   isHasDiscount,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   discountedPrice,
   totalYearlyFee,
+  discountYearlyFee,
 }: Props) => {
   const filteredItems = items
     .map(({ value, bufferPercentage }) =>
@@ -113,11 +116,12 @@ export const Invoice = ({
   const total = filteredItems.reduce((a, b) => a!.add(b!), BigNumber.from(0))
   const hasEmptyItems = filteredItems.length !== items.length
   const disTotal = useMemo(() => {
-    if (total && totalYearlyFee && isHasDiscount && discountedPrice) {
-      return total.sub(totalYearlyFee).add(discountedPrice)
+    if (total && totalYearlyFee && isHasDiscount && discountYearlyFee) {
+      return total.sub(totalYearlyFee).add(discountYearlyFee)
     }
     return BigNumber.from('0')
-  }, [discountedPrice, isHasDiscount, total, totalYearlyFee])
+  }, [discountYearlyFee, isHasDiscount, total, totalYearlyFee])
+  console.log('total123456', total?.toString(), disTotal.toString(), totalYearlyFee?.toString())
 
   return (
     <>

@@ -6,18 +6,20 @@ import { useEns } from '@app/utils/EnsProvider'
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 import { yearsToSeconds } from '@app/utils/utils'
 
-import useSignName from './names/useSignName'
+import { Result as SignDataType } from './names/useSignName'
 
-export const usePrice = (
-  nameOrNames: string | string[],
-  years = 1,
-  legacy?: boolean,
-  discount?: string,
-) => {
+type Params = {
+  nameOrNames: string | string[]
+  legacy?: boolean
+  signData: SignDataType | undefined
+  years?: number
+}
+export const usePrice = ({ nameOrNames, signData: signName, legacy, years = 1 }: Params) => {
   const { ready, getPrice } = useEns()
-  const { data: signName } = useSignName({
-    name: Array.isArray(nameOrNames) ? nameOrNames[0] : nameOrNames,
-  })
+  // const { data: signName } = useSignName({
+  //   ...discountInfo,
+  //   name: Array.isArray(nameOrNames) ? nameOrNames[0] : nameOrNames,
+  // })
 
   const names = Array.isArray(nameOrNames) ? nameOrNames : [nameOrNames]
   const type = legacy ? 'legacy' : 'new'
@@ -57,9 +59,13 @@ export const usePrice = (
   const hasPremium = data?.premium.gt(0)
   const discountRate = 100 - (years - 1) * 5
   const totalYearlyFee = total?.mul(years).mul(discountRate).div(100)
-  const _discount = Number(formatFixed(BigNumber.from(discount || '0'), 18)) * 100
+  const _discount = Number(formatFixed(BigNumber.from(signName?.discount || '0'), 18)) * 100
   const isHasDiscount = _discount < 100
   const discountedPrice = totalYearlyFee?.mul(_discount).div(100)
+  const isUseDiscount = data ? !data.base.eq(data.oBase) : false
+  const onBase = data?.oBase
+  console.log('isUseDiscount', isUseDiscount)
+
   return {
     base,
     premium,
@@ -71,5 +77,7 @@ export const usePrice = (
     error,
     isHasDiscount,
     discountedPrice,
+    isUseDiscount,
+    onBase,
   }
 }

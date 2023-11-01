@@ -53,7 +53,8 @@ const DiscountCodeLabel = ({
   setCodeCallback,
   name,
   useScenes,
-}: TDiscountCode & { useScenes: UseScenes }) => {
+  years,
+}: TDiscountCode & { useScenes: UseScenes; years: number }) => {
   const code = info.discountCode
   const hasDiscount = !!code && Number(formatFixed(info?.discount, 18)) < 1
 
@@ -68,15 +69,22 @@ const DiscountCodeLabel = ({
         setCodeCallback={setCodeCallback}
         name={name}
         useScenes={useScenes}
+        years={years}
       />
     </Container>
   )
 }
 
-const DiscountCodeLabelProvider = (initData: DisInfo, name: string, useScenes: UseScenes) => {
+const DiscountCodeLabelProvider = (
+  initData: DisInfo,
+  name: string,
+  useScenes: UseScenes,
+  years: number,
+) => {
   const [disInfo, setDisInfo] = useState<DisInfo>({
     ...initData,
   })
+
   const handleDisInfo = (d: DisInfo) => {
     setDisInfo(d)
   }
@@ -111,6 +119,7 @@ const DiscountCodeLabelProvider = (initData: DisInfo, name: string, useScenes: U
       info={disInfo}
       name={name}
       useScenes={useScenes}
+      years={years}
     />
   )
   return { disInfo, disLabel }
