@@ -11,7 +11,7 @@ import useSignName from '@app/hooks/names/useSignName'
 import { TransactionDialogPassthrough } from '../types'
 
 export type TDiscountCode = {
-  setCodeCallback: (v: DisInfo) => void
+  setCodeCallback: (v: DisInfo, p?: any) => void
   info: DisInfo
   name: string
 }

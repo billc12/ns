@@ -4,17 +4,17 @@ import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 import { emptyAddress } from '@app/utils/constants'
 
 import { UseScenes } from '../requst/type'
-import useQueryDiscount from '../requst/useQueryDiscount'
+// import useQueryDiscount from '../requst/useQueryDiscount'
 import { useAccountSafely } from '../useAccountSafely'
 import { useEthRegistrarControllerContract } from '../useContract'
 
-interface Params {
+export interface Params {
   name: string
   discountCode?: string
   account?: string
   useScenes?: UseScenes
 }
-type Result = {
+export type Result = {
   signature: string
   discountCode: string
   discount: string
@@ -63,12 +63,12 @@ const useSignName = ({ name, account, discountCode, useScenes }: Params) => {
   const { address } = useAccountSafely()
   const contract = useEthRegistrarControllerContract()
   const queryKey = useQueryKeys().getSignName(name, discountCode || '')
-  const { data: queryData, isLoading: queryLoading } = useQueryDiscount({
-    account: address || '',
-    discountCode: discountCode || '',
-    useScenes: useScenes || UseScenes.register,
-  })
-  const isValid = queryData?.isValid
+  // const { data: queryData, isLoading: queryLoading } = useQueryDiscount({
+  //   account: address || '',
+  //   discountCode: discountCode || '',
+  //   useScenes: useScenes || UseScenes.register,
+  // })
+  // const isValid = queryData?.isValid
 
   const { data, isLoading } = useQuery(
     queryKey,
@@ -86,9 +86,9 @@ const useSignName = ({ name, account, discountCode, useScenes }: Params) => {
         if (result.discountBinding !== emptyAddress && result.discountBinding !== address) {
           result.discount = defaultDis
         }
-        if (!isValid) {
-          result.discount = defaultDis
-        }
+        // if (!isValid) {
+        //   result.discount = defaultDis
+        // }
         return {
           ...result,
         }
@@ -101,6 +101,6 @@ const useSignName = ({ name, account, discountCode, useScenes }: Params) => {
     { enabled: !!name && !!contract && !!useScenes?.toString() },
   )
 
-  return { data, isLoading: queryLoading || isLoading }
+  return { data, isLoading }
 }
 export default useSignName

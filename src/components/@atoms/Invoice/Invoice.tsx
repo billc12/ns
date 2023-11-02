@@ -91,11 +91,10 @@ type Props = {
   totalTitle?: string
   isHasDiscount?: boolean
   discountedPrice?: BigNumber
-  totalYearlyFee?: BigNumber
+  originalPrice?: BigNumber
 }
 
 export const Invoice = ({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   totalLabel = 'Estimated total',
   unit = 'eth',
   items,
@@ -103,7 +102,7 @@ export const Invoice = ({
   totalTitle,
   isHasDiscount,
   discountedPrice,
-  totalYearlyFee,
+  originalPrice,
 }: Props) => {
   const filteredItems = items
     .map(({ value, bufferPercentage }) =>
@@ -113,12 +112,11 @@ export const Invoice = ({
   const total = filteredItems.reduce((a, b) => a!.add(b!), BigNumber.from(0))
   const hasEmptyItems = filteredItems.length !== items.length
   const disTotal = useMemo(() => {
-    if (total && totalYearlyFee && isHasDiscount && discountedPrice) {
-      return total.sub(totalYearlyFee).add(discountedPrice)
+    if (total && originalPrice && originalPrice && discountedPrice && isHasDiscount) {
+      return total.sub(originalPrice).add(discountedPrice)
     }
     return BigNumber.from('0')
-  }, [discountedPrice, isHasDiscount, total, totalYearlyFee])
-
+  }, [discountedPrice, isHasDiscount, originalPrice, total])
   return (
     <>
       <Container>
@@ -153,7 +151,7 @@ export const Invoice = ({
         {discountCodeLabel}
       </Container>
       <Total>
-        <LeftTitle>{totalTitle || 'Estimated Total'}</LeftTitle>
+        <LeftTitle>{totalTitle || totalLabel}</LeftTitle>
         <Skeleton loading={hasEmptyItems}>
           {!!isHasDiscount && !!disTotal ? (
             <OldPriceBox>

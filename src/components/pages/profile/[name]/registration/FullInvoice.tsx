@@ -38,15 +38,15 @@ type LabelProps = {
 type Props = ReturnType<typeof useEstimateFullRegistration> & LabelProps
 const FullInvoice = ({
   years,
-  totalYearlyFee,
   estimatedGasFee,
   hasPremium,
   premiumFee,
   gasPrice,
   discountCodeLabel,
   invitationNameLabel,
-  discountedPrice,
+  discountPrice,
   isHasDiscount,
+  originalPrice,
 }: Props) => {
   const { t } = useTranslation('register')
 
@@ -58,7 +58,7 @@ const FullInvoice = ({
       {
         label: t('invoice.yearRegistration', { years }),
         bufferPercentage: CURRENCY_FLUCTUATION_BUFFER_PERCENTAGE,
-        value: totalYearlyFee,
+        value: originalPrice,
       },
       {
         label: t('invoice.estimatedNetworkFee'),
@@ -75,7 +75,7 @@ const FullInvoice = ({
           ]
         : []),
     ],
-    [t, years, totalYearlyFee, estimatedGasFee, hasPremium, premiumFee],
+    [t, years, originalPrice, estimatedGasFee, hasPremium, premiumFee],
   )
 
   const discountInvoiceItems = useMemo(
@@ -101,9 +101,9 @@ const FullInvoice = ({
         totalLabel={t('invoice.total')}
         discountCodeLabel={discountCodeLabel}
         invitationNameLabel={invitationNameLabel}
-        discountedPrice={discountedPrice}
+        discountedPrice={discountPrice}
         isHasDiscount={isHasDiscount}
-        totalYearlyFee={totalYearlyFee}
+        originalPrice={originalPrice}
       />
     </InvoiceContainer>
   )

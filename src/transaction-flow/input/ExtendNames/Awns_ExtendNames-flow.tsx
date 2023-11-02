@@ -21,6 +21,7 @@ import { UseScenes } from '@app/hooks/requst/type'
 import { useAvatar } from '@app/hooks/useAvatar'
 import { useEstimateGasLimitForTransactions } from '@app/hooks/useEstimateGasLimitForTransactions'
 import { useNameDetails } from '@app/hooks/useNameDetails'
+import useVerifyDiscode from '@app/hooks/useVerifyDiscode'
 import { useZorb } from '@app/hooks/useZorb'
 import { makeTransactionItem } from '@app/transaction-flow/transaction'
 import { TransactionDialogPassthrough } from '@app/transaction-flow/types'
@@ -31,7 +32,8 @@ import { yearsToSeconds } from '@app/utils/utils'
 import { ShortExpiry } from '../../../components/@atoms/ExpiryComponents/ExpiryComponents'
 import { useChainId } from '../../../hooks/useChainId'
 import { useExpiry } from '../../../hooks/useExpiry'
-import { usePrice } from '../../../hooks/usePrice'
+
+// import { usePrice } from '../../../hooks/usePrice'
 
 const Container = styled.form(
   ({ theme }) => css`
@@ -236,20 +238,26 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
 
   const { userConfig } = useUserConfig()
   const currencyDisplay = userConfig.currency === 'fiat' ? userConfig.fiat : 'eth'
-  const { disInfo, disLabel } = DiscountCodeLabelProvider(DefaultDis, names[0], UseScenes.renewal)
-  const {
-    total: rentFee,
-    totalYearlyFee,
-    discountedPrice,
-    isHasDiscount,
-  } = usePrice(names, years, false, disInfo.discount)
+  const { disInfo, disLabel } = DiscountCodeLabelProvider(
+    DefaultDis,
+    names[0],
+    UseScenes.renewal,
+    years,
+  )
 
-  // const totalRentFee = rentFee ? rentFee.mul(years) : undefined
+  const { priceData } = useVerifyDiscode({
+    code: disInfo.discountCode,
+    name: names[0],
+    useScenes: UseScenes.renewal,
+    years,
+  })
+  const { total: rentFee, isHasDiscount, originalPrice, discountPrice: discountedPrice } = priceData
+
   const transactions = [
     makeTransactionItem('extendNames', {
       names,
       duration,
-      rentPrice: totalYearlyFee!,
+      rentPrice: originalPrice!,
       isSelf,
       ...disInfo,
       discountedPrice,
@@ -281,7 +289,7 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
   const items: InvoiceItem[] = [
     {
       label: t('input.extendNames.invoice.extension', { count: years }),
-      value: totalYearlyFee,
+      value: originalPrice,
       bufferPercentage: CURRENCY_FLUCTUATION_BUFFER_PERCENTAGE,
     },
     {
@@ -295,7 +303,7 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
       : {
           disabled: !!estimateGasLimitError,
           onClick: () => {
-            if (!totalYearlyFee) return
+            if (!originalPrice) return
             dispatch({
               name: 'setTransactions',
               payload: transactions,
@@ -347,7 +355,7 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
                       discountCodeLabel={disLabel}
                       discountedPrice={discountedPrice}
                       isHasDiscount={isHasDiscount}
-                      totalYearlyFee={totalYearlyFee}
+                      originalPrice={originalPrice}
                     />
                     {(!!estimateGasLimitError ||
                       (estimatedGasLimit && balance?.value.lt(estimatedGasLimit))) && (
