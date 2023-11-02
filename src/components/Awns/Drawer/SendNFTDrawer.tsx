@@ -4,22 +4,15 @@ import { useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { useChainId, useSigner } from 'wagmi'
 
-import { Dialog, Input, Select, mq } from '@ensdomains/thorin'
+import { Input, Select, mq } from '@ensdomains/thorin'
 
 import placeholder from '@app/assets/placeholder.png'
-import { BackButton, NextButton } from '@app/components/Awns/Dialog'
+import { NextButton } from '@app/components/Awns/Dialog'
 import useGetUserNFT from '@app/hooks/requst/useGetUserNFT'
 import { useNameErc721Assets } from '@app/hooks/useNameDetails'
 
-import { TransactionDialogPassthrough } from '../types'
+import DrawerModel from '.'
 
-export type SendAddressProps = {
-  address: string | undefined
-  name: string | undefined
-}
-export type Props = {
-  data: SendAddressProps
-} & TransactionDialogPassthrough
 const Label = styled.p`
   color: #3f5170;
   font-family: Inter;
@@ -81,8 +74,17 @@ const SelectStyle = styled(Select)`
   }
 `
 
-const SendNFT = ({ data: { address, name }, onDismiss }: Props) => {
-  console.log('address=>', address)
+const Page = ({
+  address,
+  open,
+  onClose,
+  name,
+}: {
+  address: string
+  open: boolean
+  onClose: () => void
+  name: string
+}) => {
   const { nftId, contractAddress } = useNameErc721Assets(address)
   const signer = useSigner()
   const chainId = useChainId()
@@ -106,80 +108,66 @@ const SendNFT = ({ data: { address, name }, onDismiss }: Props) => {
 
   console.log('data=>', nftId, data)
   const SendTokenCallback = async () => {
-    const params = {
-      address,
-      senNFTId,
-      recipientAddress: receiveAddress,
-      erc20tokenAddress: contractAddress,
-    }
-    console.log('params=>', params)
-
-    const res = await tokenboundClient?.transferNFT({
+    await tokenboundClient?.transferNFT({
       account: address as `0x${string}`,
       tokenType: 'ERC721',
       tokenContract: contractAddress as `0x${string}`,
       tokenId: senNFTId,
       recipientAddress: receiveAddress as `0x${string}`,
     })
-    console.log('transferNFTRes=>', res)
-    onDismiss()
   }
-
   return (
-    <>
-      <Dialog.Heading title="Send Assets" />
-      <Container>
-        <Label>Receive Address</Label>
-        <CodeInput
-          hideLabel
-          label
-          placeholder="to Address"
-          value={receiveAddress}
-          onChange={(e) => setReceiveAddress(e.target.value)}
-        />
+    <DrawerModel open={open} onClose={onClose} title="Send Assets">
+      <Container />
+      <Label>To Account</Label>
+      <CodeInput
+        hideLabel
+        label
+        placeholder="Ethereum address(0x) or ENS"
+        value={receiveAddress}
+        onChange={(e) => setReceiveAddress(e.target.value)}
+      />
 
-        <Label>Select NFT</Label>
+      <Label>Assets</Label>
 
-        <SelectStyle
-          label=""
-          autocomplete
-          value={senNFTId}
-          options={
-            nftId?.length
-              ? nftId?.map((item) => {
-                  return {
-                    value: item.toString(),
-                    label: `${'NftName' || '-'} #${item} `,
-                    prefix: (
-                      <div
-                        key={item.toString()}
-                        style={{ height: '100%', display: 'flex', alignItems: 'center' }}
-                      >
-                        <StyledImg src={placeholder.src} />
-                      </div>
-                    ),
-                  }
-                })
-              : []
-          }
-          placeholder="Select Token"
-          onChange={(e) => {
-            SetSenNFTId(e.target.value)
-            console.log('checkToken=>', e.target.value)
-          }}
-        />
+      <SelectStyle
+        label=""
+        autocomplete
+        value={senNFTId}
+        options={
+          nftId?.length
+            ? nftId?.map((item) => {
+                return {
+                  value: item.toString(),
+                  label: `${'NftName' || '-'} #${item} `,
+                  prefix: (
+                    <div
+                      key={item.toString()}
+                      style={{ height: '100%', display: 'flex', alignItems: 'center' }}
+                    >
+                      <StyledImg src={placeholder.src} />
+                    </div>
+                  ),
+                }
+              })
+            : []
+        }
+        placeholder="Select Token"
+        onChange={(e) => {
+          SetSenNFTId(e.target.value)
+          console.log('checkToken=>', e.target.value)
+        }}
+      />
 
-        <Row>
-          <BackButton onClick={onDismiss}>Close</BackButton>
-          <NextButton
-            disabled={!senNFTId || !receiveAddress || !isAddress(receiveAddress)}
-            onClick={() => SendTokenCallback()}
-          >
-            Send
-          </NextButton>
-        </Row>
-      </Container>
-    </>
+      <Row>
+        <NextButton
+          disabled={!senNFTId || !receiveAddress || !isAddress(receiveAddress)}
+          onClick={() => SendTokenCallback()}
+        >
+          Send
+        </NextButton>
+      </Row>
+    </DrawerModel>
   )
 }
-export default SendNFT
+export default Page

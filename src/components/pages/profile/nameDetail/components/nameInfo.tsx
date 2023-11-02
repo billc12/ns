@@ -14,6 +14,8 @@ import Icon1 from '@app/assets/nameDetail/icon1.svg'
 import Icon3 from '@app/assets/nameDetail/icon3.svg'
 import Icon4 from '@app/assets/nameDetail/icon4.svg'
 import InformationDrawer from '@app/components/Awns/Drawer/InformationDrawer'
+import SendNFTDrawer from '@app/components/Awns/Drawer/SendNFTDrawer'
+import SendTokenDrawer from '@app/components/Awns/Drawer/SendTokenDrawer'
 import { CopyButton } from '@app/components/Copy'
 import { useAbilities } from '@app/hooks/abilities/useAbilities'
 import { useNameDetails } from '@app/hooks/useNameDetails'
@@ -298,6 +300,8 @@ const NameTokenCard = ({
   accountAddress: string
   name: string
 }) => {
+  const [sendTokenOpen, setSendTokenOpen] = useState(false)
+  const [sendNFTOpen, setSendNFTOpen] = useState(false)
   return (
     <ProFileStyle>
       <AddressBox>
@@ -332,10 +336,10 @@ const NameTokenCard = ({
           align="left"
           items={[
             <div>
-              <SendTokenBtn accountAddress={accountAddress} _name={name} />
+              <SendTokenBtn click={() => setSendTokenOpen(true)} />
             </div>,
             <div>
-              <SendNFTBtn accountAddress={accountAddress} _name={name} />
+              <SendNFTBtn click={() => setSendNFTOpen(true)} />
             </div>,
           ]}
         >
@@ -351,6 +355,17 @@ const NameTokenCard = ({
       <div>
         <TokenInfo accountAddress={accountAddress} />
       </div>
+      <SendTokenDrawer
+        address={accountAddress}
+        open={sendTokenOpen}
+        onClose={() => setSendTokenOpen(false)}
+      />
+      <SendNFTDrawer
+        address={accountAddress}
+        name={name}
+        open={sendNFTOpen}
+        onClose={() => setSendNFTOpen(false)}
+      />
     </ProFileStyle>
   )
 }
