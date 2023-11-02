@@ -1,3 +1,5 @@
+import styled from 'styled-components'
+
 import AttributeLabel, { LabelContainer } from '@app/components/AttributeLabel'
 import useGetNftAddress from '@app/hooks/useGetNftAddress'
 import { useNameDetails } from '@app/hooks/useNameDetails'
@@ -11,11 +13,28 @@ type Props = {
   accountAddress: string
   name: string
 }
+const Title = styled.p`
+  color: #8d8ea5;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+`
+const ContentTitle = styled.p`
+  color: #3f5170;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px;
+`
 const InformationDrawer = ({ open, onClose, accountAddress, name }: Props) => {
   const nameData = useNameDetails(name)
   const { data: registrationData } = useRegistrationDate(name)
-  const { tokenContract } = useGetNftAddress(name)
-
+  const { tokenContract, tokenId } = useGetNftAddress(name)
   return (
     <DrawerModel onClose={onClose} open={open} title="Information">
       <LabelContainer>
@@ -67,8 +86,8 @@ const InformationDrawer = ({ open, onClose, accountAddress, name }: Props) => {
           isCopy
           title="Token ID"
           content={{
-            type: 'text',
-            value: '234567' || '',
+            type: 'address',
+            value: tokenId || '',
           }}
         />
         <AttributeLabel
@@ -79,6 +98,14 @@ const InformationDrawer = ({ open, onClose, accountAddress, name }: Props) => {
           }}
         />
       </LabelContainer>
+      <div style={{ marginTop: 15 }}>
+        <Title>About</Title>
+        <ContentTitle style={{ marginTop: 10 }}>
+          Loot is randomized adventurer gear generated and stored on chain. Stats, images, and other
+          functionality are intentionally omitted for others to interpret. Feel free to use Loot in
+          any way you want.
+        </ContentTitle>
+      </div>
     </DrawerModel>
   )
 }
