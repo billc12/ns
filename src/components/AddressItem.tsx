@@ -22,6 +22,7 @@ const RoundImg = styled.img`
   height: 210px;
 `
 const Container = styled.div`
+  height: max-content;
   display: flex;
   flex-direction: column;
   border-radius: 10px;
