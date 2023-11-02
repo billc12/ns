@@ -6,7 +6,7 @@ import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 import useGetNftAddress from '../useGetNftAddress'
 
 type TChainId = 1 | 56 | 137 | 324
-type TErcType = 'erc721' | 'erc1155'
+type TErcType = 'erc721' | 'erc1155' | ''
 interface Params {
   chainId?: TChainId
   ercType?: TErcType
@@ -44,7 +44,7 @@ const useGetUserNFT = ({
     ercType,
     cursor,
     limit,
-    account: account || '',
+    account: '0x5aEFAA34EaDaC483ea542077D30505eF2472cfe3' || account,
   }
   if (contractAddress) {
     params.contractAddress = contractAddress

@@ -6,10 +6,13 @@ import { Button, Skeleton, mq } from '@ensdomains/thorin'
 import DownShowicon from '@app/assets/DownShowicon.svg'
 import UpDisplayicon from '@app/assets/UpDisplayicon.svg'
 import Img6 from '@app/assets/nameDetail/img6.png'
-import { useNameErc721Assets } from '@app/hooks/useNameDetails'
+import useGetUserNFT from '@app/hooks/requst/useGetUserNFT'
+import { useCheckAccountDeployment } from '@app/hooks/useCheckAccountDeployment'
 
+// import { useNameErc721Assets } from '@app/hooks/useNameDetails'
 import { Assets } from '../children/Assets'
-import { Traits } from '../children/Traits'
+
+// import { Traits } from '../children/Traits'
 
 const CenterRightStyle = styled.div`
   border-radius: 10px;
@@ -136,57 +139,74 @@ const AuctionTitle2 = styled.p`
   line-height: normal;
 `
 const GameList = ({ accountAddress }: { accountAddress: string }) => {
+  const { data: nftData, loading: NftLoading } = useGetUserNFT({ name: 'apr.aw' })
+
   const [isPackUp, setIsPackUp] = useState<boolean>(false)
   const [isShowAll, setIsShowAll] = useState<boolean>(false)
-  const { nftId, loading: NftLoading } = useNameErc721Assets(accountAddress)
+  console.log('accountAddress', accountAddress)
+
   const nftList = useMemo(() => {
     if (!isPackUp) {
-      if (nftId.length > 4) {
-        return nftId.slice(0, 4)
+      if (nftData?.content.length && nftData?.content.length > 4) {
+        return nftData?.content.slice(0, 4)
       }
     }
-    return nftId
-  }, [isPackUp, nftId])
+    return nftData?.content
+  }, [isPackUp, nftData?.content])
+  const contractAddressList = nftData?.content.map((i) => i.contract_address)
+  const tokenIdList = nftData?.content.map((i) => i.token_id)
+  const { deploymentMap } = useCheckAccountDeployment(contractAddressList, tokenIdList)
+  const deploymentNFTList = useMemo(() => {
+    if (!deploymentMap || nftData?.content) return []
+    return nftData?.content.filter(
+      (t, i) =>
+        t.contract_address === deploymentMap[i].contractAddress && deploymentMap[i].isDeployment,
+    )
+  }, [deploymentMap, nftData?.content])
+  console.log('nftData123465', nftList, deploymentMap)
   return (
     <>
-      <TabTitleStyle>
-        {/* <SubTitleStyle>Account ({nftId.length})</SubTitleStyle> */}
-        <SubTitleStyle>Account ({2})</SubTitleStyle>
-        <SubButtonStyle
-          onClick={() => {
-            setIsShowAll(!isShowAll)
-          }}
-        >
-          {isShowAll ? 'Collapse' : 'Show All'}
-          {isShowAll ? <DownShowicon /> : <UpDisplayicon />}
-        </SubButtonStyle>
-      </TabTitleStyle>
-      <AssetsStyle>
+      {nftData && nftData.content && (
         <>
-          <Assets NftId="test1" />
-          <Assets NftId="test1" />
-        </>
-      </AssetsStyle>
-      <TabTitleStyle style={{ marginTop: 24 }}>
-        <SubTitleStyle>Gaming ({nftId.length + 4})</SubTitleStyle>
-        <SubButtonStyle
-          onClick={() => {
-            setIsPackUp(!isPackUp)
-          }}
-        >
-          {isPackUp ? 'Collapse' : 'Show All'}
+          <TabTitleStyle>
+            {/* <SubTitleStyle>Account ({nftId.length})</SubTitleStyle> */}
+            <SubTitleStyle>Account ({deploymentNFTList?.length})</SubTitleStyle>
+            <SubButtonStyle
+              onClick={() => {
+                setIsShowAll(!isShowAll)
+              }}
+            >
+              {isShowAll ? 'Collapse' : 'Show All'}
+              {isShowAll ? <DownShowicon /> : <UpDisplayicon />}
+            </SubButtonStyle>
+          </TabTitleStyle>
+          <AssetsStyle>
+            {deploymentNFTList?.map((t) => (
+              <Assets item={t} key={t.token_id} />
+            ))}
+          </AssetsStyle>
+          <TabTitleStyle style={{ marginTop: 24 }}>
+            <SubTitleStyle>Gaming ({nftData?.content.length || 0})</SubTitleStyle>
+            <SubButtonStyle
+              onClick={() => {
+                setIsPackUp(!isPackUp)
+              }}
+            >
+              {isPackUp ? 'Collapse' : 'Show All'}
 
-          {isPackUp ? <DownShowicon /> : <UpDisplayicon />}
-        </SubButtonStyle>
-      </TabTitleStyle>
-      <TraitsStyle>
-        {nftList?.map((item) => (
-          <Skeleton loading={NftLoading} key={item}>
-            <Assets NftId={item} />
-          </Skeleton>
-        ))}
-        <Traits />
-      </TraitsStyle>
+              {isPackUp ? <DownShowicon /> : <UpDisplayicon />}
+            </SubButtonStyle>
+          </TabTitleStyle>
+          <TraitsStyle>
+            {nftList?.map((item) => (
+              <Skeleton loading={NftLoading} key={item}>
+                <Assets item={item} />
+              </Skeleton>
+            ))}
+            {/* <Traits /> */}
+          </TraitsStyle>
+        </>
+      )}
     </>
   )
 }

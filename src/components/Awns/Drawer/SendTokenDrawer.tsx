@@ -7,7 +7,8 @@ import { useBalance, useSigner } from 'wagmi'
 
 import { Input, Select, Typography, mq } from '@ensdomains/thorin'
 
-import placeholder from '@app/assets/placeholder.png'
+import ETHImg from '@app/assets/ETH-img.png'
+import USDTImg from '@app/assets/USDT.png'
 import { NextButton } from '@app/components/Awns/Dialog'
 import { useChainId } from '@app/hooks/useChainId'
 // import useGetTokenList from '@app/hooks/requst/useGetTokenList'
@@ -81,8 +82,8 @@ const Row = styled.div`
 `
 const StyledImg = styled.img(
   () => css`
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
   `,
 )
@@ -100,6 +101,7 @@ const MaxButtonStyle = styled(Typography)`
     background: var(--light-bg, #e6e6e6);
   }
 `
+
 const Page = ({
   address,
   open,
@@ -208,8 +210,8 @@ const Page = ({
               value: contractAddress,
               label: tokenName,
               prefix: (
-                <div style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
-                  <StyledImg src={placeholder.src} />
+                <div style={{ height: 16, width: 16 }}>
+                  <StyledImg src={USDTImg.src} />
                 </div>
               ),
             },
@@ -217,17 +219,17 @@ const Page = ({
               value: '0x0000000000000000000000000000000000000000',
               label: 'SepoliaETH',
               prefix: (
-                <div style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
-                  <StyledImg src={placeholder.src} />
+                <div style={{ height: 16, width: 16 }}>
+                  <StyledImg src={ETHImg.src} />
                 </div>
               ),
             },
           ]}
           placeholder="Select Token"
           onChange={(e) => {
+            console.log('e.target.value', e.target.value)
             setSenToken(e.target.value)
             setSendAmount('')
-            console.log('checkToken=>', e.target.value)
           }}
         />
         <div
