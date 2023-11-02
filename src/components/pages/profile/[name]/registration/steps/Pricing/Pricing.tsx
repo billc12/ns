@@ -787,10 +787,10 @@ const Pricing = ({
     price: nameDetails.priceData,
   })
 
-  const { premiumFee, totalYearlyFee, estimatedGasFee } = fullEstimate
+  const { premiumFee, estimatedGasFee, discountPrice } = fullEstimate
 
-  const yearlyRequiredBalance = totalYearlyFee?.mul(110).div(100)
-  const totalRequiredBalance = yearlyRequiredBalance?.add(premiumFee || 0).add(estimatedGasFee || 0)
+  // const yearlyRequiredBalance = totalYearlyFee?.mul(110).div(100)
+  const totalRequiredBalance = discountPrice?.add(premiumFee || 0).add(estimatedGasFee || 0)
 
   // const showPaymentChoice = !isPrimaryLoading && address
   const nameLength = beautifiedName.split('.')[0].length

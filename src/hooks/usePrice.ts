@@ -67,7 +67,7 @@ export const usePrice = ({ nameOrNames, signData: signName, legacy, years = 1 }:
   const isHasDiscount = _discount < 100
   const discountedPrice = totalYearlyFee?.mul(_discount).div(100)
   const isUseDiscount = data ? !data.base.eq(data.oBase) : false
-  const onBase = data?.oBase
+  const oBase = data?.oBase
 
   return {
     base,
@@ -81,7 +81,7 @@ export const usePrice = ({ nameOrNames, signData: signName, legacy, years = 1 }:
     isHasDiscount,
     discountedPrice,
     isUseDiscount,
-    onBase,
+    oBase,
     discountPrice,
     originalPrice,
   }
