@@ -343,7 +343,7 @@ const NameTokenCard = ({
             <AuctionTitle>Send</AuctionTitle>
           </AuctionBtn>
         </Dropdown>
-        <AuctionBtn prefix={<Icon4 />}>
+        <AuctionBtn prefix={<Icon4 />} disabled>
           <AuctionTitle>Connect</AuctionTitle>
         </AuctionBtn>
       </div>
