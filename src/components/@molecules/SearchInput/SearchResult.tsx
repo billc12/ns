@@ -213,7 +213,7 @@ const AddressResultItem = ({ address }: { address: string }) => {
       </LeadingSearchItem>
       <ViewRound>
         <InterText $size="16px" $weight={500} $color="#97B7EF">
-          VIew
+          View
         </InterText>
       </ViewRound>
     </>
@@ -288,7 +288,7 @@ const AwnsStatusTag = ({ status }: { status: RegistrationStatus }) => {
       return (
         <ViewRound>
           <InterText $size="16px" $weight={500} $color="#97B7EF">
-            VIew
+            View
           </InterText>
         </ViewRound>
       )
@@ -411,21 +411,6 @@ const PlaceholderResultItem = ({ input }: { input: string }) => {
             -- --
           </InterText>
         </Column>
-      </LeadingSearchItem>
-      <SpinnerWrapper>
-        <Spinner color="accent" />
-      </SpinnerWrapper>
-    </>
-  )
-  return (
-    <>
-      <LeadingSearchItem>
-        <AvatarWrapper $isPlaceholder>
-          <Avatar src={zorb} label="name" />
-        </AvatarWrapper>
-        <TextWrapper>
-          <Typography weight="bold">{beautifiedName}</Typography>
-        </TextWrapper>
       </LeadingSearchItem>
       <SpinnerWrapper>
         <Spinner color="accent" />

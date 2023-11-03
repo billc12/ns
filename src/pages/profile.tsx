@@ -49,6 +49,11 @@ export default function Page() {
     return null
   }
 
+  if (!isLoading) {
+    router.replace(`/my/nameDetail?name=${name}`)
+    return null
+  }
+
   return (
     <ProfileContent
       {...{
