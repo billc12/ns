@@ -213,7 +213,26 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
   const { userConfig, setCurrency } = useUserConfig()
   const currencyDisplay = userConfig.currency === 'fiat' ? userConfig.fiat : 'eth'
 
-  const { total: rentFee, loading: priceLoading, totalYearlyFee } = usePrice(names, years, false)
+  const {
+    total: rentFee,
+    loading: priceLoading,
+    totalYearlyFee,
+  } = usePrice({
+    nameOrNames: names,
+    signData: {
+      signature: '',
+      discountCode: '',
+      discount: '',
+      discountCount: 0,
+      timestamp: 0,
+      premium: false,
+      booker: '',
+      discountBinding: '',
+      discountEndTime: 0,
+    },
+    legacy: false,
+    years,
+  })
 
   // const totalRentFee = rentFee ? rentFee.mul(years) : undefined
   const transactions = [
