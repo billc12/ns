@@ -50,7 +50,7 @@ export default function Page() {
   }
 
   if (!isLoading) {
-    router.replace(`/my/nameDetail?name=${name}`)
+    router.replace(`/nameDetail?name=${name}`)
     return null
   }
 

@@ -373,7 +373,7 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
     }
   }, [name, router, transactions])
   const nameDetailRoute = useMemo(() => {
-    return `/my/nameDetail?name=${name}`
+    return `/nameDetail?name=${name}`
   }, [name])
   console.log(titleContent, descriptionContent)
   return (

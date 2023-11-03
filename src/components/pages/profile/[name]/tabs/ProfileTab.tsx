@@ -286,7 +286,7 @@ const ProfileTab = ({ nameDetails, name }: Props) => {
   const hide = false
 
   // const nameDetailRoute = useMemo(() => {
-  //   return `/my/nameDetail?name=${name}`
+  //   return `/nameDetail?name=${name}`
   // }, [name])
   return (
     <DetailsWrapper>
