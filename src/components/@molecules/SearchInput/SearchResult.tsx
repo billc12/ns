@@ -376,25 +376,25 @@ const AwnsStatusText = ({ status }: { status: RegistrationStatus }) => {
   }
 }
 // E46767
-const TextWrapper = styled.div(
-  () => css`
-    overflow: hidden;
-    text-align: left;
-    & > div {
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: clip;
-      text-align: left;
-      direction: rtl;
-      &::before {
-        content: '‎';
-      }
-    }
-  `,
-)
+// const TextWrapper = styled.div(
+//   () => css`
+//     overflow: hidden;
+//     text-align: left;
+//     & > div {
+//       overflow: hidden;
+//       white-space: nowrap;
+//       text-overflow: clip;
+//       text-align: left;
+//       direction: rtl;
+//       &::before {
+//         content: '‎';
+//       }
+//     }
+//   `,
+// )
 
 const PlaceholderResultItem = ({ input }: { input: string }) => {
-  const zorb = useZorb('placeholder', 'name')
+  // const zorb = useZorb('placeholder', 'name')
   const beautifiedName = useBeautifiedName(input)
   const { chain } = useNetwork()
   return (
