@@ -8,7 +8,7 @@ import DownShowicon from '@app/assets/DownShowicon.svg'
 import UpDisplayicon from '@app/assets/UpDisplayicon.svg'
 import Img6 from '@app/assets/nameDetail/img6.png'
 import { TChainId, getNftSupportChainId, useGetUserAllNFT } from '@app/hooks/requst/useGetUserNFT'
-import { useCheckAccountDeployment } from '@app/hooks/useCheckAccountDeployment'
+import { useSBTIsDeployList } from '@app/hooks/useCheckAccountDeployment'
 
 // import { useNameErc721Assets } from '@app/hooks/useNameDetails'
 import { Assets } from '../children/Assets'
@@ -168,11 +168,11 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
     }
     return nftData
   }, [isPackUp, nftData])
-  const contractAddressList = nftData?.map((i) => i.contract_address)
-  const tokenIdList = nftData?.map((i) => i.token_id)
-  const deploymentMap = useCheckAccountDeployment(contractAddressList, tokenIdList)
+  const contractAddressList = nftData?.map((i) => i.contract_address as string)
+  const tokenIdList = nftData?.map((i) => i.token_id as string)
+  const deploymentMap = useSBTIsDeployList(contractAddressList, tokenIdList)
 
-  console.log('nftData123465', nftList, deploymentMap, contractAddressList, tokenIdList)
+  console.log('nftData123465', deploymentMap)
   return (
     <>
       {nftData && nftData.length && (
