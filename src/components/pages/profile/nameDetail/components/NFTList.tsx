@@ -1,12 +1,13 @@
 import { useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
+import { useAccount, useChainId } from 'wagmi'
 
 import { Button, Skeleton, mq } from '@ensdomains/thorin'
 
 import DownShowicon from '@app/assets/DownShowicon.svg'
 import UpDisplayicon from '@app/assets/UpDisplayicon.svg'
 import Img6 from '@app/assets/nameDetail/img6.png'
-import useGetUserNFT from '@app/hooks/requst/useGetUserNFT'
+import { TChainId, getNftSupportChainId, useGetUserAllNFT } from '@app/hooks/requst/useGetUserNFT'
 import { useCheckAccountDeployment } from '@app/hooks/useCheckAccountDeployment'
 
 // import { useNameErc721Assets } from '@app/hooks/useNameDetails'
@@ -139,7 +140,21 @@ const AuctionTitle2 = styled.p`
   line-height: normal;
 `
 const GameList = ({ accountAddress }: { accountAddress: string }) => {
-  const { data: nftData, loading: NftLoading } = useGetUserNFT({ name: 'apr.aw' })
+  const chainId = useChainId()
+  const { address } = useAccount()
+  // const { data: nftData, loading: NftLoading } = useGetUserNFT({ name: 'apr.aw' })
+
+  const { data: _allNftList, isLoading: NftLoading } = useGetUserAllNFT({
+    account: address || '',
+    chainId: getNftSupportChainId.includes(chainId as TChainId)
+      ? (chainId as TChainId)
+      : getNftSupportChainId[0],
+  })
+
+  const nftData = useMemo(() => {
+    if (!_allNftList || !_allNftList.length) return []
+    return _allNftList.map((t) => t.assets).flat(1)
+  }, [_allNftList])
 
   const [isPackUp, setIsPackUp] = useState<boolean>(false)
   const [isShowAll, setIsShowAll] = useState<boolean>(false)
@@ -147,30 +162,24 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
 
   const nftList = useMemo(() => {
     if (!isPackUp) {
-      if (nftData?.content.length && nftData?.content.length > 4) {
-        return nftData?.content.slice(0, 4)
+      if (nftData?.length && nftData?.length > 4) {
+        return nftData?.slice(0, 4)
       }
     }
-    return nftData?.content
-  }, [isPackUp, nftData?.content])
-  const contractAddressList = nftData?.content.map((i) => i.contract_address)
-  const tokenIdList = nftData?.content.map((i) => i.token_id)
-  const { deploymentMap } = useCheckAccountDeployment(contractAddressList, tokenIdList)
-  const deploymentNFTList = useMemo(() => {
-    if (!deploymentMap || nftData?.content) return []
-    return nftData?.content.filter(
-      (t, i) =>
-        t.contract_address === deploymentMap[i].contractAddress && deploymentMap[i].isDeployment,
-    )
-  }, [deploymentMap, nftData?.content])
-  console.log('nftData123465', nftList, deploymentMap)
+    return nftData
+  }, [isPackUp, nftData])
+  const contractAddressList = nftData?.map((i) => i.contract_address)
+  const tokenIdList = nftData?.map((i) => i.token_id)
+  const deploymentMap = useCheckAccountDeployment(contractAddressList, tokenIdList)
+
+  console.log('nftData123465', nftList, deploymentMap, contractAddressList, tokenIdList)
   return (
     <>
-      {nftData && nftData.content && (
+      {nftData && nftData.length && (
         <>
           <TabTitleStyle>
             {/* <SubTitleStyle>Account ({nftId.length})</SubTitleStyle> */}
-            <SubTitleStyle>Account ({deploymentNFTList?.length})</SubTitleStyle>
+            <SubTitleStyle>Account ({2})</SubTitleStyle>
             <SubButtonStyle
               onClick={() => {
                 setIsShowAll(!isShowAll)
@@ -181,12 +190,12 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
             </SubButtonStyle>
           </TabTitleStyle>
           <AssetsStyle>
-            {deploymentNFTList?.map((t) => (
+            {/* {deploymentNFTList?.map((t) => (
               <Assets item={t} key={t.token_id} />
-            ))}
+            ))} */}
           </AssetsStyle>
           <TabTitleStyle style={{ marginTop: 24 }}>
-            <SubTitleStyle>Gaming ({nftData?.content.length || 0})</SubTitleStyle>
+            <SubTitleStyle>Gaming ({nftData?.length || 0})</SubTitleStyle>
             <SubButtonStyle
               onClick={() => {
                 setIsPackUp(!isPackUp)
