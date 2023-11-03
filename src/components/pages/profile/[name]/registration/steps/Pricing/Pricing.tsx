@@ -18,6 +18,9 @@ import {
 } from '@ensdomains/thorin'
 
 import MoonpayLogo from '@app/assets/MoonpayLogo.svg'
+// import TemporaryPremium from './TemporaryPremium'
+import NoSelectSvg from '@app/assets/no-select.svg'
+import SelectSvg from '@app/assets/select.svg'
 // import MobileFullWidth from '@app/components/@atoms/MobileFullWidth'
 import { PlusMinusControl } from '@app/components/@atoms/PlusMinusControl/Awns_PlusMinusControl'
 // import { RegistrationTimeComparisonBanner } from '@app/components/@atoms/RegistrationTimeComparisonBanner/RegistrationTimeComparisonBanner'
@@ -27,6 +30,7 @@ import { AvatarViewManager } from '@app/components/@molecules/ProfileEditor/Avat
 import { NextButton } from '@app/components/Awns/Dialog'
 import { Card } from '@app/components/Card'
 import { ConnectButton } from '@app/components/ConnectButton'
+import { UseScenes } from '@app/hooks/requst/type'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useChainId } from '@app/hooks/useChainId'
 import { useContractAddress } from '@app/hooks/useContractAddress'
@@ -539,6 +543,8 @@ const Row = styled.div`
 const CenterRow = styled(Row)`
   justify-content: space-between;
   align-items: center;
+  padding: 25px 38px;
+  background: #f7fafc;
 `
 const Column = styled.div`
   display: flex;
@@ -559,9 +565,9 @@ export const GrayRoundRow = styled(Row)<{ $p: string }>`
 const GrayRoundColumn = styled(Column)`
   width: 380px;
   border-radius: 10px;
-  background: #f7fafc;
-  height: 380px;
-  padding-top: 14px;
+  gap: 0;
+  height: max-content;
+
   ${mq.sm.max(css`
     height: auto;
     padding-bottom: 14px;
@@ -583,11 +589,14 @@ const UpButton = styled(Button)`
   border-radius: 8px;
   border: 1px solid #d4d7e2;
   background: #fff;
-  opacity: 0.8;
   &:hover {
-    opacity: 1;
+    opacity: 0.8;
     background: #fff;
   }
+  position: absolute;
+  bottom: 35px;
+  left: 50%;
+  transform: translateX(-50%) !important;
 `
 const PremiumImgRound = styled.div<{ $premium: boolean }>(
   ({ $premium }) => css`
@@ -603,7 +612,30 @@ const PremiumImgRound = styled.div<{ $premium: boolean }>(
     `)}
   `,
 )
-
+const SetMainTitle = styled.p`
+  color: #3f5170;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+`
+const SvgBtn = styled(Button)`
+  width: max-content;
+  height: max-content;
+  padding: 0;
+  &,
+  &:hover {
+    background: transparent;
+  }
+`
+const SvgContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 31px;
+  align-items: center;
+  cursor: pointer;
+`
 const imgUrl = `/DefaultUser.png`
 const setLocalStorage = (src: string | undefined, name: string) => {
   if (src) localStorage.setItem(`avatar-src-${name}`, src)
@@ -652,7 +684,7 @@ const UpImage = ({ isPremium, name }: { isPremium: boolean; name: string }) => {
           }}
         />
       </Dialog>
-      <GrayRoundRow $p="15px" onClick={openInput}>
+      <GrayRoundRow $p="15px" onClick={openInput} style={{ position: 'relative' }}>
         <PremiumImgRound $premium={isPremium}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -661,12 +693,19 @@ const UpImage = ({ isPremium, name }: { isPremium: boolean; name: string }) => {
             src={avatarSrc || imgUrl}
           />
         </PremiumImgRound>
+        {!avatarSrc && (
+          <UpButton
+            onClick={(e) => {
+              e.stopPropagation()
+              openInput()
+            }}
+          >
+            <InterText $size="14px" $weight={500}>
+              + Upload image
+            </InterText>
+          </UpButton>
+        )}
       </GrayRoundRow>
-      <UpButton onClick={openInput}>
-        <InterText $size="14px" $weight={500}>
-          + Upload image
-        </InterText>
-      </UpButton>
       <input
         type="file"
         style={{ display: 'none' }}
@@ -705,7 +744,7 @@ const Pricing = ({
   const resolverAddress = useContractAddress('PublicResolver')
 
   const [years, setYears] = useState(registrationData.years)
-  const [reverseRecord] = useState(() =>
+  const [reverseRecord, setReverseRecord] = useState(() =>
     registrationData.started ? registrationData.reverseRecord : !hasPrimaryName,
   )
 
@@ -748,10 +787,10 @@ const Pricing = ({
     price: nameDetails.priceData,
   })
 
-  const { premiumFee, totalYearlyFee, estimatedGasFee } = fullEstimate
+  const { premiumFee, estimatedGasFee, discountPrice } = fullEstimate
 
-  const yearlyRequiredBalance = totalYearlyFee?.mul(110).div(100)
-  const totalRequiredBalance = yearlyRequiredBalance?.add(premiumFee || 0).add(estimatedGasFee || 0)
+  // const yearlyRequiredBalance = totalYearlyFee?.mul(110).div(100)
+  const totalRequiredBalance = discountPrice?.add(premiumFee || 0).add(estimatedGasFee || 0)
 
   // const showPaymentChoice = !isPrimaryLoading && address
   const nameLength = beautifiedName.split('.')[0].length
@@ -766,16 +805,18 @@ const Pricing = ({
     signature: registrationData.signature,
     booker: registrationData.booker,
     premium: registrationData.premium,
+    discountBinding: registrationData.discountBinding,
   }
   const { disLabel, disInfo } = DiscountCodeLabelProvider(
     { ...initDis },
     nameDetails.normalisedName,
+    UseScenes.register,
+    years,
   )
 
   const isPremium = disInfo.premium
-  const initName = registrationData.referral ? `${registrationData.referral}.aw` : ''
+  const initName = registrationData.referral
   const [invitationName, setInvitationName] = useState(initName)
-  const referral = invitationName.split('.')[0]
   const handleInviName = (n: string) => {
     setInvitationName(n)
   }
@@ -786,13 +827,12 @@ const Pricing = ({
     setPricingData({
       ...registrationData,
       ...disInfo,
-      discountCode: !Number(disInfo.discountCode) ? '' : disInfo.discountCode,
-      referral,
+      discountCode: disInfo.discountCode !== '0' ? disInfo.discountCode : '',
+      referral: invitationName,
       paymentMethodChoice,
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [disInfo, paymentMethodChoice, referral, registrationData])
-
+  }, [disInfo, paymentMethodChoice, invitationName, registrationData])
   return (
     <StyledCard>
       <PremiumTitle nameDetails={nameDetails} />
@@ -816,16 +856,27 @@ const Pricing = ({
               Normal
             </InterText>
           )}
-          {/* <InterText $color="#3F5170" $size="16px" $weight={500}>
-            {MAX_YEAR} years
-          </InterText> */}
         </GrayRoundRow>
       </ContentStyle>
       <ContentStyle>
-        <UpImage name={normalisedName} isPremium={isPremium} />
+        <div>
+          <UpImage name={normalisedName} isPremium={isPremium} />
+          {invitationNameLabel}
+          <SvgContainer
+            onClick={() => {
+              setReverseRecord(!reverseRecord)
+            }}
+          >
+            <SvgBtn>
+              {!reverseRecord && <NoSelectSvg />}
+              {reverseRecord && <SelectSvg />}
+            </SvgBtn>
+            <SetMainTitle>Use as primary name</SetMainTitle>
+          </SvgContainer>
+        </div>
         <Column>
           <GrayRoundColumn>
-            <CenterRow style={{ padding: '0 38px' }}>
+            <CenterRow>
               <InterText $color="#8D8EA5" $size="16px" $weight={500}>
                 Chain
               </InterText>
@@ -833,7 +884,7 @@ const Pricing = ({
                 {chain ? chain.name : 'Sepolia'}
               </InterText>
             </CenterRow>
-            <CenterRow style={{ padding: '0 38px' }}>
+            <CenterRow>
               <InterText $color="#8D8EA5" $size="16px" $weight={500}>
                 Registration Year
               </InterText>
@@ -848,13 +899,13 @@ const Pricing = ({
                 highlighted
               />
             </CenterRow>
-            <div style={{ padding: '0 38px' }}>
-              <FullInvoice
-                {...fullEstimate}
-                discountCodeLabel={disLabel}
-                invitationNameLabel={invitationNameLabel}
-              />
-            </div>
+            {/* <div style={{ padding: '0 38px' }}> */}
+            <FullInvoice
+              {...fullEstimate}
+              discountCodeLabel={disLabel}
+              invitationNameLabel={invitationNameLabel}
+            />
+            {/* </div> */}
           </GrayRoundColumn>
           {/* <MobileFullWidth> */}
 
@@ -870,7 +921,7 @@ const Pricing = ({
               years,
               balance,
               totalRequiredBalance,
-              discountInfo: { ...disInfo, referral },
+              discountInfo: { ...disInfo, referral: invitationName },
             }}
           />
 

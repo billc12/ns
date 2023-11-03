@@ -4,20 +4,19 @@ import styled from 'styled-components'
 
 import { Typography } from '@ensdomains/thorin'
 
-import AddRoundSVG from '@app/assets/add-round.svg'
-import DelRoundSVG from '@app/assets/del-round.svg'
-import DisCodeDialog from '@app/components/Awns/Dialog/DisCodeDialog'
-import useSignName, { fetchedGetSignName } from '@app/hooks/names/useSignName'
+import DisCodeDialog from '@app/components/Awns/DisCodeLabel'
+import useSignName from '@app/hooks/names/useSignName'
+import { UseScenes } from '@app/hooks/requst/type'
 import { TDiscountCode } from '@app/transaction-flow/input/DiscountCode-flow'
+import { emptyAddress } from '@app/utils/constants'
 
-const Row = styled.div`
-  display: flex;
-  width: 100%;
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: 131px auto;
   justify-content: space-between;
-  align-items: center;
-  &.content {
-    width: max-content;
-    gap: 5px;
+  & .tip {
+    grid-column: 1 / 3;
+    text-align: right;
   }
 `
 const LeftTitle = styled(Typography)`
@@ -26,22 +25,8 @@ const LeftTitle = styled(Typography)`
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-`
-const RightTitle = styled(Typography)<{ $weight?: number }>`
-  color: #3f5170;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: ${(props) => props.$weight || 500};
-  line-height: normal;
-  max-width: 150px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-`
-const SvgBtn = styled.button`
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
+  align-self: self-start;
+  margin-top: 6px;
 `
 export type DisInfo = {
   discountCode: string
@@ -51,6 +36,7 @@ export type DisInfo = {
   timestamp: number
   premium: boolean
   booker: string
+  discountBinding: string
 }
 export const DefaultDis: DisInfo = {
   discountCode: '',
@@ -59,77 +45,50 @@ export const DefaultDis: DisInfo = {
   discountCount: 0,
   timestamp: 0,
   premium: false,
-  booker: '0x0000000000000000000000000000000000000000',
+  booker: emptyAddress,
+  discountBinding: emptyAddress,
 }
-const DiscountCodeLabel = ({ info, setCodeCallback, name }: TDiscountCode) => {
-  const [showDia, setShowDia] = useState(false)
-  const hideDia = () => {
-    setShowDia(false)
-  }
-  const openDia = () => {
-    setShowDia(true)
-  }
-
+const DiscountCodeLabel = ({
+  info,
+  setCodeCallback,
+  name,
+  useScenes,
+  years,
+}: TDiscountCode & { useScenes: UseScenes; years: number }) => {
   const code = info.discountCode
   const hasDiscount = !!code && Number(formatFixed(info?.discount, 18)) < 1
-  const discount = !!info?.discount && Number(formatFixed(info?.discount, 18)) * 100
+
   const _info = hasDiscount ? info : { ...info, discountCode: '' }
-  const cleanCode = async () => {
-    fetchedGetSignName(name, '').then(
-      ({
-        discountCode,
-        discountCount,
-        discount: _discount,
-        signature,
-        timestamp,
-        booker,
-        premium,
-      }) => {
-        setCodeCallback({
-          discount: _discount,
-          discountCode,
-          discountCount,
-          signature,
-          timestamp,
-          booker,
-          premium,
-        })
-      },
-    )
-  }
-  const auctionBtn = hasDiscount ? <DelRoundSVG /> : <AddRoundSVG />
+
   return (
-    <Row>
+    <Container>
       <LeftTitle>Discount Code</LeftTitle>
-      <Row className="content">
-        {!!hasDiscount && (
-          <RightTitle>
-            {code} <span style={{ fontWeight: 700 }}> ({discount}% OFF) </span>
-          </RightTitle>
-        )}
-        <SvgBtn onClick={() => (!hasDiscount ? openDia() : cleanCode())} type="button">
-          {auctionBtn}
-        </SvgBtn>
-      </Row>
+
       <DisCodeDialog
         info={_info}
-        show={showDia}
-        onCancel={hideDia}
         setCodeCallback={setCodeCallback}
         name={name}
+        useScenes={useScenes}
+        years={years}
       />
-    </Row>
+    </Container>
   )
 }
 
-const DiscountCodeLabelProvider = (initData: DisInfo, name: string) => {
+const DiscountCodeLabelProvider = (
+  initData: DisInfo,
+  name: string,
+  useScenes: UseScenes,
+  years: number,
+) => {
   const [disInfo, setDisInfo] = useState<DisInfo>({
     ...initData,
   })
+
   const handleDisInfo = (d: DisInfo) => {
     setDisInfo(d)
   }
-  const { data: signInfo } = useSignName(name, initData.discountCode)
+  const { data: signInfo } = useSignName({ name, discountCode: initData.discountCode })
 
   useEffect(() => {
     if ((!initData.discountCode || !Number(initData.discountCode)) && !!signInfo) {
@@ -159,6 +118,8 @@ const DiscountCodeLabelProvider = (initData: DisInfo, name: string) => {
       setCodeCallback={handleDisInfo}
       info={disInfo}
       name={name}
+      useScenes={useScenes}
+      years={years}
     />
   )
   return { disInfo, disLabel }

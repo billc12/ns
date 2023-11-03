@@ -15,13 +15,15 @@ import { useEns } from '@app/utils/EnsProvider'
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 import { fetchTenderlyEstimate } from '@app/utils/tenderly'
 
-import useSignName, { fetchedGetSignName } from './names/useSignName'
+import { fetchedGetSignName } from './names/useSignName'
+import { UseScenes } from './requst/type'
 import { useAccountSafely } from './useAccountSafely'
 import { useChainId } from './useChainId'
 import useGasPrice from './useGasPrice'
 import useGetSignReferral from './useGetSignReferral'
 import { useNameDetails } from './useNameDetails'
 import useRegistrationParams from './useRegistrationParams'
+import useVerifyDiscode from './useVerifyDiscode'
 
 const gasLimitDictionary = {
   COMMIT: 42000,
@@ -57,7 +59,7 @@ const useEstimateRegistration = (
       const resolver = await contracts?.getPublicResolver()
       if (!data?.name) return null
 
-      const signName = await fetchedGetSignName(data.name.toString(), '')
+      const signName = await fetchedGetSignName({ name: data.name.toString() })
 
       if (!resolver || !signName) return null
       const registrationTuple = makeRegistrationData({
@@ -166,7 +168,13 @@ export const useEstimateFullRegistration = ({ registrationData, price, name }: F
     owner: address || '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
     registrationData,
   })
-  const { data: signData } = useSignName(name)
+  // const { data: signData } = useSignName({ name })
+  const { priceData, signData } = useVerifyDiscode({
+    code: registrationData.discountCode,
+    name,
+    useScenes: UseScenes.register,
+    years: registrationData.years,
+  })
   const { data: referralData } = useGetSignReferral(name)
   const { estimate: registrationGasFee, isLoading: registrationGasLoading } =
     useEstimateRegistration(gasPrice, {
@@ -182,11 +190,15 @@ export const useEstimateFullRegistration = ({ registrationData, price, name }: F
       timestamp: signData?.timestamp!,
       booker: signData?.booker!,
       premium: signData?.premium!,
+      discountBinding: signData?.discountBinding!,
     })
   const estimatedGasLoading = gasPriceLoading || registrationGasLoading
   const estimatedGasFee = useMemo(() => {
     return registrationGasFee ? registrationGasFee.add(gasLimitDictionary.COMMIT) : undefined
   }, [registrationGasFee])
+  const originalPrice = priceData?.oBase ? priceData.oBase.mul(registrationData.years) : undefined
+  const discountPrice = priceData?.base ? priceData.base.mul(registrationData.years) : undefined
+
   const yearlyFee = price?.base
   const premiumFee = price?.premium
   const hasPremium = premiumFee?.gt(0)
@@ -206,6 +218,8 @@ export const useEstimateFullRegistration = ({ registrationData, price, name }: F
     years: registrationData.years,
     isHasDiscount,
     discountedPrice,
+    originalPrice,
+    discountPrice,
   }
 }
 

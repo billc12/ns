@@ -1,14 +1,19 @@
 import { useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
+import { useAccount, useChainId } from 'wagmi'
 
 import { Button, Skeleton, mq } from '@ensdomains/thorin'
 
 import DownShowicon from '@app/assets/DownShowicon.svg'
 import UpDisplayicon from '@app/assets/UpDisplayicon.svg'
-import { useNameErc721Assets } from '@app/hooks/useNameDetails'
+import Img6 from '@app/assets/nameDetail/img6.png'
+import { TChainId, getNftSupportChainId, useGetUserAllNFT } from '@app/hooks/requst/useGetUserNFT'
+import { useSBTIsDeployList } from '@app/hooks/useCheckAccountDeployment'
 
+// import { useNameErc721Assets } from '@app/hooks/useNameDetails'
 import { Assets } from '../children/Assets'
-import { Traits } from '../children/Traits'
+
+// import { Traits } from '../children/Traits'
 
 const CenterRightStyle = styled.div`
   border-radius: 10px;
@@ -106,66 +111,140 @@ const ButtonGroup = styled.div`
   border: 1px solid var(--line, #d4d7e2);
   background: #fff;
 `
+const AuctionItem = styled.div`
+  display: grid;
+  grid-template-columns: 60px auto 150px;
+  gap: 20px;
+  border-radius: 10px;
+  background: #f8fbff;
+  padding: 10px;
+  align-items: center;
+  & .top {
+    align-self: flex-start;
+  }
+`
+const AuctionTitle1 = styled.p`
+  color: #80829f;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+`
+const AuctionTitle2 = styled.p`
+  color: #3f5170;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+`
 const GameList = ({ accountAddress }: { accountAddress: string }) => {
+  const chainId = useChainId()
+  const { address } = useAccount()
+  // const { data: nftData, loading: NftLoading } = useGetUserNFT({ name: 'apr.aw' })
+
+  const { data: _allNftList, isLoading: NftLoading } = useGetUserAllNFT({
+    account: address || '',
+    chainId: getNftSupportChainId.includes(chainId as TChainId)
+      ? (chainId as TChainId)
+      : getNftSupportChainId[0],
+  })
+
+  const nftData = useMemo(() => {
+    if (!_allNftList || !_allNftList.length) return []
+    return _allNftList.map((t) => t.assets).flat(1)
+  }, [_allNftList])
+
   const [isPackUp, setIsPackUp] = useState<boolean>(false)
   const [isShowAll, setIsShowAll] = useState<boolean>(false)
-  const { nftId, loading: NftLoading } = useNameErc721Assets(accountAddress)
+  console.log('accountAddress', accountAddress)
+
   const nftList = useMemo(() => {
     if (!isPackUp) {
-      if (nftId.length > 4) {
-        return nftId.slice(0, 4)
+      if (nftData?.length && nftData?.length > 4) {
+        return nftData?.slice(0, 4)
       }
     }
-    return nftId
-  }, [isPackUp, nftId])
+    return nftData
+  }, [isPackUp, nftData])
+  const contractAddressList = nftData?.map((i) => i.contract_address as string)
+  const tokenIdList = nftData?.map((i) => i.token_id as string)
+  const deploymentMap = useSBTIsDeployList(contractAddressList, tokenIdList)
+
+  console.log('nftData123465', deploymentMap)
   return (
     <>
-      <TabTitleStyle>
-        {/* <SubTitleStyle>Account ({nftId.length})</SubTitleStyle> */}
-        <SubTitleStyle>Account ({2})</SubTitleStyle>
-        <SubButtonStyle
-          onClick={() => {
-            setIsShowAll(!isShowAll)
-          }}
-        >
-          {isShowAll ? 'Collapse' : 'Show All'}
-          {isShowAll ? <DownShowicon /> : <UpDisplayicon />}
-        </SubButtonStyle>
-      </TabTitleStyle>
-      <AssetsStyle>
+      {nftData && nftData.length && (
         <>
-          <Assets NftId="test1" />
-          <Assets NftId="test1" />
-        </>
-      </AssetsStyle>
-      <TabTitleStyle style={{ marginTop: 24 }}>
-        <SubTitleStyle>Gaming ({nftId.length + 4})</SubTitleStyle>
-        <SubButtonStyle
-          onClick={() => {
-            setIsPackUp(!isPackUp)
-          }}
-        >
-          {isPackUp ? 'Collapse' : 'Show All'}
+          <TabTitleStyle>
+            {/* <SubTitleStyle>Account ({nftId.length})</SubTitleStyle> */}
+            <SubTitleStyle>Account ({2})</SubTitleStyle>
+            <SubButtonStyle
+              onClick={() => {
+                setIsShowAll(!isShowAll)
+              }}
+            >
+              {isShowAll ? 'Collapse' : 'Show All'}
+              {isShowAll ? <DownShowicon /> : <UpDisplayicon />}
+            </SubButtonStyle>
+          </TabTitleStyle>
+          <AssetsStyle>
+            {/* {deploymentNFTList?.map((t) => (
+              <Assets item={t} key={t.token_id} />
+            ))} */}
+          </AssetsStyle>
+          <TabTitleStyle style={{ marginTop: 24 }}>
+            <SubTitleStyle>Gaming ({nftData?.length || 0})</SubTitleStyle>
+            <SubButtonStyle
+              onClick={() => {
+                setIsPackUp(!isPackUp)
+              }}
+            >
+              {isPackUp ? 'Collapse' : 'Show All'}
 
-          {isPackUp ? <DownShowicon /> : <UpDisplayicon />}
-        </SubButtonStyle>
-      </TabTitleStyle>
-      <TraitsStyle>
-        {nftList?.map((item) => (
-          <Skeleton loading={NftLoading} key={item}>
-            <Assets NftId={item} />
-          </Skeleton>
-        ))}
-        <Traits />
-      </TraitsStyle>
+              {isPackUp ? <DownShowicon /> : <UpDisplayicon />}
+            </SubButtonStyle>
+          </TabTitleStyle>
+          <TraitsStyle>
+            {nftList?.map((item) => (
+              <Skeleton loading={NftLoading} key={item}>
+                <Assets item={item} />
+              </Skeleton>
+            ))}
+            {/* <Traits /> */}
+          </TraitsStyle>
+        </>
+      )}
     </>
   )
 }
-// enum Tab {
-//   Gaming:''
-// }
+const AuctionsList = () => {
+  const list = [1, 2, 3]
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      {list.map((i) => (
+        <AuctionItem key={i}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={Img6.src} alt="auction img" />
+          <div>
+            <AuctionTitle1>Ancient forest</AuctionTitle1>
+            <AuctionTitle2>
+              You converted the resources to 10 <span style={{ color: '#21C331' }}>XCOIN</span>
+            </AuctionTitle2>
+          </div>
+          <AuctionTitle1 className="top">10/30 7:38:59 PM</AuctionTitle1>
+        </AuctionItem>
+      ))}
+    </div>
+  )
+}
+enum Tab {
+  Gaming = 'Gaming Center',
+  Actions = 'Actions',
+}
 const Page = ({ accountAddress }: { accountAddress: string }) => {
-  // const
+  const [curTab, setCurTab] = useState(Tab.Gaming)
   return (
     <CenterRightStyle>
       <div
@@ -178,12 +257,23 @@ const Page = ({ accountAddress }: { accountAddress: string }) => {
         }}
       >
         <ButtonGroup>
-          <PaginationBtn className="select">Gaming Center</PaginationBtn>
-          <PaginationBtn>Actions</PaginationBtn>
+          <PaginationBtn
+            className={curTab === Tab.Gaming ? 'select' : ''}
+            onClick={() => setCurTab(Tab.Gaming)}
+          >
+            Gaming Center
+          </PaginationBtn>
+          <PaginationBtn
+            className={curTab === Tab.Actions ? 'select' : ''}
+            onClick={() => setCurTab(Tab.Actions)}
+          >
+            Actions
+          </PaginationBtn>
         </ButtonGroup>
       </div>
       <ListCenter>
-        <GameList accountAddress={accountAddress} />
+        {curTab === Tab.Gaming && <GameList accountAddress={accountAddress} />}
+        {curTab === Tab.Actions && <AuctionsList />}
       </ListCenter>
     </CenterRightStyle>
   )

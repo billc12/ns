@@ -10,14 +10,16 @@ import { CurrencyText } from '../CurrencyText/CurrencyText'
 
 const Container = styled.div(
   ({ theme }) => css`
-    /* padding: ${theme.space['4']}; */
-    /* background: ${theme.colors.backgroundSecondary}; */
     display: flex;
     flex-direction: column;
-    /* gap: ${theme.space['2']}; */
-    gap: 25px;
+
     width: 100%;
     border-radius: ${theme.space['2']};
+
+    & > div {
+      padding: 25px 38px;
+      background: #f7fafc;
+    }
   `,
 )
 
@@ -33,6 +35,9 @@ const LineItem = styled.div<{ $color?: Colors }>(
 const Total = styled(LineItem)(
   ({ theme }) => css`
     color: ${theme.colors.text};
+    margin-top: 12px;
+    padding: 22px 38px;
+    background: #f7fafc;
   `,
 )
 const LeftTitle = styled(Typography)`
@@ -76,27 +81,28 @@ type Props = {
   items: InvoiceItem[]
   totalLabel: string
   unit?: CurrencyDisplay
+
+  // eslint-disable-next-line react/no-unused-prop-types
   discount?: { label: string; discount: number }
   discountCodeLabel?: JSX.Element
+
+  // eslint-disable-next-line react/no-unused-prop-types
   invitationNameLabel?: JSX.Element
   totalTitle?: string
   isHasDiscount?: boolean
   discountedPrice?: BigNumber
-  totalYearlyFee?: BigNumber
+  originalPrice?: BigNumber
 }
 
 export const Invoice = ({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   totalLabel = 'Estimated total',
   unit = 'eth',
   items,
-  discount,
   discountCodeLabel,
-  invitationNameLabel,
   totalTitle,
   isHasDiscount,
   discountedPrice,
-  totalYearlyFee,
+  originalPrice,
 }: Props) => {
   const filteredItems = items
     .map(({ value, bufferPercentage }) =>
@@ -106,62 +112,46 @@ export const Invoice = ({
   const total = filteredItems.reduce((a, b) => a!.add(b!), BigNumber.from(0))
   const hasEmptyItems = filteredItems.length !== items.length
   const disTotal = useMemo(() => {
-    if (total && totalYearlyFee && isHasDiscount && discountedPrice) {
-      return total.sub(totalYearlyFee).add(discountedPrice)
+    if (total && originalPrice && originalPrice && discountedPrice && isHasDiscount) {
+      return total.sub(originalPrice).add(discountedPrice)
     }
     return BigNumber.from('0')
-  }, [discountedPrice, isHasDiscount, total, totalYearlyFee])
-
+  }, [discountedPrice, isHasDiscount, originalPrice, total])
   return (
-    <Container>
-      {items.slice(0, 1).map(({ label, value, bufferPercentage, color }, inx) => (
-        <LineItem data-testid={`invoice-item-${inx}`} $color={color} key={label}>
-          <LeftTitle>{label}</LeftTitle>
-          <Skeleton loading={!value}>
-            {/* <div data-testid={`invoice-item-${inx}-amount`}> */}
-            <RightTitle>
-              <CurrencyText
-                bufferPercentage={bufferPercentage}
-                eth={value || BigNumber.from(0)}
-                currency={unit}
-              />
-            </RightTitle>
-            {/* </div> */}
-          </Skeleton>
-        </LineItem>
-      ))}
-      {discount && (
-        <LineItem data-testid={`invoice-item-${items.length}`} key={discount?.label}>
-          <LeftTitle>{discount?.label}</LeftTitle>
-          <Skeleton loading={false}>
-            {/* <div data-testid={`invoice-item-${inx}-amount`}> */}
-            <RightTitle style={{ color: '#00B833' }}>{`${
-              discount && discount.discount * 100
-            }%`}</RightTitle>
-            {/* </div> */}
-          </Skeleton>
-        </LineItem>
-      )}
-      {items.slice(1).map(({ label, value, bufferPercentage, color }, inx) => (
-        <LineItem data-testid={`invoice-item-${inx}`} $color={color} key={label}>
-          <LeftTitle>{label}</LeftTitle>
-          <Skeleton loading={!value}>
-            {/* <div data-testid={`invoice-item-${inx}-amount`}> */}
-            <RightTitle>
-              <CurrencyText
-                bufferPercentage={bufferPercentage}
-                eth={value || BigNumber.from(0)}
-                currency={unit}
-              />
-            </RightTitle>
-            {/* </div> */}
-          </Skeleton>
-        </LineItem>
-      ))}
-      {discountCodeLabel}
-      {invitationNameLabel}
+    <>
+      <Container>
+        {items.slice(0, 1).map(({ label, value, bufferPercentage, color }, inx) => (
+          <LineItem data-testid={`invoice-item-${inx}`} $color={color} key={label}>
+            <LeftTitle>{label}</LeftTitle>
+            <Skeleton loading={!value}>
+              <RightTitle>
+                <CurrencyText
+                  bufferPercentage={bufferPercentage}
+                  eth={value || BigNumber.from(0)}
+                  currency={unit}
+                />
+              </RightTitle>
+            </Skeleton>
+          </LineItem>
+        ))}
+        {items.slice(1).map(({ label, value, bufferPercentage, color }, inx) => (
+          <LineItem data-testid={`invoice-item-${inx}`} $color={color} key={label}>
+            <LeftTitle>{label}</LeftTitle>
+            <Skeleton loading={!value}>
+              <RightTitle>
+                <CurrencyText
+                  bufferPercentage={bufferPercentage}
+                  eth={value || BigNumber.from(0)}
+                  currency={unit}
+                />
+              </RightTitle>
+            </Skeleton>
+          </LineItem>
+        ))}
+        {discountCodeLabel}
+      </Container>
       <Total>
-        <LeftTitle>{totalTitle || 'Estimated Total'}</LeftTitle>
+        <LeftTitle>{totalTitle || totalLabel}</LeftTitle>
         <Skeleton loading={hasEmptyItems}>
           {!!isHasDiscount && !!disTotal ? (
             <OldPriceBox>
@@ -179,6 +169,6 @@ export const Invoice = ({
           )}
         </Skeleton>
       </Total>
-    </Container>
+    </>
   )
 }

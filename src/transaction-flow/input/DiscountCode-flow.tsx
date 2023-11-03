@@ -11,7 +11,7 @@ import useSignName from '@app/hooks/names/useSignName'
 import { TransactionDialogPassthrough } from '../types'
 
 export type TDiscountCode = {
-  setCodeCallback: (v: DisInfo) => void
+  setCodeCallback: (v: DisInfo, p?: any) => void
   info: DisInfo
   name: string
 }
@@ -96,7 +96,7 @@ const setInitCode = (i: string) => {
 const DiscountCode = ({ data: { info, setCodeCallback, name }, onDismiss }: Props) => {
   const [disCode, setDisCode] = useState(setInitCode(info.discountCode))
 
-  const { data: signData, isLoading } = useSignName(name, disCode)
+  const { data: signData, isLoading } = useSignName({ name, discountCode: disCode })
   const saveCode = () => {
     setCodeCallback({
       ...info,

@@ -86,24 +86,24 @@ function ErcTag(tag: string) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function Assets({ NftId }: { NftId: string }) {
+export function Assets({ item }: { item: any }) {
   return (
     <AssetsItemStyle>
       <LeftStyle>
-        <StyledImg src={Img1.src} />
+        <StyledImg src={item.image_uri || Img1.src} />
       </LeftStyle>
       <RightStyle>
-        {NftId !== 'test1' && <NameStyle ellipsis>Kubz # {NftId || '0'}</NameStyle>}
-        {NftId === 'test1' && <NameStyle ellipsis>Kubz #3789</NameStyle>}
+        <NameStyle ellipsis>
+          {item.name || item.contract_name} - #{item.token_id}
+        </NameStyle>
 
         <TagsStyle
           style={{
-            background: ErcTag(`${NftId !== 'test1' ? 'ERC 721' : 'ERC 6551'}`) || '#51C7A3',
+            background: ErcTag(item.erc_type) || '#51C7A3',
           }}
         >
-          {NftId !== 'test1' ? ERCTYPE.ERC721 : ERCTYPE.ERC6551}
+          {item.erc_type === 'erc721' ? ERCTYPE.ERC721 : ERCTYPE.ERC6551}
         </TagsStyle>
-
         {false && (
           <div style={{ display: 'flex', gap: '8px' }}>
             <AssetsCountStyle>Assets</AssetsCountStyle>

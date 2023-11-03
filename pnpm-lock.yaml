@@ -116,8 +116,8 @@ importers:
         specifier: 0.0.4
         version: 0.0.4
       '@myclique/awnsjs':
-        specifier: 1.1.2-alpha
-        version: 1.1.2-alpha(@ethersproject/abi@5.7.0)(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/address@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/bytes@5.7.0)(@ethersproject/contracts@5.7.0)(@ethersproject/keccak256@5.7.0)(@ethersproject/providers@5.7.2)(@ethersproject/solidity@5.7.0)(@ethersproject/strings@5.7.0)(@ethersproject/transactions@5.7.0)(@ethersproject/web@5.7.1)
+        specifier: 1.2.1-alpha
+        version: 1.2.1-alpha(@ethersproject/abi@5.7.0)(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/address@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/bytes@5.7.0)(@ethersproject/contracts@5.7.0)(@ethersproject/keccak256@5.7.0)(@ethersproject/providers@5.7.2)(@ethersproject/solidity@5.7.0)(@ethersproject/strings@5.7.0)(@ethersproject/transactions@5.7.0)(@ethersproject/web@5.7.1)
       '@rainbow-me/rainbowkit':
         specifier: 0.12.15
         version: 0.12.15(patch_hash=ids4vnpwyenrujupancx6kn4ci)(@types/react@17.0.30)(ethers@5.7.2)(react-dom@17.0.2)(react@17.0.2)(wagmi@0.12.13)
@@ -140,8 +140,8 @@ importers:
         specifier: 4.29.1
         version: 4.29.1(@tanstack/react-query@4.29.1)
       '@tokenbound/sdk':
-        specifier: ^0.3.9
-        version: registry.npmmirror.com/@tokenbound/sdk@0.3.12(typescript@5.2.2)
+        specifier: ^0.3.12
+        version: 0.3.12(typescript@5.2.2)
       '@wagmi/core':
         specifier: 0.10.11
         version: 0.10.11(ethers@5.7.2)(immer@9.0.15)(react@17.0.2)(typescript@5.2.2)
@@ -205,6 +205,9 @@ importers:
       react-is:
         specifier: ^17.0.2
         version: 17.0.2
+      react-modern-drawer:
+        specifier: ^1.2.2
+        version: 1.2.2(react@17.0.2)
       react-qr-code:
         specifier: ^2.0.12
         version: 2.0.12(react@17.0.2)
@@ -3579,7 +3582,7 @@ packages:
       kleur: 4.1.5
       selfsigned: 2.1.1
       undici: 5.20.0
-      ws: registry.npmmirror.com/ws@8.13.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+      ws: 8.13.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
       youch: 2.2.2
     transitivePeerDependencies:
       - bufferutil
@@ -3672,7 +3675,7 @@ packages:
       '@miniflare/core': 2.13.0
       '@miniflare/shared': 2.13.0
       undici: 5.20.0
-      ws: registry.npmmirror.com/ws@8.13.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+      ws: 8.13.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -3768,8 +3771,8 @@ packages:
       dns-packet: 5.4.0
     dev: false
 
-  /@myclique/awnsjs@1.1.2-alpha(@ethersproject/abi@5.7.0)(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/address@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/bytes@5.7.0)(@ethersproject/contracts@5.7.0)(@ethersproject/keccak256@5.7.0)(@ethersproject/providers@5.7.2)(@ethersproject/solidity@5.7.0)(@ethersproject/strings@5.7.0)(@ethersproject/transactions@5.7.0)(@ethersproject/web@5.7.1):
-    resolution: {integrity: sha512-Ri3qnJqJsxZh5up5ttQ2S3OEPm8a9K3xBfExAxCE22PeokLTkgCjOHJBfSZW6U8/f0sMH3yZgxlxwqMFey7JqQ==}
+  /@myclique/awnsjs@1.2.1-alpha(@ethersproject/abi@5.7.0)(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/address@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/bytes@5.7.0)(@ethersproject/contracts@5.7.0)(@ethersproject/keccak256@5.7.0)(@ethersproject/providers@5.7.2)(@ethersproject/solidity@5.7.0)(@ethersproject/strings@5.7.0)(@ethersproject/transactions@5.7.0)(@ethersproject/web@5.7.1):
+    resolution: {integrity: sha512-ar1/jbHuDJ3qT4X/jcoNX5oT2Tv6HY3dm8+itaTS8IQxHM/ZoQljGmytXV6216EI2utZBuhMZ964Oxu924O1gA==}
     peerDependencies:
       '@ethersproject/abi': ^5.6.4
       '@ethersproject/abstract-provider': ^5.7.0
@@ -3931,8 +3934,17 @@ packages:
     dependencies:
       '@noble/hashes': 1.3.0
 
+  /@noble/curves@1.2.0:
+    resolution: {integrity: sha512-oYclrNgRaM9SsBUBVbb8M6DTV7ZHRTKugureoYEncY5c65HOmRzvSiTE3y5CYaPYJA/GVkrhXEoF0M3Ya9PMnw==}
+    dependencies:
+      '@noble/hashes': 1.3.2
+    dev: false
+
   /@noble/ed25519@1.7.3:
     resolution: {integrity: sha512-iR8GBkDt0Q3GyaVcIu7mSsVIqnFbkbRzGLWlvhwunacoLwt4J3swfKhfaM6rN6WY+TBGoYT1GtT1mIh2/jGbRQ==}
+
+  /@noble/hashes@1.1.2:
+    resolution: {integrity: sha512-KYRCASVTv6aeUi1tsF8/vpyR7zpfs3FUzy2Jqm+MU+LmUKhQ0y2FpfwqkCcxSg2ua4GALJd8k2R76WxwZGbQpA==}
 
   /@noble/hashes@1.3.0:
     resolution: {integrity: sha512-ilHEACi9DwqJB0pw7kv+Apvh50jiiSyR/cQ3y4W7lOR5mhvn/50FLUfsnfJz0BDZtl/RR16kXvptiv6q1msYZg==}
@@ -4461,6 +4473,13 @@ packages:
   /@scure/base@1.1.3:
     resolution: {integrity: sha512-/+SgoRjLq7Xlf0CWuLHq2LUZeL/w65kfzAPG5NH9pcmBhs+nunQTn4gvdwgMTIXnt9b2C/1SeL2XiysZEyIC9Q==}
 
+  /@scure/bip32@1.1.0:
+    resolution: {integrity: sha512-ftTW3kKX54YXLCxH6BB7oEEoJfoE2pIgw7MINKAs5PsS6nqKPuKk1haTF/EuHmYqG330t5GSrdmtRuHaY1a62Q==}
+    dependencies:
+      '@noble/hashes': 1.1.2
+      '@noble/secp256k1': registry.npmmirror.com/@noble/secp256k1@1.6.3
+      '@scure/base': registry.npmmirror.com/@scure/base@1.1.3
+
   /@scure/bip32@1.3.0:
     resolution: {integrity: sha512-bcKpo1oj54hGholplGLpqPHRbIsnbixFtc06nwuNM5/dwSXOq/AAYoIBRsBmnZJSdfeNW5rnff7NTAz3ZCqR9Q==}
     dependencies:
@@ -4468,11 +4487,32 @@ packages:
       '@noble/hashes': 1.3.2
       '@scure/base': 1.1.3
 
+  /@scure/bip32@1.3.2:
+    resolution: {integrity: sha512-N1ZhksgwD3OBlwTv3R6KFEcPojl/W4ElJOeCZdi+vuI5QmTFwLq3OFf2zd2ROpKvxFdgZ6hUpb0dx9bVNEwYCA==}
+    dependencies:
+      '@noble/curves': 1.2.0
+      '@noble/hashes': 1.3.2
+      '@scure/base': 1.1.3
+    dev: false
+
+  /@scure/bip39@1.1.0:
+    resolution: {integrity: sha512-pwrPOS16VeTKg98dYXQyIjJEcWfz7/1YJIwxUEPFfQPtc86Ym/1sVgQ2RLoD43AazMk2l/unK4ITySSpW2+82w==}
+    dependencies:
+      '@noble/hashes': 1.1.2
+      '@scure/base': registry.npmmirror.com/@scure/base@1.1.3
+
   /@scure/bip39@1.2.0:
     resolution: {integrity: sha512-SX/uKq52cuxm4YFXWFaVByaSHJh2w3BnokVSeUJVCv6K7WulT9u2BuNRBhuFl8vAuYnzx9bEu9WgpcNYTrYieg==}
     dependencies:
       '@noble/hashes': 1.3.2
       '@scure/base': 1.1.3
+
+  /@scure/bip39@1.2.1:
+    resolution: {integrity: sha512-Z3/Fsz1yr904dduJD0NpiyRHhRYHdcnyh73FZWiV+/qhWi83wNJ3NWolYqCEN+ZWsUz2TWwajJggcRE9r1zUYg==}
+    dependencies:
+      '@noble/hashes': 1.3.2
+      '@scure/base': 1.1.3
+    dev: false
 
   /@sentry/browser@7.43.0:
     resolution: {integrity: sha512-NlRkBYKb9o5IQdGY8Ktps19Hz9RdSuqS1tlLC7Sjr+MqZqSHmhKq8MWJKciRynxBeMbeGt0smExi9BqpVQdCEg==}
@@ -4742,7 +4782,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.19.0
       '@noble/ed25519': 1.7.3
-      '@noble/hashes': registry.npmmirror.com/@noble/hashes@1.3.2
+      '@noble/hashes': 1.3.2
       '@noble/secp256k1': 1.7.1
       '@solana/buffer-layout': 4.0.0
       agentkeepalive: 4.3.0
@@ -5067,6 +5107,17 @@ packages:
     dependencies:
       '@testing-library/dom': 8.18.1
     dev: true
+
+  /@tokenbound/sdk@0.3.12(typescript@5.2.2):
+    resolution: {integrity: sha512-q0t12HlMu0d+RuoIFAMN9G6CQCrlcPmuQwW4f6e8TmMADIyKfZoUaA7phE1muY4bRTSFeVmx2AmsZom+kb4MVA==}
+    dependencies:
+      viem: 1.16.6(typescript@5.2.2)
+    transitivePeerDependencies:
+      - bufferutil
+      - typescript
+      - utf-8-validate
+      - zod
+    dev: false
 
   /@tootallnate/once@1.1.2:
     resolution: {integrity: sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==}
@@ -6064,7 +6115,7 @@ packages:
       '@walletconnect/ethereum-provider': 2.7.8(@web3modal/standalone@2.4.3)
       '@walletconnect/legacy-provider': 2.0.0
       '@web3modal/standalone': 2.4.3(react@17.0.2)
-      abitype: registry.npmmirror.com/abitype@0.3.0(typescript@5.2.2)
+      abitype: 0.3.0(typescript@5.2.2)
       ethers: 5.7.2
       eventemitter3: registry.npmmirror.com/eventemitter3@4.0.7
       typescript: 5.2.2
@@ -6456,6 +6507,20 @@ packages:
         optional: true
     dependencies:
       typescript: 5.2.2
+
+  /abitype@0.9.8(typescript@5.2.2):
+    resolution: {integrity: sha512-puLifILdm+8sjyss4S+fsUN09obiT1g2YW6CtcQF+QDzxR0euzgEB29MZujC6zMk2a6SVmtttq1fc6+YFA7WYQ==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+      zod: ^3 >=3.19.1
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+      zod:
+        optional: true
+    dependencies:
+      typescript: 5.2.2
+    dev: false
 
   /abort-controller@3.0.0:
     resolution: {integrity: sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==}
@@ -10020,7 +10085,7 @@ packages:
       elliptic: registry.npmmirror.com/elliptic@6.5.4
       nano-json-stream-parser: 0.1.2
       servify: 0.1.12
-      ws: registry.npmmirror.com/ws@3.3.3
+      ws: 3.3.3
       xhr-request-promise: 0.1.3
     transitivePeerDependencies:
       - bufferutil
@@ -10126,10 +10191,10 @@ packages:
   /ethereum-cryptography@1.1.2:
     resolution: {integrity: sha512-XDSJlg4BD+hq9N2FjvotwUET9Tfxpxc3kWGE2AqUG5vcbeunnbImVk3cj6e/xT3phdW21mE8R5IugU4fspQDcQ==}
     dependencies:
-      '@noble/hashes': registry.npmmirror.com/@noble/hashes@1.1.2
+      '@noble/hashes': 1.1.2
       '@noble/secp256k1': registry.npmmirror.com/@noble/secp256k1@1.6.3
-      '@scure/bip32': registry.npmmirror.com/@scure/bip32@1.1.0
-      '@scure/bip39': registry.npmmirror.com/@scure/bip39@1.1.0
+      '@scure/bip32': 1.1.0
+      '@scure/bip39': 1.1.0
 
   /ethereum-cryptography@2.0.0:
     resolution: {integrity: sha512-g25m4EtfQGjstWgVE1aIz7XYYjf3kH5kG17ULWVB5dH6uLahsoltOhACzSxyDV+fhn4gbR4xRrOXGe6r2uh4Bg==}
@@ -12419,7 +12484,15 @@ packages:
     peerDependencies:
       ws: '*'
     dependencies:
-      ws: registry.npmmirror.com/ws@7.5.9
+      ws: 7.5.9
+
+  /isows@1.0.3(ws@8.13.0):
+    resolution: {integrity: sha512-2cKei4vlmg2cxEjm3wVSqn8pcoRF/LX/wpifuuNquFO4SQmPwarClT+SUCA2lt+l581tTeZIPIZuIDo2jWN1fg==}
+    peerDependencies:
+      ws: '*'
+    dependencies:
+      ws: 8.13.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+    dev: false
 
   /isstream@0.1.2:
     resolution: {integrity: sha512-Yljz7ffyPbrLpLngrMtZ7NduUgVvi6wG9RJ9IUcyCd59YQ911PBJphODUcbOVbqYfxe1wuYf/LJ8PauMRwsM/g==}
@@ -12491,7 +12564,7 @@ packages:
       json-stringify-safe: 5.0.1
       lodash: 4.17.21
       uuid: 8.3.2
-      ws: registry.npmmirror.com/ws@7.5.9
+      ws: 7.5.9
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -15725,6 +15798,15 @@ packages:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
     dev: true
 
+  /react-modern-drawer@1.2.2(react@17.0.2):
+    resolution: {integrity: sha512-SXUNjofHzeoEas0kdMWWafuF2+vwdtbQD1cpkHxo7oyFj3v+2l2CMeJjc/GodYsnxVhSiYj75xosMJXXed9ykQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>16.0.0'
+    dependencies:
+      react: 17.0.2
+    dev: false
+
   /react-qr-code@2.0.12(react@17.0.2):
     resolution: {integrity: sha512-k+pzP5CKLEGBRwZsDPp98/CAJeXlsYRHM2iZn1Sd5Th/HnKhIZCSg27PXO58zk8z02RaEryg+60xa4vyywMJwg==}
     peerDependencies:
@@ -16275,7 +16357,7 @@ packages:
       '@babel/runtime': 7.19.0
       eventemitter3: registry.npmmirror.com/eventemitter3@4.0.7
       uuid: 8.3.2
-      ws: registry.npmmirror.com/ws@8.13.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+      ws: 8.13.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
     optionalDependencies:
       bufferutil: 4.0.7
       utf-8-validate: 5.0.10
@@ -18256,6 +18338,29 @@ packages:
       core-util-is: 1.0.2
       extsprintf: 1.3.0
 
+  /viem@1.16.6(typescript@5.2.2):
+    resolution: {integrity: sha512-jcWcFQ+xzIfDwexwPJRvCuCRJKEkK9iHTStG7mpU5MmuSBpACs4nATBDyXNFtUiyYTFzLlVEwWkt68K0nCSImg==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@adraffy/ens-normalize': 1.9.4
+      '@noble/curves': 1.2.0
+      '@noble/hashes': 1.3.2
+      '@scure/bip32': 1.3.2
+      '@scure/bip39': 1.2.1
+      abitype: 0.9.8(typescript@5.2.2)
+      isows: 1.0.3(ws@8.13.0)
+      typescript: 5.2.2
+      ws: 8.13.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+      - zod
+    dev: false
+
   /void-elements@3.1.0:
     resolution: {integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==}
     engines: {node: '>=0.10.0'}
@@ -19173,7 +19278,7 @@ packages:
       readable-stream: registry.npmmirror.com/readable-stream@2.3.7
       request: 2.88.2
       semaphore: 1.1.0
-      ws: registry.npmmirror.com/ws@5.2.3
+      ws: 5.2.3
       xhr: 2.6.0
       xtend: registry.npmmirror.com/xtend@4.0.2
     transitivePeerDependencies:
@@ -19699,6 +19804,35 @@ packages:
       signal-exit: 3.0.7
     dev: true
 
+  /ws@3.3.3:
+    resolution: {integrity: sha512-nnWLa/NwZSt4KQJu51MYlCcSQ5g7INpOrOMt4XV8j4dqTXdmlUmSHQ8/oLC069ckre0fRsgfvsKwbTdtKLCDkA==}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: ^5.0.2
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    dependencies:
+      async-limiter: 1.0.1
+      safe-buffer: registry.npmmirror.com/safe-buffer@5.1.2
+      ultron: 1.1.1
+
+  /ws@5.2.3:
+    resolution: {integrity: sha512-jZArVERrMsKUatIdnLzqvcfydI85dvd/Fp1u/VOpfdDWQ4c9qWXe+VIeAbQ5FrDwciAkr+lzofXLz3Kuf26AOA==}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: ^5.0.2
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    dependencies:
+      async-limiter: 1.0.1
+    dev: false
+
   /ws@7.4.6:
     resolution: {integrity: sha512-YmhHDO4MzaDLB+M9ym/mDA5z0naX8j7SIlT8f8z+I0VtzsRbekxEutHSme7NPS2qE8StCYQNUnfWdXta/Yu85A==}
     engines: {node: '>=8.3.0'}
@@ -19722,6 +19856,21 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
+
+  /ws@8.13.0(bufferutil@4.0.7)(utf-8-validate@5.0.10):
+    resolution: {integrity: sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    dependencies:
+      bufferutil: 4.0.7
+      utf-8-validate: 5.0.10
 
   /xhr-request-promise@0.1.3:
     resolution: {integrity: sha512-YUBytBsuwgitWtdRzXDDkWAXzhdGB8bYm0sSzMPZT7Z2MBjMSTHFsyCT1yCRATY+XC69DUrQraRAEgcoCRaIPg==}
@@ -20185,7 +20334,7 @@ packages:
       '@ethersproject/transactions': registry.npmmirror.com/@ethersproject/transactions@5.7.0
       '@ethersproject/web': registry.npmmirror.com/@ethersproject/web@5.7.1
       bech32: registry.npmmirror.com/bech32@1.1.4
-      ws: registry.npmmirror.com/ws@7.4.6
+      ws: 7.4.6
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -20324,7 +20473,7 @@ packages:
       '@json-rpc-tools/utils': registry.npmmirror.com/@json-rpc-tools/utils@1.7.6
       axios: registry.npmmirror.com/axios@0.21.4
       safe-json-utils: registry.npmmirror.com/safe-json-utils@1.1.1
-      ws: registry.npmmirror.com/ws@7.5.9
+      ws: 7.5.9
     transitivePeerDependencies:
       - bufferutil
       - debug
@@ -20463,30 +20612,11 @@ packages:
       tslib: registry.npmmirror.com/tslib@2.4.1
     dev: true
 
-  registry.npmmirror.com/@noble/curves@1.2.0:
-    resolution: {integrity: sha512-oYclrNgRaM9SsBUBVbb8M6DTV7ZHRTKugureoYEncY5c65HOmRzvSiTE3y5CYaPYJA/GVkrhXEoF0M3Ya9PMnw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@noble/curves/-/curves-1.2.0.tgz}
-    name: '@noble/curves'
-    version: 1.2.0
-    dependencies:
-      '@noble/hashes': registry.npmmirror.com/@noble/hashes@1.3.2
-    dev: false
-
   registry.npmmirror.com/@noble/ed25519@1.7.3:
     resolution: {integrity: sha512-iR8GBkDt0Q3GyaVcIu7mSsVIqnFbkbRzGLWlvhwunacoLwt4J3swfKhfaM6rN6WY+TBGoYT1GtT1mIh2/jGbRQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@noble/ed25519/-/ed25519-1.7.3.tgz}
     name: '@noble/ed25519'
     version: 1.7.3
     dev: true
-
-  registry.npmmirror.com/@noble/hashes@1.1.2:
-    resolution: {integrity: sha512-KYRCASVTv6aeUi1tsF8/vpyR7zpfs3FUzy2Jqm+MU+LmUKhQ0y2FpfwqkCcxSg2ua4GALJd8k2R76WxwZGbQpA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@noble/hashes/-/hashes-1.1.2.tgz}
-    name: '@noble/hashes'
-    version: 1.1.2
-
-  registry.npmmirror.com/@noble/hashes@1.3.2:
-    resolution: {integrity: sha512-MVC8EAQp7MvEcm30KWENFjgR+Mkmf+D189XJTkFIlwohU5hcBbn1ZkKq7KVTi2Hme3PMGF390DaL52beVrIihQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@noble/hashes/-/hashes-1.3.2.tgz}
-    name: '@noble/hashes'
-    version: 1.3.2
-    engines: {node: '>= 16'}
 
   registry.npmmirror.com/@noble/secp256k1@1.6.3:
     resolution: {integrity: sha512-T04e4iTurVy7I8Sw4+c5OSN9/RkPlo1uKxAomtxQNLq8j1uPAqnsqG1bqvY3Jv7c13gyr6dui0zmh/I3+f/JaQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@noble/secp256k1/-/secp256k1-1.6.3.tgz}
@@ -20557,42 +20687,6 @@ packages:
     name: '@scure/base'
     version: 1.1.3
 
-  registry.npmmirror.com/@scure/bip32@1.1.0:
-    resolution: {integrity: sha512-ftTW3kKX54YXLCxH6BB7oEEoJfoE2pIgw7MINKAs5PsS6nqKPuKk1haTF/EuHmYqG330t5GSrdmtRuHaY1a62Q==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@scure/bip32/-/bip32-1.1.0.tgz}
-    name: '@scure/bip32'
-    version: 1.1.0
-    dependencies:
-      '@noble/hashes': registry.npmmirror.com/@noble/hashes@1.1.2
-      '@noble/secp256k1': registry.npmmirror.com/@noble/secp256k1@1.6.3
-      '@scure/base': registry.npmmirror.com/@scure/base@1.1.3
-
-  registry.npmmirror.com/@scure/bip32@1.3.2:
-    resolution: {integrity: sha512-N1ZhksgwD3OBlwTv3R6KFEcPojl/W4ElJOeCZdi+vuI5QmTFwLq3OFf2zd2ROpKvxFdgZ6hUpb0dx9bVNEwYCA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@scure/bip32/-/bip32-1.3.2.tgz}
-    name: '@scure/bip32'
-    version: 1.3.2
-    dependencies:
-      '@noble/curves': registry.npmmirror.com/@noble/curves@1.2.0
-      '@noble/hashes': registry.npmmirror.com/@noble/hashes@1.3.2
-      '@scure/base': registry.npmmirror.com/@scure/base@1.1.3
-    dev: false
-
-  registry.npmmirror.com/@scure/bip39@1.1.0:
-    resolution: {integrity: sha512-pwrPOS16VeTKg98dYXQyIjJEcWfz7/1YJIwxUEPFfQPtc86Ym/1sVgQ2RLoD43AazMk2l/unK4ITySSpW2+82w==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@scure/bip39/-/bip39-1.1.0.tgz}
-    name: '@scure/bip39'
-    version: 1.1.0
-    dependencies:
-      '@noble/hashes': registry.npmmirror.com/@noble/hashes@1.1.2
-      '@scure/base': registry.npmmirror.com/@scure/base@1.1.3
-
-  registry.npmmirror.com/@scure/bip39@1.2.1:
-    resolution: {integrity: sha512-Z3/Fsz1yr904dduJD0NpiyRHhRYHdcnyh73FZWiV+/qhWi83wNJ3NWolYqCEN+ZWsUz2TWwajJggcRE9r1zUYg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@scure/bip39/-/bip39-1.2.1.tgz}
-    name: '@scure/bip39'
-    version: 1.2.1
-    dependencies:
-      '@noble/hashes': registry.npmmirror.com/@noble/hashes@1.3.2
-      '@scure/base': registry.npmmirror.com/@scure/base@1.1.3
-    dev: false
-
   registry.npmmirror.com/@solana/buffer-layout@4.0.0:
     resolution: {integrity: sha512-lR0EMP2HC3+Mxwd4YcnZb0smnaDw7Bl2IQWZiTevRH5ZZBZn6VRWn3/92E3qdU4SSImJkA6IDHawOHAnx/qUvQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@solana/buffer-layout/-/buffer-layout-4.0.0.tgz}
     name: '@solana/buffer-layout'
@@ -20609,7 +20703,7 @@ packages:
     dependencies:
       '@babel/runtime': registry.npmmirror.com/@babel/runtime@7.19.0
       '@noble/ed25519': registry.npmmirror.com/@noble/ed25519@1.7.3
-      '@noble/hashes': registry.npmmirror.com/@noble/hashes@1.3.2
+      '@noble/hashes': 1.3.2
       '@noble/secp256k1': registry.npmmirror.com/@noble/secp256k1@1.7.1
       '@solana/buffer-layout': registry.npmmirror.com/@solana/buffer-layout@4.0.0
       agentkeepalive: registry.npmmirror.com/agentkeepalive@4.3.0
@@ -20818,20 +20912,6 @@ packages:
       react-dom: 17.0.2(react@17.0.2)
       use-sync-external-store: registry.npmmirror.com/use-sync-external-store@1.2.0(react@17.0.2)
     dev: true
-
-  registry.npmmirror.com/@tokenbound/sdk@0.3.12(typescript@5.2.2):
-    resolution: {integrity: sha512-q0t12HlMu0d+RuoIFAMN9G6CQCrlcPmuQwW4f6e8TmMADIyKfZoUaA7phE1muY4bRTSFeVmx2AmsZom+kb4MVA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tokenbound/sdk/-/sdk-0.3.12.tgz}
-    id: registry.npmmirror.com/@tokenbound/sdk/0.3.12
-    name: '@tokenbound/sdk'
-    version: 0.3.12
-    dependencies:
-      viem: registry.npmmirror.com/viem@1.16.6(typescript@5.2.2)
-    transitivePeerDependencies:
-      - bufferutil
-      - typescript
-      - utf-8-validate
-      - zod
-    dev: false
 
   registry.npmmirror.com/@trysound/sax@0.2.0:
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@trysound/sax/-/sax-0.2.0.tgz}
@@ -21145,7 +21225,7 @@ packages:
       '@walletconnect/safe-json': registry.npmmirror.com/@walletconnect/safe-json@1.0.2
       events: registry.npmmirror.com/events@3.3.0
       tslib: registry.npmmirror.com/tslib@1.14.1
-      ws: registry.npmmirror.com/ws@7.5.9
+      ws: 7.5.9
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -21443,23 +21523,7 @@ packages:
         optional: true
     dependencies:
       typescript: 5.2.2
-
-  registry.npmmirror.com/abitype@0.9.8(typescript@5.2.2):
-    resolution: {integrity: sha512-puLifILdm+8sjyss4S+fsUN09obiT1g2YW6CtcQF+QDzxR0euzgEB29MZujC6zMk2a6SVmtttq1fc6+YFA7WYQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/abitype/-/abitype-0.9.8.tgz}
-    id: registry.npmmirror.com/abitype/0.9.8
-    name: abitype
-    version: 0.9.8
-    peerDependencies:
-      typescript: '>=5.0.4'
-      zod: ^3 >=3.19.1
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-      zod:
-        optional: true
-    dependencies:
-      typescript: 5.2.2
-    dev: false
+    dev: true
 
   registry.npmmirror.com/aes-js@3.0.0:
     resolution: {integrity: sha512-H7wUZRn8WpTq9jocdxQ2c8x2sKo9ZVmzfRE13GiNJXfp7NcKYEdvl3vspKjXox6RIG2VtaRe4JFvxG4rqp2Zuw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/aes-js/-/aes-js-3.0.0.tgz}
@@ -22991,19 +23055,8 @@ packages:
     peerDependencies:
       ws: '*'
     dependencies:
-      ws: registry.npmmirror.com/ws@7.5.9
+      ws: 7.5.9
     dev: true
-
-  registry.npmmirror.com/isows@1.0.3(ws@8.13.0):
-    resolution: {integrity: sha512-2cKei4vlmg2cxEjm3wVSqn8pcoRF/LX/wpifuuNquFO4SQmPwarClT+SUCA2lt+l581tTeZIPIZuIDo2jWN1fg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/isows/-/isows-1.0.3.tgz}
-    id: registry.npmmirror.com/isows/1.0.3
-    name: isows
-    version: 1.0.3
-    peerDependencies:
-      ws: '*'
-    dependencies:
-      ws: registry.npmmirror.com/ws@8.13.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
-    dev: false
 
   registry.npmmirror.com/jayson@3.7.0:
     resolution: {integrity: sha512-tfy39KJMrrXJ+mFcMpxwBvFDetS8LAID93+rycFglIQM4kl3uNR3W4lBLE/FFhsoUCEox5Dt2adVpDm/XtebbQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/jayson/-/jayson-3.7.0.tgz}
@@ -23024,7 +23077,7 @@ packages:
       json-stringify-safe: registry.npmmirror.com/json-stringify-safe@5.0.1
       lodash: registry.npmmirror.com/lodash@4.17.21
       uuid: registry.npmmirror.com/uuid@8.3.2
-      ws: registry.npmmirror.com/ws@7.5.9
+      ws: 7.5.9
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -23795,7 +23848,7 @@ packages:
       '@babel/runtime': registry.npmmirror.com/@babel/runtime@7.19.0
       eventemitter3: registry.npmmirror.com/eventemitter3@4.0.7
       uuid: registry.npmmirror.com/uuid@8.3.2
-      ws: registry.npmmirror.com/ws@8.13.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
+      ws: 8.13.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
     optionalDependencies:
       bufferutil: 4.0.7
       utf-8-validate: 5.0.10
@@ -24375,32 +24428,6 @@ packages:
     name: varint
     version: 5.0.2
 
-  registry.npmmirror.com/viem@1.16.6(typescript@5.2.2):
-    resolution: {integrity: sha512-jcWcFQ+xzIfDwexwPJRvCuCRJKEkK9iHTStG7mpU5MmuSBpACs4nATBDyXNFtUiyYTFzLlVEwWkt68K0nCSImg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/viem/-/viem-1.16.6.tgz}
-    id: registry.npmmirror.com/viem/1.16.6
-    name: viem
-    version: 1.16.6
-    peerDependencies:
-      typescript: '>=5.0.4'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@adraffy/ens-normalize': 1.9.4
-      '@noble/curves': registry.npmmirror.com/@noble/curves@1.2.0
-      '@noble/hashes': registry.npmmirror.com/@noble/hashes@1.3.2
-      '@scure/bip32': registry.npmmirror.com/@scure/bip32@1.3.2
-      '@scure/bip39': registry.npmmirror.com/@scure/bip39@1.2.1
-      abitype: registry.npmmirror.com/abitype@0.9.8(typescript@5.2.2)
-      isows: registry.npmmirror.com/isows@1.0.3(ws@8.13.0)
-      typescript: 5.2.2
-      ws: registry.npmmirror.com/ws@8.13.0(bufferutil@4.0.7)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-      - zod
-    dev: false
-
   registry.npmmirror.com/wagmi@0.12.13-cjs(ethers@5.7.2)(immer@9.0.15)(react-dom@17.0.2)(react@17.0.2)(typescript@5.2.2):
     resolution: {integrity: sha512-hwkLyVBL27Jd/+p3nI6BX7CbSNxXLLjc9qypwM85z+qTinKNVHDN1/TIShlJ6klFd8BDRFJ56UU8FKXNibzGWw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/wagmi/-/wagmi-0.12.13-cjs.tgz}
     id: registry.npmmirror.com/wagmi/0.12.13-cjs
@@ -24551,85 +24578,6 @@ packages:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/wrappy/-/wrappy-1.0.2.tgz}
     name: wrappy
     version: 1.0.2
-
-  registry.npmmirror.com/ws@3.3.3:
-    resolution: {integrity: sha512-nnWLa/NwZSt4KQJu51MYlCcSQ5g7INpOrOMt4XV8j4dqTXdmlUmSHQ8/oLC069ckre0fRsgfvsKwbTdtKLCDkA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/ws/-/ws-3.3.3.tgz}
-    name: ws
-    version: 3.3.3
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: ^5.0.2
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-    dependencies:
-      async-limiter: 1.0.1
-      safe-buffer: registry.npmmirror.com/safe-buffer@5.1.2
-      ultron: 1.1.1
-
-  registry.npmmirror.com/ws@5.2.3:
-    resolution: {integrity: sha512-jZArVERrMsKUatIdnLzqvcfydI85dvd/Fp1u/VOpfdDWQ4c9qWXe+VIeAbQ5FrDwciAkr+lzofXLz3Kuf26AOA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/ws/-/ws-5.2.3.tgz}
-    name: ws
-    version: 5.2.3
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: ^5.0.2
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-    dependencies:
-      async-limiter: 1.0.1
-    dev: false
-
-  registry.npmmirror.com/ws@7.4.6:
-    resolution: {integrity: sha512-YmhHDO4MzaDLB+M9ym/mDA5z0naX8j7SIlT8f8z+I0VtzsRbekxEutHSme7NPS2qE8StCYQNUnfWdXta/Yu85A==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/ws/-/ws-7.4.6.tgz}
-    name: ws
-    version: 7.4.6
-    engines: {node: '>=8.3.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: ^5.0.2
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-
-  registry.npmmirror.com/ws@7.5.9:
-    resolution: {integrity: sha512-F+P9Jil7UiSKSkppIiD94dN07AwvFixvLIj1Og1Rl9GGMuNipJnV9JzjD6XuqmAeiswGvUmNLjr5cFuXwNS77Q==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/ws/-/ws-7.5.9.tgz}
-    name: ws
-    version: 7.5.9
-    engines: {node: '>=8.3.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: ^5.0.2
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-
-  registry.npmmirror.com/ws@8.13.0(bufferutil@4.0.7)(utf-8-validate@5.0.10):
-    resolution: {integrity: sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/ws/-/ws-8.13.0.tgz}
-    id: registry.npmmirror.com/ws/8.13.0
-    name: ws
-    version: 8.13.0
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: '>=5.0.2'
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-    dependencies:
-      bufferutil: 4.0.7
-      utf-8-validate: 5.0.10
 
   registry.npmmirror.com/xtend@2.1.2:
     resolution: {integrity: sha512-vMNKzr2rHP9Dp/e1NQFnLQlwlhp9L/LfvnsVdHxN1f+uggyVI3i08uD14GPvCToPkdsRfyPqIyYGmIk58V98ZQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/xtend/-/xtend-2.1.2.tgz}

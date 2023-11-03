@@ -6,6 +6,7 @@ import {
   SelectedItemProperties,
 } from '@app/components/pages/profile/[name]/registration/types'
 import { useLocalStorageReducer } from '@app/hooks/useLocalStorage'
+import { emptyAddress } from '@app/utils/constants'
 
 import { useChainId } from './useChainId'
 
@@ -41,7 +42,8 @@ const defaultData: RegistrationReducerDataItem = {
   timestamp: 0,
   signature: '',
   premium: false,
-  booker: '0x0000000000000000000000000000000000000000',
+  booker: emptyAddress,
+  discountBinding: emptyAddress,
 }
 
 const isBrowser = !!(
@@ -69,7 +71,8 @@ const makeDefaultData = (selected: SelectedItemProperties): RegistrationReducerD
   timestamp: 0,
   signature: '',
   premium: false,
-  booker: '0x0000000000000000000000000000000000000000',
+  booker: emptyAddress,
+  discountBinding: emptyAddress,
   ...selected,
 })
 

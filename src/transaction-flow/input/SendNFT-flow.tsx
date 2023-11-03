@@ -168,34 +168,6 @@ const SendNFT = ({ data: { address, name }, onDismiss }: Props) => {
             console.log('checkToken=>', e.target.value)
           }}
         />
-        {/* <SelectStyle
-          label=""
-          autocomplete
-          value={senNFTHash}
-          options={
-            data
-              ? data.content.map((item) => {
-                  return {
-                    value: item.mint_transaction_hash,
-                    label: `${item?.name || item?.contract_name || '-'} #${item?.token_id} `,
-                    prefix: (
-                      <div
-                        key={item.id}
-                        style={{ height: '100%', display: 'flex', alignItems: 'center' }}
-                      >
-                        <StyledImg src={item.image_uri || placeholder.src} />
-                      </div>
-                    ),
-                  }
-                })
-              : []
-          }
-          placeholder="Select Token"
-          onChange={(e) => {
-            SetSenNFTHash(e.target.value)
-            console.log('checkToken=>', e.target.value)
-          }}
-        /> */}
 
         <Row>
           <BackButton onClick={onDismiss}>Close</BackButton>

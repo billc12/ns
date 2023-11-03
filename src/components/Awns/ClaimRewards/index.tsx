@@ -38,9 +38,8 @@ const LeftItemStyle = styled.div`
   display: grid;
   gap: 10px;
 `
-const ClaimRewards = () => {
-  const { rewardInfo, isLoading: loading } = useRewardsInfo()
-  console.log('rewardInfo=>', rewardInfo)
+const ClaimRewards = ({ _name }: { _name: string }) => {
+  const { rewardInfo, isLoading: loading } = useRewardsInfo(_name)
   const vailableRewards = rewardInfo?.vailableRewards || BigNumber.from('0')
   const totalRewards = rewardInfo?.totalRewards || BigNumber.from('0')
 

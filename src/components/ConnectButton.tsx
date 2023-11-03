@@ -156,7 +156,31 @@ export const ConnectButton = ({ isTabBar, large, inHeader }: Props) => {
     </StyledButtonWrapper>
   )
 }
-
+export const AvaNameLabel = ({
+  name,
+  title,
+  styles,
+  imgSize,
+  onClick,
+}: {
+  name: string
+  title?: string
+  styles?: React.CSSProperties
+  imgSize?: number
+  onClick?: () => void
+}) => {
+  const { avatarSrc } = useEthInvoice(name || '', false)
+  return (
+    <UserButton style={{ ...styles }} onClick={onClick}>
+      <ImgRound
+        style={{ width: imgSize || 24, height: imgSize || 24 }}
+        src={avatarSrc || DefaultAva.src}
+        alt="NFT img"
+      />
+      <InterText style={{ fontWeight: 500 }}>{title || name}</InterText>
+    </UserButton>
+  )
+}
 const HeaderProfile = ({ address }: { address: string }) => {
   const { t } = useTranslation('common')
   const router = useRouter()
@@ -246,8 +270,6 @@ const HeaderProfile = ({ address }: { address: string }) => {
       }
     >
       <UserButton>
-        {/* <DefaultUser /> */}
-        {/*  eslint-disable-next-line @next/next/no-img-element */}
         <ImgRound src={avatarSrc || DefaultAva.src} alt="NFT img" />
         <InterText style={{ fontWeight: 500 }}>{mainText}</InterText>
       </UserButton>

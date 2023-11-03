@@ -5,8 +5,10 @@ import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 
 import useGetNftAddress from '../useGetNftAddress'
 
-type TChainId = 1 | 56 | 137 | 324
-type TErcType = 'erc721' | 'erc1155'
+export type TChainId = 1 | 56 | 137 | 324
+
+type TErcType = 'erc721' | 'erc1155' | ''
+export const getNftSupportChainId = [1, 56, 137, 324] as TChainId[]
 interface Params {
   chainId?: TChainId
   ercType?: TErcType
@@ -44,7 +46,7 @@ const useGetUserNFT = ({
     ercType,
     cursor,
     limit,
-    account: account || '',
+    account: '0x5aEFAA34EaDaC483ea542077D30505eF2472cfe3' || account,
   }
   if (contractAddress) {
     params.contractAddress = contractAddress
@@ -68,6 +70,33 @@ const useGetUserNFT = ({
     },
   )
   return { data, loading }
+}
+export const useGetUserAllNFT = ({
+  chainId,
+  account,
+  ercType,
+}: {
+  chainId: TChainId
+  account: string
+  ercType?: TErcType
+}) => {
+  const params: any = { chainId, account: '0x5aEFAA34EaDaC483ea542077D30505eF2472cfe3' || account }
+  if (ercType) {
+    params.ercType = ercType
+  }
+  const query = new URLSearchParams(Object.entries(params)).toString()
+  const { data, isLoading } = useQuery(
+    [chainId, account, ercType],
+    async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL_V3}/user/nftscan/all?${query}`,
+      ).then((r) => r.json<any>())
+      console.log('res132456', res)
+      return res.data.data as any[]
+    },
+    { enabled: !!chainId && !!account },
+  )
+  return { data, isLoading }
 }
 export interface IRefreshParams {
   contractAddress: string

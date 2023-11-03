@@ -273,7 +273,7 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
     // wrapperData,
     // registrationStatus,
   } = nameDetails
-  const { data } = useSignName(normalisedName)
+  const { data } = useSignName({ name: normalisedName })
   const isLoading = _isLoading || detailsLoading
 
   const isSmDown = useMemo(() => {
@@ -373,7 +373,7 @@ const ProfileContent = ({ isSelf, isLoading: _isLoading, name }: Props) => {
     }
   }, [name, router, transactions])
   const nameDetailRoute = useMemo(() => {
-    return `/my/nameDetail?name=${name}`
+    return `/nameDetail?name=${name}`
   }, [name])
   console.log(titleContent, descriptionContent)
   return (

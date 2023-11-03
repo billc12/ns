@@ -115,7 +115,7 @@ const ConfirmReg = ({ registrationData, nameDetails, callback, onProfileClick }:
     registrationData,
   })
 
-  const { data: signatureName } = useSignName(nameDetails.normalisedName)
+  const { data: signatureName } = useSignName({ name: nameDetails.normalisedName })
 
   const makeRegisterNameFlow = () => {
     createTransactionFlow(registerKey, {

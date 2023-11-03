@@ -1,15 +1,19 @@
 import { BigNumber } from '@ethersproject/bignumber'
+import router from 'next/router'
 import { useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
 
-import { mq } from '@ensdomains/thorin'
+import { Dropdown, mq } from '@ensdomains/thorin'
+import { DropdownItem } from '@ensdomains/thorin/dist/types/components/molecules/Dropdown/Dropdown'
 
+import DownChevron from '@app/assets/DownChevron.svg'
 import ClaimRewards from '@app/components/Awns/ClaimRewards'
+import { AvaNameLabel } from '@app/components/ConnectButton'
 import { LoadingOverlay } from '@app/components/LoadingOverlay'
 import { Table } from '@app/components/table'
+import { useNamesFromAddress } from '@app/hooks/names/useNamesFromAddress/useNamesFromAddress'
 import useReferralRewards from '@app/hooks/requst/useReferralRewardsCallback'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
-// import useGetSignReferral from '@app/hooks/useGetSignReferral'
 import { usePrimary } from '@app/hooks/usePrimary'
 import { timestampToDateFormat } from '@app/utils'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
@@ -151,15 +155,36 @@ const TableContentStyle = styled.div(
     `)}
   `,
 )
-
-// const RewardsDetailsList = [
-//   {
-//     Date: '2023-09-22',
-//     Token: 'tatanick.aw',
-//     Type: 'Direct referrals',
-//     Rewards: 0.004,
-//   },
-// ]
+const DropdownStyle = styled(Dropdown)`
+  height: 300px;
+  overflow: scroll;
+  padding: 0;
+  & button {
+    background: #fff;
+    padding: 15px 20px;
+  }
+  & button:hover {
+    background: #f7fafc;
+  }
+`
+const DropdownBtn = styled.div`
+  position: relative;
+  width: 100%;
+  & > button > div {
+    color: #3f5170;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700 !important;
+    line-height: normal;
+  }
+  & > svg {
+    position: absolute;
+    right: 37px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+`
 const limit = 7
 export default function Rewards() {
   const breakpoints = useBreakpoint()
@@ -167,15 +192,54 @@ export default function Rewards() {
   const primary = usePrimary(address!, !address)
   const [rewardsPage, setRewardsPage] = useState(1)
   const {
+    data: namesData,
+    // isLoading: namesLoading,
+    // status: namesStatus,
+  } = useNamesFromAddress({
+    address,
+    sort: {
+      type: 'expiryDate',
+      orderDirection: 'asc',
+    },
+    page: 1,
+    resultsPerPage: 'all',
+    search: '',
+  })
+  const curName = useMemo(() => {
+    if (router.router?.query.name) {
+      if (namesData?.names.find((i) => i.name === router.router?.query.name)) {
+        return router.router.query.name.slice(0, -3) as string
+      }
+    }
+    if (primary.data && primary.data.beautifiedName) {
+      return primary.data?.beautifiedName.slice(0, -3)
+    }
+    return ''
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [primary.data, router.router?.query.name])
+
+  const dropdownList = useMemo<DropdownItem[]>(() => {
+    const arr = namesData?.names.map((i) => (
+      <div key={i.id} style={{ width: '100%' }}>
+        <AvaNameLabel
+          name={i.name}
+          onClick={() => router.push(`/rewards?name=${i.name}`)}
+          styles={{
+            width: '100%',
+            border: 'none',
+            borderBottom: '1px solid #D4D7E2',
+            borderRadius: 0,
+          }}
+        />
+      </div>
+    ))
+    return arr || []
+  }, [namesData?.names])
+  const {
     data: RewardsDetails,
     isLoading: rewardsLoading,
     isFetching,
-  } = useReferralRewards(
-    primary.data?.beautifiedName ? primary.data?.beautifiedName.slice(0, -3) : '',
-    rewardsPage - 1,
-    limit,
-  )
-
+  } = useReferralRewards(curName as string, rewardsPage - 1, limit)
   const RewardsDetailsTableList = useMemo(() => {
     if (!RewardsDetails?.list) return []
     return RewardsDetails?.list?.map(({ registrant, reward, timestamp, type }) => [
@@ -206,6 +270,7 @@ export default function Rewards() {
       onChange: handleChangePage,
     }
   }, [RewardsDetails, rewardsPage])
+
   return (
     <>
       {RewardsDetails && !rewardsLoading ? (
@@ -218,15 +283,23 @@ export default function Rewards() {
           </HeaderTitles>
           <BodyStyle>
             <CenterLeftStyle>
-              <ClaimRewards />
-              {/* <LeftItemStyle>
-                <ContentTitleStyle>Total rewards</ContentTitleStyle>
-                <Skeleton loading={rewardsLoading}>
-                  <LeftContentStyle>
-                    {totalRewards ? makeDisplay(totalRewards, undefined, 'eth', 18) : '0ETH'}
-                  </LeftContentStyle>
-                </Skeleton>
-              </LeftItemStyle> */}
+              <DropdownStyle width={244} align="left" items={dropdownList}>
+                {/* eslint-disable-next-line react/button-has-type */}
+                <DropdownBtn>
+                  <AvaNameLabel
+                    name={`${curName}.aw`}
+                    styles={{
+                      width: '100%',
+                      border: 'none',
+                      background: '#F7FAFC',
+                      padding: '15px 20px',
+                    }}
+                    imgSize={50}
+                  />
+                  <DownChevron />
+                </DropdownBtn>
+              </DropdownStyle>
+              <ClaimRewards _name={curName} />
               <LeftItemStyle>
                 <ContentTitleStyle>Direct referrals</ContentTitleStyle>
                 <LeftContentStyle>{RewardsDetails?.countDirect || '0'}</LeftContentStyle>
@@ -235,13 +308,6 @@ export default function Rewards() {
                 <ContentTitleStyle>Indirect referrals</ContentTitleStyle>
                 <LeftContentStyle>{RewardsDetails?.countIndirect || '0'}</LeftContentStyle>
               </LeftItemStyle>
-              {/* <LeftItemStyle>
-                <ContentTitleStyle>Number of lucky draws</ContentTitleStyle>
-                <LeftOpenStyle>
-                  <LeftContentStyle>0</LeftContentStyle>
-                  <ButtonStyle style={{ width: '100px' }}>Open</ButtonStyle>
-                </LeftOpenStyle>
-              </LeftItemStyle> */}
             </CenterLeftStyle>
             <CenterRightStyle>
               <BottomTitleStyle style={{ padding: '20px 30px' }}>Rewards details</BottomTitleStyle>
