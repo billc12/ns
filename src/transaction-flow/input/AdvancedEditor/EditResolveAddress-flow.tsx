@@ -62,7 +62,7 @@ const EditResolveAddress = ({ data, onDismiss, dispatch }: Props) => {
   const queryKeyGenerator = useQueryKeys().dogfood
   const [errArr, setErrArr] = useState(Array.from({ length: addrArr.length }))
   const verifyInput = async (value: string) => {
-    if (value?.includes('.') && value?.length !== 42) {
+    if (!value?.includes('.') && value?.length !== 42) {
       return t('errors.addressLength')
     }
     if (!value?.includes('.') && !isAddress(value)) {

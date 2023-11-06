@@ -176,7 +176,7 @@ export const NameInfo = ({ name, expiryDate }: { name: string; expiryDate: Date 
           style={{ width: '100%', height: '100%' }}
           alt="User Avatar"
         />
-        <InfoImgText>asdas{name}</InfoImgText>
+        <InfoImgText>{name}</InfoImgText>
       </InfoImgRound>
       <InfoRight>
         <FlexRow>
