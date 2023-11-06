@@ -136,6 +136,11 @@ const reducer = (state: RegistrationReducerData, action: RegistrationReducerActi
 
       break
     }
+    case 'lastStep': {
+      const index = item.queue.findIndex((t) => t === 'complete')
+      item.stepIndex = index
+      break
+    }
     case 'setPricingData': {
       item.years = action.payload.years
       item.reverseRecord = action.payload.reverseRecord

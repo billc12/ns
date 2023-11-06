@@ -67,6 +67,10 @@ export type RegistrationReducerData = {
 
 export type RegistrationReducerAction =
   | {
+      name: 'lastStep'
+      selected: SelectedItemProperties
+    }
+  | {
       name: 'increaseStep'
       selected: SelectedItemProperties
     }

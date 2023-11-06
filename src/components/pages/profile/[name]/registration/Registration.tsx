@@ -212,7 +212,7 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
       dispatch({ name: 'setProfileData', payload: { records: newRecords }, selected })
     }
 
-    dispatch({ name: 'increaseStep', selected })
+    dispatch({ name: 'lastStep', selected })
   }
 
   const profileCallback = ({

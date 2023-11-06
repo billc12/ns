@@ -37,7 +37,10 @@ import { useContractAddress } from '@app/hooks/useContractAddress'
 import { useEstimateFullRegistration } from '@app/hooks/useEstimateRegistration'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import { useProfileEditorForm } from '@app/hooks/useProfileEditorForm'
+import useRegistrationParams from '@app/hooks/useRegistrationParams'
 import useRegistrationReducer from '@app/hooks/useRegistrationReducer'
+import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
+import { makeTransactionItem } from '@app/transaction-flow/transaction'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
 import { emptyAddress } from '@app/utils/constants'
 
@@ -395,6 +398,8 @@ interface ActionButtonProps {
   balance: ReturnType<typeof useBalance>['data']
   totalRequiredBalance?: BigNumber
   discountInfo: DisInfo & { referral: string }
+  normalisedName: string
+  registrationData: RegistrationReducerDataItem
 }
 
 export const ActionButton = ({
@@ -412,8 +417,38 @@ export const ActionButton = ({
   balance,
   totalRequiredBalance,
   discountInfo,
+  normalisedName,
+  registrationData,
 }: ActionButtonProps) => {
   const { t } = useTranslation('register')
+
+  const keySuffix = `${normalisedName}-${address}`
+  const registerKey = `register-${keySuffix}`
+
+  const registrationParams = useRegistrationParams({
+    name: normalisedName,
+    owner: address!,
+    registrationData,
+  })
+  const { createTransactionFlow, getLatestTransaction, resumeTransactionFlow } =
+    useTransactionFlow()
+  const registerTx = getLatestTransaction(registerKey)
+  const makeRegisterNameFlow = () => {
+    createTransactionFlow(registerKey, {
+      transactions: [makeTransactionItem('registerName', registrationParams)],
+      requiresManualCleanup: true,
+      autoClose: true,
+    })
+  }
+  const showRegisterTransaction = () => {
+    resumeTransactionFlow(registerKey)
+  }
+  useEffect(() => {
+    if (registerTx?.stage === 'complete') {
+      callback({ reverseRecord, years, paymentMethodChoice, ...discountInfo })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [registerTx?.stage])
   if (!address) {
     return <ConnectButton large />
   }
@@ -468,19 +503,15 @@ export const ActionButton = ({
       </Button>
     )
   }
+  if (registerTx?.stage === 'sent') {
+    return (
+      <NextButton data-testid="next-button" onClick={showRegisterTransaction}>
+        {t('steps.transactions.transactionProgress')}
+      </NextButton>
+    )
+  }
   return (
-    <NextButton
-      data-testid="next-button"
-      onClick={() =>
-        callback({
-          reverseRecord,
-          years,
-          paymentMethodChoice,
-          ...discountInfo,
-        })
-      }
-      disabled={!paymentMethodChoice}
-    >
+    <NextButton data-testid="next-button" onClick={makeRegisterNameFlow}>
       {/* {t('action.next', { ns: 'common' })} */}
       Register
     </NextButton>
@@ -922,6 +953,8 @@ const Pricing = ({
               balance,
               totalRequiredBalance,
               discountInfo: { ...disInfo, referral: invitationName },
+              normalisedName,
+              registrationData,
             }}
           />
 
