@@ -80,7 +80,7 @@ export const useGetUserAllNFT = ({
   account: string
   ercType?: TErcType
 }) => {
-  const params: any = { chainId, account: '0x5aEFAA34EaDaC483ea542077D30505eF2472cfe3' || account }
+  const params: any = { chainId, account: '0x18041866663b077bB6BF2bAFFAeA2451a2472ed7' || account }
   if (ercType) {
     params.ercType = ercType
   }

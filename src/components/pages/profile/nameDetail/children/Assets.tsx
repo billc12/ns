@@ -5,6 +5,7 @@ import { Typography } from '@ensdomains/thorin'
 import Img1 from '@app/assets/nameDetail/img1.png'
 
 const AssetsItemStyle = styled.div`
+  position: relative;
   width: 162px;
   height: 250px;
   flex-shrink: 0;
@@ -66,7 +67,25 @@ const AssetsCountStyle = styled.div`
   font-size: 16px;
   font-weight: 500;
 `
-
+const RoundOrange = styled.div`
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: #f4ae44;
+  color: #fff;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-align: center;
+  line-height: 30px;
+  position: absolute;
+  left: 15px;
+  top: 15px;
+`
 export enum ERCTYPE {
   ERC6551 = 'ERC 6551',
   ERC721 = 'ERC 721',
@@ -74,23 +93,27 @@ export enum ERCTYPE {
 }
 
 function ErcTag(tag: string) {
-  if (ERCTYPE.ERC1155 === tag) {
+  if (tag === 'erc6551') {
     return '#51C7A3'
   }
-  if (ERCTYPE.ERC721 === tag) {
+  if (tag === 'erc721') {
     return '#497DE3'
   }
-  if (ERCTYPE.ERC1155 === tag) {
+  if (tag === 'erc1155') {
     return '#F4AE44'
   }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function Assets({ item }: { item: any }) {
+  const handleImgError = (e: any) => {
+    e.target.src = Img1.src
+  }
   return (
     <AssetsItemStyle>
+      {Number(item.amount) > 1 && <RoundOrange>{item.amount}</RoundOrange>}
       <LeftStyle>
-        <StyledImg src={item.image_uri || Img1.src} />
+        <StyledImg src={item.image_uri || Img1.src} onError={handleImgError} />
       </LeftStyle>
       <RightStyle>
         <NameStyle ellipsis>
@@ -102,7 +125,11 @@ export function Assets({ item }: { item: any }) {
             background: ErcTag(item.erc_type) || '#51C7A3',
           }}
         >
-          {item.erc_type === 'erc721' ? ERCTYPE.ERC721 : ERCTYPE.ERC6551}
+          {item.erc_type === 'erc721'
+            ? ERCTYPE.ERC721
+            : item.erc_type === 'erc1155'
+            ? ERCTYPE.ERC1155
+            : ERCTYPE.ERC6551}
         </TagsStyle>
         {false && (
           <div style={{ display: 'flex', gap: '8px' }}>

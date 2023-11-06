@@ -172,10 +172,10 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
   const tokenIdList = nftData?.map((i) => i.token_id as string)
   const deploymentMap = useSBTIsDeployList(contractAddressList, tokenIdList)
 
-  console.log('nftData123465', deploymentMap)
+  console.log('nftData123465', deploymentMap, nftList)
   return (
     <>
-      {nftData && nftData.length && (
+      {nftData && !!nftData.length && (
         <>
           <TabTitleStyle>
             {/* <SubTitleStyle>Account ({nftId.length})</SubTitleStyle> */}
@@ -207,8 +207,9 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
             </SubButtonStyle>
           </TabTitleStyle>
           <TraitsStyle>
-            {nftList?.map((item) => (
-              <Skeleton loading={NftLoading} key={item}>
+            {nftList?.map((item, index) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <Skeleton loading={NftLoading} key={`${item.token_id} - ${index}`}>
                 <Assets item={item} />
               </Skeleton>
             ))}
