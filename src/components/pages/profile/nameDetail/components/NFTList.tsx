@@ -171,7 +171,7 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
   const contractAddressList = nftData?.map((i) => i.contract_address as string)
   const tokenIdList = nftData?.map((i) => i.token_id as string)
   const deploymentMap = useSBTIsDeployList(contractAddressList, tokenIdList)
-
+  // const erc6551List = useMemo(() => {}, [])
   console.log('nftData123465', deploymentMap, nftList)
   return (
     <>

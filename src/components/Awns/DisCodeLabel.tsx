@@ -116,7 +116,7 @@ const DiscountCode = ({
     years,
   })
   const hasDiscount = signData && Number(formatFixed(signData?.discount || '0', 18)) < 1
-  const discount = hasDiscount && Number(formatFixed(signData?.discount || '0', 18)) * 100
+  const discount = hasDiscount && 100 - Number(formatFixed(signData?.discount || '0', 18)) * 100
 
   const saveCode = () => {
     if (signData) {
