@@ -58,7 +58,7 @@ const DiscountCodeLabel = ({
   const code = info.discountCode
   const hasDiscount = !!code && Number(formatFixed(info?.discount, 18)) < 1
 
-  const _info = hasDiscount ? info : { ...info, discountCode: '' }
+  const _info = hasDiscount ? info : { ...info, discountCode: '0' }
 
   return (
     <Container>

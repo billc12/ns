@@ -100,7 +100,7 @@ const DiscountCode = ({
   useScenes,
   years,
 }: Props & { years: number }) => {
-  const [disCode, setDisCode] = useState(info.discountCode)
+  const [disCode, setDisCode] = useState(info.discountCode === '0' ? '' : info.discountCode)
   // const { address } = useAccountSafely()
 
   // const { data: signData, isLoading } = useSignName({
@@ -110,7 +110,7 @@ const DiscountCode = ({
   //   account: address,
   // })
   const { signData, isLoading } = useVerifyDiscode({
-    code: disCode,
+    code: disCode || '0',
     name,
     useScenes,
     years,

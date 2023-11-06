@@ -9,6 +9,7 @@ import UpDisplayicon from '@app/assets/UpDisplayicon.svg'
 import Img6 from '@app/assets/nameDetail/img6.png'
 import { TChainId, getNftSupportChainId, useGetUserAllNFT } from '@app/hooks/requst/useGetUserNFT'
 import { useSBTIsDeployList } from '@app/hooks/useCheckAccountDeployment'
+import { useGetNftOwner } from '@app/hooks/useGetNftOwner'
 
 // import { useNameErc721Assets } from '@app/hooks/useNameDetails'
 import { Assets } from '../children/Assets'
@@ -143,6 +144,8 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
   const chainId = useChainId()
   const { address } = useAccount()
   // const { data: nftData, loading: NftLoading } = useGetUserNFT({ name: 'apr.aw' })
+  const { owner } = useGetNftOwner('9359')
+  console.log('owner123', owner)
 
   const { data: _allNftList, isLoading: NftLoading } = useGetUserAllNFT({
     account: address || '',
@@ -171,15 +174,20 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
   const contractAddressList = nftData?.map((i) => i.contract_address as string)
   const tokenIdList = nftData?.map((i) => i.token_id as string)
   const deploymentMap = useSBTIsDeployList(contractAddressList, tokenIdList)
-  // const erc6551List = useMemo(() => {}, [])
-  console.log('nftData123465', deploymentMap, nftList)
+  const erc6551List = useMemo(() => {
+    if (!deploymentMap) return []
+    return nftData.filter((t, i) => !deploymentMap[i])
+    // eslint-disable-next-line array-callback-return
+  }, [deploymentMap, nftData])
+  console.log('nftData123465', deploymentMap, nftData)
+
   return (
     <>
       {nftData && !!nftData.length && (
         <>
           <TabTitleStyle>
             {/* <SubTitleStyle>Account ({nftId.length})</SubTitleStyle> */}
-            <SubTitleStyle>Account ({2})</SubTitleStyle>
+            <SubTitleStyle>Account ({erc6551List.length})</SubTitleStyle>
             <SubButtonStyle
               onClick={() => {
                 setIsShowAll(!isShowAll)
@@ -267,6 +275,7 @@ const Page = ({ accountAddress }: { accountAddress: string }) => {
           <PaginationBtn
             className={curTab === Tab.Actions ? 'select' : ''}
             onClick={() => setCurTab(Tab.Actions)}
+            disabled
           >
             Actions
           </PaginationBtn>

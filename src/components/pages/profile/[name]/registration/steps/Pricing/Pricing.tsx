@@ -858,7 +858,7 @@ const Pricing = ({
     setPricingData({
       ...registrationData,
       ...disInfo,
-      discountCode: disInfo.discountCode !== '0' ? disInfo.discountCode : '',
+      discountCode: disInfo.discountCode,
       referral: invitationName,
       paymentMethodChoice,
     })
