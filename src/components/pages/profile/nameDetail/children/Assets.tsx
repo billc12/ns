@@ -109,7 +109,10 @@ function ErcTag(tag: string) {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function Assets({ item, onClick }: { item: any; onClick?: () => void }) {
   return (
-    <AssetsItemStyle onClick={onClick}>
+    <AssetsItemStyle
+      onClick={onClick}
+      style={{ cursor: item.erc_type !== 'erc1155' ? 'pointer' : 'auto' }}
+    >
       {Number(item.amount) > 1 && <RoundOrange>{item.amount}</RoundOrange>}
       <LeftStyle>
         <StyledImg url={item.image_uri} defaultUrl={Img1.src} />

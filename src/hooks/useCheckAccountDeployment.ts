@@ -7,9 +7,7 @@ export function useContractIsDeployList(tokenContracts?: string[]) {
   const { data: signer } = useSigner()
   const chainId = useChainId()
   const [isDeploys, setIsDeploys] = useState<boolean[] | undefined>()
-
   const tokenContractsLength = useMemo(() => tokenContracts?.length, [tokenContracts?.length])
-
   useEffect(() => {
     setIsDeploys(undefined)
   }, [chainId])
@@ -36,7 +34,10 @@ export function useContractIsDeployList(tokenContracts?: string[]) {
   return useMemo(() => isDeploys, [isDeploys])
 }
 
-export function useSBTIsDeployList(erc721Address: string[], tokenIds: string[]) {
+export function useSBTIsDeployList(
+  erc721Address: string[] | undefined,
+  tokenIds: string[] | undefined,
+) {
   const { data: signer } = useSigner()
   const chainId = useChainId()
   const tokenboundClient = useMemo(
@@ -45,7 +46,7 @@ export function useSBTIsDeployList(erc721Address: string[], tokenIds: string[]) 
   )
 
   const getAllAccount = useMemo(() => {
-    if (!tokenboundClient) {
+    if (!tokenboundClient || !erc721Address || !tokenIds) {
       return []
     }
     if (erc721Address.length !== tokenIds.length) {

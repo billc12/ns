@@ -233,7 +233,10 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
             {nftList?.map((item, index) => (
               // eslint-disable-next-line react/no-array-index-key
               <Skeleton loading={NftLoading} key={`${item.token_id} - ${index}`}>
-                <Assets item={item} onClick={() => handleDrawerOpen(item)} />
+                <Assets
+                  item={item}
+                  onClick={() => item.erc_type !== 'erc1155' && handleDrawerOpen(item)}
+                />
               </Skeleton>
             ))}
             {/* <Traits /> */}

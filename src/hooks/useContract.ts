@@ -63,6 +63,5 @@ export const useErc721Contract = (contractsAddress: `0x${string}`) => {
     }
     func()
   }, [contractsAddress, ens.contracts, signer.data])
-
   return contract
 }

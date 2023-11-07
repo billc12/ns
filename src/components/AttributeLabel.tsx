@@ -8,6 +8,7 @@ const LabelItem = styled.div<{ $copy?: boolean }>`
   width: 100%;
   display: grid;
   grid-template-columns: ${({ $copy }) => ($copy ? 'auto auto 14px' : ' auto auto')};
+  align-items: center;
   padding: 12px 36px;
   border-radius: 10px;
   background: #f7fafc;
