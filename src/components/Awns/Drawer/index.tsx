@@ -18,6 +18,10 @@ const DrawerStyle = styled(Drawer)`
   border: 1px solid #d4d7e2;
   background: #fff;
   box-shadow: -10px 0 20px 0 rgba(40, 79, 115, 0.25);
+  overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 const Header = styled.div`
   display: grid;
@@ -42,7 +46,13 @@ const CloseBtn = styled(Button)`
 `
 const Page = ({ children, onClose, open, title }: Props) => {
   return (
-    <DrawerStyle open={open} onClose={onClose} direction="right" zIndex={99999}>
+    <DrawerStyle
+      lockBackgroundScroll
+      open={open}
+      onClose={onClose}
+      direction="right"
+      zIndex={99999}
+    >
       <Header>
         <Title>{title}</Title>
         <CloseBtn onClick={onClose}>

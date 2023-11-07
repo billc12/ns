@@ -1,8 +1,9 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 
 import Img1 from '@app/assets/nameDetail/img1.png'
 import AttributeLabel from '@app/components/AttributeLabel'
+import TransferNFT from '@app/components/pages/profile/nameDetail/children/transferNFT'
 import {
   AuctionBtn,
   AuctionTitle,
@@ -64,6 +65,7 @@ const switchErcType = (v: string) => {
 }
 
 const NftDetailDrawer = ({ open, onClose, item, accountAddress }: Props) => {
+  const [showInput, setShowInput] = useState(false)
   const { owner } = useGetNftOwner(item.owner ? '' : item.token_id || '')
   const isOwner = useMemo(() => {
     return (item.owner || owner) === accountAddress
@@ -74,12 +76,21 @@ const NftDetailDrawer = ({ open, onClose, item, accountAddress }: Props) => {
     item.token_id ? [item.token_id] : undefined,
   )?.[0]
   console.log('isDeploy', isDeploy)
-
+  const handleShowInput = () => {
+    setShowInput(true)
+  }
+  const handleCloseInput = () => {
+    setShowInput(false)
+  }
+  const closeDrawer = () => {
+    onClose()
+    handleCloseInput()
+  }
   const actionBtns = useMemo(() => {
     const btnList = []
     // if (isOwner) {
     btnList.push(
-      <AuctionBtn>
+      <AuctionBtn onClick={handleShowInput}>
         <AuctionTitle>Transfer</AuctionTitle>
       </AuctionBtn>,
     )
@@ -108,7 +119,7 @@ const NftDetailDrawer = ({ open, onClose, item, accountAddress }: Props) => {
   console.log('actionBtns', actionBtns)
 
   return (
-    <DrawerModel onClose={onClose} open={open} title="Assets Details">
+    <DrawerModel onClose={closeDrawer} open={open} title="Assets Details">
       <ImgRound>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <ShowErrImg url={item.image_uri} defaultUrl={Img1.src} alt="nft img" />
@@ -117,6 +128,7 @@ const NftDetailDrawer = ({ open, onClose, item, accountAddress }: Props) => {
         {item.name || item.contract_name} - #{item.token_id}
       </Title>
       <BtnContainer>{actionBtns}</BtnContainer>
+      {showInput && <TransferNFT onClose={handleCloseInput} />}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 15 }}>
         <AttributeLabel title="Contract address" content={item.contract_address} isCopy />
         <AttributeLabel title="Token ID" content={item.token_id} isCopy />

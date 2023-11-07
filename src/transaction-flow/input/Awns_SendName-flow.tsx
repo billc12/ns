@@ -172,43 +172,6 @@ export const SendName = ({ data, dispatch, onDismiss }: Props) => {
 
   return (
     <>
-      {/* <Typography fontVariant="headingFour">{t('details.sendName.title')}11</Typography>
-      <Typography style={{ textAlign: 'center' }}>{t('details.sendName.description')}</Typography>
-      <Outlink href={getSupportLink('managersAndOwners')}>
-        {t('details.sendName.learnMore')}
-      </Outlink> */}
-      {/* {canSendOwner && (
-        <SwitchBox>
-          <TextContainer>
-            <Typography weight="bold">{t('details.sendName.makeOwner')}</Typography>
-            <Typography fontVariant="small">
-              {t('details.sendName.makeOwnerDescription')}
-            </Typography>
-          </TextContainer>
-          <Toggle
-            size="large"
-            value="owner"
-            data-testid="owner-checkbox"
-            {...register('ownerChoice', { shouldUnregister: true })}
-          />
-        </SwitchBox>
-      )} */}
-      {/* {canSendManager && (
-        <SwitchBox>
-          <TextContainer>
-            <Typography weight="bold">{t('details.sendName.makeManager')}</Typography>
-            <Typography fontVariant="small">
-              {t('details.sendName.makeManagerDescription')}
-            </Typography>
-          </TextContainer>
-          <Toggle
-            size="large"
-            value="manager"
-            data-testid="manager-checkbox"
-            {...register('managerChoice', { shouldUnregister: true })}
-          />
-        </SwitchBox>
-      )} */}
       <>
         <Dialog.Heading title="Transfer AWNS" />
         <NameInfo name={name} expiryDate={nameDetails.expiryDate} />
