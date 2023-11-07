@@ -38,65 +38,21 @@ const InformationDrawer = ({ open, onClose, accountAddress, name }: Props) => {
   return (
     <DrawerModel onClose={onClose} open={open} title="Information">
       <LabelContainer>
-        <AttributeLabel
-          title="ERC6551 Account Address"
-          content={{ type: 'address', value: accountAddress }}
-          isCopy
-        />
-        <AttributeLabel
-          title="Address"
-          content={{ type: 'address', value: nameData.profile?.address || '' }}
-          isCopy
-        />
-        <AttributeLabel
-          title="Owner"
-          content={{ type: 'address', value: nameData.ownerData?.owner || '' }}
-          isCopy
-        />
+        <AttributeLabel title="ERC6551 Account Address" content={accountAddress} isCopy />
+        <AttributeLabel title="Address" content={nameData.profile?.address || ''} isCopy />
+        <AttributeLabel title="Owner" content={nameData.ownerData?.owner || ''} isCopy />
         <AttributeLabel
           title="Registration Date"
-          content={{
-            type: 'text',
-            value: registrationData?.registrationDate.toUTCString() || '',
-          }}
+          content={registrationData?.registrationDate.toUTCString() || ''}
         />
         <AttributeLabel
           title="Expiration Date"
-          content={{
-            type: 'text',
-            value: nameData?.expiryDate?.toUTCString() || '',
-          }}
+          content={nameData?.expiryDate?.toUTCString() || ''}
         />
-        <AttributeLabel
-          title="Chain"
-          content={{
-            type: 'text',
-            value: 'Ethereum',
-          }}
-        />
-        <AttributeLabel
-          isCopy
-          title="Contract Address"
-          content={{
-            type: 'address',
-            value: tokenContract || '',
-          }}
-        />
-        <AttributeLabel
-          isCopy
-          title="Token ID"
-          content={{
-            type: 'address',
-            value: tokenId || '',
-          }}
-        />
-        <AttributeLabel
-          title="Collection"
-          content={{
-            type: 'text',
-            value: 'Loot (for Adventurers)',
-          }}
-        />
+        <AttributeLabel title="Chain" content="Ethereum" />
+        <AttributeLabel isCopy title="Contract Address" content={tokenContract || ''} />
+        <AttributeLabel isCopy title="Token ID" content={tokenId || ''} />
+        <AttributeLabel title="Collection" content="Loot (for Adventurers)" />
       </LabelContainer>
       <div style={{ marginTop: 15 }}>
         <Title>About</Title>

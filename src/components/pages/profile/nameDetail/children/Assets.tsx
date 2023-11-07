@@ -1,8 +1,9 @@
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 
 import { Typography } from '@ensdomains/thorin'
 
 import Img1 from '@app/assets/nameDetail/img1.png'
+import { ShowErrImg } from '@app/components/showErrImg'
 
 const AssetsItemStyle = styled.div`
   position: relative;
@@ -16,9 +17,12 @@ const AssetsItemStyle = styled.div`
 `
 
 const LeftStyle = styled.div`
-  width: 162px;
-  height: 162px;
   padding-right: 0;
+  & > img,
+  & {
+    width: 162px;
+    height: 162px;
+  }
 `
 const RightStyle = styled.div`
   padding-left: 10px;
@@ -29,13 +33,11 @@ const RightStyle = styled.div`
   justify-content: space-between;
   height: 100%;
 `
-const StyledImg = styled.img(
-  () => css`
-    width: 162px;
-    height: 162px;
-    border-radius: 8px;
-  `,
-)
+const StyledImg = styled(ShowErrImg)`
+  width: 162px;
+  height: 162px;
+  border-radius: 8px;
+`
 
 const NameStyle = styled(Typography)`
   color: var(--word-color, #3f5170);
@@ -105,15 +107,12 @@ function ErcTag(tag: string) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function Assets({ item }: { item: any }) {
-  const handleImgError = (e: any) => {
-    e.target.src = Img1.src
-  }
+export function Assets({ item, onClick }: { item: any; onClick?: () => void }) {
   return (
-    <AssetsItemStyle>
+    <AssetsItemStyle onClick={onClick}>
       {Number(item.amount) > 1 && <RoundOrange>{item.amount}</RoundOrange>}
       <LeftStyle>
-        <StyledImg src={item.image_uri || Img1.src} onError={handleImgError} />
+        <StyledImg url={item.image_uri} defaultUrl={Img1.src} />
       </LeftStyle>
       <RightStyle>
         <NameStyle ellipsis>

@@ -7,6 +7,7 @@ import { Button, Skeleton, mq } from '@ensdomains/thorin'
 import DownShowicon from '@app/assets/DownShowicon.svg'
 import UpDisplayicon from '@app/assets/UpDisplayicon.svg'
 import Img6 from '@app/assets/nameDetail/img6.png'
+import NftDetailDrawer from '@app/components/Awns/Drawer/NftDetailDrawer'
 import { TChainId, getNftSupportChainId, useGetUserAllNFT } from '@app/hooks/requst/useGetUserNFT'
 import { useSBTIsDeployList } from '@app/hooks/useCheckAccountDeployment'
 import { useGetNftOwner } from '@app/hooks/useGetNftOwner'
@@ -148,7 +149,7 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
   console.log('owner123', owner)
 
   const { data: _allNftList, isLoading: NftLoading } = useGetUserAllNFT({
-    account: address || '',
+    account: address || accountAddress,
     chainId: getNftSupportChainId.includes(chainId as TChainId)
       ? (chainId as TChainId)
       : getNftSupportChainId[0],
@@ -161,7 +162,6 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
 
   const [isPackUp, setIsPackUp] = useState<boolean>(false)
   const [isShowAll, setIsShowAll] = useState<boolean>(false)
-  console.log('accountAddress', accountAddress)
 
   const nftList = useMemo(() => {
     if (!isPackUp) {
@@ -180,7 +180,22 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
     // eslint-disable-next-line array-callback-return
   }, [deploymentMap, nftData])
   console.log('nftData123465', deploymentMap, nftData)
-
+  const [drawerInfo, setDrawerInfo] = useState({
+    open: false,
+    item: {},
+  })
+  const handleDrawerOpen = (item: any) => {
+    setDrawerInfo({
+      open: true,
+      item,
+    })
+  }
+  const handleDrawerClose = () => {
+    setDrawerInfo({
+      open: false,
+      item: {},
+    })
+  }
   return (
     <>
       {nftData && !!nftData.length && (
@@ -218,11 +233,16 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
             {nftList?.map((item, index) => (
               // eslint-disable-next-line react/no-array-index-key
               <Skeleton loading={NftLoading} key={`${item.token_id} - ${index}`}>
-                <Assets item={item} />
+                <Assets item={item} onClick={() => handleDrawerOpen(item)} />
               </Skeleton>
             ))}
             {/* <Traits /> */}
           </TraitsStyle>
+          <NftDetailDrawer
+            {...drawerInfo}
+            onClose={handleDrawerClose}
+            accountAddress={accountAddress}
+          />
         </>
       )}
     </>

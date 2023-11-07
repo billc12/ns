@@ -1,4 +1,10 @@
+import { useMemo } from 'react'
 import styled from 'styled-components'
+
+import Img1 from '@app/assets/nameDetail/img1.png'
+import AttributeLabel from '@app/components/AttributeLabel'
+import { ShowErrImg } from '@app/components/showErrImg'
+import { useGetNftOwner } from '@app/hooks/useGetNftOwner'
 
 import DrawerModel from '.'
 
@@ -6,6 +12,7 @@ type Props = {
   open: boolean
   onClose: () => void
   item: any
+  accountAddress: string
 }
 const ImgRound = styled.div`
   width: max-content;
@@ -29,16 +36,39 @@ const Title = styled.p`
   font-weight: 600;
   line-height: normal;
 `
-const NftDetailDrawer = ({ open, onClose, item }: Props) => {
+const switchErcType = (v: string) => {
+  switch (v) {
+    case 'erc6551':
+      return 'ERC-6551'
+    case 'erc1155':
+      return 'ERC-1155'
+    default:
+      return 'ERC-721'
+  }
+}
+
+const NftDetailDrawer = ({ open, onClose, item, accountAddress }: Props) => {
+  const { owner } = useGetNftOwner(item.token_id || '')
+  const isOwner = useMemo(() => {
+    return owner === accountAddress
+  }, [accountAddress, owner])
+  console.log('isOwner', isOwner)
+
   return (
     <DrawerModel onClose={onClose} open={open} title="Assets Details">
       <ImgRound>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={item.image_uri} alt="nft img" />
+        <ShowErrImg url={item.image_uri} defaultUrl={Img1.src} alt="nft img" />
       </ImgRound>
-      <Title>
+      <Title style={{ marginTop: 30 }}>
         {item.name || item.contract_name} - #{item.token_id}
       </Title>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 15 }}>
+        <AttributeLabel title="Contract address" content={item.contract_address} isCopy />
+        <AttributeLabel title="Token ID" content={item.token_id} isCopy />
+        <AttributeLabel title="Chain" content="Ethereum" />
+        <AttributeLabel title="Token Standard" content={switchErcType(item.erc_type)} isCopy />
+      </div>
     </DrawerModel>
   )
 }

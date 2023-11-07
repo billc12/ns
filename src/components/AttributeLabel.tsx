@@ -1,3 +1,4 @@
+import { isAddress } from '@ethersproject/address'
 import styled from 'styled-components'
 
 import { CopyButton } from '@app/components/Copy'
@@ -36,20 +37,15 @@ export const LabelContainer = styled.div`
 `
 type Props = {
   title: string
-  content: {
-    type: 'address' | 'text'
-    value: string
-  }
+  content: string
   isCopy?: boolean
 }
 const AttributeLabel = ({ title, content, isCopy }: Props) => {
   return (
     <LabelItem $copy={!!isCopy}>
       <LabelTitle>{title}</LabelTitle>
-      <LabelValue>
-        {content.type === 'address' ? shortenAddress(content.value) : content.value}
-      </LabelValue>
-      {isCopy && <CopyButton value={content.value} />}
+      <LabelValue>{isAddress(content) ? shortenAddress(content) : content}</LabelValue>
+      {isCopy && <CopyButton value={content} />}
     </LabelItem>
   )
 }

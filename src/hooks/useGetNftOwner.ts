@@ -6,9 +6,9 @@ export const useGetNftOwner = (tokenId: string) => {
   const contract = useErc721Contract('0x8F116BEFAf0a26E1B9e4Dd29F85EA1f48a7a0Ff2')
   const [owner, setOwner] = useState('')
   useEffect(() => {
-    if (!contract) return
+    if (!contract || !tokenId) return
     contract
-      .ownerOf('1')
+      .ownerOf(tokenId)
       .then((res) => {
         console.log('res123456', res)
       })
