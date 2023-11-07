@@ -1,5 +1,5 @@
 import type { BigNumber } from 'ethers'
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import usePrevious from 'react-use/lib/usePrevious'
 import styled, { css } from 'styled-components'
@@ -400,6 +400,7 @@ interface ActionButtonProps {
   discountInfo: DisInfo & { referral: string }
   normalisedName: string
   registrationData: RegistrationReducerDataItem
+  goComplete: () => void
 }
 
 export const ActionButton = ({
@@ -419,16 +420,16 @@ export const ActionButton = ({
   discountInfo,
   normalisedName,
   registrationData,
+  goComplete,
 }: ActionButtonProps) => {
   const { t } = useTranslation('register')
 
   const keySuffix = `${normalisedName}-${address}`
   const registerKey = `register-${keySuffix}`
-
   const registrationParams = useRegistrationParams({
     name: normalisedName,
     owner: address!,
-    registrationData,
+    registrationData: { ...registrationData, reverseRecord },
   })
   const { createTransactionFlow, getLatestTransaction, resumeTransactionFlow } =
     useTransactionFlow()
@@ -445,7 +446,7 @@ export const ActionButton = ({
   }
   useEffect(() => {
     if (registerTx?.stage === 'complete') {
-      callback({ reverseRecord, years, paymentMethodChoice, ...discountInfo })
+      goComplete()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [registerTx?.stage])
@@ -529,7 +530,7 @@ type Props = {
   initiateMoonpayRegistrationMutation: ReturnType<
     typeof useMoonpayRegistration
   >['initiateMoonpayRegistrationMutation']
-  setPricingData: (p: RegistrationStepData['pricing']) => void
+  goComplete: () => void
 }
 
 const PremiumText = styled.div`
@@ -763,7 +764,7 @@ const Pricing = ({
   resolverExists,
   moonpayTransactionStatus,
   initiateMoonpayRegistrationMutation,
-  setPricingData,
+  goComplete,
 }: Props) => {
   // const { t } = useTranslation('register')
   console.log('isPrimaryLoading', isPrimaryLoading)
@@ -854,16 +855,20 @@ const Pricing = ({
   const invitationNameLabel = (
     <InvitationNameLabel name={invitationName} setNameCallback={handleInviName} />
   )
-  useEffect(() => {
-    setPricingData({
+  const setDataCallback = useCallback(() => {
+    callback({
       ...registrationData,
       ...disInfo,
       discountCode: disInfo.discountCode,
       referral: invitationName,
       paymentMethodChoice,
+      reverseRecord,
     })
+  }, [callback, disInfo, invitationName, paymentMethodChoice, registrationData, reverseRecord])
+  useEffect(() => {
+    setDataCallback()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [disInfo, paymentMethodChoice, invitationName, registrationData])
+  }, [disInfo, invitationName])
   return (
     <StyledCard>
       <PremiumTitle nameDetails={nameDetails} />
@@ -955,6 +960,7 @@ const Pricing = ({
               discountInfo: { ...disInfo, referral: invitationName },
               normalisedName,
               registrationData,
+              goComplete,
             }}
           />
 

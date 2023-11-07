@@ -139,12 +139,8 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
     moonpayTransactionStatus,
   } = useMoonpayRegistration(dispatch, normalisedName, selected, item)
 
-  const setPricingData = (payload: RegistrationStepData['pricing']) => {
-    dispatch({
-      name: 'setPricingData',
-      payload,
-      selected,
-    })
+  const goComplete = () => {
+    dispatch({ name: 'lastStep', selected })
   }
   const pricingCallback = ({
     years,
@@ -212,7 +208,7 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
       dispatch({ name: 'setProfileData', payload: { records: newRecords }, selected })
     }
 
-    dispatch({ name: 'lastStep', selected })
+    // dispatch({ name: 'lastStep', selected })
   }
 
   const profileCallback = ({
@@ -323,7 +319,7 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
                   registrationData={item}
                   moonpayTransactionStatus={moonpayTransactionStatus}
                   initiateMoonpayRegistrationMutation={initiateMoonpayRegistrationMutation}
-                  setPricingData={setPricingData}
+                  goComplete={goComplete}
                 />
               ),
               profile: (
