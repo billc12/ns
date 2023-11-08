@@ -15,7 +15,7 @@ export const networkName = {
   '1337': 'local',
 }
 
-export const SUPPORT_NETWORK_CHAIN_IDS = [11155111]
+export const SUPPORT_NETWORK_CHAIN_IDS = [5]
 
 interface ResolverAddresses {
   [key: string]: EthAddress[]
@@ -33,16 +33,17 @@ export const RESOLVER_ADDRESSES: ResolverAddresses = {
   ],
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '5': [
-    '0xd7a4F6473f32aC2Af804B3686AE8F1932bC35750',
-    '0x342cf18D3e41DE491aa1a3067574C849AdA6a2Ad',
-    '0x19c2d5D0f035563344dBB7bE5fD09c8dad62b001',
-    '0x2800Ec5BAB9CE9226d19E0ad5BC607e3cfC4347E',
-    '0x121304143ea8101e69335f309e2062d299a234b5',
-    '0xff77b96d6bafcec0d684bb528b22e0ab09c70663',
-    '0x6e1b40ed2d626b97a43d2c12e48a6de49a03c7a4',
-    '0xc1ea41786094d1fbe5aded033b5370d51f7a3f96',
-    '0xbbe3fd189d18c8b73ba54e9dd01f89e6b3ee71f0',
-    '0x4B1488B7a6B320d2D721406204aBc3eeAa9AD329',
+    '0x58f9Aa6fac4B10EEE280941B64F0E8BCB07A81C7',
+    // '0xd7a4F6473f32aC2Af804B3686AE8F1932bC35750',
+    // '0x342cf18D3e41DE491aa1a3067574C849AdA6a2Ad',
+    // '0x19c2d5D0f035563344dBB7bE5fD09c8dad62b001',
+    // '0x2800Ec5BAB9CE9226d19E0ad5BC607e3cfC4347E',
+    // '0x121304143ea8101e69335f309e2062d299a234b5',
+    // '0xff77b96d6bafcec0d684bb528b22e0ab09c70663',
+    // '0x6e1b40ed2d626b97a43d2c12e48a6de49a03c7a4',
+    // '0xc1ea41786094d1fbe5aded033b5370d51f7a3f96',
+    // '0xbbe3fd189d18c8b73ba54e9dd01f89e6b3ee71f0',
+    // '0x4B1488B7a6B320d2D721406204aBc3eeAa9AD329',
   ],
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '11155111': [
@@ -62,9 +63,10 @@ export const NAMEWRAPPER_AWARE_RESOLVERS: ResolverAddresses = {
   '1': ['0x231b0Ee14048e9dCcD1d247744d114a4EB5E8E63'],
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '5': [
-    '0xd7a4F6473f32aC2Af804B3686AE8F1932bC35750',
-    '0x342cf18D3e41DE491aa1a3067574C849AdA6a2Ad',
-    '0x19c2d5D0f035563344dBB7bE5fD09c8dad62b001',
+    '0x58f9Aa6fac4B10EEE280941B64F0E8BCB07A81C7',
+    // '0xd7a4F6473f32aC2Af804B3686AE8F1932bC35750',
+    // '0x342cf18D3e41DE491aa1a3067574C849AdA6a2Ad',
+    // '0x19c2d5D0f035563344dBB7bE5fD09c8dad62b001',
   ],
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '11155111': ['0xc83DF738787589D9d31C4736aB10009827b2B954'],
@@ -96,4 +98,5 @@ export const WC_PROJECT_ID = '9b14144d470af1e03ab9d88aaa127332'
 // 102% of price as buffer for fluctuations
 export const CURRENCY_FLUCTUATION_BUFFER_PERCENTAGE = 100
 
-export const erc721ContractAddress = '0x8F116BEFAf0a26E1B9e4Dd29F85EA1f48a7a0Ff2'
+export const erc721ContractAddress = '0xA88621fa6294cE857f9744f56781B160e13Ba38B'
+//  '0x8F116BEFAf0a26E1B9e4Dd29F85EA1f48a7a0Ff2'

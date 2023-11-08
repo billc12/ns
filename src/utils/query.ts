@@ -41,7 +41,7 @@ if (process.env.NEXT_PUBLIC_PROVIDER) {
   )
 }
 
-const { provider, chains } = configureChains([sepolia], providerArray)
+const { provider, chains } = configureChains([goerli], providerArray)
 
 const connectors = getDefaultWallets({
   appName: 'ENS',
