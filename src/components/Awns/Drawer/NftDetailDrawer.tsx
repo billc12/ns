@@ -128,7 +128,7 @@ const NftDetailDrawer = ({ open, onClose, item, accountAddress }: Props) => {
         {item.name || item.contract_name} - #{item.token_id}
       </Title>
       <BtnContainer>{actionBtns}</BtnContainer>
-      {showInput && <TransferNFT onClose={handleCloseInput} />}
+      {showInput && <TransferNFT onClose={handleCloseInput} accountAddress={accountAddress} />}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 15 }}>
         <AttributeLabel title="Contract address" content={item.contract_address} isCopy />
         <AttributeLabel title="Token ID" content={item.token_id} isCopy />
