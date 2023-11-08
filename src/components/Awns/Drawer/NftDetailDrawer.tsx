@@ -102,41 +102,36 @@ const NftDetailDrawer = ({ open, onClose, item, accountAddress }: Props) => {
     handleCloseInput()
   }
 
-  const handleCreateAccount = () => {
-    console.log('createAccountCallback')
-
-    createAccountCallback?.()
-  }
   const actionBtns = useMemo(() => {
     const btnList = []
-    // if (isOwner) {
-    btnList.push(
-      <AuctionBtn onClick={handleShowInput}>
-        <AuctionTitle>Transfer</AuctionTitle>
-      </AuctionBtn>,
-    )
-    // }
-    // if (!isDeploy && isOwner) {
-    btnList.push(
-      <AuctionBtn className="deploy" onClick={() => handleCreateAccount()}>
-        <AuctionTitle>Deploy NFT-Wrapped Wallet</AuctionTitle>
-      </AuctionBtn>,
-    )
-    // }
-    // if (isDeploy) {
-    // btnList.push(
-    //   <>
-    //     <AuctionBtn>
-    //       <AuctionTitle>View on Explore</AuctionTitle>
-    //     </AuctionBtn>
-    //     <AuctionBtn>
-    //       <AuctionTitle>View on Opensea</AuctionTitle>
-    //     </AuctionBtn>
-    //   </>,
-    // )
-    // }
+    if (isOwner) {
+      btnList.push(
+        <AuctionBtn onClick={handleShowInput}>
+          <AuctionTitle>Transfer</AuctionTitle>
+        </AuctionBtn>,
+      )
+    }
+    if (!isDeploy && isOwner) {
+      btnList.push(
+        <AuctionBtn className="deploy" onClick={() => createAccountCallback?.()}>
+          <AuctionTitle>Deploy NFT-Wrapped Wallet</AuctionTitle>
+        </AuctionBtn>,
+      )
+    }
+    if (isDeploy) {
+      btnList.push(
+        <>
+          <AuctionBtn>
+            <AuctionTitle>View on Explore</AuctionTitle>
+          </AuctionBtn>
+          <AuctionBtn>
+            <AuctionTitle>View on Opensea</AuctionTitle>
+          </AuctionBtn>
+        </>,
+      )
+    }
     return btnList
-  }, [])
+  }, [createAccountCallback, isDeploy, isOwner])
 
   return (
     <DrawerModel onClose={closeDrawer} open={open} title="Assets Details">
