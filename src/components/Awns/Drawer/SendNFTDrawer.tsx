@@ -88,6 +88,7 @@ const Page = ({
   const { nftId, contractAddress } = useNameErc721Assets(address)
   const signer = useSigner()
   const chainId = useChainId()
+  console.log('nftId123456', nftId)
 
   const [receiveAddress, setReceiveAddress] = useState<string>('')
   const [senNFTId, SetSenNFTId] = useState<string>('')

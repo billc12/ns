@@ -31,7 +31,15 @@ const Container = styled.div`
     height: 48px;
   }
 `
-const Page = ({ onClose, accountAddress }: { onClose: () => void; accountAddress: string }) => {
+const Page = ({
+  onClose,
+  accountAddress,
+  item,
+}: {
+  onClose: () => void
+  accountAddress: string
+  item: any
+}) => {
   const {
     register,
     watch,
@@ -51,22 +59,15 @@ const Page = ({ onClose, accountAddress }: { onClose: () => void; accountAddress
   })
   const address = watch('address')
   // const from = '0xA550a11dE495dC0c07e25f2341463abFf85cb20f'
-  const transferNFT = useTransferNFT({
+  const { callback: transferNFT, loading } = useTransferNFT({
     account: accountAddress as `0x${string}`,
     recipientAddress: address as any,
     tokenContract: erc721ContractAddress,
-    tokenId: '40',
+    tokenId: item.token_id,
   })
   const hasErrors = Object.keys(formState.errors || {}).length > 0
-  const onSubmit = (data: any) => {
-    console.log('onSubmit132', data)
+  const onSubmit = () => {
     transferNFT()
-      ?.then((res) => {
-        console.log('resss123456', res)
-      })
-      .catch((err1) => {
-        console.log('err13456789', err1)
-      })
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -84,7 +85,7 @@ const Page = ({ onClose, accountAddress }: { onClose: () => void; accountAddress
           }}
         />
         <BackButton onClick={onClose}>cancel</BackButton>
-        <NextButton type="submit" disabled={!address || hasErrors}>
+        <NextButton type="submit" loading={loading} disabled={!address || hasErrors || loading}>
           send
         </NextButton>
       </Container>
