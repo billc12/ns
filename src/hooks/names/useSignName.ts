@@ -75,14 +75,15 @@ const useSignName = ({ name, account, discountCode, useScenes }: Params) => {
     async () => {
       try {
         const result = await fetchedGetSignName({ name, account, discountCode, useScenes })
-        // let isUsed = false
-        // if (discountCode) {
-        //   const disUseCount = (await contract?.discountsUsed(discountCode)) || 0
-        //   isUsed = disUseCount === result.discountCount && result.discountCount > 0
-        // }
-        // if (isUsed) {
-        //   result.discount = defaultDis
-        // }
+        let isUsed = false
+        if (discountCode) {
+          const disUseCount = (await contract?.discountsUsed('D3A0O1')) || 0
+          isUsed = disUseCount === result.discountCount && result.discountCount > 0
+        }
+        if (isUsed) {
+          result.discount = defaultDis
+        }
+
         if (result.discountBinding !== emptyAddress && result.discountBinding !== address) {
           result.discount = defaultDis
         }
