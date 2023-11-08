@@ -211,6 +211,9 @@ importers:
       react-qr-code:
         specifier: ^2.0.12
         version: 2.0.12(react@17.0.2)
+      react-toastify:
+        specifier: ^9.1.3
+        version: 9.1.3(react-dom@17.0.2)(react@17.0.2)
       react-transition-state:
         specifier: ^1.1.5
         version: 1.1.5(react-dom@17.0.2)(react@17.0.2)
@@ -15873,6 +15876,17 @@ packages:
       tslib: registry.npmmirror.com/tslib@2.4.1
     dev: false
 
+  /react-toastify@9.1.3(react-dom@17.0.2)(react@17.0.2):
+    resolution: {integrity: sha512-fPfb8ghtn/XMxw3LkxQBk3IyagNpF/LIKjOBflbexr2AWxAH1MJgvnESwEwBn9liLFXgTKWgBSdZpw9m4OTHTg==}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      clsx: 1.2.1
+      react: 17.0.2
+      react-dom: 17.0.2(react@17.0.2)
+    dev: false
+
   /react-transition-state@1.1.5(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-ITY2mZqc2dWG2eitJkYNdcSFW8aKeOlkL2A/vowRrLL8GH3J6Re/SpD/BLvQzrVOTqjsP0b5S9N10vgNNzwMUQ==}
     peerDependencies:
@@ -20082,7 +20096,7 @@ packages:
       bind-decorator: registry.npmmirror.com/bind-decorator@1.0.11
       bn.js: 5.2.1
       buffer: registry.npmmirror.com/buffer@6.0.3
-      clsx: registry.npmmirror.com/clsx@1.2.1
+      clsx: 1.2.1
       eth-block-tracker: registry.npmmirror.com/eth-block-tracker@6.1.0
       eth-json-rpc-filters: registry.npmmirror.com/eth-json-rpc-filters@5.1.0
       eth-rpc-errors: registry.npmmirror.com/eth-rpc-errors@4.0.2
@@ -21866,13 +21880,6 @@ packages:
       string-width: registry.npmmirror.com/string-width@4.2.3
       strip-ansi: registry.npmmirror.com/strip-ansi@6.0.1
       wrap-ansi: registry.npmmirror.com/wrap-ansi@7.0.0
-    dev: true
-
-  registry.npmmirror.com/clsx@1.2.1:
-    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/clsx/-/clsx-1.2.1.tgz}
-    name: clsx
-    version: 1.2.1
-    engines: {node: '>=6'}
     dev: true
 
   registry.npmmirror.com/color-convert@1.9.3:

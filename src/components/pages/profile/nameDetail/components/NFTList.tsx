@@ -10,7 +10,6 @@ import Img6 from '@app/assets/nameDetail/img6.png'
 import NftDetailDrawer from '@app/components/Awns/Drawer/NftDetailDrawer'
 import { TChainId, getNftSupportChainId, useGetUserAllNFT } from '@app/hooks/requst/useGetUserNFT'
 import { useSBTIsDeployList } from '@app/hooks/useCheckAccountDeployment'
-import { useGetNftOwner } from '@app/hooks/useGetNftOwner'
 
 // import { useNameErc721Assets } from '@app/hooks/useNameDetails'
 import { Assets } from '../children/Assets'
@@ -145,8 +144,6 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
   const chainId = useChainId()
   const { address } = useAccount()
   // const { data: nftData, loading: NftLoading } = useGetUserNFT({ name: 'apr.aw' })
-  const { owner } = useGetNftOwner('9359')
-  console.log('owner123', owner)
 
   const { data: _allNftList, isLoading: NftLoading } = useGetUserAllNFT({
     account: address || accountAddress,

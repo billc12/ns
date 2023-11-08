@@ -4,6 +4,8 @@ import { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 import { ReactElement, ReactNode } from 'react'
 import { I18nextProvider } from 'react-i18next'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 // import { IntercomProvider } from 'react-use-intercom'
 import { ThemeProvider, createGlobalStyle, keyframes } from 'styled-components'
 import { WagmiConfig } from 'wagmi'
@@ -157,6 +159,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                         <SyncDroppedTransaction>
                           <Notifications />
                           <Basic>{getLayout(<Component {...pageProps} />)}</Basic>
+                          <ToastContainer />
                         </SyncDroppedTransaction>
                       </TransactionFlowProvider>
                     </SyncProvider>
