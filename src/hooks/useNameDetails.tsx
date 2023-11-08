@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useEns } from '@app/utils/EnsProvider'
+import { erc721ContractAddress } from '@app/utils/constants'
 import { makeDisplay } from '@app/utils/currency'
 import { formatFullExpiry } from '@app/utils/utils'
 
@@ -213,8 +214,7 @@ export const useNameErc721Assets = (address: string | undefined) => {
   // const [contractAddress, setContractAddress] = useState<`0x${string}`>(
   //   '0x8F116BEFAf0a26E1B9e4Dd29F85EA1f48a7a0Ff2',
   // )
-  const contractAddress = '0x8F116BEFAf0a26E1B9e4Dd29F85EA1f48a7a0Ff2' as `0x${string}`
-  const contract = useErc721Contract(contractAddress)
+  const contract = useErc721Contract()
   const [nftId, setNftId] = useState<string[]>([])
   const [loading, setLoading] = useState<boolean>()
   useEffect(() => {
@@ -238,6 +238,6 @@ export const useNameErc721Assets = (address: string | undefined) => {
   return {
     loading,
     nftId,
-    contractAddress,
+    contractAddress: erc721ContractAddress,
   }
 }

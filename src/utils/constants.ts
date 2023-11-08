@@ -95,3 +95,5 @@ export const WC_PROJECT_ID = '9b14144d470af1e03ab9d88aaa127332'
 
 // 102% of price as buffer for fluctuations
 export const CURRENCY_FLUCTUATION_BUFFER_PERCENTAGE = 100
+
+export const erc721ContractAddress = '0x8F116BEFAf0a26E1B9e4Dd29F85EA1f48a7a0Ff2'
