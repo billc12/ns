@@ -59,6 +59,7 @@ export function useSBTIsDeployList(
       }),
     )
   }, [erc721Address, tokenIds, tokenboundClient])
+  console.log('getAllAccount', getAllAccount)
 
   return useContractIsDeployList(getAllAccount)
 }

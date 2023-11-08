@@ -10,7 +10,9 @@ import {
 } from '@app/components/pages/profile/nameDetail/components/nameInfo'
 import { ShowErrImg } from '@app/components/showErrImg'
 import { useSBTIsDeployList } from '@app/hooks/useCheckAccountDeployment'
+import { useCreateAccount } from '@app/hooks/useCreateAccount'
 import { useGetNftOwner } from '@app/hooks/useGetNftOwner'
+import { erc721ContractAddress } from '@app/utils/constants'
 
 import DrawerModel from '.'
 
@@ -52,6 +54,18 @@ const BtnContainer = styled.div`
       background: #f7fafc;
     }
   }
+  & > .deploy {
+    flex: 2;
+    border-radius: 8px;
+    & p {
+      color: #fff;
+    }
+
+    &,
+    &:hover {
+      background: linear-gradient(91deg, #7996fd 14.65%, #65cefc 97.7%);
+    }
+  }
 `
 const switchErcType = (v: string) => {
   switch (v) {
@@ -76,6 +90,7 @@ const NftDetailDrawer = ({ open, onClose, item, accountAddress }: Props) => {
     item.token_id ? [item.token_id] : undefined,
   )?.[0]
   console.log('isDeploy', isDeploy)
+  const createAccountCallback = useCreateAccount(erc721ContractAddress, '58')
   const handleShowInput = () => {
     setShowInput(true)
   }
@@ -85,6 +100,12 @@ const NftDetailDrawer = ({ open, onClose, item, accountAddress }: Props) => {
   const closeDrawer = () => {
     onClose()
     handleCloseInput()
+  }
+
+  const handleCreateAccount = () => {
+    console.log('createAccountCallback')
+
+    createAccountCallback?.()
   }
   const actionBtns = useMemo(() => {
     const btnList = []
@@ -96,23 +117,23 @@ const NftDetailDrawer = ({ open, onClose, item, accountAddress }: Props) => {
     )
     // }
     // if (!isDeploy && isOwner) {
-    // btnList.push(
-    //   <AuctionBtn>
-    //     <AuctionTitle>Deploy NFT-Wrapped Wallet</AuctionTitle>
-    //   </AuctionBtn>,
-    // )
+    btnList.push(
+      <AuctionBtn className="deploy" onClick={() => handleCreateAccount()}>
+        <AuctionTitle>Deploy NFT-Wrapped Wallet</AuctionTitle>
+      </AuctionBtn>,
+    )
     // }
     // if (isDeploy) {
-    btnList.push(
-      <>
-        <AuctionBtn>
-          <AuctionTitle>View on Explore</AuctionTitle>
-        </AuctionBtn>
-        <AuctionBtn>
-          <AuctionTitle>View on Opensea</AuctionTitle>
-        </AuctionBtn>
-      </>,
-    )
+    // btnList.push(
+    //   <>
+    //     <AuctionBtn>
+    //       <AuctionTitle>View on Explore</AuctionTitle>
+    //     </AuctionBtn>
+    //     <AuctionBtn>
+    //       <AuctionTitle>View on Opensea</AuctionTitle>
+    //     </AuctionBtn>
+    //   </>,
+    // )
     // }
     return btnList
   }, [])
