@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useSigner } from 'wagmi'
 
 import { useEns } from '@app/utils/EnsProvider'
-import { erc721ContractAddress } from '@app/utils/constants'
+import { erc20ContractAddress, erc721ContractAddress } from '@app/utils/constants'
 
 export const useEthRegistrarControllerContract = () => {
   const [contract, setContract] = useState<ETHRegistrarController>()
@@ -26,7 +26,8 @@ export const useEthRegistrarControllerContract = () => {
   return contract
 }
 
-export const useErc20Contract = (contractsAddress: `0x${string}`) => {
+export const useErc20Contract = (contractAddress?: string) => {
+  const contractsAddress = contractAddress || erc20ContractAddress
   const [contract, setContract] = useState<ERC20>()
   const ens = useEns()
   const signer = useSigner()
@@ -43,7 +44,6 @@ export const useErc20Contract = (contractsAddress: `0x${string}`) => {
     }
     func()
   }, [contractsAddress, ens.contracts, signer.data])
-
   return contract
 }
 

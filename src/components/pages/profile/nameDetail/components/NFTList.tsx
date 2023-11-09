@@ -11,13 +11,8 @@ import NftDetailDrawer from '@app/components/Awns/Drawer/NftDetailDrawer'
 import { EmptyData } from '@app/components/EmptyData'
 import { useGetUserAllNFT } from '@app/hooks/requst/useGetUserNFT'
 import { useSBTIsDeployList } from '@app/hooks/useCheckAccountDeployment'
-import { useNameErc721Assets } from '@app/hooks/useNameDetails'
 
-// import { useNameErc721Assets } from '@app/hooks/useNameDetails'
 import { Assets } from '../children/Assets'
-import { data as mockData } from './goerliMockData'
-
-// import { Traits } from '../children/Traits'
 
 const CenterRightStyle = styled.div`
   border-radius: 10px;
@@ -145,30 +140,11 @@ const AuctionTitle2 = styled.p`
 `
 const GameList = ({ accountAddress }: { accountAddress: string }) => {
   const chainId = useChainId()
-  // const { address } = useAccount()
-  // const { data: nftData, loading: NftLoading } = useGetUserNFT({ name: 'apr.aw' })
 
-  const { data: _allNftList, isLoading: NftLoading } = useGetUserAllNFT({
+  const { data: nftData, isLoading: NftLoading } = useGetUserAllNFT({
     account: accountAddress,
     chainId,
   })
-  const { nftId } = useNameErc721Assets(accountAddress)
-  const mockDataList = useMemo(() => {
-    if (chainId === 5) {
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      const data = nftId.map((i) => ({ ...mockData, token_id: i, owner: accountAddress }))
-      return data
-    }
-    return []
-  }, [accountAddress, chainId, nftId])
-
-  const nftData = useMemo(() => {
-    if (chainId === 5) {
-      return mockDataList
-    }
-    if (!_allNftList || !_allNftList.length) return []
-    return _allNftList.map((t) => t.assets).flat(1)
-  }, [_allNftList, chainId, mockDataList])
 
   const [isPackUp, setIsPackUp] = useState<boolean>(false)
   const [isShowAll, setIsShowAll] = useState<boolean>(false)
@@ -186,18 +162,9 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
   const deploymentMap = useSBTIsDeployList(contractAddressList, tokenIdList)
 
   const erc6551List = useMemo(() => {
-    if (!deploymentMap) return []
+    if (!deploymentMap || !nftData) return []
     let allList = []
-    if (chainId === 5) {
-      allList = nftId.map((i) => ({
-        ...mockData,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        token_id: i,
-        owner: accountAddress,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        erc_type: '6551',
-      }))
-    }
+
     if (chainId === 1) {
       allList = nftData
         .filter((t, i) => deploymentMap[i])
@@ -212,7 +179,7 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
     }
     return allList
     // eslint-disable-next-line array-callback-return
-  }, [accountAddress, chainId, deploymentMap, isShowAll, nftData, nftId])
+  }, [chainId, deploymentMap, isShowAll, nftData])
   console.log('nftData123465', deploymentMap, nftData)
   const [drawerInfo, setDrawerInfo] = useState({
     open: false,
@@ -287,7 +254,7 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
           />
         </>
       )}
-      {!nftData.length && <EmptyData />}
+      {nftData && !nftData.length && <EmptyData />}
     </>
   )
 }

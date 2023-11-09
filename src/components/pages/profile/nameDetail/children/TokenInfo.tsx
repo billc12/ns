@@ -5,6 +5,7 @@ import { Typography } from '@ensdomains/thorin'
 
 import ColumnBarIcon from '@app/assets/ColumnBarIcon.svg'
 import { CopyButton } from '@app/components/Copy'
+import { AssetsHistoryCallback } from '@app/hooks/requst/useProfileCallback'
 import { shortenAddress } from '@app/utils/utils'
 
 import { Tokens } from './Tokens'
@@ -67,6 +68,9 @@ const StateTitle = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  &.confirmed {
+    color: #80829f;
+  }
 `
 const AddressTitle = styled.p`
   color: #80829f;
@@ -89,6 +93,10 @@ const PriceTitle = styled.p`
 `
 const ToeknTransaction = ({ accountAddress }: { accountAddress: string }) => {
   const transactionList = [1, 2, 3, 4, 5, 6]
+
+  const { data } = AssetsHistoryCallback('eth', '0x5aEFAA34EaDaC483ea542077D30505eF2472cfe3')
+  console.log('data1234657', data)
+
   return (
     <>
       {transactionList.map((i) => (
@@ -133,6 +141,37 @@ const Page = ({ accountAddress }: { accountAddress: string }) => {
         {curTab === Tab.Trancaction && <ToeknTransaction accountAddress={accountAddress} />}
       </TokensStyle>
     </>
+    /* <>
+      {data &&
+        !!data.history_list.length &&
+        data.history_list.map((t, i) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <Round key={`${t.cate_id} - ${i}`}>
+            <AuctionTitle style={{ textTransform: 'capitalize' }}>
+              {t.cate_id || 'Unknown'}
+            </AuctionTitle>
+            <StateTitle className={t.tx?.status === 1 ? 'confirmed' : ''}>
+              {t.tx?.status === 1 ? 'Confirmed' : 'Confirmed'}
+            </StateTitle>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <AddressTitle>{shortenAddress(accountAddress)}</AddressTitle>
+              <CopyButton value={accountAddress} />
+            </div>
+            <PriceTitle>
+              {' '}
+              {t.sends?.length
+                ? `-${t.sends[0].amount} ${
+                    data.token_dict[t.cate_id] ? data.token_dict[t.cate_id].symbol : 'Unknown'
+                  }`
+                : t.receives?.length
+                ? `+${t.receives[0].amount} ${
+                    data.token_dict[t.cate_id] ? data.token_dict[t.cate_id].symbol : 'Unknown'
+                  }`
+                : ''}
+            </PriceTitle>
+          </Round>
+        ))}
+    </> */
   )
 }
 

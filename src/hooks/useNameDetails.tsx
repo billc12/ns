@@ -167,7 +167,7 @@ export const useNameDetails = (name: string, skipGraph = false) => {
 
 export const useNameErc20Assets = (address: string | undefined) => {
   const contractAddress = erc20ContractAddress
-  const contract = useErc20Contract(contractAddress)
+  const contract = useErc20Contract()
   const [tokenBalance, setTokenBalance] = useState<string>()
   const [tokenSymbol, setTokenSymbol] = useState<string>()
   const [tokenName, setTokenName] = useState<string>()

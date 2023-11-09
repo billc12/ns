@@ -4,7 +4,7 @@ import { Typography } from '@ensdomains/thorin'
 
 import USDTImg from '@app/assets/USDT.png'
 import useGetTokenList from '@app/hooks/requst/useGetTokenList'
-import { useChainId } from '@app/hooks/useChainId'
+import { useBalanceOf } from '@app/hooks/useBalanceOf'
 
 // import { makeDisplay } from '@app/utils/currency'
 
@@ -41,31 +41,36 @@ const RightStyle = styled.div`
   display: grid;
   gap: 12px;
 `
-
+const Item = ({ item, accountAddress }: { item: any; accountAddress: string }) => {
+  const balance = useBalanceOf(item.address, accountAddress, item.decimals || 18)
+  return (
+    <AssetsItemStyle>
+      <LeftStyle>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={item.logoUrl || USDTImg.src} alt="eth" />
+        <div style={{ display: 'grid', gap: '12px' }}>
+          <NameStyle>{item.name}</NameStyle>
+          <ContentTextStyle>{item.symbol}</ContentTextStyle>
+        </div>
+      </LeftStyle>
+      <RightStyle>
+        <NameStyle style={{ textAlign: 'right' }}>
+          {balance} {item.symbol}
+        </NameStyle>
+        <ContentTextStyle style={{ textAlign: 'right' }}>${item.price} USD</ContentTextStyle>
+      </RightStyle>
+    </AssetsItemStyle>
+  )
+}
 export function Tokens({ accountAddress }: { accountAddress: string }) {
-  const chainId = useChainId()
-  const { data: tokenList } = useGetTokenList({ account: accountAddress, chain: chainId })
+  const { data: tokenList } = useGetTokenList({ account: accountAddress, chain: 5 })
+  console.log('tokenList123', tokenList)
 
   return (
     <>
       {tokenList?.map((item, index) => (
         // eslint-disable-next-line react/no-array-index-key
-        <AssetsItemStyle key={`${item.id}-${index}`}>
-          <LeftStyle>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={item.logo_url || USDTImg.src} alt="eth" />
-            <div style={{ display: 'grid', gap: '12px' }}>
-              <NameStyle>{item.name}</NameStyle>
-              <ContentTextStyle>{item.symbol}</ContentTextStyle>
-            </div>
-          </LeftStyle>
-          <RightStyle>
-            <NameStyle style={{ textAlign: 'right' }}>
-              {item.amount} {item.symbol}
-            </NameStyle>
-            <ContentTextStyle style={{ textAlign: 'right' }}>${item.price} USD</ContentTextStyle>
-          </RightStyle>
-        </AssetsItemStyle>
+        <Item key={`${item.address}-${index}`} item={item} accountAddress={accountAddress} />
       ))}
     </>
   )

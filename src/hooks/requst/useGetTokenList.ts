@@ -1,3 +1,4 @@
+import { isAddress } from '@ethersproject/address'
 import { useMemo, useState } from 'react'
 import { useQuery } from 'wagmi'
 
@@ -12,12 +13,21 @@ interface IFnProps {
   chain: number
   account: string
 }
+interface IResultItem {
+  address: string
+  name: string
+  symbol: string
+  logoUrl: string
+  price: number
+  amount: number
+  rawAmount: number
+}
 const _url = `${process.env.NEXT_PUBLIC_BASE_URL}/rpc/token/list`
 const fetchGetTokenList = async (_params: Params) => {
   const query = new URLSearchParams(Object.entries(_params)).toString()
   const url = `${_url}?${query}`
   const result = await fetch(url)
-  return result.json<{ data: any[] }>()
+  return result.json<{ data: IResultItem[] }>()
 }
 const useGetTokenList = ({ account, chain }: IFnProps) => {
   const [loading, setLoading] = useState<boolean>(false)
@@ -39,7 +49,15 @@ const useGetTokenList = ({ account, chain }: IFnProps) => {
         })
         setLoading(false)
 
-        return res.data
+        return res.data.map((item: any) => ({
+          address: isAddress(item.id) ? item.id : '0x0000000000000000000000000000000000000000',
+          name: item.name,
+          symbol: item.symbol,
+          logoUrl: item.logo_url,
+          price: item.price,
+          amount: item.amount,
+          rawAmount: item.raw_amount,
+        }))
       } catch {
         setLoading(false)
         return undefined

@@ -1,9 +1,11 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useQuery } from 'wagmi'
 
+import { data as mockData } from '@app/components/pages/profile/nameDetail/components/goerliMockData'
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 
 import useGetNftAddress from '../useGetNftAddress'
+import { useNameErc721Assets } from '../useNameDetails'
 
 // export type TChainId = 1 | 56 | 137 | 324
 
@@ -84,19 +86,35 @@ export const useGetUserAllNFT = ({
   if (ercType) {
     params.ercType = ercType
   }
+  const { nftId } = useNameErc721Assets(account)
+  const mockDataList = useMemo(() => {
+    if (chainId === 5) {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      const data = nftId.map((i) => ({ ...mockData, token_id: i, owner: account }))
+      return data
+    }
+    return []
+  }, [account, chainId, nftId])
+
   const query = new URLSearchParams(Object.entries(params)).toString()
   const { data, isLoading } = useQuery(
     [chainId, account, ercType],
     async () => {
+      // console.log('mockDataList', mockDataList)
+      if (chainId === 5) {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        return []
+      }
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL_V3}/user/nftscan/all?${query}`,
       ).then((r) => r.json<any>())
-      console.log('res132456', res)
-      return res.data.data as any[]
+      const list = res.data.data.map((t: any) => t.assets).flat(1)
+      return list as any[]
     },
     { enabled: !!chainId && !!account },
   )
-  return { data, isLoading }
+
+  return { data: chainId === 5 ? mockDataList : data, isLoading }
 }
 export interface IRefreshParams {
   contractAddress: string
