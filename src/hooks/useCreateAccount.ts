@@ -23,7 +23,7 @@ export const useCreateAccount = (tokenContract: string, tokenId: string) => {
       })
       .then((res) => {
         console.log('prepareCreateAccount ', res)
-        setBody({ to: res.to, value: res.value, data: res.data })
+        setBody({ to: res.to as string, value: res.value, data: res.data as string })
       })
   }, [tokenContract, tokenId, tokenboundClient])
 
