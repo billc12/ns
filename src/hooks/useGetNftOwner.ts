@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 
+import { erc721ContractAddress } from '@app/utils/constants'
+
 import { useErc721Contract } from './useContract'
 
 export const useGetNftOwner = (tokenId: string) => {
-  const contract = useErc721Contract()
+  const contract = useErc721Contract(erc721ContractAddress)
   const [owner, setOwner] = useState('')
   useEffect(() => {
     if (!contract || !tokenId) return

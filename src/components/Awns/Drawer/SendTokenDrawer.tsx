@@ -1,20 +1,18 @@
 // import { isAddress } from '@ethersproject/address'
 import { isAddress } from '@ethersproject/address'
-import { TokenboundClient } from '@tokenbound/sdk'
 import { useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
-import { useBalance, useSigner } from 'wagmi'
 
 import { Input, Select, Typography, mq } from '@ensdomains/thorin'
 
-import ETHImg from '@app/assets/ETH-img.png'
 import USDTImg from '@app/assets/USDT.png'
 import { NextButton } from '@app/components/Awns/Dialog'
+import useGetTokenList from '@app/hooks/requst/useGetTokenList'
+import { useBalanceOf } from '@app/hooks/useBalanceOf'
 import { useChainId } from '@app/hooks/useChainId'
+import { useTokenboundClient } from '@app/hooks/useTokenboundClient'
 // import useGetTokenList from '@app/hooks/requst/useGetTokenList'
-import { useNameErc20Assets } from '@app/hooks/useNameDetails'
 import { TransactionDialogPassthrough } from '@app/transaction-flow/types'
-import { makeDisplay } from '@app/utils/currency'
 import isZero from '@app/utils/isZero'
 
 import DrawerModel from '.'
@@ -111,51 +109,22 @@ const Page = ({
   open: boolean
   onClose: () => void
 }) => {
-  const signer = useSigner()
-
-  const { tokenBalance, tokenSymbol, tokenName, contractAddress, decimals } =
-    useNameErc20Assets(address)
-  const { data: balance } = useBalance({ address: address as `0x${string}` | undefined })
+  const chainId = useChainId()
+  const { data: tokenList } = useGetTokenList({ account: address, chain: chainId })
+  console.log('tokenList11', tokenList)
 
   const [receiveAddress, setReceiveAddress] = useState<string>('')
   const [sendAmount, setSendAmount] = useState<string>('')
-  const [senToken, setSenToken] = useState<string>('')
-  const chainId = useChainId()
+  const [senToken, setSenToken] = useState<any>()
 
-  const checkToken: { tokenBalance: number; tokenSymbol: string | undefined } | undefined =
-    useMemo(() => {
-      if (contractAddress && contractAddress === senToken) {
-        return {
-          tokenBalance: Number(tokenBalance?.slice(0, -3)),
-          tokenSymbol,
-        }
-      }
-      if (senToken && isZero(senToken)) {
-        return {
-          tokenBalance: Number(
-            makeDisplay(balance?.value!, undefined, 'eth', balance?.decimals).slice(0, -3),
-          ),
-          tokenSymbol: balance?.symbol,
-        }
-      }
-      return undefined
-    }, [
-      balance?.decimals,
-      balance?.symbol,
-      balance?.value,
-      contractAddress,
-      senToken,
-      tokenBalance,
-      tokenSymbol,
-    ])
-
-  const tokenboundClient = new TokenboundClient({
-    signer: signer.data,
-    chainId,
-    // implementationAddress: '0x2d25602551487c3f3354dd80d76d54383a243358',
-    // registryAddress: '0x02101dfB77FDE026414827Fdc604ddAF224F0921',
-  })
-
+  const balance = useBalanceOf(senToken?.address, address, senToken?.decimals || 18)
+  const tokenboundClient = useTokenboundClient()
+  /*
+   account: address as `0x${string}`,
+    amount: Number(sendAmount),
+    recipientAddress: receiveAddress as `0x${string}`,
+  
+  */
   const SendTokenCallback = async () => {
     if (isZero(senToken)) {
       const ethRes = await tokenboundClient?.transferETH({
@@ -169,13 +138,35 @@ const Page = ({
         account: address as `0x${string}`,
         amount: Number(sendAmount),
         recipientAddress: receiveAddress as `0x${string}`,
-        erc20tokenAddress: contractAddress as `0x${string}`,
-        erc20tokenDecimals: decimals,
+        erc20tokenAddress: senToken?.address as `0x${string}`,
+        erc20tokenDecimals: senToken?.decimals || 18,
       })
       console.log('senToken=>', erc20Res)
     }
   }
 
+  const isCanSend = useMemo(() => {
+    if (!balance || !sendAmount || !receiveAddress || !isAddress(receiveAddress)) {
+      return false
+    }
+    if (Number(balance) >= Number(sendAmount)) {
+      return true
+    }
+    return false
+  }, [balance, receiveAddress, sendAmount])
+
+  const optionsList = useMemo(() => {
+    if (!tokenList || !tokenList?.length) return []
+    return tokenList?.map((t) => ({
+      value: t,
+      label: t.symbol,
+      prefix: (
+        <div style={{ height: 16, width: 16 }}>
+          <StyledImg src={USDTImg.src} />
+        </div>
+      ),
+    })) as any
+  }, [tokenList])
   return (
     <DrawerModel open={open} onClose={onClose} title="Send Assets">
       <Container>
@@ -197,7 +188,7 @@ const Page = ({
           <Label>Assets</Label>
           {senToken && (
             <Label>
-              Balance:{checkToken?.tokenBalance || '0.00'} {checkToken?.tokenSymbol || '--'}
+              Balance:{balance || '0.00'} {senToken?.symbol || '--'}
             </Label>
           )}
         </div>
@@ -205,26 +196,7 @@ const Page = ({
           label=""
           autocomplete
           value={senToken}
-          options={[
-            {
-              value: contractAddress,
-              label: tokenName,
-              prefix: (
-                <div style={{ height: 16, width: 16 }}>
-                  <StyledImg src={USDTImg.src} />
-                </div>
-              ),
-            },
-            {
-              value: '0x0000000000000000000000000000000000000000',
-              label: 'SepoliaETH',
-              prefix: (
-                <div style={{ height: 16, width: 16 }}>
-                  <StyledImg src={ETHImg.src} />
-                </div>
-              ),
-            },
-          ]}
+          options={optionsList}
           placeholder="Select Token"
           onChange={(e) => {
             console.log('e.target.value', e.target.value)
@@ -240,10 +212,10 @@ const Page = ({
           }}
         >
           <Label>Amount</Label>
-          {!!senToken && checkToken && (
+          {!!senToken && !!balance && (
             <MaxButtonStyle
               onClick={() => {
-                setSendAmount(checkToken.tokenBalance.toString())
+                setSendAmount(balance)
               }}
             >
               Max
@@ -260,8 +232,8 @@ const Page = ({
             const value = e.target.value as string
             // eslint-disable-next-line no-restricted-globals
             if (!value || !isNaN(Number(value))) {
-              if (checkToken?.tokenBalance && Number(value) >= Number(checkToken.tokenBalance)) {
-                setSendAmount(checkToken.tokenBalance.toString())
+              if (balance && Number(value) >= Number(balance)) {
+                setSendAmount(balance)
               } else {
                 setSendAmount(value)
               }
@@ -270,15 +242,7 @@ const Page = ({
         />
 
         <Row>
-          <NextButton
-            disabled={
-              !checkToken?.tokenBalance ||
-              !sendAmount ||
-              !receiveAddress ||
-              !isAddress(receiveAddress)
-            }
-            onClick={() => SendTokenCallback()}
-          >
+          <NextButton disabled={!isCanSend} onClick={() => SendTokenCallback()}>
             Send
           </NextButton>
         </Row>

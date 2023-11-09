@@ -14,12 +14,14 @@ export const useTransferNFT = ({
   tokenContract,
   tokenId,
   recipientAddress,
+  amount,
 }: {
   account: `0x${string}`
   tokenType?: 'ERC721'
   tokenContract: `0x${string}`
   tokenId: string
   recipientAddress: `0x${string}` | `${string}.eth`
+  amount?: number
 }) => {
   const chainId = useChainId()
   const { data: signer } = useSigner()
@@ -29,7 +31,6 @@ export const useTransferNFT = ({
     if (!chainId || !signer) return
     return new TokenboundClient({ chainId, signer })
   }, [chainId, signer])
-
   const callback = useCallback(() => {
     if (!tokenboundClient) return
     setLoading(true)
@@ -40,13 +41,16 @@ export const useTransferNFT = ({
         tokenContract,
         tokenId,
         tokenType,
+        amount,
       })
       .then((res) => setHash(res))
-      .catch(() => {
+      .catch((error) => {
+        console.log('error123', error, account, recipientAddress, tokenContract, tokenId, tokenType)
+
         setLoading(false)
         toast.error('Transaction Failed')
       })
-  }, [account, recipientAddress, tokenContract, tokenId, tokenType, tokenboundClient])
+  }, [account, amount, recipientAddress, tokenContract, tokenId, tokenType, tokenboundClient])
 
   useEffect(() => {
     if (!hash) return

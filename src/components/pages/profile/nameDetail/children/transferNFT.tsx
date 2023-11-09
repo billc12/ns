@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { DogFood } from '@app/components/@molecules/DogFood'
 import { BackButton, NextButton } from '@app/components/Awns/Dialog'
 import { useTransferNFT } from '@app/hooks/transfer/useTransferNFT'
-import { erc721ContractAddress } from '@app/utils/constants'
 
 type FormData = {
   dogfoodRaw: string
@@ -62,7 +61,7 @@ const Page = ({
   const { callback: transferNFT, loading } = useTransferNFT({
     account: accountAddress as `0x${string}`,
     recipientAddress: address as any,
-    tokenContract: erc721ContractAddress,
+    tokenContract: item.contract_address,
     tokenId: item.token_id,
   })
   const hasErrors = Object.keys(formState.errors || {}).length > 0

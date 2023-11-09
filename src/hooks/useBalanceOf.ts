@@ -14,12 +14,12 @@ export const useBalanceOf = (address: string, account: string, decimals = 18) =>
   })
 
   useEffect(() => {
-    if (!contract) return
+    if (!contract || !address) return
     contract.balanceOf(account).then((res) => {
       const b = formatFixed(res, decimals)
       setBalance(b)
     })
-  }, [account, contract, decimals])
+  }, [account, address, contract, decimals])
 
   return useMemo(() => {
     if (address === emptyAddress) {

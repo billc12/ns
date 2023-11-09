@@ -6,9 +6,9 @@ import { Input, Select, mq } from '@ensdomains/thorin'
 
 import placeholder from '@app/assets/placeholder.png'
 import { NextButton } from '@app/components/Awns/Dialog'
-import useGetUserNFT from '@app/hooks/requst/useGetUserNFT'
+import { useGetUserAllNFT } from '@app/hooks/requst/useGetUserNFT'
 import { useTransferNFT } from '@app/hooks/transfer/useTransferNFT'
-import { useNameErc721Assets } from '@app/hooks/useNameDetails'
+import { useChainId } from '@app/hooks/useChainId'
 
 import DrawerModel from '.'
 
@@ -77,29 +77,28 @@ const Page = ({
   address,
   open,
   onClose,
-  name,
 }: {
   address: string
   open: boolean
   onClose: () => void
-  name: string
 }) => {
-  const { nftId, contractAddress } = useNameErc721Assets(address)
-  console.log('nftId123456', nftId)
+  // const { nftId, contractAddress } = useNameErc721Assets(address)
 
-  const [receiveAddress, setReceiveAddress] = useState<string>('')
-  const [senNFTId, SetSenNFTId] = useState<string>('')
-  const { data } = useGetUserNFT({
-    name: name || '',
-  })
+  const chainId = useChainId()
+  const { data: list } = useGetUserAllNFT({ account: address, chainId })
+  const [receiveAddress, setReceiveAddress] = useState<any>('')
+  const [senNFT, SetSenNFT] = useState<any>('')
+  // const { data } = useGetUserNFT({
+  //   name: name || '',
+  // })
   const { callback, loading } = useTransferNFT({
     account: address as `0x${string}`,
     tokenType: 'ERC721',
-    tokenContract: contractAddress as `0x${string}`,
-    tokenId: senNFTId,
+    tokenContract: senNFT.contract_address as `0x${string}`,
+    tokenId: senNFT.token_id,
     recipientAddress: receiveAddress as `0x${string}`,
   })
-  console.log('data=>', nftId, data)
+  console.log('data=>', list)
 
   return (
     <DrawerModel open={open} onClose={onClose} title="Send Assets">
@@ -118,13 +117,13 @@ const Page = ({
       <SelectStyle
         label=""
         autocomplete
-        value={senNFTId}
+        value={senNFT}
         options={
-          nftId?.length
-            ? nftId?.map((item) => {
+          list?.length
+            ? list?.map((item) => {
                 return {
-                  value: item.toString(),
-                  label: `${'NftName' || '-'} #${item} `,
+                  value: item,
+                  label: ` ${item.name || item.contract_name} - # ${item.token_id}`,
                   prefix: (
                     <div
                       key={item.toString()}
@@ -139,14 +138,14 @@ const Page = ({
         }
         placeholder="Select Token"
         onChange={(e) => {
-          SetSenNFTId(e.target.value)
+          SetSenNFT(e.target.value)
           console.log('checkToken=>', e.target.value)
         }}
       />
 
       <Row>
         <NextButton
-          disabled={!senNFTId || !receiveAddress || !isAddress(receiveAddress) || loading}
+          disabled={!senNFT || !receiveAddress || !isAddress(receiveAddress) || loading}
           loading={loading}
           onClick={() => callback()}
         >

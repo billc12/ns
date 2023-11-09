@@ -7,7 +7,7 @@ export const data = {
   content_uri:
     'https://lh3.googleusercontent.com/n6NCmyTkNN8TEZYnM78eCAVhwHC4OlQTfAKKFFRTBUIUIAdfB7ro6CH7ogGFmh2nGHuWyRI42OwnTYQeQxVG3VJzQHHjZUakpUUh',
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  contract_address: '0x495f947276749ce646f68ac8c248420045cb7b5e',
+  contract_address: '0xA88621fa6294cE857f9744f56781B160e13Ba38B',
   // eslint-disable-next-line @typescript-eslint/naming-convention
   contract_name: 'OpenSea Shared Storefront',
   // eslint-disable-next-line @typescript-eslint/naming-convention, no-restricted-syntax

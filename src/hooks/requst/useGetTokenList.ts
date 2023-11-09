@@ -57,6 +57,7 @@ const useGetTokenList = ({ account, chain }: IFnProps) => {
           price: item.price,
           amount: item.amount,
           rawAmount: item.raw_amount,
+          decimals: item.decimals,
         }))
       } catch {
         setLoading(false)

@@ -214,7 +214,7 @@ export const useNameErc721Assets = (address: string | undefined) => {
   // const [contractAddress, setContractAddress] = useState<`0x${string}`>(
   //   '0x8F116BEFAf0a26E1B9e4Dd29F85EA1f48a7a0Ff2',
   // )
-  const contract = useErc721Contract()
+  const contract = useErc721Contract(erc721ContractAddress)
   const [nftId, setNftId] = useState<string[]>([])
   const [loading, setLoading] = useState<boolean>()
   useEffect(() => {
@@ -238,6 +238,6 @@ export const useNameErc721Assets = (address: string | undefined) => {
   return {
     loading,
     nftId,
-    contractAddress: erc721ContractAddress,
+    // contractAddress: erc721ContractAddress,
   }
 }
