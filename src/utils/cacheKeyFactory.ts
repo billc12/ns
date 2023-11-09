@@ -182,9 +182,8 @@ export const useQueryKeys = () => {
     },
     getSignName: (name: string, code?: string) => [...globalKeys, 'getSignName', name, code],
     getTransfers: (name: string) => [...globalKeys, 'getTransfers', name],
-    getUserTokenList: (name: string, account: string, chain: string) => [
+    getUserTokenList: (account: string, chain: string) => [
       ...globalKeys,
-      name,
       'getUserTokenList',
       account,
       chain,

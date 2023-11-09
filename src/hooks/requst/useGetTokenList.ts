@@ -1,18 +1,16 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useQuery } from 'wagmi'
 
 import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 
-import useGetNftAddress from '../useGetNftAddress'
-
-type TChain = 'eth' | 'bsc' | 'klay' | 'matic'
+// type TChain = 'eth' | 'bsc' | 'klay' | 'matic'
 interface Params {
-  chain: TChain
+  chain: string
   account: string
 }
 interface IFnProps {
-  chain?: TChain
-  name: string
+  chain: number
+  account: string
 }
 const _url = `${process.env.NEXT_PUBLIC_BASE_URL}/rpc/token/list`
 const fetchGetTokenList = async (_params: Params) => {
@@ -21,19 +19,23 @@ const fetchGetTokenList = async (_params: Params) => {
   const result = await fetch(url)
   return result.json<{ data: any[] }>()
 }
-const useGetTokenList = ({ name, chain = 'eth' }: IFnProps) => {
+const useGetTokenList = ({ account, chain }: IFnProps) => {
   const [loading, setLoading] = useState<boolean>(false)
-
-  const { accountAddress: account } = useGetNftAddress(name)
+  const chainName = useMemo(() => {
+    if (chain === 1) {
+      return 'eth'
+    }
+    return chain.toString()
+  }, [chain])
   const queryKey = useQueryKeys().getUserTokenList
   const { data } = useQuery(
-    queryKey(name, account!, chain),
+    queryKey(account, chainName),
     async () => {
       setLoading(true)
       try {
         const res = await fetchGetTokenList({
-          chain,
-          account: '0x4775615ea27329083c43e40403141149D20bBe00',
+          chain: chainName,
+          account,
         })
         setLoading(false)
 

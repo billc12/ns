@@ -50,6 +50,7 @@ export interface TokenHistoryProp {
       logo_url: string
       id: string
       name: string
+      symbol: string
     }
   }
 }
@@ -63,13 +64,13 @@ const fetchGetAssetsHistory = async (params: Params) => {
 }
 
 export function AssetsHistoryCallback(chain: string, account: string) {
-    const [loading,setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const queryKey = useQueryKeys().getAssetsHistory
   const { data } = useQuery(
     queryKey(chain, account),
     async () => {
-        if(!chain||!account) return
-        setLoading(true)
+      if (!chain || !account) return
+      setLoading(true)
       try {
         const result = await fetchGetAssetsHistory({ chain, account })
         setLoading(false)
