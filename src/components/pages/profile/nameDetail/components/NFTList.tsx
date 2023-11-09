@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
-import { useAccount, useChainId } from 'wagmi'
+import { useChainId } from 'wagmi'
 
 import { Button, Skeleton, mq } from '@ensdomains/thorin'
 
@@ -8,7 +8,8 @@ import DownShowicon from '@app/assets/DownShowicon.svg'
 import UpDisplayicon from '@app/assets/UpDisplayicon.svg'
 import Img6 from '@app/assets/nameDetail/img6.png'
 import NftDetailDrawer from '@app/components/Awns/Drawer/NftDetailDrawer'
-import { TChainId, getNftSupportChainId, useGetUserAllNFT } from '@app/hooks/requst/useGetUserNFT'
+import { EmptyData } from '@app/components/EmptyData'
+import { useGetUserAllNFT } from '@app/hooks/requst/useGetUserNFT'
 import { useSBTIsDeployList } from '@app/hooks/useCheckAccountDeployment'
 
 // import { useNameErc721Assets } from '@app/hooks/useNameDetails'
@@ -142,14 +143,12 @@ const AuctionTitle2 = styled.p`
 `
 const GameList = ({ accountAddress }: { accountAddress: string }) => {
   const chainId = useChainId()
-  const { address } = useAccount()
+  // const { address } = useAccount()
   // const { data: nftData, loading: NftLoading } = useGetUserNFT({ name: 'apr.aw' })
 
   const { data: _allNftList, isLoading: NftLoading } = useGetUserAllNFT({
-    account: address || accountAddress,
-    chainId: getNftSupportChainId.includes(chainId as TChainId)
-      ? (chainId as TChainId)
-      : getNftSupportChainId[0],
+    account: accountAddress,
+    chainId,
   })
 
   const nftData = useMemo(() => {
@@ -173,9 +172,18 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
   const deploymentMap = useSBTIsDeployList(contractAddressList, tokenIdList)
   const erc6551List = useMemo(() => {
     if (!deploymentMap) return []
-    return nftData.filter((t, i) => !deploymentMap[i])
+    const allList = nftData
+      .filter((t, i) => deploymentMap[i])
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      .map((i) => ({ ...i, erc_type: 'erc6551' }))
+    if (!isShowAll) {
+      if (allList?.length && allList?.length > 4) {
+        return allList?.slice(0, 4)
+      }
+    }
+    return allList
     // eslint-disable-next-line array-callback-return
-  }, [deploymentMap, nftData])
+  }, [deploymentMap, isShowAll, nftData])
   console.log('nftData123465', deploymentMap, nftData)
   const [drawerInfo, setDrawerInfo] = useState({
     open: false,
@@ -210,9 +218,14 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
             </SubButtonStyle>
           </TabTitleStyle>
           <AssetsStyle>
-            {/* {deploymentNFTList?.map((t) => (
-              <Assets item={t} key={t.token_id} />
-            ))} */}
+            {erc6551List?.map((item, index) => (
+              <Assets
+                item={item}
+                // eslint-disable-next-line react/no-array-index-key
+                key={`${item.token_id} - ${index} - ${item.erc_type}`}
+                onClick={() => handleDrawerOpen(item)}
+              />
+            ))}
           </AssetsStyle>
           <TabTitleStyle style={{ marginTop: 24 }}>
             <SubTitleStyle>Gaming ({nftData?.length || 0})</SubTitleStyle>
@@ -229,7 +242,7 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
           <TraitsStyle>
             {nftList?.map((item, index) => (
               // eslint-disable-next-line react/no-array-index-key
-              <Skeleton loading={NftLoading} key={`${item.token_id} - ${index}`}>
+              <Skeleton loading={NftLoading} key={`${item.token_id} - ${index} - ${item.erc_type}`}>
                 <Assets
                   item={item}
                   onClick={() => item.erc_type !== 'erc1155' && handleDrawerOpen(item)}
@@ -245,6 +258,7 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
           />
         </>
       )}
+      {!nftData.length && <EmptyData />}
     </>
   )
 }

@@ -5,12 +5,12 @@ import { useQueryKeys } from '@app/utils/cacheKeyFactory'
 
 import useGetNftAddress from '../useGetNftAddress'
 
-export type TChainId = 1 | 56 | 137 | 324
+// export type TChainId = 1 | 56 | 137 | 324
 
 type TErcType = 'erc721' | 'erc1155' | ''
-export const getNftSupportChainId = [1, 56, 137, 324] as TChainId[]
+export const getNftSupportChainId = [1, 56, 137, 324]
 interface Params {
-  chainId?: TChainId
+  chainId?: number
   ercType?: TErcType
   account: string
   contractAddress?: string
@@ -76,11 +76,11 @@ export const useGetUserAllNFT = ({
   account,
   ercType,
 }: {
-  chainId: TChainId
+  chainId: number
   account: string
   ercType?: TErcType
 }) => {
-  const params: any = { chainId, account: '0x18041866663b077bB6BF2bAFFAeA2451a2472ed7' || account }
+  const params: any = { chainId, account } // '0x18041866663b077bB6BF2bAFFAeA2451a2472ed7'
   if (ercType) {
     params.ercType = ercType
   }
