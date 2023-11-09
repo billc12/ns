@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useEns } from '@app/utils/EnsProvider'
-import { erc721ContractAddress } from '@app/utils/constants'
+import { erc20ContractAddress, erc721ContractAddress } from '@app/utils/constants'
 import { makeDisplay } from '@app/utils/currency'
 import { formatFullExpiry } from '@app/utils/utils'
 
@@ -166,7 +166,7 @@ export const useNameDetails = (name: string, skipGraph = false) => {
 }
 
 export const useNameErc20Assets = (address: string | undefined) => {
-  const contractAddress = '0xcFC0398D38B6F19AB110B98EE97e5689936cAff0' as `0x${string}`
+  const contractAddress = erc20ContractAddress
   const contract = useErc20Contract(contractAddress)
   const [tokenBalance, setTokenBalance] = useState<string>()
   const [tokenSymbol, setTokenSymbol] = useState<string>()
