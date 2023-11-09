@@ -90,7 +90,7 @@ const NftDetailDrawer = ({ open, onClose, item, accountAddress }: Props) => {
     item.token_id ? [item.token_id] : undefined,
   )?.[0]
   console.log('isDeploy', isDeploy)
-  const createAccountCallback = useCreateAccount(erc721ContractAddress, '58')
+  const { callback: createAccountCallback, loading } = useCreateAccount(erc721ContractAddress, '13')
   const handleShowInput = () => {
     setShowInput(true)
   }
@@ -113,7 +113,12 @@ const NftDetailDrawer = ({ open, onClose, item, accountAddress }: Props) => {
     }
     if (!isDeploy && isOwner) {
       btnList.push(
-        <AuctionBtn className="deploy" onClick={() => createAccountCallback?.()}>
+        <AuctionBtn
+          disabled={loading}
+          loading={loading}
+          className="deploy"
+          onClick={() => createAccountCallback?.()}
+        >
           <AuctionTitle>Deploy NFT-Wrapped Wallet</AuctionTitle>
         </AuctionBtn>,
       )
@@ -131,7 +136,7 @@ const NftDetailDrawer = ({ open, onClose, item, accountAddress }: Props) => {
       )
     }
     return btnList
-  }, [createAccountCallback, isDeploy, isOwner])
+  }, [createAccountCallback, isDeploy, isOwner, loading])
 
   return (
     <DrawerModel onClose={closeDrawer} open={open} title="Assets Details">
