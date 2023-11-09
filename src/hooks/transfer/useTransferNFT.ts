@@ -44,7 +44,7 @@ export const useTransferNFT = ({
       .then((res) => setHash(res))
       .catch(() => {
         setLoading(false)
-        toast.error('Cancel Transaction')
+        toast.error('Transaction Failed')
       })
   }, [account, recipientAddress, tokenContract, tokenId, tokenType, tokenboundClient])
 

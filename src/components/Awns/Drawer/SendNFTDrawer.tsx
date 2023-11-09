@@ -1,14 +1,13 @@
 import { isAddress } from '@ethersproject/address'
-import { TokenboundClient } from '@tokenbound/sdk'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import styled, { css } from 'styled-components'
-import { useChainId, useSigner } from 'wagmi'
 
 import { Input, Select, mq } from '@ensdomains/thorin'
 
 import placeholder from '@app/assets/placeholder.png'
 import { NextButton } from '@app/components/Awns/Dialog'
 import useGetUserNFT from '@app/hooks/requst/useGetUserNFT'
+import { useTransferNFT } from '@app/hooks/transfer/useTransferNFT'
 import { useNameErc721Assets } from '@app/hooks/useNameDetails'
 
 import DrawerModel from '.'
@@ -86,8 +85,6 @@ const Page = ({
   name: string
 }) => {
   const { nftId, contractAddress } = useNameErc721Assets(address)
-  const signer = useSigner()
-  const chainId = useChainId()
   console.log('nftId123456', nftId)
 
   const [receiveAddress, setReceiveAddress] = useState<string>('')
@@ -95,28 +92,15 @@ const Page = ({
   const { data } = useGetUserNFT({
     name: name || '',
   })
-
-  const tokenboundClient = useMemo(
-    () =>
-      new TokenboundClient({
-        signer: signer.data,
-        chainId,
-        // implementationAddress: '0x2d25602551487c3f3354dd80d76d54383a243358',
-        // registryAddress: '0x02101dfB77FDE026414827Fdc604ddAF224F0921',
-      }),
-    [chainId, signer.data],
-  )
-
+  const { callback, loading } = useTransferNFT({
+    account: address as `0x${string}`,
+    tokenType: 'ERC721',
+    tokenContract: contractAddress as `0x${string}`,
+    tokenId: senNFTId,
+    recipientAddress: receiveAddress as `0x${string}`,
+  })
   console.log('data=>', nftId, data)
-  const SendTokenCallback = async () => {
-    await tokenboundClient?.transferNFT({
-      account: address as `0x${string}`,
-      tokenType: 'ERC721',
-      tokenContract: contractAddress as `0x${string}`,
-      tokenId: senNFTId,
-      recipientAddress: receiveAddress as `0x${string}`,
-    })
-  }
+
   return (
     <DrawerModel open={open} onClose={onClose} title="Send Assets">
       <Container />
@@ -162,8 +146,9 @@ const Page = ({
 
       <Row>
         <NextButton
-          disabled={!senNFTId || !receiveAddress || !isAddress(receiveAddress)}
-          onClick={() => SendTokenCallback()}
+          disabled={!senNFTId || !receiveAddress || !isAddress(receiveAddress) || loading}
+          loading={loading}
+          onClick={() => callback()}
         >
           Send
         </NextButton>
