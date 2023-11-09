@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import styled, { css } from 'styled-components'
+import { useAccount, useChainId } from 'wagmi'
 
 import { mq } from '@ensdomains/thorin'
 
@@ -45,15 +46,19 @@ const TokenImg = styled.img`
 `
 
 export function AssetsTab({ name }: { name: string }) {
+  console.log('🚀', name)
+  const { address } = useAccount()
+  const chainId = useChainId()
   const { data: tokenList, loading } = useGetTokenList({
-    name,
+    account: address as `0x${string}`,
+    chain: chainId,
   })
   const AssetsTableList = useMemo(() => {
     if (!tokenList || !tokenList.length) return []
     return tokenList.map((item) => [
       <TableContentStyle>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <TokenImg src={item.logo_url} alt="token img" />
+        <TokenImg src={item.logoUrl} alt="token img" />
         {item.symbol.toUpperCase()}
       </TableContentStyle>,
       <TableContentStyle style={{ justifyContent: 'center' }}>

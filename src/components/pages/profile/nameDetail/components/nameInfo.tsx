@@ -294,10 +294,10 @@ const ActionDropdown = ({ name, accountAddress }: { name: string; accountAddress
 const NameTokenCard = ({
   avatarSrc,
   accountAddress,
-  name,
 }: {
   avatarSrc: string
   accountAddress: string
+  // eslint-disable-next-line react/no-unused-prop-types
   name: string
 }) => {
   const [sendTokenOpen, setSendTokenOpen] = useState(false)
@@ -362,7 +362,7 @@ const NameTokenCard = ({
       />
       <SendNFTDrawer
         address={accountAddress}
-        name={name}
+        // name={name}
         open={sendNFTOpen}
         onClose={() => setSendNFTOpen(false)}
       />
