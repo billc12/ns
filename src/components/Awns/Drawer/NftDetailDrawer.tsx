@@ -12,8 +12,8 @@ import { ShowErrImg } from '@app/components/showErrImg'
 import { useSBTIsDeployList } from '@app/hooks/useCheckAccountDeployment'
 import { useCreateAccount } from '@app/hooks/useCreateAccount'
 import { useGetNftOwner } from '@app/hooks/useGetNftOwner'
-import { erc721ContractAddress } from '@app/utils/constants'
 
+// import { erc721ContractAddress } from '@app/utils/constants'
 import DrawerModel from '.'
 
 type Props = {
@@ -90,7 +90,10 @@ const NftDetailDrawer = ({ open, onClose, item, accountAddress }: Props) => {
     item.token_id ? [item.token_id] : undefined,
   )?.[0]
   console.log('isDeploy', isDeploy)
-  const { callback: createAccountCallback, loading } = useCreateAccount(erc721ContractAddress, '13')
+  const { callback: createAccountCallback, loading } = useCreateAccount(
+    item.contract_address,
+    item.token_id,
+  )
   const handleShowInput = () => {
     setShowInput(true)
   }
