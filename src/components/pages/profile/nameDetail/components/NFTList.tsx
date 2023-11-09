@@ -11,9 +11,11 @@ import NftDetailDrawer from '@app/components/Awns/Drawer/NftDetailDrawer'
 import { EmptyData } from '@app/components/EmptyData'
 import { useGetUserAllNFT } from '@app/hooks/requst/useGetUserNFT'
 import { useSBTIsDeployList } from '@app/hooks/useCheckAccountDeployment'
+import { useNameErc721Assets } from '@app/hooks/useNameDetails'
 
 // import { useNameErc721Assets } from '@app/hooks/useNameDetails'
 import { Assets } from '../children/Assets'
+import { data as mockData } from './goerliMockData'
 
 // import { Traits } from '../children/Traits'
 
@@ -150,11 +152,23 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
     account: accountAddress,
     chainId,
   })
+  const { nftId } = useNameErc721Assets(accountAddress)
+  const mockDataList = useMemo(() => {
+    if (chainId === 5) {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      const data = nftId.map((i) => ({ ...mockData, token_id: i, owner: accountAddress }))
+      return data
+    }
+    return []
+  }, [accountAddress, chainId, nftId])
 
   const nftData = useMemo(() => {
+    if (chainId === 5) {
+      return mockDataList
+    }
     if (!_allNftList || !_allNftList.length) return []
     return _allNftList.map((t) => t.assets).flat(1)
-  }, [_allNftList])
+  }, [_allNftList, chainId, mockDataList])
 
   const [isPackUp, setIsPackUp] = useState<boolean>(false)
   const [isShowAll, setIsShowAll] = useState<boolean>(false)
@@ -170,12 +184,27 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
   const contractAddressList = nftData?.map((i) => i.contract_address as string)
   const tokenIdList = nftData?.map((i) => i.token_id as string)
   const deploymentMap = useSBTIsDeployList(contractAddressList, tokenIdList)
+
   const erc6551List = useMemo(() => {
     if (!deploymentMap) return []
-    const allList = nftData
-      .filter((t, i) => deploymentMap[i])
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      .map((i) => ({ ...i, erc_type: 'erc6551' }))
+    let allList = []
+    if (chainId === 5) {
+      allList = nftId.map((i) => ({
+        ...mockData,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        token_id: i,
+        owner: accountAddress,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        erc_type: '6551',
+      }))
+    }
+    if (chainId === 1) {
+      allList = nftData
+        .filter((t, i) => deploymentMap[i])
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        .map((i) => ({ ...i, erc_type: 'erc6551' }))
+    }
+
     if (!isShowAll) {
       if (allList?.length && allList?.length > 4) {
         return allList?.slice(0, 4)
@@ -183,7 +212,7 @@ const GameList = ({ accountAddress }: { accountAddress: string }) => {
     }
     return allList
     // eslint-disable-next-line array-callback-return
-  }, [deploymentMap, isShowAll, nftData])
+  }, [accountAddress, chainId, deploymentMap, isShowAll, nftData, nftId])
   console.log('nftData123465', deploymentMap, nftData)
   const [drawerInfo, setDrawerInfo] = useState({
     open: false,

@@ -69,7 +69,7 @@ export function Tokens({ accountAddress }: { accountAddress: string }) {
           <img src={ETHSvg.src} alt="eth" />
 
           <div style={{ display: 'grid', gap: '12px' }}>
-            <NameStyle>SepoliaETH</NameStyle>
+            <NameStyle>GoerliETH</NameStyle>
             <ContentTextStyle>{balance?.symbol}</ContentTextStyle>
           </div>
         </LeftStyle>
