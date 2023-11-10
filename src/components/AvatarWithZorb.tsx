@@ -66,7 +66,7 @@ export const NameAvatar = ({
 
   return (
     <Wrapper $size={size}>
-      <Avatar {...props} src={src} />
+      <Avatar {...props} src={_ || src} />
     </Wrapper>
   )
 }

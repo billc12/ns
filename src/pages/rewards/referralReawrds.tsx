@@ -205,6 +205,16 @@ export default function Rewards() {
     resultsPerPage: 'all',
     search: '',
   })
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     if (!primary.data) {
+  //       router.replace('/')
+  //     }
+  //   }, 1000)
+  //   return () => {
+  //     clearTimeout(timer)
+  //   }
+  // }, [primary])
   const curName = useMemo(() => {
     if (router.router?.query.name) {
       if (namesData?.names.find((i) => i.name === router.router?.query.name)) {
@@ -271,6 +281,9 @@ export default function Rewards() {
     }
   }, [RewardsDetails, rewardsPage])
 
+  if (!primary.data && !rewardsLoading) {
+    return <p>No name available yet</p>
+  }
   return (
     <>
       {RewardsDetails && !rewardsLoading ? (

@@ -31,7 +31,7 @@ export const fetchedGetSignName = async ({
   name,
   account,
   discountCode,
-  useScenes,
+  useScenes = UseScenes.register,
 }: Params): Promise<Result> => {
   const paramsObj: Params = { name }
   if (account) {

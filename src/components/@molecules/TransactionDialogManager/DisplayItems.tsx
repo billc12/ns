@@ -4,7 +4,9 @@ import styled, { css } from 'styled-components'
 
 import { Typography } from '@ensdomains/thorin'
 
+import defaultImg from '@app/assets/TestImage.png'
 import { AvatarWithZorb, NameAvatar } from '@app/components/AvatarWithZorb'
+import { useEthInvoice } from '@app/components/pages/profile/[name]/registration/steps/Awns_Complete'
 import useBeautifiedName from '@app/hooks/useBeautifiedName'
 import { useChainId } from '@app/hooks/useChainId'
 import { usePrimary } from '@app/hooks/usePrimary'
@@ -144,12 +146,12 @@ const AddressValue = ({ value }: { value: string }) => {
 const NameValue = ({ value }: { value: string }) => {
   const network = useChainId()
   const beautifiedName = useBeautifiedName(value)
-
+  const { avatarSrc = defaultImg.src } = useEthInvoice(value, false)
   return (
     <ValueWithAvatarContainer>
       <ValueTypography fontVariant="bodyBold">{beautifiedName}</ValueTypography>
       <AvatarWrapper>
-        <NameAvatar name={value} label={`${value}-avatar`} network={network} />
+        <NameAvatar name={value} label={`${value}-avatar`} network={network} src={avatarSrc} />
       </AvatarWrapper>
     </ValueWithAvatarContainer>
   )

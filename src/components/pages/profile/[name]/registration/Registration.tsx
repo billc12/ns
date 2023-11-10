@@ -283,7 +283,8 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
   return (
     <>
       <Head>
-        <title>{t('title', { name: beautifiedName })}</title>
+        {/* <title>{t('title', { name: beautifiedName })}</title> */}
+        <title>{`Register ${beautifiedName} on AWNS`}</title>
       </Head>
       <Content
         noTitle
