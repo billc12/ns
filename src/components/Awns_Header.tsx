@@ -85,7 +85,7 @@ const Page = () => {
         </InterText>
       </HeaderNav>
       <HeaderLeft>
-        <GWeiBox>
+        <GWeiBox onClick={() => window.open('https://etherscan.io/gastracker', '_blank')}>
           <GWeiSvg />
           <InterText style={{ fontWeight: 500 }}>
             {gasPrice ? makeDisplay(gasPrice, undefined, 'Gwei', 9) : '-- Gwei'}

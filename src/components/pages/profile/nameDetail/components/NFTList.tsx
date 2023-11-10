@@ -9,7 +9,6 @@ import UpDisplayicon from '@app/assets/UpDisplayicon.svg'
 import Img6 from '@app/assets/nameDetail/img6.png'
 import NftDetailDrawer from '@app/components/Awns/Drawer/NftDetailDrawer'
 import { EmptyData } from '@app/components/EmptyData'
-import { useGetUserAllNFT } from '@app/hooks/requst/useGetUserNFT'
 import { useSBTIsDeployList } from '@app/hooks/useCheckAccountDeployment'
 
 import { Assets } from '../children/Assets'
@@ -138,13 +137,16 @@ const AuctionTitle2 = styled.p`
   font-weight: 500;
   line-height: normal;
 `
-const GameList = ({ accountAddress }: { accountAddress: string }) => {
+const GameList = ({
+  accountAddress,
+  NftLoading,
+  nftData,
+}: {
+  accountAddress: string
+  NftLoading: boolean
+  nftData: any[] | undefined
+}) => {
   const chainId = useChainId()
-
-  const { data: nftData, isLoading: NftLoading } = useGetUserAllNFT({
-    account: accountAddress,
-    chainId,
-  })
 
   const [isPackUp, setIsPackUp] = useState<boolean>(false)
   const [isShowAll, setIsShowAll] = useState<boolean>(false)
@@ -282,7 +284,15 @@ enum Tab {
   Gaming = 'Gaming Center',
   Actions = 'Actions',
 }
-const Page = ({ accountAddress }: { accountAddress: string }) => {
+const Page = ({
+  accountAddress,
+  NftLoading,
+  nftData,
+}: {
+  accountAddress: string
+  NftLoading: boolean
+  nftData: any[] | undefined
+}) => {
   const [curTab, setCurTab] = useState(Tab.Gaming)
   return (
     <CenterRightStyle>
@@ -312,7 +322,9 @@ const Page = ({ accountAddress }: { accountAddress: string }) => {
         </ButtonGroup>
       </div>
       <ListCenter>
-        {curTab === Tab.Gaming && <GameList accountAddress={accountAddress} />}
+        {curTab === Tab.Gaming && (
+          <GameList NftLoading={NftLoading} nftData={nftData} accountAddress={accountAddress} />
+        )}
         {curTab === Tab.Actions && <AuctionsList />}
       </ListCenter>
     </CenterRightStyle>

@@ -7,6 +7,7 @@ import { Typography } from '@ensdomains/thorin'
 import ColumnBarIcon from '@app/assets/ColumnBarIcon.svg'
 import { CopyButton } from '@app/components/Copy'
 import { EmptyData } from '@app/components/EmptyData'
+import { IResultItem } from '@app/hooks/requst/useGetTokenList'
 import { AssetsHistoryCallback } from '@app/hooks/requst/useProfileCallback'
 import { shortenAddress } from '@app/utils/utils'
 
@@ -149,7 +150,13 @@ enum Tab {
   'Token' = 'Token',
   'Trancaction' = 'Trancaction',
 }
-const Page = ({ accountAddress }: { accountAddress: string }) => {
+const Page = ({
+  accountAddress,
+  tokenList,
+}: {
+  accountAddress: string
+  tokenList: IResultItem[] | undefined
+}) => {
   const [curTab, setCurTab] = useState(Tab.Token)
   return (
     <>
@@ -169,7 +176,7 @@ const Page = ({ accountAddress }: { accountAddress: string }) => {
         </Typography>
       </TabTitleBoxStyle>
       <TokensStyle>
-        {curTab === Tab.Token && <Tokens accountAddress={accountAddress} />}
+        {curTab === Tab.Token && <Tokens tokenList={tokenList} accountAddress={accountAddress} />}
         {curTab === Tab.Trancaction && <ToeknTransaction accountAddress={accountAddress} />}
       </TokensStyle>
     </>

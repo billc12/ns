@@ -18,6 +18,8 @@ import SendNFTDrawer from '@app/components/Awns/Drawer/SendNFTDrawer'
 import SendTokenDrawer from '@app/components/Awns/Drawer/SendTokenDrawer'
 import { CopyButton } from '@app/components/Copy'
 import { useAbilities } from '@app/hooks/abilities/useAbilities'
+import useGetTokenList from '@app/hooks/requst/useGetTokenList'
+import { useChainId } from '@app/hooks/useChainId'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import { useProfileActions } from '@app/hooks/useProfileActions'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
@@ -302,14 +304,27 @@ const ActionDropdown = ({ name, accountAddress }: { name: string; accountAddress
 const NameTokenCard = ({
   avatarSrc,
   accountAddress,
+  nftDataLenght,
 }: {
   avatarSrc: string
   accountAddress: string
   // eslint-disable-next-line react/no-unused-prop-types
   name: string
+  nftDataLenght: number
 }) => {
   const [sendTokenOpen, setSendTokenOpen] = useState(false)
   const [sendNFTOpen, setSendNFTOpen] = useState(false)
+  const chainId = useChainId()
+  const { data: tokenList } = useGetTokenList({
+    account: accountAddress,
+    chain: chainId === 1 ? 'eth' : chainId,
+  })
+
+  const totalPrice = useMemo(() => {
+    if (!tokenList) return 0
+    const total = tokenList.reduce((a, b) => a + b.price, 0)
+    return total
+  }, [tokenList])
 
   return (
     <ProFileStyle>
@@ -327,15 +342,14 @@ const NameTokenCard = ({
         }}
       >
         <AssetsItemStyle>
-          <AssetsIcon />
-          $100.00
+          <AssetsIcon />${totalPrice}
         </AssetsItemStyle>
         <AssetsItemStyle>
           <Icon1 />
-          12
+          {nftDataLenght}
         </AssetsItemStyle>
         <AssetsItemStyle>
-          <SwordIcon />4
+          <SwordIcon />0
         </AssetsItemStyle>
       </div>
       <div style={{ display: 'flex', gap: 5 }}>
@@ -362,7 +376,7 @@ const NameTokenCard = ({
       </div>
 
       <div>
-        <TokenInfo accountAddress={accountAddress} />
+        <TokenInfo tokenList={tokenList} accountAddress={accountAddress} />
       </div>
       <SendTokenDrawer
         address={accountAddress}
@@ -400,7 +414,15 @@ enum Tabs {
   Token = 'Token',
   NameInfo = 'NameInfo',
 }
-const Page = ({ accountAddress, _name }: { accountAddress: string; _name: string }) => {
+const Page = ({
+  accountAddress,
+  _name,
+  nftDataLenght,
+}: {
+  accountAddress: string
+  _name: string
+  nftDataLenght: number
+}) => {
   const { avatarSrc = TestImg.src } = useEthInvoice(_name, false)
   const [curTab, setCurTab] = useState(Tabs.Token)
   return (
@@ -425,7 +447,12 @@ const Page = ({ accountAddress, _name }: { accountAddress: string; _name: string
         </TabIconStyle>
       </HeaderStyle>
       {curTab === Tabs.Token && (
-        <NameTokenCard name={_name} accountAddress={accountAddress} avatarSrc={avatarSrc} />
+        <NameTokenCard
+          nftDataLenght={nftDataLenght}
+          name={_name}
+          accountAddress={accountAddress}
+          avatarSrc={avatarSrc}
+        />
       )}
       {curTab === Tabs.NameInfo && <NameInfoCard avatarSrc={avatarSrc} />}
     </CenterLeftStyle>

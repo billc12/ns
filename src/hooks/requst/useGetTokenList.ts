@@ -10,10 +10,10 @@ interface Params {
   account: string
 }
 interface IFnProps {
-  chain: number
+  chain: number | string
   account: string
 }
-interface IResultItem {
+export interface IResultItem {
   address: string
   name: string
   symbol: string
@@ -58,7 +58,7 @@ const useGetTokenList = ({ account, chain }: IFnProps) => {
           amount: item.amount,
           rawAmount: item.raw_amount,
           decimals: item.decimals,
-        }))
+        })) as IResultItem[]
       } catch {
         setLoading(false)
         return undefined

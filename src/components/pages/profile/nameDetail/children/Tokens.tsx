@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Typography } from '@ensdomains/thorin'
 
 import USDTImg from '@app/assets/USDT.png'
-import useGetTokenList from '@app/hooks/requst/useGetTokenList'
+import { IResultItem } from '@app/hooks/requst/useGetTokenList'
 import { useBalanceOf } from '@app/hooks/useBalanceOf'
 
 // import { makeDisplay } from '@app/utils/currency'
@@ -62,16 +62,22 @@ const Item = ({ item, accountAddress }: { item: any; accountAddress: string }) =
     </AssetsItemStyle>
   )
 }
-export function Tokens({ accountAddress }: { accountAddress: string }) {
-  const { data: tokenList } = useGetTokenList({ account: accountAddress, chain: 5 })
-  console.log('tokenList123', tokenList)
+export function Tokens({
+  accountAddress,
+  tokenList,
+}: {
+  accountAddress: string
+  tokenList: IResultItem[] | undefined
+}) {
+  // const { data: tokenList } = useGetTokenList({ account: accountAddress, chain: 5 })
 
   return (
     <>
-      {tokenList?.map((item, index) => (
-        // eslint-disable-next-line react/no-array-index-key
-        <Item key={`${item.address}-${index}`} item={item} accountAddress={accountAddress} />
-      ))}
+      {tokenList &&
+        tokenList?.map((item, index) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <Item key={`${item.address}-${index}`} item={item} accountAddress={accountAddress} />
+        ))}
     </>
   )
 }
