@@ -36,15 +36,15 @@ const CodeInput = styled(Input)`
     color: #3f5170;
   }
 `
-const Container = styled.div`
-  width: 480px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  ${mq.sm.max(css`
-    width: 100%;
-  `)}
-`
+// const Container = styled.div`
+//   width: 480px;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 8px;
+//   ${mq.sm.max(css`
+//     width: 100%;
+//   `)}
+// `
 const Row = styled.div`
   display: flex;
   width: 100%;
@@ -102,7 +102,7 @@ const Page = ({
 
   return (
     <DrawerModel open={open} onClose={onClose} title="Send Assets">
-      <Container />
+      {/* <Container /> */}
       <Label>To Account</Label>
       <CodeInput
         hideLabel

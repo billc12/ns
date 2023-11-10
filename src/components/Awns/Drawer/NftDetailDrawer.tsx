@@ -155,10 +155,20 @@ const NftDetailDrawer = ({ open, onClose, item, accountAddress }: Props) => {
         <TransferNFT onClose={handleCloseInput} accountAddress={accountAddress} item={item} />
       )}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 15 }}>
-        <AttributeLabel title="Contract address" content={item.contract_address} isCopy />
-        <AttributeLabel title="Token ID" content={item.token_id} isCopy />
-        <AttributeLabel title="Chain" content="Ethereum" />
-        <AttributeLabel title="Token Standard" content={switchErcType(item.erc_type)} isCopy />
+        <AttributeLabel
+          key="Contract address"
+          title="Contract address"
+          content={item.contract_address}
+          isCopy
+        />
+        <AttributeLabel key="Token ID" title="Token ID" content={item.token_id} isCopy />
+        <AttributeLabel key="Chain" title="Chain" content="Ethereum" />
+        <AttributeLabel
+          key="Token Standard"
+          title="Token Standard"
+          content={switchErcType(item.erc_type)}
+          isCopy
+        />
       </div>
     </DrawerModel>
   )
