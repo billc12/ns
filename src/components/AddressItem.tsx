@@ -29,6 +29,7 @@ const Container = styled.div`
   border-radius: 10px;
   border: 1px solid #d4d7e2;
   background: #f8fbff;
+  cursor: pointer;
 `
 export const AddressItem = ({ AddressRow }: { AddressRow: ReturnedName }) => {
   console.log('AddressRow=>', AddressRow)

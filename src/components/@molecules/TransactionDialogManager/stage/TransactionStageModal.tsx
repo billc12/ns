@@ -13,7 +13,7 @@ import { Button, CrossCircleSVG, Dialog, Helper, Spinner, Typography } from '@en
 
 import AeroplaneSVG from '@app/assets/Aeroplane.svg'
 import CircleTickSVG from '@app/assets/CircleTick.svg'
-import WalletSVG from '@app/assets/Wallet.svg'
+import WalletNew from '@app/assets/Wallet-new.png'
 import { InnerDialog } from '@app/components/@atoms/InnerDialog'
 import { Outlink } from '@app/components/Outlink'
 import { useAddRecentTransaction } from '@app/hooks/transactions/useAddRecentTransaction'
@@ -51,12 +51,6 @@ const ErrorText = styled.div`
   width: 100%;
   padding-left: 6px;
 `
-
-const WalletIcon = styled.svg(
-  ({ theme }) => css`
-    width: ${theme.space['12']};
-  `,
-)
 
 const Bar = styled.div<{ $status: Status }>(
   ({ theme, $status }) => css`
@@ -508,7 +502,8 @@ export const TransactionStageModal = ({
     }
     return (
       <>
-        <WalletIcon as={WalletSVG} />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={WalletNew.src} alt="Wallet img" style={{ width: 48, height: 48 }} />
         <MessageTypography>{t('transaction.dialog.confirm.message')}</MessageTypography>
       </>
     )
