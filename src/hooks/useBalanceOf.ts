@@ -6,28 +6,33 @@ import { emptyAddress } from '@app/utils/constants'
 
 import { useErc20Contract } from './useContract'
 
-export const useBalanceOf = (address: string, account: string, decimals = 18) => {
+export const useBalanceOf = (contractAddress: string, account: string, decimals = 18) => {
   const [balance, setBalance] = useState<string>()
-  const contract = useErc20Contract(address)
+  const contract = useErc20Contract(contractAddress)
   const { data } = useBalance({
-    address: address === emptyAddress ? (account as `0x${string}`) : (account as `0x${string}`),
+    address: account as `0x${string}`,
   })
 
   useEffect(() => {
-    if (!contract || !address) return
-    contract.balanceOf(account).then((res) => {
-      const b = formatFixed(res, decimals)
-      setBalance(b)
-    })
-  }, [account, address, contract, decimals])
+    if (!contract || !contractAddress || !account) return
+    contract
+      .balanceOf(account)
+      .then((res) => {
+        const b = formatFixed(res, decimals)
+        setBalance(b)
+      })
+      .catch((error) => {
+        console.log('error123', error)
+      })
+  }, [account, contractAddress, contract, decimals])
 
   return useMemo(() => {
-    if (address === emptyAddress) {
+    if (contractAddress === emptyAddress) {
       if (data && data.value) {
         return formatFixed(data.value, 18)
       }
       return 0
     }
     return balance
-  }, [address, balance, data])
+  }, [contractAddress, balance, data])
 }
