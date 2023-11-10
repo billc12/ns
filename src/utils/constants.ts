@@ -28,15 +28,16 @@ interface ResolverAddresses {
 export const RESOLVER_ADDRESSES: ResolverAddresses = {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '1': [
-    '0x231b0Ee14048e9dCcD1d247744d114a4EB5E8E63',
-    '0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41',
-    '0xdaaf96c344f63131acadd0ea35170e7892d3dfba',
-    '0x226159d592e2b063810a10ebf6dcbada94ed68b8',
-    '0x1da022710df5002339274aadee8d58218e9d6ab5',
+    '0xcDF8b8c6b2EfFB31C49eC3463922745bd3a7f153',
+    // '0x231b0Ee14048e9dCcD1d247744d114a4EB5E8E63',
+    // '0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41',
+    // '0xdaaf96c344f63131acadd0ea35170e7892d3dfba',
+    // '0x226159d592e2b063810a10ebf6dcbada94ed68b8',
+    // '0x1da022710df5002339274aadee8d58218e9d6ab5',
   ],
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '5': [
-    '0x58f9Aa6fac4B10EEE280941B64F0E8BCB07A81C7',
+    '0x82E7c62a8AaFe16675cd78Dc6c31e950548B6A85',
     // '0xd7a4F6473f32aC2Af804B3686AE8F1932bC35750',
     // '0x342cf18D3e41DE491aa1a3067574C849AdA6a2Ad',
     // '0x19c2d5D0f035563344dBB7bE5fD09c8dad62b001',
@@ -50,7 +51,7 @@ export const RESOLVER_ADDRESSES: ResolverAddresses = {
   ],
   // eslint-disable-next-line @typescript-eslint/naming-convention
   '11155111': [
-    '0xc83DF738787589D9d31C4736aB10009827b2B954',
+    '0x7c4686a888b1379602e0801Cc9e3cA92CE5001ee',
     // '0x0CeEC524b2807841739D3B5E161F5bf1430FFA48',
   ],
   // eslint-disable-next-line @typescript-eslint/naming-convention
