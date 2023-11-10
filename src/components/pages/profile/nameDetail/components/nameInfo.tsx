@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react'
+import router from 'next/router'
+import { useEffect, useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
 
@@ -219,7 +220,7 @@ const RoundTitle2 = styled.p`
 const ActionDropdown = ({ name, accountAddress }: { name: string; accountAddress: string }) => {
   const { address } = useAccount()
   const nameDetails = useNameDetails(name)
-  const { profile, ownerData, wrapperData, expiryDate } = nameDetails
+  const { profile, ownerData, wrapperData, expiryDate, registrationStatus } = nameDetails
   const abilities = useAbilities(name)
   const profileActions = useProfileActions({
     address,
@@ -252,8 +253,6 @@ const ActionDropdown = ({ name, accountAddress }: { name: string; accountAddress
     })
   }
   const dropdownItems = useMemo<DropdownItem[]>(() => {
-    console.log('profileActions.canSetMainName', abilities.data, name)
-
     const items = [] as DropdownItem[]
     if (profileActions.canSetMainName) {
       items.push({
@@ -263,11 +262,19 @@ const ActionDropdown = ({ name, accountAddress }: { name: string; accountAddress
       })
     }
     if (abilities.data.canExtend) {
-      items.push({
-        label: 'Extend',
-        onClick: handleExtend,
-        color: 'text',
-      })
+      if (registrationStatus === 'available') {
+        items.push({
+          label: 'Register',
+          onClick: () => router.push(`/${name}/register`),
+          color: 'text',
+        })
+      } else {
+        items.push({
+          label: 'Extend',
+          onClick: handleExtend,
+          color: 'text',
+        })
+      }
     }
     if (abilities.data.canSend) {
       items.push({
@@ -284,7 +291,14 @@ const ActionDropdown = ({ name, accountAddress }: { name: string; accountAddress
     return items
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [abilities.data, name, profileActions.canSetMainName])
-
+  useEffect(() => {
+    if (
+      !profile?.address &&
+      profile?.resolverAddress === '0x0000000000000000000000000000000000000000'
+    ) {
+      router.replace(`/${name}/register`)
+    }
+  }, [name, profile?.address, profile?.resolverAddress])
   return (
     <>
       <ActionDropdownStyle align="left" items={dropdownItems} label="Account" width="182px">
