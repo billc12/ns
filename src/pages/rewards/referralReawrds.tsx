@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import router from 'next/router'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
 
 import { Dropdown, mq } from '@ensdomains/thorin'
@@ -205,6 +205,16 @@ export default function Rewards() {
     resultsPerPage: 'all',
     search: '',
   })
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!primary.data) {
+        router.replace('/')
+      }
+    }, 1000)
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [primary])
   const curName = useMemo(() => {
     if (router.router?.query.name) {
       if (namesData?.names.find((i) => i.name === router.router?.query.name)) {
