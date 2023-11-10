@@ -4,6 +4,7 @@ import { AllCurrentFuses } from '@myclique/awnsjs/utils/fuses'
 
 import {
   CURRENCY_FLUCTUATION_BUFFER_PERCENTAGE,
+  ENV_NAME,
   NAMEWRAPPER_AWARE_RESOLVERS,
   networkName,
 } from './constants'
@@ -42,7 +43,11 @@ export const secondsToHours = (seconds: number) => Math.floor(seconds / (60 * 60
 
 export const daysToSeconds = (days: number) => days * 60 * 60 * 24
 
-export const yearsToSeconds = (years: number) => years * 60 * 60
+export const yearsToSeconds = (years: number) => {
+  if (ENV_NAME === 'env') return years * 60 * 10
+  if (ENV_NAME === 'pre') return years * 60 * 60
+  return years * 60 * 60 * 24 * 365
+}
 // export const yearsToSeconds = (years: number) => years * 60 * 60 * 24 * 365
 
 export const secondsToYears = (seconds: number) => seconds / (60 * 60 * 24 * 365)

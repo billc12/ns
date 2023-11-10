@@ -15,8 +15,11 @@ export const networkName = {
   '1337': 'local',
 }
 
-export const SUPPORT_NETWORK_CHAIN_IDS = [5]
+export const SUPPORT_NETWORK_CHAIN_IDS = process.env.NEXT_PUBLIC_SUPPORT_NETWORK_CHAIN_IDS?.split(
+  ',',
+).map((v) => Number(v)) || [1]
 
+export const ENV_NAME = process.env.NEXT_PUBLIC_ENV_NAME
 interface ResolverAddresses {
   [key: string]: EthAddress[]
 }

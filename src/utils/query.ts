@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import '@rainbow-me/rainbowkit/styles.css'
 import { DefaultOptions, QueryClient } from '@tanstack/react-query'
 import { ChainProviderFn, configureChains, createClient } from 'wagmi'
@@ -7,8 +8,14 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 
 import { makePersistent } from '@app/utils/persist'
 
-import { WC_PROJECT_ID } from './constants'
+import { SUPPORT_NETWORK_CHAIN_IDS, WC_PROJECT_ID } from './constants'
 import { getDefaultWallets } from './getDefaultWallets'
+
+const ChainMap = {
+  1: mainnet,
+  5: goerli,
+  11155111: sepolia,
+}
 
 const providerArray: ChainProviderFn<
   typeof mainnet | typeof goerli | typeof localhost | typeof sepolia
@@ -27,7 +34,7 @@ if (process.env.NEXT_PUBLIC_PROVIDER) {
     // since we don't want to allow all domains to access infura
     providerArray.push(
       infuraProvider({
-        apiKey: process.env.NEXT_PUBLIC_INFURA_KEY || '169a2f10743f4afdaa0a17e148552867',
+        apiKey: process.env.NEXT_PUBLIC_INFURA_KEY || '',
       }),
     )
   }
@@ -41,7 +48,11 @@ if (process.env.NEXT_PUBLIC_PROVIDER) {
   )
 }
 
-const { provider, chains } = configureChains([goerli], providerArray)
+const chainArr = SUPPORT_NETWORK_CHAIN_IDS.map(
+  (i: number) => ChainMap?.[i as keyof typeof ChainMap],
+).filter((i) => i)
+
+const { provider, chains } = configureChains(chainArr, providerArray)
 
 const connectors = getDefaultWallets({
   appName: 'ENS',
