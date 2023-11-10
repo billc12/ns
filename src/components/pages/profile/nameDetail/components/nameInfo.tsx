@@ -66,10 +66,18 @@ const OmitButtonStyle = styled.div`
   cursor: pointer;
 `
 const NameStyle = styled.div`
+  width: calc(100% - 120px);
+  word-break: break-all;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   color: var(--word-color, #3f5170);
   font-family: Inter;
   font-size: 24px;
   font-weight: 700;
+  text-align: center;
 `
 const TabIconStyle = styled.div`
   width: 58px;
@@ -302,6 +310,7 @@ const NameTokenCard = ({
 }) => {
   const [sendTokenOpen, setSendTokenOpen] = useState(false)
   const [sendNFTOpen, setSendNFTOpen] = useState(false)
+
   return (
     <ProFileStyle>
       <AddressBox>

@@ -28,6 +28,7 @@
     "keyframe-block-no-duplicate-selectors": null,
     "no-descending-specificity": null,
     "declaration-block-no-duplicate-properties": null,
-    "font-family-no-missing-generic-family-keyword": null
+    "font-family-no-missing-generic-family-keyword": null,
+    "value-no-vendor-prefix": null
   }
 }

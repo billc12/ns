@@ -271,7 +271,9 @@ const HeaderProfile = ({ address }: { address: string }) => {
     >
       <UserButton>
         <ImgRound src={avatarSrc || DefaultAva.src} alt="NFT img" />
-        <InterText style={{ fontWeight: 500 }}>{mainText}</InterText>
+        <InterText style={{ fontWeight: 500 }}>
+          {mainText.length > 15 ? shortenAddress(mainText, 15, 5, 7) : mainText}
+        </InterText>
       </UserButton>
     </Dropdown>
   )

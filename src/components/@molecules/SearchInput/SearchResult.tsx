@@ -94,6 +94,9 @@ const LeadingSearchItem = styled.div(
     text-overflow: ellipsis;
     gap: ${theme.space['4.5']};
     flex-gap: ${theme.space['4.5']};
+    max-width: 100%;
+    overflow: hidden;
+    justify-content: flex-start;
   `,
 )
 
@@ -442,7 +445,11 @@ const NameResultItem = forwardRef<HTMLDivElement, { name: string; $selected: boo
             <LeadingSearchItem>
               <Column>
                 <Row>
-                  <InterText>{beautifiedName}</InterText>
+                  <InterText>
+                    {beautifiedName.length > 20
+                      ? shortenAddress(beautifiedName, 20, 9, 9)
+                      : beautifiedName}
+                  </InterText>
                   <ChainRound>
                     <InterText $size="14px"> {chain?.name || 'Ethereum'}</InterText>
                   </ChainRound>
