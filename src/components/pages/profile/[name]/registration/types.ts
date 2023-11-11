@@ -125,5 +125,5 @@ export type RegistrationReducerAction =
     }
 
 export type MoonpayTransactionStatus = 'pending' | 'completed' | 'failed' | 'waitingAuthorization'
-export const MAX_YEAR = 5
+export const MAX_YEAR = 10000
 export const YEAR_DISCOUNT = [0.0, 0.05, 0.1, 0.15, 0.2]

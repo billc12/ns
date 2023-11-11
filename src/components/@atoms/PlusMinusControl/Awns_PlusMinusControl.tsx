@@ -27,7 +27,7 @@ const Container = styled.div<{ $highlighted?: boolean }>(
     /* border-radius: ${theme.radii.full}; */
     display: flex;
     align-items: center;
-    gap: ${theme.space['4']};
+    /* gap: ${theme.space['4']}; */
     border-radius: 6px;
     background: #dae4f0;
   `,
@@ -263,7 +263,7 @@ export const PlusMinusControl = forwardRef(
             onChange={handleChange}
             min={minValue}
             max={maxValue}
-            readOnly
+            // readOnly
             inputMode="numeric"
             pattern="[0-9]*"
             onKeyDown={(e) => {
