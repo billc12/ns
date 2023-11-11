@@ -336,7 +336,7 @@ const NameTokenCard = ({
 
   const totalPrice = useMemo(() => {
     if (!tokenList) return 0
-    const total = tokenList.reduce((a, b) => a + b.price, 0)
+    const total = tokenList.reduce((a, b) => a + b.price * b.amount, 0)
     return total
   }, [tokenList])
 
@@ -356,7 +356,7 @@ const NameTokenCard = ({
         }}
       >
         <AssetsItemStyle>
-          <AssetsIcon />${totalPrice}
+          <AssetsIcon />${totalPrice.toFixed(4)}
         </AssetsItemStyle>
         <AssetsItemStyle>
           <Icon1 />

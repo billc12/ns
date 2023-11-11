@@ -57,7 +57,9 @@ const Item = ({ item, accountAddress }: { item: any; accountAddress: string }) =
         <NameStyle style={{ textAlign: 'right' }}>
           {balance} {item.symbol}
         </NameStyle>
-        <ContentTextStyle style={{ textAlign: 'right' }}>${item.price} USD</ContentTextStyle>
+        <ContentTextStyle style={{ textAlign: 'right' }}>
+          ${(item.price * item.amount).toFixed(4)} USD
+        </ContentTextStyle>
       </RightStyle>
     </AssetsItemStyle>
   )

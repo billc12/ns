@@ -52,7 +52,7 @@ const ErrTip = styled.p`
 `
 const InvitationName = ({ setNameCallback, name }: Props) => {
   const [nameInp, setNameInp] = useState(name ? `${name}.aw` : '')
-  const { registrationStatus, isLoading } = useBasicName(nameInp)
+  const { registrationStatus, isLoading } = useBasicName(`${nameInp.trim().split('.')[0]}.aw`)
   const isUse = registrationStatus === 'registered'
   const saveName = () => {
     if (isUse || !nameInp) {
