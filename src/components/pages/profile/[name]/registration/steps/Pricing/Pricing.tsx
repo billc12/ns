@@ -959,7 +959,7 @@ const Pricing = ({
               totalRequiredBalance,
               discountInfo: { ...disInfo, referral: invitationName },
               normalisedName,
-              registrationData,
+              registrationData: { ...registrationData, years },
               goComplete,
             }}
           />
