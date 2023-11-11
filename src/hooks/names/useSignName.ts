@@ -77,7 +77,7 @@ const useSignName = ({ name, account, discountCode, useScenes }: Params) => {
         const result = await fetchedGetSignName({ name, account, discountCode, useScenes })
         let isUsed = false
         if (discountCode) {
-          const disUseCount = (await contract?.discountsUsed('D3A0O1')) || 0
+          const disUseCount = (await contract?.discountsUsed(discountCode)) || 0
           isUsed = disUseCount === result.discountCount && result.discountCount > 0
         }
         if (isUsed) {
@@ -99,7 +99,7 @@ const useSignName = ({ name, account, discountCode, useScenes }: Params) => {
         return null
       }
     },
-    { enabled: !!name && !!contract && !!useScenes?.toString() },
+    { enabled: !!name && !!contract },
   )
 
   return { data, isLoading }
