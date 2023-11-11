@@ -51,12 +51,7 @@ const InvitationNameLabel = ({ name, setNameCallback }: TInvitationName) => {
         <Label>Referral AWNS</Label>
         <Tooltip
           placement="right"
-          content={
-            <ToolTipRound>
-              The beta phase requires an invitation code to register, and you will receive 3
-              invitations for successfully registering an AW domain name.
-            </ToolTipRound>
-          }
+          content={<ToolTipRound> {`Fill in the referrer's AWNS (optional).`}</ToolTipRound>}
           mobilePlacement="right"
           mobileWidth={50}
           width={325}
