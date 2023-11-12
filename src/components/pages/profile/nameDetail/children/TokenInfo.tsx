@@ -108,36 +108,38 @@ const ToeknTransaction = ({ accountAddress }: { accountAddress: string }) => {
     <>
       {data &&
         !!data.history_list.length &&
-        data.history_list.map((t, i) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <Round key={`${t.cate_id} - ${i}`}>
-            <AuctionTitle style={{ textTransform: 'capitalize' }}>
-              {t.cate_id || 'Unknown'}
-            </AuctionTitle>
-            <StateTitle className={t.tx?.status === 1 ? 'confirmed' : ''}>
-              {t.tx?.status === 1 ? 'Confirmed' : 'Confirmed'}
-            </StateTitle>
-            <div style={{ display: 'flex', gap: 10 }}>
-              <AddressTitle>{shortenAddress(t.id)}</AddressTitle>
-              <CopyButton value={accountAddress} />
-            </div>
-            <PriceTitle>
-              {t.sends?.length
-                ? `-${t.sends[0].amount} ${
-                    data.token_dict[t.sends[0].token_id]
-                      ? data.token_dict[t.sends[0].token_id].symbol
-                      : 'Unknown'
-                  }`
-                : t.receives?.length
-                ? `+${t.receives[0].amount} ${
-                    data.token_dict[t.receives[0].token_id]
-                      ? data.token_dict[t.receives[0].token_id].symbol
-                      : 'Unknown'
-                  }`
-                : ''}
-            </PriceTitle>
-          </Round>
-        ))}
+        data.history_list
+          .filter((_t) => _t.cate_id)
+          .map((t, i) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <Round key={`${t.cate_id} - ${i}`}>
+              <AuctionTitle style={{ textTransform: 'capitalize' }}>
+                {t.cate_id || 'Unknown'}
+              </AuctionTitle>
+              <StateTitle className={t.tx?.status === 1 ? 'confirmed' : ''}>
+                {t.tx?.status === 1 ? 'Confirmed' : 'Confirmed'}
+              </StateTitle>
+              <div style={{ display: 'flex', gap: 10 }}>
+                <AddressTitle>{shortenAddress(t.id)}</AddressTitle>
+                <CopyButton value={accountAddress} />
+              </div>
+              <PriceTitle>
+                {t.sends?.length
+                  ? `-${t.sends[0].amount} ${
+                      data.token_dict[t.sends[0].token_id]
+                        ? data.token_dict[t.sends[0].token_id].symbol
+                        : 'Unknown'
+                    }`
+                  : t.receives?.length
+                  ? `+${t.receives[0].amount} ${
+                      data.token_dict[t.receives[0].token_id]
+                        ? data.token_dict[t.receives[0].token_id].symbol
+                        : 'Unknown'
+                    }`
+                  : ''}
+              </PriceTitle>
+            </Round>
+          ))}
       {data && !data.history_list.length && (
         <div style={{ marginTop: 20 }}>
           <EmptyData />
