@@ -18,6 +18,7 @@ import { usePrimary } from '@app/hooks/usePrimary'
 import { timestampToDateFormat } from '@app/utils'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
 import { makeDisplay } from '@app/utils/currency'
+import { shortenAddress } from '@app/utils/utils'
 
 const ContentStyle = styled.div`
   height: 100%;
@@ -232,7 +233,7 @@ export default function Rewards() {
     const arr = namesData?.names.map((i) => (
       <div key={i.id} style={{ width: '100%' }}>
         <AvaNameLabel
-          name={i.name}
+          name={i.name.length > 20 ? shortenAddress(i.name, 20, 10, 10) : i.name}
           onClick={() => router.push(`/rewards?name=${i.name}`)}
           styles={{
             width: '100%',
@@ -300,7 +301,7 @@ export default function Rewards() {
                 {/* eslint-disable-next-line react/button-has-type */}
                 <DropdownBtn>
                   <AvaNameLabel
-                    name={`${curName}.aw`}
+                    name={`${curName.length > 11 ? shortenAddress(curName, 11, 5, 3) : curName}.aw`}
                     styles={{
                       width: '100%',
                       border: 'none',
@@ -336,7 +337,7 @@ export default function Rewards() {
               </StyledTable>
             </CenterRightStyle>
           </BodyStyle>
-          <BottomStyle>
+          <BottomStyle style={{ display: 'none' }}>
             <BottomTitleStyle>Terms & Conditions</BottomTitleStyle>
             <BottomContentStyle>
               <>1.Each user will get an invitation code after registering AWNS.</>

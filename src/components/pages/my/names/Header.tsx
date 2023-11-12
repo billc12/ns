@@ -17,7 +17,6 @@ import { shortenAddress } from '@app/utils/utils'
 const HederStyle = styled.div(
   () => css`
     width: 1200px;
-    height: 141px;
     border-radius: 10px;
     border: 1px solid var(--line, #d4d7e2);
     background: #fff;
@@ -73,13 +72,17 @@ const AddressStyle = styled.div(
 
 const ButtonStyle = styled.div`
   height: auto;
-  color: var(--word-color, #3f5170);
-  font-family: Inter;
-  font-size: 14px;
-  font-weight: 500;
   display: flex;
   gap: 6px;
   align-items: center;
+  color: #3f5170;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0;
   cursor: pointer;
   svg {
     width: 14px;
