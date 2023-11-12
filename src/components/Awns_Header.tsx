@@ -11,6 +11,7 @@ import useGasPrice from '@app/hooks/useGasPrice'
 import { makeDisplay } from '@app/utils/currency'
 
 import { HeaderConnect } from './ConnectButton'
+import { Explore } from './Explore'
 
 const Row = styled.div`
   display: flex;
@@ -39,9 +40,12 @@ export const InterText = styled(Typography)<{ $textColor?: string; $w?: number }
   line-height: 20px;
   color: ${(props) => props.$textColor || '#3f5170'};
 `
-const HeaderNav = styled(Row)`
+const HeaderNav = styled(Row)<{ $color: string }>`
   gap: 60px;
   flex: 0.8;
+  & p {
+    color: ${(props) => props.$color};
+  }
 `
 const GWeiBox = styled(Row)`
   padding: 8px 15px;
@@ -50,6 +54,7 @@ const GWeiBox = styled(Row)`
   border: 1px solid #d4d7e2;
   background: #fff;
 `
+
 const Page = () => {
   const { gasPrice } = useGasPrice()
   const router = useRouter()
@@ -63,12 +68,14 @@ const Page = () => {
           AWNS
         </InterText>
       </HeaderLeft>
-      <HeaderNav>
-        <Link href="/">
+      <HeaderNav $color={isIndex ? '#fff' : '#3f5170'}>
+        {/* <Link href="/">
           <InterText as="a" $textColor={isIndex ? '#fff' : '#3f5170'} style={{ cursor: 'pointer' }}>
             Explore
           </InterText>
-        </Link>
+        </Link> */}
+        <Explore />
+
         <Link href="/rewards">
           <InterText as="a" $textColor={isIndex ? '#fff' : '#3f5170'} style={{ cursor: 'pointer' }}>
             Referral rewards

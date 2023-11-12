@@ -167,6 +167,9 @@ const DropdownStyle = styled(Dropdown)`
   & button:hover {
     background: #f7fafc;
   }
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 const DropdownBtn = styled.div`
   position: relative;
