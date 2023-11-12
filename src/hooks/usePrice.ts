@@ -46,6 +46,8 @@ export const usePrice = ({ nameOrNames, signData: signName, legacy, years = 1 }:
         signName?.discountCount!,
         signName?.discountCode!,
         signName?.discountBinding!,
+        signName?.maxDeduct!,
+        signName?.minLimit!,
         signName?.timestamp!,
       ).then((d) => d || null),
     {

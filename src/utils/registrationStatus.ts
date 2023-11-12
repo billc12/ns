@@ -59,6 +59,7 @@ export const getRegistrationStatus = ({
       if (expiry.getTime() + gracePeriod > timestamp) {
         return 'gracePeriod'
       }
+      console.log('priceData12456', priceData)
       const { premium } = priceData as {
         base: BigNumber
         premium: BigNumber

@@ -37,6 +37,8 @@ export type DisInfo = {
   premium: boolean
   booker: string
   discountBinding: string
+  maxDeduct: string
+  minLimit: string
 }
 export const DefaultDis: DisInfo = {
   discountCode: '',
@@ -47,6 +49,8 @@ export const DefaultDis: DisInfo = {
   premium: false,
   booker: emptyAddress,
   discountBinding: emptyAddress,
+  maxDeduct: '0',
+  minLimit: '0',
 }
 const DiscountCodeLabel = ({
   info,

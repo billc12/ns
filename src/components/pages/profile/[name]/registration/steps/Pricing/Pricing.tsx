@@ -838,6 +838,8 @@ const Pricing = ({
     booker: registrationData.booker,
     premium: registrationData.premium,
     discountBinding: registrationData.discountBinding,
+    maxDeduct: registrationData.maxDeduct,
+    minLimit: registrationData.minLimit,
   }
   const { disLabel, disInfo } = DiscountCodeLabelProvider(
     { ...initDis },

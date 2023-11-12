@@ -57,6 +57,8 @@ const getBatchData = async (
         signData.discountCount,
         signData.discountCode,
         signData.discountBinding,
+        signData.maxDeduct,
+        signData.minLimit,
         signData.timestamp,
       ),
     )

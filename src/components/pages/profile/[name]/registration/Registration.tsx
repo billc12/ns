@@ -155,6 +155,8 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
     booker,
     premium,
     discountBinding,
+    maxDeduct,
+    minLimit,
   }: RegistrationStepData['pricing']) => {
     if (paymentMethodChoice === PaymentMethod.moonpay) {
       initiateMoonpayRegistrationMutation.mutate(years)
@@ -174,6 +176,8 @@ const Registration = ({ nameDetails, isLoading }: Props) => {
         booker,
         premium,
         discountBinding,
+        maxDeduct,
+        minLimit,
       },
       selected,
     })

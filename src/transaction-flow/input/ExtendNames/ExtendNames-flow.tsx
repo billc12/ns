@@ -229,6 +229,8 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
       booker: '',
       discountBinding: '',
       discountEndTime: 0,
+      maxDeduct: '0',
+      minLimit: '0',
     },
     legacy: false,
     years,
@@ -249,6 +251,8 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
       premium: false,
       booker: emptyAddress,
       discountBinding: emptyAddress,
+      maxDeduct: '0',
+      minLimit: '0',
     }),
   ]
 

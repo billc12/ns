@@ -44,6 +44,8 @@ const defaultData: RegistrationReducerDataItem = {
   premium: false,
   booker: emptyAddress,
   discountBinding: emptyAddress,
+  maxDeduct: '0',
+  minLimit: '0',
 }
 
 const isBrowser = !!(
@@ -73,6 +75,8 @@ const makeDefaultData = (selected: SelectedItemProperties): RegistrationReducerD
   premium: false,
   booker: emptyAddress,
   discountBinding: emptyAddress,
+  maxDeduct: '0',
+  minLimit: '0',
   ...selected,
 })
 

@@ -24,6 +24,8 @@ export type Result = {
   booker: string
   discountBinding: string
   discountEndTime: number
+  maxDeduct: string
+  minLimit: string
 }
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/sign/name`
 
@@ -56,6 +58,8 @@ export const fetchedGetSignName = async ({
     booker: data.booker,
     discountBinding: data.specialAddr,
     discountEndTime: data.discountEndTime,
+    maxDeduct: data.maxDiscount,
+    minLimit: data.minSpending,
   }
 }
 export const defaultDis = '1000000000000000000'

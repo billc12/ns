@@ -27,6 +27,8 @@ type Props = {
     | 'booker'
     | 'premium'
     | 'discountBinding'
+    | 'maxDeduct'
+    | 'minLimit'
   >
 }
 
@@ -60,6 +62,8 @@ const useRegistrationParams = ({ name, owner, registrationData }: Props) => {
       booker: registrationData.booker,
       premium: registrationData.premium,
       discountBinding: registrationData.discountBinding,
+      maxDeduct: registrationData.maxDeduct,
+      minLimit: registrationData.minLimit,
     }),
     [owner, name, registrationData],
   )

@@ -64,6 +64,8 @@ const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) =>
     booker,
     premium,
     discountBinding,
+    maxDeduct,
+    minLimit,
   } = data
   const labels = names.map((name) => {
     const parts = name.split('.')
@@ -82,6 +84,8 @@ const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) =>
     discountCount,
     discountCode,
     discountBinding,
+    maxDeduct,
+    minLimit,
     timestamp,
   )
   if (!price) throw new Error('No price found')
@@ -98,6 +102,8 @@ const transaction = async (signer: JsonRpcSigner, ens: PublicENS, data: Data) =>
     discountCount,
     discountCode,
     discountBinding,
+    maxDeduct,
+    minLimit,
     timestamp,
   })
 }

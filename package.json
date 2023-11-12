@@ -78,7 +78,7 @@
     "@metamask/mobile-provider": "^2.1.0",
     "@metamask/post-message-stream": "^6.1.2",
     "@myclique/awns-contracts": "0.0.4",
-    "@myclique/awnsjs": "1.4.0-alpha",
+    "@myclique/awnsjs": "1.4.2-alpha",
     "@rainbow-me/rainbowkit": "0.12.15",
     "@sentry/nextjs": "^7.43.0",
     "@svgr/webpack": "^6.3.1",

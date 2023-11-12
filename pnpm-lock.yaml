@@ -116,8 +116,8 @@ importers:
         specifier: 0.0.4
         version: 0.0.4
       '@myclique/awnsjs':
-        specifier: 1.4.0-alpha
-        version: 1.4.0-alpha(@ethersproject/abi@5.7.0)(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/address@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/bytes@5.7.0)(@ethersproject/contracts@5.7.0)(@ethersproject/keccak256@5.7.0)(@ethersproject/providers@5.7.2)(@ethersproject/solidity@5.7.0)(@ethersproject/strings@5.7.0)(@ethersproject/transactions@5.7.0)(@ethersproject/web@5.7.1)
+        specifier: 1.4.2-alpha
+        version: 1.4.2-alpha(@ethersproject/abi@5.7.0)(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/address@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/bytes@5.7.0)(@ethersproject/contracts@5.7.0)(@ethersproject/keccak256@5.7.0)(@ethersproject/providers@5.7.2)(@ethersproject/solidity@5.7.0)(@ethersproject/strings@5.7.0)(@ethersproject/transactions@5.7.0)(@ethersproject/web@5.7.1)
       '@rainbow-me/rainbowkit':
         specifier: 0.12.15
         version: 0.12.15(patch_hash=ids4vnpwyenrujupancx6kn4ci)(@types/react@17.0.30)(ethers@5.7.2)(react-dom@17.0.2)(react@17.0.2)(wagmi@0.12.13)
@@ -3793,8 +3793,8 @@ packages:
       dns-packet: 5.4.0
     dev: false
 
-  /@myclique/awnsjs@1.4.0-alpha(@ethersproject/abi@5.7.0)(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/address@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/bytes@5.7.0)(@ethersproject/contracts@5.7.0)(@ethersproject/keccak256@5.7.0)(@ethersproject/providers@5.7.2)(@ethersproject/solidity@5.7.0)(@ethersproject/strings@5.7.0)(@ethersproject/transactions@5.7.0)(@ethersproject/web@5.7.1):
-    resolution: {integrity: sha512-Mj2WSxrc5ZcH5Wa+8cGnHfsCodPQH/1b/xlHUFpI7fw2vzav6PCLa9VXh6NZd0Yivi4YoMVwXkvxNx+FPTWLGw==}
+  /@myclique/awnsjs@1.4.2-alpha(@ethersproject/abi@5.7.0)(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/address@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/bytes@5.7.0)(@ethersproject/contracts@5.7.0)(@ethersproject/keccak256@5.7.0)(@ethersproject/providers@5.7.2)(@ethersproject/solidity@5.7.0)(@ethersproject/strings@5.7.0)(@ethersproject/transactions@5.7.0)(@ethersproject/web@5.7.1):
+    resolution: {integrity: sha512-8m3XmzXZ8513vAnkDyFcfFLcXcASpxvRkrBcinUUdOZQm+v3Fj1acAgc74iFXkcpM+CAT4OPpi7+ZCf0SjFZPA==}
     peerDependencies:
       '@ethersproject/abi': ^5.6.4
       '@ethersproject/abstract-provider': ^5.7.0
@@ -11326,7 +11326,7 @@ packages:
     deprecated: The v1 package contains DANGEROUS / INSECURE binaries. Upgrade to safe fsevents v2
     requiresBuild: true
     dependencies:
-      bindings: registry.npmmirror.com/bindings@1.5.0
+      bindings: 1.5.0
       nan: 2.16.0
     dev: false
     optional: true
@@ -21182,16 +21182,6 @@ packages:
     name: base64-js
     version: 1.5.1
 
-  registry.npmmirror.com/bindings@1.5.0:
-    resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/bindings/-/bindings-1.5.0.tgz}
-    name: bindings
-    version: 1.5.0
-    requiresBuild: true
-    dependencies:
-      file-uri-to-path: registry.npmmirror.com/file-uri-to-path@1.0.0
-    dev: false
-    optional: true
-
   registry.npmmirror.com/blakejs@1.2.1:
     resolution: {integrity: sha512-QXUSXI3QVc/gJME0dBpXrag1kbzOqCjCX8/b54ntNyW6sjtoqxqRk3LTmXzaJoh71zMsDCjM+47jS7XiwN/+fQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/blakejs/-/blakejs-1.2.1.tgz}
     name: blakejs
@@ -21926,14 +21916,6 @@ packages:
     resolution: {integrity: sha512-W+KJc2dmILlPplD/H4K9l9LcAHAfPtP6BY84uVLXQ6Evcz9Lcg33Y2z1IVblT6xdY54PXYVHEv+0Wpq8Io6zkA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/fast-safe-stringify/-/fast-safe-stringify-2.1.1.tgz}
     name: fast-safe-stringify
     version: 2.1.1
-
-  registry.npmmirror.com/file-uri-to-path@1.0.0:
-    resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz}
-    name: file-uri-to-path
-    version: 1.0.0
-    requiresBuild: true
-    dev: false
-    optional: true
 
   registry.npmmirror.com/filter-obj@1.1.0:
     resolution: {integrity: sha512-8rXg1ZnX7xzy2NGDVkBVaAy+lSlPNwad13BtgSlLuxfIslyt5Vg64U7tFcCt4WS1R0hvtnQybT/IyCkGZ3DpXQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/filter-obj/-/filter-obj-1.1.0.tgz}
