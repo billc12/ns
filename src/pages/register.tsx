@@ -25,7 +25,7 @@ export default function Page() {
   const isLoading = detailsLoading || initial
 
   if (!isLoading && registrationStatus !== 'available' && registrationStatus !== 'premium') {
-    let redirect = true
+    let redirect = false
 
     if (nameDetails.ownerData?.owner === address && !!address) {
       const registrationData = JSON.parse(
