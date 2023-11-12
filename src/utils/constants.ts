@@ -20,6 +20,8 @@ export const SUPPORT_NETWORK_CHAIN_IDS = process.env.NEXT_PUBLIC_SUPPORT_NETWORK
 ).map((v) => Number(v)) || [1]
 
 export const ENV_NAME = process.env.NEXT_PUBLIC_ENV_NAME
+
+export const latestTransactionPeriod = 10 * 60 * 1000 // ms
 interface ResolverAddresses {
   [key: string]: EthAddress[]
 }

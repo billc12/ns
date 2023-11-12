@@ -11,8 +11,8 @@ import React, {
 import { useLocalStorageReducer } from '@app/hooks/useLocalStorage'
 import { useRouterWithHistory } from '@app/hooks/useRouterWithHistory'
 import { UpdateCallback, useCallbackOnTransaction } from '@app/utils/SyncProvider/SyncProvider'
+import { latestTransactionPeriod } from '@app/utils/constants'
 
-// eslint-disable-next-line import/no-cycle
 import { TransactionDialogManager } from '../components/@molecules/TransactionDialogManager/TransactionDialogManager'
 import { DataInputComponent, DataInputComponents } from './input'
 import { helpers, initialState, reducer } from './reducer'
@@ -142,7 +142,9 @@ export const TransactionFlowProvider = ({ children }: { children: ReactNode }) =
       })
       const item = getSelectedItem()
       if (!item) return undefined
-      return item.transactions[item.currentTransaction]
+      const ret = item.transactions[item.currentTransaction]
+      if (!ret?.sendTime) return undefined
+      return new Date().getTime() - ret.sendTime > latestTransactionPeriod ? undefined : ret
     },
     [state.items],
   )

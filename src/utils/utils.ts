@@ -44,7 +44,7 @@ export const secondsToHours = (seconds: number) => Math.floor(seconds / (60 * 60
 export const daysToSeconds = (days: number) => days * 60 * 60 * 24
 
 export const yearsToSeconds = (years: number) => {
-  if (ENV_NAME === 'env') return years * 60 * 10
+  if (ENV_NAME === 'env') return years * 60 * 60
   if (ENV_NAME === 'pre') return years * 60 * 60
   return years * 60 * 60 * 24 * 365
 }
