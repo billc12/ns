@@ -277,7 +277,7 @@ export default function Rewards() {
     }
   }, [RewardsDetails, rewardsPage])
 
-  if (!primary.data && !rewardsLoading) {
+  if (!curName) {
     return <p>No name available yet</p>
   }
   return (
