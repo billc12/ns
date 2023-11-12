@@ -1,10 +1,12 @@
 import { isAddress } from '@ethersproject/address'
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import styled, { css } from 'styled-components'
 
 import { Input, Select, mq } from '@ensdomains/thorin'
 
 import placeholder from '@app/assets/placeholder.png'
+import { DogFood } from '@app/components/@molecules/DogFood'
 import { NextButton } from '@app/components/Awns/Dialog'
 import { useGetUserAllNFT } from '@app/hooks/requst/useGetUserNFT'
 import { useTransferNFT } from '@app/hooks/transfer/useTransferNFT'
@@ -12,6 +14,10 @@ import { useChainId } from '@app/hooks/useChainId'
 
 import DrawerModel from '.'
 
+type FormData = {
+  dogfoodRaw: string
+  address: string
+}
 const Label = styled.p`
   color: #3f5170;
   font-family: Inter;
@@ -21,6 +27,7 @@ const Label = styled.p`
   line-height: 150.5%;
   margin-bottom: 8px;
 `
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const CodeInput = styled(Input)`
   width: 100%;
   border-radius: 6px;
@@ -36,15 +43,18 @@ const CodeInput = styled(Input)`
     color: #3f5170;
   }
 `
-// const Container = styled.div`
-//   width: 480px;
-//   display: flex;
-//   flex-direction: column;
-//   gap: 8px;
-//   ${mq.sm.max(css`
-//     width: 100%;
-//   `)}
-// `
+const Container = styled.div`
+  width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  ${mq.sm.max(css`
+    width: 100%;
+  `)}
+  &>div {
+    margin-bottom: 0;
+  }
+`
 const Row = styled.div`
   display: flex;
   width: 100%;
@@ -83,10 +93,27 @@ const Page = ({
   onClose: () => void
 }) => {
   // const { nftId, contractAddress } = useNameErc721Assets(address)
-
+  const {
+    register,
+    watch,
+    getFieldState,
+    handleSubmit,
+    setValue,
+    getValues,
+    setError,
+    formState,
+    trigger,
+  } = useForm<FormData>({
+    mode: 'onBlur',
+    defaultValues: {
+      address: '',
+      dogfoodRaw: '',
+    },
+  })
+  const receiveAddress = watch('address')
   const chainId = useChainId()
   const { data: list } = useGetUserAllNFT({ account: address, chainId })
-  const [receiveAddress, setReceiveAddress] = useState<any>('')
+  // const [receiveAddress, setReceiveAddress] = useState<any>('')
   const [senNFT, SetSenNFT] = useState<any>('')
   // const { data } = useGetUserNFT({
   //   name: name || '',
@@ -99,59 +126,75 @@ const Page = ({
     recipientAddress: receiveAddress as `0x${string}`,
   })
   console.log('data=>', list)
-
+  const onSubmit = () => {
+    callback()
+  }
   return (
     <DrawerModel open={open} onClose={onClose} title="Send Assets">
-      {/* <Container /> */}
-      <Label>To Account</Label>
-      <CodeInput
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Container>
+          <Label>To Account</Label>
+          {/* <CodeInput
         hideLabel
         label
         placeholder="Ethereum address(0x) or ENS"
         value={receiveAddress}
         onChange={(e) => setReceiveAddress(e.target.value)}
-      />
+      /> */}
+          <DogFood
+            {...{
+              register,
+              getFieldState,
+              watch,
+              setValue,
+              getValues,
+              setError,
+              formState,
+              trigger,
+            }}
+          />
+          <Label>Assets</Label>
 
-      <Label>Assets</Label>
+          <SelectStyle
+            label=""
+            autocomplete
+            value={senNFT}
+            options={
+              list?.length
+                ? list?.map((item) => {
+                    return {
+                      value: item,
+                      label: ` ${item.name || item.contract_name} - # ${item.token_id}`,
+                      prefix: (
+                        <div
+                          key={item.toString()}
+                          style={{ height: '100%', display: 'flex', alignItems: 'center' }}
+                        >
+                          <StyledImg src={placeholder.src} />
+                        </div>
+                      ),
+                    }
+                  })
+                : []
+            }
+            placeholder="Select Token"
+            onChange={(e) => {
+              SetSenNFT(e.target.value)
+              console.log('checkToken=>', e.target.value)
+            }}
+          />
 
-      <SelectStyle
-        label=""
-        autocomplete
-        value={senNFT}
-        options={
-          list?.length
-            ? list?.map((item) => {
-                return {
-                  value: item,
-                  label: ` ${item.name || item.contract_name} - # ${item.token_id}`,
-                  prefix: (
-                    <div
-                      key={item.toString()}
-                      style={{ height: '100%', display: 'flex', alignItems: 'center' }}
-                    >
-                      <StyledImg src={placeholder.src} />
-                    </div>
-                  ),
-                }
-              })
-            : []
-        }
-        placeholder="Select Token"
-        onChange={(e) => {
-          SetSenNFT(e.target.value)
-          console.log('checkToken=>', e.target.value)
-        }}
-      />
-
-      <Row>
-        <NextButton
-          disabled={!senNFT || !receiveAddress || !isAddress(receiveAddress) || loading}
-          loading={loading}
-          onClick={() => callback()}
-        >
-          Send
-        </NextButton>
-      </Row>
+          <Row>
+            <NextButton
+              disabled={!senNFT || !receiveAddress || !isAddress(receiveAddress) || loading}
+              loading={loading}
+              type="submit"
+            >
+              Send
+            </NextButton>
+          </Row>
+        </Container>
+      </form>
     </DrawerModel>
   )
 }

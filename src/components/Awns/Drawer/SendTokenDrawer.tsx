@@ -1,11 +1,13 @@
 // import { isAddress } from '@ethersproject/address'
 import { isAddress } from '@ethersproject/address'
 import { useMemo, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import styled, { css } from 'styled-components'
 
 import { Input, Select, Typography, mq } from '@ensdomains/thorin'
 
 import USDTImg from '@app/assets/USDT.png'
+import { DogFood } from '@app/components/@molecules/DogFood'
 import { NextButton } from '@app/components/Awns/Dialog'
 import useGetTokenList from '@app/hooks/requst/useGetTokenList'
 import { useBalanceOf } from '@app/hooks/useBalanceOf'
@@ -21,6 +23,11 @@ export type SendAddressProps = {
   address: string | undefined
   name: string | undefined
 }
+type FormData = {
+  dogfoodRaw: string
+  address: string
+}
+
 export type Props = {
   data: SendAddressProps
 } & TransactionDialogPassthrough
@@ -66,6 +73,9 @@ const Container = styled.div`
   ${mq.sm.max(css`
     width: 100%;
   `)}
+  &>div {
+    margin-bottom: 0;
+  }
 `
 const Row = styled.div`
   display: flex;
@@ -111,8 +121,25 @@ const Page = ({
 }) => {
   const chainId = useChainId()
   const { data: tokenList } = useGetTokenList({ account: address, chain: chainId })
-
-  const [receiveAddress, setReceiveAddress] = useState<string>('')
+  const {
+    register,
+    watch,
+    getFieldState,
+    handleSubmit,
+    setValue,
+    getValues,
+    setError,
+    formState,
+    trigger,
+  } = useForm<FormData>({
+    mode: 'onBlur',
+    defaultValues: {
+      address: '',
+      dogfoodRaw: '',
+    },
+  })
+  const receiveAddress = watch('address')
+  // const [receiveAddress, setReceiveAddress] = useState<string>('')
   const [sendAmount, setSendAmount] = useState<string>('')
   const [senToken, setSenToken] = useState<any>()
 
@@ -146,7 +173,7 @@ const Page = ({
     if (Number(balance) < Number(sendAmount)) {
       return <NextButton disabled>Insufficient Balance</NextButton>
     }
-    return <NextButton onClick={() => SendTokenCallback()}>Send</NextButton>
+    return <NextButton type="submit">Send</NextButton>
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [balance, receiveAddress, sendAmount])
 
@@ -162,78 +189,97 @@ const Page = ({
       ),
     })) as any
   }, [tokenList])
+  console.log('tokenList123456', tokenList)
+
+  const onSubmit = () => {
+    SendTokenCallback()
+  }
   return (
     <DrawerModel open={open} onClose={onClose} title="Send Assets">
-      <Container>
-        <Label>To Account</Label>
-        <CodeInput
-          hideLabel
-          label
-          placeholder="Ethereum address(0x) or ENS"
-          value={receiveAddress}
-          onChange={(e) => setReceiveAddress(e.target.value)}
-        />
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            width: '100%',
-          }}
-        >
-          <Label>Assets</Label>
-          {senToken && (
-            <Label>
-              Balance:{balance || '0.00'} {senToken?.symbol || '--'}
-            </Label>
-          )}
-        </div>
-        <Select
-          label=""
-          autocomplete
-          value={senToken}
-          options={optionsList}
-          placeholder="Select Token"
-          onChange={(e) => {
-            console.log('e.target.value', e.target.value)
-            setSenToken(e.target.value)
-            setSendAmount('')
-          }}
-        />
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            width: '100%',
-          }}
-        >
-          <Label>Amount</Label>
-          {!!senToken && !!balance && (
-            <MaxButtonStyle
-              onClick={() => {
-                setSendAmount(balance)
-              }}
-            >
-              Max
-            </MaxButtonStyle>
-          )}
-        </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Container>
+          <Label>To Account</Label>
+          {/* <CodeInput
+            hideLabel
+            label
+            placeholder="Ethereum address(0x) or ENS"
+            value={receiveAddress}
+            onChange={(e) => setReceiveAddress(e.target.value)}
+          /> */}
+          <DogFood
+            {...{
+              register,
+              getFieldState,
+              watch,
+              setValue,
+              getValues,
+              setError,
+              formState,
+              trigger,
+            }}
+          />
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}
+          >
+            <Label>Assets</Label>
+            {senToken && (
+              <Label>
+                Balance:{balance || '0.00'} {senToken?.symbol || '--'}
+              </Label>
+            )}
+          </div>
+          <Select
+            label=""
+            autocomplete
+            value={senToken}
+            options={optionsList}
+            placeholder="Select Token"
+            onChange={(e) => {
+              console.log('e.target.value', e.target.value)
+              setSenToken(e.target.value)
+              setSendAmount('')
+            }}
+          />
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}
+          >
+            <Label>Amount</Label>
+            {!!senToken && !!balance && (
+              <MaxButtonStyle
+                onClick={() => {
+                  setSendAmount(balance)
+                }}
+              >
+                Max
+              </MaxButtonStyle>
+            )}
+          </div>
 
-        <CodeInput
-          hideLabel
-          label
-          placeholder="amount"
-          value={sendAmount}
-          onChange={(e) => {
-            const value = e.target.value as string
-            // eslint-disable-next-line no-restricted-globals
-            if (!value || !Number.isNaN(Number(value))) {
-              setSendAmount(value)
-            }
-          }}
-        />
+          <CodeInput
+            hideLabel
+            label
+            placeholder="amount"
+            value={sendAmount}
+            onChange={(e) => {
+              const value = e.target.value as string
+              // eslint-disable-next-line no-restricted-globals
+              if (!value || !Number.isNaN(Number(value))) {
+                setSendAmount(value)
+              }
+            }}
+          />
 
-        <Row>{actionBtn}</Row>
-      </Container>
+          <Row>{actionBtn}</Row>
+        </Container>
+      </form>
     </DrawerModel>
   )
 }
