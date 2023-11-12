@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
 
 import { Input, Skeleton, mq } from '@ensdomains/thorin'
@@ -53,10 +53,17 @@ const ErrTip = styled.p`
 const InvitationName = ({ setNameCallback, name }: Props) => {
   const [nameInp, setNameInp] = useState(name ? `${name}.aw` : '')
   const { registrationStatus, isLoading } = useBasicName(`${nameInp.trim().split('.')[0]}.aw`)
-  const isUse = registrationStatus === 'registered'
+  const isUse = useMemo(() => {
+    if (!registrationStatus) return false
+    if (registrationStatus === 'registered') {
+      return true
+    }
+    return false
+  }, [registrationStatus])
+
   const saveName = () => {
-    if (isUse || !nameInp) {
-      setNameCallback(nameInp.split('.')[0])
+    if (isUse || !nameInp.trim()) {
+      setNameCallback(nameInp.trim().split('.')[0])
     }
   }
   return (
@@ -67,7 +74,7 @@ const InvitationName = ({ setNameCallback, name }: Props) => {
           label
           placeholder="Enter AWNS"
           value={nameInp}
-          onChange={(e) => setNameInp(e.target.value)}
+          onChange={(e) => setNameInp(e.target.value.trim())}
           onBlur={saveName}
         />
       </Container>
@@ -82,7 +89,7 @@ const InvitationName = ({ setNameCallback, name }: Props) => {
           }}
         >
           <Skeleton loading={isLoading} style={{ minWidth: 220, height: 20 }}>
-            {!isUse && registrationStatus && <ErrTip>The AWNS name is invalid</ErrTip>}
+            {!isUse && <ErrTip>The AWNS name is invalid</ErrTip>}
           </Skeleton>
         </div>
       )}
