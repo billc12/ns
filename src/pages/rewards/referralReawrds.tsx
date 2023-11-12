@@ -191,21 +191,12 @@ export default function Rewards() {
   const breakpoints = useBreakpoint()
   const { address } = useAccountSafely()
   const primary = usePrimary(address!, !address)
-  const { data: namesList, status: namesStatus } = useNamesFromAddress({
-    address,
-    sort: {
-      type: 'labelName',
-      orderDirection: 'asc',
-    },
-    page: 1,
-    resultsPerPage: 'all',
-    search: '',
-  })
+
   const [rewardsPage, setRewardsPage] = useState(1)
   const {
     data: namesData,
     // isLoading: namesLoading,
-    // status: namesStatus,
+    status: namesStatus,
   } = useNamesFromAddress({
     address,
     sort: {
@@ -226,11 +217,12 @@ export default function Rewards() {
     if (primary.data && primary.data.beautifiedName) {
       return primary.data?.beautifiedName.slice(0, -3)
     }
-    if (namesList && namesStatus === 'success' && !namesList?.names.length) {
-      return namesList?.names[0].name.slice(0, -3)
+    if (namesData && namesStatus === 'success' && !namesData?.names.length) {
+      return namesData?.names[0].name.slice(0, -3)
     }
     return ''
-  }, [namesData?.names, namesList, namesStatus, primary.data])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [namesData, namesStatus, primary.data, router.router?.query.name])
 
   const dropdownList = useMemo<DropdownItem[]>(() => {
     const arr = namesData?.names.map((i) => (
@@ -285,7 +277,7 @@ export default function Rewards() {
     }
   }, [RewardsDetails, rewardsPage])
 
-  if (!primary.data && !rewardsLoading) {
+  if (!curName) {
     return <p>No name available yet</p>
   }
   return (

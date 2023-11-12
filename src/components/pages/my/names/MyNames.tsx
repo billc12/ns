@@ -255,7 +255,7 @@ const MyNames = () => {
                 ))}
                 <RegisterItem />
                 {!namesData?.names.length && (
-                  <div style={{ height: '100%' }}>
+                  <div style={{ height: '100%', margin: '0 auto' }}>
                     <EmptyData />
                   </div>
                 )}
