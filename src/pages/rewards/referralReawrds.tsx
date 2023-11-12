@@ -259,7 +259,9 @@ export default function Rewards() {
           textOverflow: 'ellipsis',
         }}
       >{`${registrant}.aw`}</TableContentStyle>,
-      <TableContentStyle>{type}</TableContentStyle>,
+      <TableContentStyle>
+        {type === 'direct' ? 'Direct referral' : 'Indirect referral'}
+      </TableContentStyle>,
       <TableContentStyle style={{ justifyContent: 'end' }}>
         {makeDisplay(BigNumber.from(reward), undefined, 'eth', 18)}
       </TableContentStyle>,
