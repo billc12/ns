@@ -191,6 +191,16 @@ export default function Rewards() {
   const breakpoints = useBreakpoint()
   const { address } = useAccountSafely()
   const primary = usePrimary(address!, !address)
+  const { data: namesList, status: namesStatus } = useNamesFromAddress({
+    address,
+    sort: {
+      type: 'labelName',
+      orderDirection: 'asc',
+    },
+    page: 1,
+    resultsPerPage: 'all',
+    search: '',
+  })
   const [rewardsPage, setRewardsPage] = useState(1)
   const {
     data: namesData,
@@ -206,16 +216,7 @@ export default function Rewards() {
     resultsPerPage: 'all',
     search: '',
   })
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     if (!primary.data) {
-  //       router.replace('/')
-  //     }
-  //   }, 1000)
-  //   return () => {
-  //     clearTimeout(timer)
-  //   }
-  // }, [primary])
+
   const curName = useMemo(() => {
     if (router.router?.query.name) {
       if (namesData?.names.find((i) => i.name === router.router?.query.name)) {
@@ -225,9 +226,11 @@ export default function Rewards() {
     if (primary.data && primary.data.beautifiedName) {
       return primary.data?.beautifiedName.slice(0, -3)
     }
+    if (namesList && namesStatus === 'success' && !namesList?.names.length) {
+      return namesList?.names[0].name.slice(0, -3)
+    }
     return ''
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [primary.data, router.router?.query.name])
+  }, [namesData?.names, namesList, namesStatus, primary.data])
 
   const dropdownList = useMemo<DropdownItem[]>(() => {
     const arr = namesData?.names.map((i) => (
