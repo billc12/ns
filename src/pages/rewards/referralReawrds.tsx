@@ -207,6 +207,7 @@ export default function Rewards() {
     resultsPerPage: 'all',
     search: '',
   })
+  console.log('🚀 ~ file: referralReawrds.tsx:198 ~ Rewards ~ namesData:', namesStatus, namesData)
 
   const curName = useMemo(() => {
     if (router.router?.query.name) {
@@ -217,7 +218,7 @@ export default function Rewards() {
     if (primary.data && primary.data.beautifiedName) {
       return primary.data?.beautifiedName.slice(0, -3)
     }
-    if (namesData && namesStatus === 'success' && !namesData?.names.length) {
+    if (namesData && namesStatus === 'success' && namesData?.names.length) {
       return namesData?.names[0].name.slice(0, -3)
     }
     return ''
