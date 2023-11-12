@@ -57,7 +57,7 @@ export const DogFood = (
   const [ethNameInput, setEthNameInput] = useState('')
   const throttledSetEthNameInput = useDebouncedCallback(setEthNameInput, 500)
   useEffect(() => {
-      throttledSetEthNameInput((inputWatch || '').toLocaleLowerCase())
+      throttledSetEthNameInput((inputWatch || '').toLocaleLowerCase().trim())
   }, [inputWatch, throttledSetEthNameInput])
 
   const queryKeyGenerator = useQueryKeys().dogfood 
@@ -96,17 +96,17 @@ export const DogFood = (
         {...register('dogfoodRaw', {
           validate: {
             length: (value) =>
-              !disabled && !value?.includes('.') && value?.length !== 42
+              !disabled && !value?.trim().includes('.') && value?.trim().length !== 42
                 ? t('errors.addressLength')
                 : undefined,
             isAddress: (value) =>
-              !disabled && !value?.includes('.') && !isAddress(value)
+              !disabled && !value?.includes('.') && !isAddress(value.trim())
                 ? t('errors.invalidAddress')
                 : undefined,
             hasAddressRecord: async (value) => {
               if(value?.includes('.')) {
                 try {
-                  const result = await queryClient.getQueryData(queryKeyGenerator(value.toLowerCase()))
+                  const result = await queryClient.getQueryData(queryKeyGenerator(value.toLowerCase().trim()))
                   if (result) { return undefined }
                 // eslint-disable-next-line no-empty
                 } catch (e){

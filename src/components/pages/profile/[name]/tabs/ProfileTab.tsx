@@ -192,7 +192,7 @@ export function formatDateString(originalDateString: any) {
     '0',
   )}:${String(timezoneOffsetMinutesRemainder).padStart(2, '0')}`
 
-  const formattedDate = `${year}.${month}.${day} at ${hours}:${minutes} (UTC${timezoneOffsetString})`
+  const formattedDate = `${year}.${month}.${day}  ${hours}:${minutes} (UTC${timezoneOffsetString})`
 
   return formattedDate
 }

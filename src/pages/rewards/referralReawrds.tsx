@@ -288,7 +288,7 @@ export default function Rewards() {
           <HeaderTitles>
             <TitleStyle>Referral Rewards</TitleStyle>
             <SubtitleStyle>
-              Apply for AWNS and enter the AWNS of the referrer to get rewards.
+              Register a AWNS and make sure to enter the referrer’s AWNS to qualify for rewards.
             </SubtitleStyle>
           </HeaderTitles>
           <BodyStyle>
