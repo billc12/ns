@@ -30,6 +30,7 @@ const LabelValue = styled.p`
   font-weight: 500;
   line-height: normal;
   text-align: right;
+  word-break: break-all;
 `
 export const LabelContainer = styled.div`
   display: flex;
