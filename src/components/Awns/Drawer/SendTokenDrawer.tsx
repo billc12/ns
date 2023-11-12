@@ -45,7 +45,6 @@ const CodeInput = styled(Input)`
   width: 100%;
   border-radius: 6px;
   background: #fff;
-  color: #d4d7e2;
   text-align: left;
   font-size: 16px;
   font-weight: 500;
@@ -167,7 +166,13 @@ const Page = ({
   }
 
   const actionBtn = useMemo(() => {
-    if (!balance || !sendAmount || !receiveAddress || !isAddress(receiveAddress)) {
+    if (
+      !balance ||
+      !sendAmount ||
+      !receiveAddress ||
+      !isAddress(receiveAddress) ||
+      !Number(sendAmount)
+    ) {
       return <NextButton disabled>Send</NextButton>
     }
     if (Number(balance) < Number(sendAmount)) {

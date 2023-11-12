@@ -237,7 +237,7 @@ export default function Rewards() {
       <div key={i.id} style={{ width: '100%' }}>
         <AvaNameLabel
           name={i.name.length > 20 ? shortenAddress(i.name, 20, 10, 10) : i.name}
-          onClick={() => router.push(`/rewards?name=${i.name}`)}
+          onClick={() => window.location.replace(`/rewards?name=${i.name}`)}
           styles={{
             width: '100%',
             border: 'none',
