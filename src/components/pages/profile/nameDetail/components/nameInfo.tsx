@@ -326,6 +326,7 @@ const NameTokenCard = ({
   name: string
   nftDataLenght: number
 }) => {
+  const { address } = useAccount()
   const [sendTokenOpen, setSendTokenOpen] = useState(false)
   const [sendNFTOpen, setSendNFTOpen] = useState(false)
   const chainId = useChainId()
@@ -380,7 +381,7 @@ const NameTokenCard = ({
             </div>,
           ]}
         >
-          <AuctionBtn prefix={<Icon3 />}>
+          <AuctionBtn disabled={!address} prefix={<Icon3 />}>
             <AuctionTitle>Send</AuctionTitle>
           </AuctionBtn>
         </Dropdown>

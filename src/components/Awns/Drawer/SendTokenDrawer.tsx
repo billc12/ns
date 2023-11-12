@@ -111,7 +111,6 @@ const Page = ({
 }) => {
   const chainId = useChainId()
   const { data: tokenList } = useGetTokenList({ account: address, chain: chainId })
-  console.log('tokenList11', tokenList)
 
   const [receiveAddress, setReceiveAddress] = useState<string>('')
   const [sendAmount, setSendAmount] = useState<string>('')
@@ -119,12 +118,7 @@ const Page = ({
 
   const balance = useBalanceOf(senToken?.address, address, senToken?.decimals || 18)
   const tokenboundClient = useTokenboundClient()
-  /*
-   account: address as `0x${string}`,
-    amount: Number(sendAmount),
-    recipientAddress: receiveAddress as `0x${string}`,
-  
-  */
+
   const SendTokenCallback = async () => {
     if (isZero(senToken)) {
       const ethRes = await tokenboundClient?.transferETH({
@@ -145,14 +139,15 @@ const Page = ({
     }
   }
 
-  const isCanSend = useMemo(() => {
+  const actionBtn = useMemo(() => {
     if (!balance || !sendAmount || !receiveAddress || !isAddress(receiveAddress)) {
-      return false
+      return <NextButton disabled>Send</NextButton>
     }
-    if (Number(balance) >= Number(sendAmount)) {
-      return true
+    if (Number(balance) < Number(sendAmount)) {
+      return <NextButton disabled>Insufficient Balance</NextButton>
     }
-    return false
+    return <NextButton onClick={() => SendTokenCallback()}>Send</NextButton>
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [balance, receiveAddress, sendAmount])
 
   const optionsList = useMemo(() => {
@@ -231,21 +226,13 @@ const Page = ({
           onChange={(e) => {
             const value = e.target.value as string
             // eslint-disable-next-line no-restricted-globals
-            if (!value || !isNaN(Number(value))) {
-              if (balance && Number(value) >= Number(balance)) {
-                setSendAmount(balance)
-              } else {
-                setSendAmount(value)
-              }
+            if (!value || !Number.isNaN(Number(value))) {
+              setSendAmount(value)
             }
           }}
         />
 
-        <Row>
-          <NextButton disabled={!isCanSend} onClick={() => SendTokenCallback()}>
-            Send
-          </NextButton>
-        </Row>
+        <Row>{actionBtn}</Row>
       </Container>
     </DrawerModel>
   )
