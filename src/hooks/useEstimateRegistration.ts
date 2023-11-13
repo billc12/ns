@@ -198,8 +198,10 @@ export const useEstimateFullRegistration = ({ registrationData, price, name }: F
   const estimatedGasFee = useMemo(() => {
     return registrationGasFee ? registrationGasFee.add(gasLimitDictionary.COMMIT) : undefined
   }, [registrationGasFee])
-  const originalPrice = priceData?.oBase ? priceData.oBase.mul(registrationData.years) : undefined
-  const discountPrice = priceData?.base ? priceData.base.mul(registrationData.years) : undefined
+  // const originalPrice = priceData?.oBase ? priceData.oBase.mul(registrationData.years) : undefined
+  // const discountPrice = priceData?.base ? priceData.base.mul(registrationData.years) : undefined
+  const originalPrice = priceData?.oBase
+  const discountPrice = priceData?.base
 
   const yearlyFee = price?.base
   const premiumFee = price?.premium
