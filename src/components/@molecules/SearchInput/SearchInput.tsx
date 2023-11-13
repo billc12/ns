@@ -228,7 +228,7 @@ export const SearchInput = ({
   const [selected, setSelected] = useState(0)
   const [usingPlaceholder, setUsingPlaceholder] = useState(false)
 
-  const [history, setHistory] = useLocalStorage<HistoryItem[]>('search-history-v3', [])
+  const [history, setHistory] = useLocalStorage<HistoryItem[]>('search-history-v4', [])
 
   const isEmpty = inputVal === ''
   useEffect(() => {
