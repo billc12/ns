@@ -316,16 +316,16 @@ export default function Rewards() {
               </DropdownStyle>
               <ClaimRewards _name={curName} />
               <LeftItemStyle>
-                <ContentTitleStyle>Direct referrals</ContentTitleStyle>
+                <ContentTitleStyle>Direct Referrals</ContentTitleStyle>
                 <LeftContentStyle>{RewardsDetails?.countDirect || '0'}</LeftContentStyle>
               </LeftItemStyle>
               <LeftItemStyle>
-                <ContentTitleStyle>Indirect referrals</ContentTitleStyle>
+                <ContentTitleStyle>Indirect Referrals</ContentTitleStyle>
                 <LeftContentStyle>{RewardsDetails?.countIndirect || '0'}</LeftContentStyle>
               </LeftItemStyle>
             </CenterLeftStyle>
             <CenterRightStyle>
-              <BottomTitleStyle style={{ padding: '20px 30px' }}>Rewards details</BottomTitleStyle>
+              <BottomTitleStyle style={{ padding: '20px 30px' }}>Rewards Details</BottomTitleStyle>
               <StyledTable>
                 <Table
                   labels={['Date', 'AWNS', 'Type', 'Rewards']}

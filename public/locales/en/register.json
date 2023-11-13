@@ -3,12 +3,12 @@
   "subtitle": "Register",
   "heading": "Register {{name}}",
   "invoice": {
-    "yearRegistration": "{{years}} year registration",
+    "yearRegistration": "{{years}} Year registration",
     "registration": "Registration",
-    "estimatedNetworkFee": "Est. gas fee",
+    "estimatedNetworkFee": "Est. Gas Fee",
     "networkFee": "Network fee",
     "temporaryPremium": "Temporary premium",
-    "total": "Estimated total",
+    "total": "Estimated Total",
     "totalPaid": "Total paid",
     "discount": "{{years}} year discount"
   },

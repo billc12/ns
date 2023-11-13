@@ -881,7 +881,7 @@ const Pricing = ({
             Length
           </InterText>
           <InterText $color="#3F5170" $size="16px" $weight={500}>
-            {nameLength} characters
+            {nameLength} Characters
           </InterText>
         </GrayRoundRow>
         <GrayRoundRow $p="20px 36px">
@@ -916,15 +916,15 @@ const Pricing = ({
         <Column>
           <GrayRoundColumn>
             <CenterRow>
-              <InterText $color="#8D8EA5" $size="16px" $weight={500}>
+              <InterText $color="#8D8EA5" $size="14px" $weight={500}>
                 Chain
               </InterText>
-              <InterText $color="#3F5170" $size="16px" $weight={500}>
+              <InterText $color="#3F5170" $size="14px" $weight={500}>
                 {chain ? chain.name : 'Sepolia'}
               </InterText>
             </CenterRow>
             <CenterRow>
-              <InterText $color="#8D8EA5" $size="16px" $weight={500}>
+              <InterText $color="#8D8EA5" $size="14px" $weight={500}>
                 Registration Year
               </InterText>
               <PlusMinusControl
