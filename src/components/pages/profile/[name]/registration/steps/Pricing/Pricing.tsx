@@ -673,6 +673,7 @@ const setLocalStorage = (src: string | undefined, name: string) => {
   if (src) localStorage.setItem(`avatar-src-${name}`, src)
   else if (!src) localStorage.removeItem(`avatar-src-${name}`)
 }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const UpImage = ({ isPremium, name }: { isPremium: boolean; name: string }) => {
   const [avatarSrc, setAvatarSrc] = useState<string | undefined>()
   useEffect(() => {
@@ -717,7 +718,7 @@ const UpImage = ({ isPremium, name }: { isPremium: boolean; name: string }) => {
         />
       </Dialog>
       <GrayRoundRow $p="15px" onClick={openInput} style={{ position: 'relative' }}>
-        <PremiumImgRound $premium={isPremium}>
+        <PremiumImgRound $premium>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             style={{ width: '100%', height: '100%' }}

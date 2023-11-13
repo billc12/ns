@@ -4,7 +4,6 @@ import { Typography } from '@ensdomains/thorin'
 
 import TestImg from '@app/assets/TestImage.png'
 import { ReturnedName } from '@app/hooks/names/useNamesFromAddress/useNamesFromAddress'
-import { shortenAddress } from '@app/utils/utils'
 
 import BaseLink from './@atoms/BaseLink'
 import { useEthInvoice } from './pages/profile/[name]/registration/steps/Awns_Complete'
@@ -21,8 +20,10 @@ const BottomStyle = styled.div`
 const RoundImg = styled.img`
   width: 210px;
   height: 210px;
+  border-radius: 10px 10px 0 0;
 `
 const Container = styled.div`
+  max-width: 210px;
   height: max-content;
   display: flex;
   flex-direction: column;
@@ -41,10 +42,10 @@ export const AddressItem = ({ AddressRow }: { AddressRow: ReturnedName }) => {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <RoundImg src={avatarSrc || TestImg.src} alt="default img" />
           <BottomStyle>
-            <Typography ellipsis>
-              {AddressRow.name.length > 25
-                ? shortenAddress(AddressRow.name, 25, 8, 8)
-                : AddressRow.name}
+            <Typography style={{ maxWidth: 210 }} ellipsis>
+              {/* {AddressRow.name.length > 25
+                ? shortenAddress(AddressRow.name, 25, 8, 8) */}
+              {AddressRow.name}
             </Typography>
           </BottomStyle>
         </Container>

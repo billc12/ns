@@ -24,6 +24,7 @@ const ButtonContainer = styled.div(
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     justify-content: stretch;
     gap: ${theme.space['2']};
   `,
@@ -38,7 +39,7 @@ export const Notifications = () => {
   const [open, setOpen] = useState(false)
 
   const queryClient = useQueryClient()
-  const { resumeTransactionFlow, getResumable } = useTransactionFlow()
+  const { getResumable } = useTransactionFlow()
 
   const [notificationQueue, setNotificationQueue] = useState<Notification[]>([])
   const currentNotification = notificationQueue[0]
@@ -74,13 +75,13 @@ export const Notifications = () => {
                 {t('transaction.viewEtherscan')}
               </Button>
             </a>
-            <Button
+            {/* <Button
               size="small"
               data-testid="notification-continue-button"
               onClick={() => resumeTransactionFlow(key)}
             >
               {t('action.continue')}
-            </Button>
+            </Button> */}
           </ButtonContainer>
         ) : (
           <a target="_blank" href={makeEtherscanLink(hash, chainName)} rel="noreferrer">
@@ -93,7 +94,7 @@ export const Notifications = () => {
 
       setNotificationQueue((queue) => [...queue, item])
     },
-    [chainName, getResumable, resumeTransactionFlow, t],
+    [chainName, getResumable, t],
   )
 
   useCallbackOnTransaction(updateCallback)

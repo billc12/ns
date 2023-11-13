@@ -150,7 +150,7 @@ const DiscountCode = ({
           label
           placeholder="Enter Discount Code"
           value={disCode}
-          onChange={(e) => setDisCode(e.target.value)}
+          onChange={(e) => setDisCode(e.target.value.trim())}
           onBlur={saveCode}
         />
       </Container>
