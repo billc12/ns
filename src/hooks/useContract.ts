@@ -53,6 +53,7 @@ export const useErc721Contract = (ContractAddress: string) => {
   const signer = useSigner()
 
   useEffect(() => {
+    if (!ContractAddress) return
     const func = async () => {
       const Erc721Controller = await ens.contracts?.getEth721Controller(undefined, ContractAddress)
       if (signer.data) {

@@ -16,7 +16,6 @@ import {
   SortType,
 } from '@app/components/@molecules/NameTableHeader/NameTableHeader'
 import { AddressItem } from '@app/components/AddressItem'
-import { EmptyData } from '@app/components/EmptyData'
 import { LoadingOverlay } from '@app/components/LoadingOverlay'
 import { RegisterItem } from '@app/components/RegisterNameItem'
 import { TabWrapper } from '@app/components/pages/profile/TabWrapper'
@@ -254,11 +253,6 @@ const MyNames = () => {
                   <AddressItem AddressRow={item} key={item.name} />
                 ))}
                 <RegisterItem />
-                {!namesData?.names.length && (
-                  <div style={{ height: '100%', margin: '0 auto' }}>
-                    <EmptyData />
-                  </div>
-                )}
               </AddressList>
             </AccountsLayout>
           ) : (
