@@ -41,7 +41,7 @@ export function useSBTIsDeployList(
   const { data: signer } = useSigner()
   const chainId = useChainId()
   const tokenboundClient = useMemo(
-    () => (signer && chainId ? new TokenboundClient({ signer, chainId: 1 }) : undefined),
+    () => (signer && chainId ? new TokenboundClient({ signer, chainId }) : undefined),
     [chainId, signer],
   )
 
