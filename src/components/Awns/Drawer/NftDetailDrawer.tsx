@@ -80,9 +80,9 @@ const switchErcType = (v: string) => {
 
 const NftDetailDrawer = ({ open, onClose, item, accountAddress }: Props) => {
   const [showInput, setShowInput] = useState(false)
-  const { owner } = useGetNftOwner(item.owner ? '' : item.token_id || '')
+  const { owner } = useGetNftOwner(item.token_id, item.contract_address)
   const isOwner = useMemo(() => {
-    return (item.owner || owner) === accountAddress
+    return (owner || item.owner) === accountAddress
   }, [accountAddress, item.owner, owner])
   console.log('isOwner', isOwner)
   const isDeploy = useSBTIsDeployList(
