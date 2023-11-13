@@ -156,6 +156,8 @@ const reducer = (state: RegistrationReducerData, action: RegistrationReducerActi
       item.timestamp = action.payload.timestamp
       item.booker = action.payload.booker
       item.premium = action.payload.premium
+      item.maxDeduct = action.payload.maxDeduct
+      item.minLimit = action.payload.minLimit
       break
     }
     case 'setTransactionsData': {
@@ -206,7 +208,7 @@ const useRegistrationReducer = ({
   if (isBrowser) {
     const itemIndex = getSelectedIndex(state, selected)
     item = itemIndex === -1 ? makeDefaultData(selected) : state.items[itemIndex]
-    if (new Date().getTime() / 1000 - item.timestamp > 30 * 24 * 60 * 60) {
+    if (new Date().getTime() / 1000 - item.timestamp > 60 * 60) {
       item = { ...item, stepIndex: 0 }
     }
   }

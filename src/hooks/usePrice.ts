@@ -34,7 +34,7 @@ export const usePrice = ({ nameOrNames, signData: signName, legacy, years = 1 }:
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     isFetching,
   } = useQuery(
-    useQueryKeys().getPrice(type, names, [signName?.discountCode || '0']),
+    useQueryKeys().getPrice(type, names, [signName?.discountCode || '0', years]),
     async () =>
       getPrice(
         names.map((n) => n.split('.')[0])?.[0],
@@ -61,11 +61,12 @@ export const usePrice = ({ nameOrNames, signData: signName, legacy, years = 1 }:
   const premium = data?.premium
   const total = data?.base ? data.base.add(data.premium) : undefined
   const hasPremium = data?.premium.gt(0)
-  const discountRate = 100 - (years - 1) * 5
-  const totalYearlyFee = total?.mul(years).mul(discountRate).div(100)
+  // const discountRate = 100 - (years - 1) * 5
+  // const totalYearlyFee = total?.mul(years).mul(discountRate).div(100)
+  const totalYearlyFee = total
   const _discount = Number(formatFixed(BigNumber.from(signName?.discount || '0'), 18)) * 100
   const isHasDiscount = _discount < 100
-  const discountedPrice = totalYearlyFee?.mul(_discount).div(100)
+  const discountedPrice = base
   const isUseDiscount = data ? !data.base.eq(data.oBase) : false
   const oBase = data?.oBase
   return {

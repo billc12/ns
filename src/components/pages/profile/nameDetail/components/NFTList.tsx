@@ -141,10 +141,12 @@ const GameList = ({
   accountAddress,
   NftLoading,
   nftData,
+  name,
 }: {
   accountAddress: string
   NftLoading: boolean
   nftData: any[] | undefined
+  name: string
 }) => {
   const chainId = useChainId()
 
@@ -251,6 +253,7 @@ const GameList = ({
           </TraitsStyle>
           <NftDetailDrawer
             {...drawerInfo}
+            name={name}
             onClose={handleDrawerClose}
             accountAddress={accountAddress}
           />
@@ -288,10 +291,12 @@ const Page = ({
   accountAddress,
   NftLoading,
   nftData,
+  name,
 }: {
   accountAddress: string
   NftLoading: boolean
   nftData: any[] | undefined
+  name: string
 }) => {
   const [curTab, setCurTab] = useState(Tab.Gaming)
   return (
@@ -323,7 +328,12 @@ const Page = ({
       </div>
       <ListCenter>
         {curTab === Tab.Gaming && (
-          <GameList NftLoading={NftLoading} nftData={nftData} accountAddress={accountAddress} />
+          <GameList
+            name={name}
+            NftLoading={NftLoading}
+            nftData={nftData}
+            accountAddress={accountAddress}
+          />
         )}
         {curTab === Tab.Actions && <AuctionsList />}
       </ListCenter>
