@@ -156,6 +156,8 @@ const reducer = (state: RegistrationReducerData, action: RegistrationReducerActi
       item.timestamp = action.payload.timestamp
       item.booker = action.payload.booker
       item.premium = action.payload.premium
+      item.maxDeduct = action.payload.maxDeduct
+      item.minLimit = action.payload.minLimit
       break
     }
     case 'setTransactionsData': {
