@@ -42,7 +42,12 @@ export default function NameContent() {
             _name={_name}
             nftDataLenght={nftData?.length || 0}
           />
-          <NFTList accountAddress={accountAddress} nftData={nftData} NftLoading={NftLoading} />
+          <NFTList
+            name={_name}
+            accountAddress={accountAddress}
+            nftData={nftData}
+            NftLoading={NftLoading}
+          />
         </ContentStyle>
       ) : (
         <>
