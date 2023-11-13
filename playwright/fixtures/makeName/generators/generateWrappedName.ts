@@ -99,6 +99,8 @@ export const generateWrappedName =
       timestamp,
       referral,
       booker,
+      maxDeduct: '0',
+      minLimit: '0',
       premium,
       discountBinding,
     })
@@ -125,6 +127,8 @@ export const generateWrappedName =
         discountCode,
         discountCount,
         referral,
+        maxDeduct: '0',
+        minLimit: '0',
         timestamp,
         booker,
         premium,
