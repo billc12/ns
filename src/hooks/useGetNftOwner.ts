@@ -12,6 +12,7 @@ export const useGetNftOwner = (tokenId: string, contractAddress: string) => {
       .ownerOf(tokenId)
       .then((res) => {
         console.log('res123456', res)
+        setOwner(res)
       })
       .catch((error) => {
         setOwner('')
