@@ -1,6 +1,6 @@
-# ENS App V3
+# AWNS
 
-The all new, all cool version of the ENS manager.
+The all new, all cool version of the AWNS manager.
 
 ## EXTERNAL CONTRIBUTOR NOTICE
 

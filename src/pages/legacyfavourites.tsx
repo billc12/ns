@@ -50,7 +50,7 @@ export default function Page() {
               <Typography>
                 Your favourites have been carried over from{' '}
                 <Outlink href="https://legacy.ens.domains" target="_blank" rel="noreferrer">
-                  Legacy ENS
+                  Legacy AWNS
                 </Outlink>
                 . These will be uneditable until favourites are fully implemented.
               </Typography>

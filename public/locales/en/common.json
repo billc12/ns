@@ -68,10 +68,10 @@
     "terms": "Terms of Use",
     "privacy": "Privacy Policy",
     "back": "Back",
-    "oldApp": "Old ENS App",
+    "oldApp": "Old AWNS App",
     "language": "Language",
     "currency": "Currency",
-    "ipfsApp": "IPFS ENS App",
+    "ipfsApp": "IPFS AWNS App",
     "feedback": "Feedback",
     "syncMessage": "Syncing with the network. Changes from your transaction may not be visible yet."
   },
@@ -167,7 +167,7 @@
     },
     "networkLatency": {
       "title": "Slow data syncing",
-      "message": "The ENS app is experiencing slow downs due to network latency issues."
+      "message": "The AWNS app is experiencing slow downs due to network latency issues."
     }
   },
   "transaction": {
@@ -349,7 +349,7 @@
     "empty": "No options found"
   },
   "testnetFaucet": {
-    "explanation": "Each address on {{ testnet }} can claim {{ amount }} {{ ticker }} to test out the ENS manager app, as well as any other testnet usage.",
+    "explanation": "Each address on {{ testnet }} can claim {{ amount }} {{ ticker }} to test out the AWNS manager app, as well as any other testnet usage.",
     "note": "It may take a few minutes to show up in your wallet."
   }
 }

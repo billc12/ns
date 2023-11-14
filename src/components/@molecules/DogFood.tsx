@@ -23,7 +23,7 @@ const InnerContainer = styled.div `
       &>div{
         border:none;
       }
-      
+
     }
     ${mq.sm.max(css`
       margin-bottom:0;
@@ -33,18 +33,18 @@ const AddressInput = styled(Input)`
 border:none;
 `
 export const DogFood = (
-    { 
-      register, 
-      watch, 
+    {
+      register,
+      watch,
       formState,
       setValue,
       disabled,
       validations,
-      label, 
+      label,
       hideLabel,
       trigger
     // eslint-disable-next-line prettier/prettier
-    }: Pick<ReturnType<typeof useForm<any>>, 'register' | 'watch' | 'formState' | 'setValue' | 'trigger'> 
+    }: Pick<ReturnType<typeof useForm<any>>, 'register' | 'watch' | 'formState' | 'setValue' | 'trigger'>
     & { label?: string, validations?: any, disabled?: boolean, hideLabel?: boolean },
 ) => {
   const { t } = useTranslation('profile')
@@ -60,9 +60,9 @@ export const DogFood = (
       throttledSetEthNameInput((inputWatch || '').toLocaleLowerCase().trim())
   }, [inputWatch, throttledSetEthNameInput])
 
-  const queryKeyGenerator = useQueryKeys().dogfood 
+  const queryKeyGenerator = useQueryKeys().dogfood
 
-  // Attempt to get address of ENS name
+  // Attempt to get address of AWNS name
   const { data: ethNameAddress } = useQuery(
      queryKeyGenerator(ethNameInput),
     async () => {
@@ -78,7 +78,7 @@ export const DogFood = (
 
   // Update react value of address
   const finalValue = inputWatch?.includes('.') ? ethNameAddress : inputWatch
-  useEffect(() => { 
+  useEffect(() => {
     setValue('address', finalValue)
     if (finalValue) trigger('dogfoodRaw')
   }, [finalValue, setValue, trigger])
@@ -112,7 +112,7 @@ export const DogFood = (
                 } catch (e){
                   console.error('validation error: ', e)
                 }
-                return 'ENS Name has no address record'
+                return 'AWNS Name has no address record'
                 }
               },
             ...validations
