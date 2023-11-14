@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
+import { useChainId } from 'wagmi'
 
 import Img1 from '@app/assets/nameDetail/img1.png'
 import AttributeLabel from '@app/components/AttributeLabel'
@@ -9,10 +10,13 @@ import {
   AuctionTitle,
 } from '@app/components/pages/profile/nameDetail/components/nameInfo'
 import { ShowErrImg } from '@app/components/showErrImg'
+import { ChainId } from '@app/hooks/useChainId'
 // import { erc721ContractAddress } from '@app/utils/constants'
 import { useSBTIsDeployList } from '@app/hooks/useCheckAccountDeployment'
 import { useCreateAccount } from '@app/hooks/useCreateAccount'
 import { useGetNftOwner } from '@app/hooks/useGetNftOwner'
+import { useGetAccount } from '@app/hooks/useTokenboundClient'
+import { getEtherscanLink } from '@app/utils'
 
 import DrawerModel from '.'
 
@@ -81,8 +85,10 @@ const switchErcType = (v: string) => {
 
 const NftDetailDrawer = ({ open, onClose, item, accountAddress, nameOwner }: Props) => {
   const [showInput, setShowInput] = useState(false)
-
+  const chainId = useChainId()
   const { owner } = useGetNftOwner(item.token_id, item.contract_address)
+  const Nft6551Account = useGetAccount(item.contract_address, item.token_id)
+
   const isOwner = useMemo(() => {
     return (
       (owner?.toLowerCase() || item.owner?.toLowerCase()) === accountAddress.toLowerCase() &&
@@ -110,6 +116,11 @@ const NftDetailDrawer = ({ open, onClose, item, accountAddress, nameOwner }: Pro
     handleCloseInput()
   }
 
+  const isMainNet = useMemo(() => {
+    if (chainId && chainId === ChainId.MAINNET) return true
+    return false
+  }, [chainId])
+
   const actionBtns = useMemo(() => {
     const btnList = []
     if (isOwner) {
@@ -134,17 +145,39 @@ const NftDetailDrawer = ({ open, onClose, item, accountAddress, nameOwner }: Pro
     if (isDeploy) {
       btnList.push(
         <>
-          <AuctionBtn>
+          <AuctionBtn
+            onClick={() => {
+              window.open(getEtherscanLink(chainId, item.mint_transaction_hash, 'transaction'))
+            }}
+          >
             <AuctionTitle>View on Explore</AuctionTitle>
           </AuctionBtn>
-          <AuctionBtn>
-            <AuctionTitle>View on Opensea</AuctionTitle>
-          </AuctionBtn>
+          {isMainNet && (
+            <AuctionBtn
+              onClick={() => {
+                window.open(
+                  `https://opensea.io/assets/ethereum/${item.contract_address}/${item.token_id}`,
+                )
+              }}
+            >
+              <AuctionTitle>View on Opensea</AuctionTitle>
+            </AuctionBtn>
+          )}
         </>,
       )
     }
     return btnList
-  }, [createAccountCallback, isDeploy, isOwner, loading])
+  }, [
+    chainId,
+    createAccountCallback,
+    isDeploy,
+    isMainNet,
+    isOwner,
+    item.contract_address,
+    item.mint_transaction_hash,
+    item.token_id,
+    loading,
+  ])
 
   return (
     <DrawerModel onClose={closeDrawer} open={open} title="Assets Details">
@@ -160,6 +193,9 @@ const NftDetailDrawer = ({ open, onClose, item, accountAddress, nameOwner }: Pro
         <TransferNFT onClose={handleCloseInput} accountAddress={accountAddress} item={item} />
       )}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 15 }}>
+        {Nft6551Account && isDeploy && item.erc_type === 'erc6551' && (
+          <AttributeLabel key="6551 Address" title="6551 Address" content={Nft6551Account} isCopy />
+        )}
         <AttributeLabel
           key="Contract address"
           title="Contract address"

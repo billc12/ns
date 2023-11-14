@@ -13,3 +13,15 @@ export const useTokenboundClient = () => {
   }, [chainId, signer])
   return tokenboundClient
 }
+
+export function useGetAccount(erc721Address: string | undefined, tokenId: string | undefined) {
+  const tokenboundClient = useTokenboundClient()
+  return (
+    tokenId &&
+    erc721Address &&
+    tokenboundClient?.getAccount({
+      tokenContract: erc721Address as `0x${string}`,
+      tokenId,
+    })
+  )
+}

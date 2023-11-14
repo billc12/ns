@@ -422,16 +422,18 @@ const NameInfoCard = ({ avatarSrc }: { avatarSrc: string }) => {
     <div>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img style={{ width: 382, height: 382, borderRadius: 8 }} src={avatarSrc} alt="default img" />
-      <div style={{ marginTop: 20, display: 'flex', gap: 8 }}>
-        <Round>
-          <RoundTitle1>Head Armor</RoundTitle1>
-          <RoundTitle2>Linen Hood</RoundTitle2>
-        </Round>
-        <Round>
-          <RoundTitle1>Foot Armor</RoundTitle1>
-          <RoundTitle2>Shoes</RoundTitle2>
-        </Round>
-      </div>
+      {false && (
+        <div style={{ marginTop: 20, display: 'flex', gap: 8 }}>
+          <Round>
+            <RoundTitle1>Head Armor</RoundTitle1>
+            <RoundTitle2>Linen Hood</RoundTitle2>
+          </Round>
+          <Round>
+            <RoundTitle1>Foot Armor</RoundTitle1>
+            <RoundTitle2>Shoes</RoundTitle2>
+          </Round>
+        </div>
+      )}
     </div>
   )
 }
