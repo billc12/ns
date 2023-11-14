@@ -146,13 +146,13 @@ const Page = ({
   const tokenboundClient = useTokenboundClient()
 
   const SendTokenCallback = async () => {
-    if (isZero(senToken)) {
+    if (isZero(senToken.address)) {
       const ethRes = await tokenboundClient?.transferETH({
         account: address as `0x${string}`,
         amount: Number(sendAmount),
         recipientAddress: receiveAddress as `0x${string}`,
       })
-      console.log('senToken=>', ethRes)
+      console.log('senToken1=>', ethRes)
     } else {
       const erc20Res = await tokenboundClient?.transferERC20({
         account: address as `0x${string}`,
@@ -161,7 +161,7 @@ const Page = ({
         erc20tokenAddress: senToken?.address as `0x${string}`,
         erc20tokenDecimals: senToken?.decimals || 18,
       })
-      console.log('senToken=>', erc20Res)
+      console.log('senToken2=>', erc20Res)
     }
   }
 

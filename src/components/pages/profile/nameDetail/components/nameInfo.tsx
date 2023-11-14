@@ -319,12 +319,14 @@ const NameTokenCard = ({
   avatarSrc,
   accountAddress,
   nftDataLenght,
+  nameOwner,
 }: {
   avatarSrc: string
   accountAddress: string
   // eslint-disable-next-line react/no-unused-prop-types
   name: string
   nftDataLenght: number
+  nameOwner: boolean
 }) => {
   const { address } = useAccount()
   const [sendTokenOpen, setSendTokenOpen] = useState(false)
@@ -340,7 +342,26 @@ const NameTokenCard = ({
     const total = tokenList.reduce((a, b) => a + b.price * b.amount, 0)
     return total
   }, [tokenList])
-
+  const actionBtn = useMemo(() => {
+    if (nameOwner) {
+      return [
+        <div>
+          <SendTokenBtn click={() => setSendTokenOpen(true)} />
+        </div>,
+        <div>
+          <SendNFTBtn click={() => setSendNFTOpen(true)} />
+        </div>,
+      ]
+    }
+    return [
+      <div>
+        <SendTokenBtn disabled click={() => {}} />
+      </div>,
+      <div>
+        <SendNFTBtn disabled click={() => {}} />
+      </div>,
+    ]
+  }, [nameOwner])
   return (
     <ProFileStyle>
       <AddressBox>
@@ -369,18 +390,7 @@ const NameTokenCard = ({
       </div>
       <div style={{ display: 'flex', gap: 5 }}>
         <ReceiveBtn accountAddress={accountAddress} />
-        <Dropdown
-          shortThrow
-          align="left"
-          items={[
-            <div>
-              <SendTokenBtn click={() => setSendTokenOpen(true)} />
-            </div>,
-            <div>
-              <SendNFTBtn click={() => setSendNFTOpen(true)} />
-            </div>,
-          ]}
-        >
+        <Dropdown shortThrow align="left" items={actionBtn}>
           <AuctionBtn disabled={!address} prefix={<Icon3 />}>
             <AuctionTitle>Send</AuctionTitle>
           </AuctionBtn>
@@ -433,10 +443,12 @@ const Page = ({
   accountAddress,
   _name,
   nftDataLenght,
+  nameOwner,
 }: {
   accountAddress: string
   _name: string
   nftDataLenght: number
+  nameOwner: boolean
 }) => {
   const { avatarSrc = TestImg.src } = useEthInvoice(_name, false)
   const [curTab, setCurTab] = useState(Tabs.Token)
@@ -465,6 +477,7 @@ const Page = ({
         <NameTokenCard
           nftDataLenght={nftDataLenght}
           name={_name}
+          nameOwner={nameOwner}
           accountAddress={accountAddress}
           avatarSrc={avatarSrc}
         />

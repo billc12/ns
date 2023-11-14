@@ -1,8 +1,8 @@
 import { AuctionBtn, AuctionTitle } from '../components/nameInfo'
 
-const Page = ({ click }: { click: () => void }) => {
+const Page = ({ click, disabled }: { click: () => void; disabled?: boolean }) => {
   return (
-    <AuctionBtn style={{ border: 'none' }} onClick={click}>
+    <AuctionBtn style={{ border: 'none' }} onClick={click} disabled={disabled}>
       <AuctionTitle>Fungible Token</AuctionTitle>
     </AuctionBtn>
   )

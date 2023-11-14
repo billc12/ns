@@ -128,7 +128,7 @@ const DiscountCode = ({ data: { info, setCodeCallback, name }, onDismiss }: Prop
             {hasDiscount ? (
               <SuccessTip>Discount {discount}% OFF</SuccessTip>
             ) : (
-              <ErrTip>Discount code invalid</ErrTip>
+              <ErrTip>Discount Code Invalid</ErrTip>
             )}
           </Skeleton>
         )}

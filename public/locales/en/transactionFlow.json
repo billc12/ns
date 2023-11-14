@@ -199,9 +199,9 @@
       "title_one": "Extend Name",
       "title_other": "Extend {{count}} Names",
       "invoice": {
-        "extension": "{{count}} year extension",
+        "extension": "{{count}} Year extension",
         "transaction": "Transaction fee",
-        "total": "Estimated total"
+        "total": "Estimated Total"
       },
       "bannerMsg": "Extending for multiple years will save money on network costs by avoiding yearly transactions.",
       "gasLimitError": "Insufficient funds"

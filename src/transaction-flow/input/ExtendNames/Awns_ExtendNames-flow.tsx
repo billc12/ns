@@ -350,7 +350,7 @@ const ExtendNames = ({ data: { names, isSelf }, dispatch, onDismiss }: Props) =>
                     <Invoice
                       items={items}
                       unit={currencyDisplay}
-                      totalLabel="Estimated total"
+                      totalLabel="Estimated Total"
                       discount={discountInvoiceItems}
                       discountCodeLabel={disLabel}
                       discountedPrice={discountedPrice}
