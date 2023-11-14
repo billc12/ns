@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import { Button, Skeleton } from '@ensdomains/thorin'
 
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
+import useGetNftAddress from '@app/hooks/useGetNftAddress'
+import { useGetNftOwner } from '@app/hooks/useGetNftOwner'
 import { usePrimary } from '@app/hooks/usePrimary'
 import { useRewardsInfo } from '@app/hooks/useRewardsInfo'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
@@ -42,10 +44,16 @@ const ClaimRewards = ({ _name }: { _name: string }) => {
   const { rewardInfo, isLoading: loading } = useRewardsInfo(_name)
   const vailableRewards = rewardInfo?.vailableRewards || BigNumber.from('0')
   const totalRewards = rewardInfo?.totalRewards || BigNumber.from('0')
+  const { tokenContract, tokenId } = useGetNftAddress(`${_name}.aw`)
+  const { owner } = useGetNftOwner(tokenId || '', tokenContract || '')
+  const { address } = useAccountSafely()
 
+  const nameOwner = useMemo(
+    () => owner.toLocaleLowerCase() === address?.toLocaleLowerCase(),
+    [address, owner],
+  )
   const signature = rewardInfo?.signature || ''
   const { createTransactionFlow } = useTransactionFlow()
-  const { address } = useAccountSafely()
   const primary = usePrimary(address, !address)
   const name = primary.data?.beautifiedName.split('.')[0]
   const claimKey = `claim-${name}-${address}`
@@ -73,11 +81,11 @@ const ClaimRewards = ({ _name }: { _name: string }) => {
         </ButtonStyle>
       )
     }
-    if (vailableRewards.lte(BigNumber.from(0))) {
+    if (vailableRewards.lte(BigNumber.from(0)) || !nameOwner) {
       return <ButtonStyle disabled>Claim</ButtonStyle>
     }
     return <ButtonStyle onClick={handleClaim}>Claim</ButtonStyle>
-  }, [handleClaim, loading, primary, signature, vailableRewards])
+  }, [handleClaim, loading, nameOwner, primary, signature, vailableRewards])
   return (
     <>
       <ClaimStyle>
