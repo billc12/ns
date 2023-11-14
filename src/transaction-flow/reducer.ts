@@ -12,7 +12,35 @@ export const initialState: InternalTransactionFlow = {
   selectedKey: null,
   items: {},
 }
+export const TransferNameStopClose = (item: InternalTransactionFlowItem) => {
+  if (
+    item &&
+    item.transactions.length &&
+    item?.transactions[item?.currentTransaction] &&
+    item?.transactions[item?.currentTransaction].data
+  ) {
+    if (item?.transactions[item?.currentTransaction].data.sendType === 'sendOwner') {
+      if (
+        item?.transactions[item?.currentTransaction].stage === 'complete' ||
+        item?.transactions[item?.currentTransaction].stage === 'failed' ||
+        item?.transactions[item?.currentTransaction].stage === 'confirm'
+      ) {
+        return false
+      }
+      return true
+    }
+    if (item.transactions[item.currentTransaction].data.sendType === 'sendManager') {
+      if (
+        item.transactions[item.currentTransaction].stage === 'sent' ||
+        item.transactions[item.currentTransaction].stage === 'complete'
+      ) {
+        return true
+      }
+    }
+  }
 
+  return false
+}
 export const helpers = (draft: InternalTransactionFlow) => {
   const getSelectedItem = () => draft.items[draft.selectedKey!]
   const getCurrentTransaction = (item: InternalTransactionFlowItem) =>
@@ -97,10 +125,16 @@ export const reducer = (draft: InternalTransactionFlow, action: TransactionFlowA
       break
     }
     case 'setFlowStage': {
+      if (TransferNameStopClose(getSelectedItem())) {
+        break
+      }
       getSelectedItem().currentFlowStage = action.payload
       break
     }
     case 'stopFlow': {
+      if (TransferNameStopClose(getSelectedItem())) {
+        break
+      }
       draft.selectedKey = null
       break
     }
@@ -124,6 +158,10 @@ export const reducer = (draft: InternalTransactionFlow, action: TransactionFlowA
       break
     }
     case 'resetTransactionStep': {
+      if (TransferNameStopClose(getSelectedItem())) {
+        break
+      }
+
       getSelectedItem().currentTransaction = 0
       break
     }

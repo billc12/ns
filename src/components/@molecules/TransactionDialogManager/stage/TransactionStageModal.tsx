@@ -505,9 +505,14 @@ export const TransactionStageModal = ({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={WalletNew.src} alt="Wallet img" style={{ width: 48, height: 48 }} />
         <MessageTypography>{t('transaction.dialog.confirm.message')}</MessageTypography>
+        {transaction.name === 'transferName' && (
+          <MessageTypography>
+            You must wait until the steps are completed before closing
+          </MessageTypography>
+        )}
       </>
     )
-  }, [stage, t, transaction.sendTime])
+  }, [stage, t, transaction.name, transaction.sendTime])
 
   const HelperContent = useMemo(() => {
     if (!helper) return null
