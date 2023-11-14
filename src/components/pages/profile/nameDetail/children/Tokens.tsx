@@ -60,7 +60,7 @@ const Item = ({ item, accountAddress }: { item: any; accountAddress: string }) =
         <NameStyle style={{ textAlign: 'right' }}>
           {balance} {item.symbol}
         </NameStyle>
-        {!!item.price && (
+        {!!item.price?.toString() && (
           <ContentTextStyle style={{ textAlign: 'right' }}>
             ${(item.price * item.amount).toFixed(4)} USD
           </ContentTextStyle>

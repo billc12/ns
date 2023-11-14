@@ -21,6 +21,7 @@ import { useGetUserImg } from '@app/hooks/requst/useGetUserImg'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import useWindowSize from '@app/hooks/useWindowSize'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
+import { shortenAddress } from '@app/utils/utils'
 
 import { BigPremiumText } from '../PremiumTitle'
 import { GrayRoundRow } from './Pricing/Pricing'
@@ -233,7 +234,9 @@ const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
             />
           </UserImg>
           <PositionImg>
-            <HeadTitle $color="#fff">{name}</HeadTitle>
+            <HeadTitle $color="#fff">
+              {name.length > 30 ? shortenAddress(name, 30, 10, 10) : name}
+            </HeadTitle>
           </PositionImg>
         </Round>
         <div>
@@ -242,10 +245,12 @@ const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
               Name
             </InterText>
             {data?.premium ? (
-              <BigPremiumText>{name}</BigPremiumText>
+              <BigPremiumText>
+                {name.length > 30 ? shortenAddress(name, 30, 10, 10) : name}
+              </BigPremiumText>
             ) : (
               <InterText $color="#3F5170" $size="18px" $weight={600}>
-                {name}
+                {name.length > 30 ? shortenAddress(name, 30, 10, 10) : name}
               </InterText>
             )}
           </GrayRoundRow>

@@ -505,7 +505,7 @@ const Page = ({
     <CenterLeftStyle>
       <HeaderStyle>
         <ActionDropdown name={_name} accountAddress={accountAddress} />
-        <NameStyle>{_name || '--'}</NameStyle>
+        <NameStyle>{_name.length > 20 ? shortenAddress(_name, 20, 8, 8) : _name}</NameStyle>
 
         <TabIconStyle>
           <ListWhiteStyled
