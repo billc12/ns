@@ -19,6 +19,7 @@ const TableStyle = styled.table(
       color: var(--word-color2, #8d8ea5);
       line-height: 36px;
       th {
+        text-align: center;
         font-weight: 500;
         font-size: 14px;
       }

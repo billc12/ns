@@ -30,7 +30,7 @@ const ContentTitleStyle = styled.div`
 `
 const LeftContentStyle = styled.div`
   color: var(--word-color, #3f5170);
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 700;
   height: 44px;
 `
@@ -91,7 +91,9 @@ const ClaimRewards = ({ _name }: { _name: string }) => {
       <ClaimStyle>
         <ContentTitleStyle>Available Rewards</ContentTitleStyle>
         <Skeleton loading={loading}>
-          <LeftContentStyle>{makeDisplay(vailableRewards, undefined, 'eth', 18)}</LeftContentStyle>
+          <LeftContentStyle>
+            {makeDisplay(vailableRewards, undefined, 'eth', 18, 4, 8)}
+          </LeftContentStyle>
         </Skeleton>
         {auctionBtn}
       </ClaimStyle>
@@ -99,7 +101,7 @@ const ClaimRewards = ({ _name }: { _name: string }) => {
         <ContentTitleStyle>Total Rewards</ContentTitleStyle>
         <Skeleton loading={loading}>
           <LeftContentStyle>
-            {totalRewards ? makeDisplay(totalRewards, undefined, 'eth', 18) : '0ETH'}
+            {totalRewards ? makeDisplay(totalRewards, undefined, 'eth', 18, 4, 8) : '0ETH'}
           </LeftContentStyle>
         </Skeleton>
       </LeftItemStyle>
