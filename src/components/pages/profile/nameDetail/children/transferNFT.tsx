@@ -83,9 +83,9 @@ const Page = ({
             trigger,
           }}
         />
-        <BackButton onClick={onClose}>cancel</BackButton>
+        <BackButton onClick={onClose}>Cancel</BackButton>
         <NextButton type="submit" loading={loading} disabled={!address || hasErrors || loading}>
-          send
+          Send
         </NextButton>
       </Container>
     </form>

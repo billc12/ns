@@ -62,7 +62,7 @@ const ClaimRewards = ({ _name }: { _name: string }) => {
     createTransactionFlow(claimKey, {
       transactions: [
         makeTransactionItem('claimRewards', {
-          name: name || '',
+          name: _name || '',
           canClaimReferralRewards: vailableRewards,
           referralReward: totalRewards,
           signature: signature!,
@@ -72,7 +72,7 @@ const ClaimRewards = ({ _name }: { _name: string }) => {
       requiresManualCleanup: true,
       autoClose: true,
     })
-  }, [claimKey, createTransactionFlow, name, signature, totalRewards, vailableRewards])
+  }, [_name, claimKey, createTransactionFlow, signature, totalRewards, vailableRewards])
   const auctionBtn = useMemo(() => {
     if (loading || !signature || !primary) {
       return (
