@@ -24,7 +24,9 @@ import { useChainId } from '@app/hooks/useChainId'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import { useProfileActions } from '@app/hooks/useProfileActions'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
+import { DateTime, DateType, timestampToDateFormat } from '@app/utils'
 import { shouldShowExtendWarning } from '@app/utils/abilities/shouldShowExtendWarning'
+import { ENV_NAME } from '@app/utils/constants'
 import { shortenAddress } from '@app/utils/utils'
 
 import { useEthInvoice } from '../../[name]/registration/steps/Awns_Complete'
@@ -240,6 +242,40 @@ const WarningStyle = styled.div`
     }
   }
 `
+
+const ExpiredStyle = styled.div`
+  margin-top: 20px;
+  width: 382px;
+  height: 68px;
+  border-radius: 10px;
+  padding: 8px 12px 12px 20px;
+  display: grid;
+  gap: 8px;
+  .title {
+    color: var(--word-color, #3f5170);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 20px;
+    display: flex;
+    gap: 4px;
+  }
+  .content {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+  }
+  .extendbutton {
+    width: 68px;
+    height: 22px;
+    border-radius: 4px;
+    border: 1px solid var(--button-line, #97b7ef);
+    background: var(--light-bg, #f8fbff);
+    color: var(--button-line, #97b7ef);
+    font-size: 14px;
+    font-weight: 500;
+  }
+`
+// const ExpiredBoxColor = [{}]
 
 const ActionDropdown = ({ name, accountAddress }: { name: string; accountAddress: string }) => {
   const { address } = useAccount()
@@ -464,11 +500,131 @@ const NameTokenCard = ({
     </ProFileStyle>
   )
 }
-const NameInfoCard = ({ avatarSrc }: { avatarSrc: string }) => {
+const NameInfoCard = ({ avatarSrc, name }: { avatarSrc: string; name: string }) => {
+  const abilities = useAbilities(name)
+  const { prepareDataInput } = useTransactionFlow()
+  const showExtendNamesInput = prepareDataInput('AwnsExtendNames')
+  const handleExtend = () => {
+    showExtendNamesInput(`extend-names-${name}`, {
+      names: [name],
+      isSelf: shouldShowExtendWarning(abilities.data),
+    })
+  }
+  const nameDetails = useNameDetails(name)
+  const { gracePeriodEndDate, registrationStatus } = nameDetails
+
+  const endDate = useMemo(() => {
+    if (gracePeriodEndDate) return Date.parse(gracePeriodEndDate.toString())
+    return 0
+  }, [gracePeriodEndDate])
+
+  const isExpire = useMemo(() => {
+    if (endDate && endDate - Date.now() <= 0) return true
+    return false
+  }, [endDate])
+
+  const ExcessDays = useMemo(() => {
+    if (isExpire) return -1
+    return Math.ceil((endDate - Date.now()) / DateTime())
+  }, [endDate, isExpire])
+
+  const DateTxt = useMemo(() => {
+    if (ExcessDays > 365) {
+      return `(in ${Math.ceil(ExcessDays / 365)} years)`
+    }
+    if (ExcessDays > 31) {
+      return `(in ${Math.ceil(ExcessDays / 31)} month)`
+    }
+    if (ExcessDays > 1) {
+      return `(in ${ExcessDays} day)`
+    }
+  }, [ExcessDays])
+
+  const isEndGracePeriod = useMemo(() => {
+    if (ENV_NAME === 'env' && isExpire) {
+      if (Date.now() - endDate >= 60 * 60 * 1000) {
+        return true
+      }
+      return false
+    }
+    if (ENV_NAME === 'pre' && isExpire) {
+      if (Date.now() - endDate >= 60 * 60 * 1000) {
+        return true
+      }
+      return false
+    }
+  }, [endDate, isExpire])
+
+  const dateStatus = useMemo(() => {
+    if (ExcessDays <= 365 && ExcessDays >= 31) {
+      return 1
+    }
+    if (ExcessDays <= 31 && ExcessDays >= 3) {
+      return 2
+    }
+    if (ExcessDays <= 3) {
+      return 3
+    }
+  }, [ExcessDays])
+
   return (
     <div>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img style={{ width: 382, height: 382, borderRadius: 8 }} src={avatarSrc} alt="default img" />
+      <ExpiredStyle
+        style={{
+          backgroundColor: isExpire
+            ? 'rgba(228, 103, 103,0.1)'
+            : dateStatus === 3
+            ? 'rgba(228, 103, 103,0.1)'
+            : dateStatus === 2
+            ? 'rgba(240, 172, 71,0.1)'
+            : 'rgba(33, 195, 49, 0.1)',
+        }}
+      >
+        {/* rgb(240, 172, 71) rgb(228, 103, 103) */}
+        <Typography className="title"> Expire Date</Typography>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Typography
+            className="content"
+            style={{
+              color: isExpire
+                ? 'rgb(228, 103, 103)'
+                : dateStatus === 3
+                ? 'rgb(228, 103, 103)'
+                : dateStatus === 2
+                ? 'rgb(240, 172, 71)'
+                : 'rgb(33, 195, 49)',
+            }}
+          >
+            {timestampToDateFormat(endDate, DateType.YYMMDDHHMMSS)} {!isExpire && DateTxt}
+          </Typography>
+
+          {abilities.data.canExtend && (
+            <>
+              {isEndGracePeriod && registrationStatus === 'available' ? (
+                <AuctionBtn
+                  className="extendbutton"
+                  onClick={() => {
+                    router.push(`/${name}/register`)
+                  }}
+                >
+                  Register
+                </AuctionBtn>
+              ) : (
+                <AuctionBtn
+                  className="extendbutton"
+                  onClick={() => {
+                    handleExtend()
+                  }}
+                >
+                  Extend
+                </AuctionBtn>
+              )}
+            </>
+          )}
+        </div>
+      </ExpiredStyle>
       {false && (
         <div style={{ marginTop: 20, display: 'flex', gap: 8 }}>
           <Round>
@@ -531,7 +687,7 @@ const Page = ({
           avatarSrc={avatarSrc}
         />
       )}
-      {curTab === Tabs.NameInfo && <NameInfoCard avatarSrc={avatarSrc} />}
+      {curTab === Tabs.NameInfo && <NameInfoCard avatarSrc={avatarSrc} name={_name} />}
     </CenterLeftStyle>
   )
 }

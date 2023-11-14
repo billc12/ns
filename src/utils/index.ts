@@ -43,6 +43,13 @@ const explorers = {
     }
   },
 }
+
+export enum DateType {
+  YYMM = 'yy-mm',
+  YYMMDD = 'yy-mm-dd',
+  YYMMDDHHMM = 'yy-mm-dd-hh-mm',
+  YYMMDDHHMMSS = 'yy-mm-dd-hh-mm-ss',
+}
 interface ChainObject {
   [chainId: number]: {
     link: string
@@ -65,13 +72,26 @@ const chains: ChainObject = {
   },
 }
 
-// yy-mm-dd
-export function timestampToDateFormat(timestamp: any) {
-  const date = new Date(timestamp * 1000)
+export function timestampToDateFormat(timestamp: any, type: string, mul?: number) {
+  const date = new Date(mul ? timestamp * mul : timestamp)
   const year = date.getFullYear()
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')
-  return `${year}-${month}-${day}`
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  const seconds = String(date.getSeconds()).padStart(2, '0')
+  if (DateType.YYMM === type) {
+    return `${year}-${month}`
+  }
+  if (DateType.YYMMDD === type) {
+    return `${year}-${month}-${day}`
+  }
+  if (DateType.YYMMDDHHMM === type) {
+    return `${year}-${month}-${day} ${hours}:${minutes}`
+  }
+  if (DateType.YYMMDDHHMMSS === type) {
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+  }
 }
 
 export function getEtherscanLink(
@@ -81,4 +101,9 @@ export function getEtherscanLink(
 ): string {
   const chain = chains[chainId]
   return chain.builder(chain.link, data, type)
+}
+
+export function DateTime(dayNumber?: number) {
+  const day = 60 * 60 * 24 * 1000
+  return dayNumber ? day * dayNumber : day
 }

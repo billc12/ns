@@ -15,7 +15,7 @@ import { useNamesFromAddress } from '@app/hooks/names/useNamesFromAddress/useNam
 import useReferralRewards from '@app/hooks/requst/useReferralRewardsCallback'
 import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { usePrimary } from '@app/hooks/usePrimary'
-import { timestampToDateFormat } from '@app/utils'
+import { DateType, timestampToDateFormat } from '@app/utils'
 import { useBreakpoint } from '@app/utils/BreakpointProvider'
 import { makeDisplay } from '@app/utils/currency'
 import { shortenAddress } from '@app/utils/utils'
@@ -253,7 +253,9 @@ export default function Rewards() {
   const RewardsDetailsTableList = useMemo(() => {
     if (!RewardsDetails?.list) return []
     return RewardsDetails?.list?.map(({ registrant, reward, timestamp, type }) => [
-      <TableContentStyle>{timestamp ? timestampToDateFormat(timestamp) : '--'}</TableContentStyle>,
+      <TableContentStyle>
+        {timestamp ? timestampToDateFormat(timestamp, DateType.YYMMDD, 1000) : '--'}
+      </TableContentStyle>,
       <TableContentStyle
         style={{
           width: breakpoints.sm ? '100px' : 'auto',
