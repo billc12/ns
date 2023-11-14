@@ -499,7 +499,7 @@ const Page = ({
   nftDataLenght: number
   nameOwner: boolean
 }) => {
-  const { avatarSrc = TestImg.src } = useEthInvoice(_name, false)
+  const { avatarSrc } = useEthInvoice(_name, false)
   const [curTab, setCurTab] = useState(Tabs.Token)
   return (
     <CenterLeftStyle>
