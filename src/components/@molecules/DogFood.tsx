@@ -84,10 +84,15 @@ export const DogFood = (
   }, [finalValue, setValue, trigger])
 
   const errorMessage = formState.errors.dogfoodRaw?.message
-
+  const handleKeyDown = (event:any) => {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+    }
+  };
   return (
     <InnerContainer>
       <AddressInput
+        onKeyDown={handleKeyDown}
         data-testid="dogfood"
         disabled={disabled}
         label={label}
@@ -95,14 +100,14 @@ export const DogFood = (
         placeholder={t('details.sendName.inputPlaceholder')}
         {...register('dogfoodRaw', {
           validate: {
-            length: (value) =>
-              !disabled && !value?.trim().includes('.') && value?.trim().length !== 42
-                ? t('errors.addressLength')
-                : undefined,
             isAddress: (value) =>
-              !disabled && !value?.includes('.') && !isAddress(value.trim())
-                ? t('errors.invalidAddress')
-                : undefined,
+            !disabled && !value?.includes('.') && !isAddress(value.trim())
+              ? t('errors.invalidAddress')
+              : undefined,
+            // length: (value) =>
+            //   !disabled && !value?.trim().includes('.') && value?.trim().length !== 42
+            //     ? t('errors.addressLength')
+            //     : undefined,
             hasAddressRecord: async (value) => {
               if(value?.includes('.')) {
                 try {

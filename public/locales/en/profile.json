@@ -398,7 +398,7 @@
   },
   "errors": {
     "invalidName": "This name is invalid.",
-    "invalidAddress": "Not a valid address",
+    "invalidAddress": "Invalid address",
     "expiringSoon": "The grace period for this name ends on {{date}}. If it isn’t extended before this date, it will become available for registration.",
     "hasExpired": "{{ name }} has expired",
     "ownerManagerChoice": "Must send owner or manager",
