@@ -213,5 +213,6 @@ export const useQueryKeys = () => {
       account,
       useScenes,
     ],
+    getUserImg: (name: string, network: string) => [...globalKeys, 'getUserImg', name, network],
   }
 }

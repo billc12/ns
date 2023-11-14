@@ -223,7 +223,7 @@ const GameList = ({
             ))}
           </AssetsStyle>
           <TabTitleStyle style={{ marginTop: 24 }}>
-            <SubTitleStyle>Gaming ({nftData?.length || 0})</SubTitleStyle>
+            <SubTitleStyle>NFT ({nftData?.length || 0})</SubTitleStyle>
             <SubButtonStyle
               onClick={() => {
                 setIsPackUp(!isPackUp)
@@ -310,7 +310,7 @@ const Page = ({
             className={curTab === Tab.Gaming ? 'select' : ''}
             onClick={() => setCurTab(Tab.Gaming)}
           >
-            Gaming Center
+            NFT Center
           </PaginationBtn>
           <PaginationBtn
             className={curTab === Tab.Actions ? 'select' : ''}

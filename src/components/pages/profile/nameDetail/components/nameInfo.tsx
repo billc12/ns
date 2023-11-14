@@ -655,13 +655,13 @@ const Page = ({
   nftDataLenght: number
   nameOwner: boolean
 }) => {
-  const { avatarSrc = TestImg.src } = useEthInvoice(_name, false)
+  const { avatarSrc } = useEthInvoice(_name, false)
   const [curTab, setCurTab] = useState(Tabs.Token)
   return (
     <CenterLeftStyle>
       <HeaderStyle>
         <ActionDropdown name={_name} accountAddress={accountAddress} />
-        <NameStyle>{_name || '--'}</NameStyle>
+        <NameStyle>{_name.length > 20 ? shortenAddress(_name, 20, 8, 8) : _name}</NameStyle>
 
         <TabIconStyle>
           <ListWhiteStyled

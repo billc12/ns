@@ -6,6 +6,8 @@ export const makeDisplay = (
   decimals: number | undefined,
   symbol: string,
   fromDecimals: number = 18,
+  minLength?: number,
+  maxLength?: number,
 ) => {
   const number = typeof val === 'number' ? val : Number(formatFixed(val, fromDecimals))
   const options: Intl.NumberFormatOptions & { [x: string]: string } = {
@@ -23,8 +25,8 @@ export const makeDisplay = (
     options.currency = undefined
     customSymbol = ` ${symbol}`
   } else if (symbol === 'eth') {
-    options.minimumFractionDigits = 4
-    options.maximumFractionDigits = 4
+    options.minimumFractionDigits = minLength || 4
+    options.maximumFractionDigits = maxLength || 4
     options.currencyDisplay = 'name'
   } else {
     options.maximumFractionDigits = 2

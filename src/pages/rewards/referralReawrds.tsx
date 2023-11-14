@@ -252,21 +252,23 @@ export default function Rewards() {
   } = useReferralRewards(curName as string, rewardsPage - 1, limit)
   const RewardsDetailsTableList = useMemo(() => {
     if (!RewardsDetails?.list) return []
-    return RewardsDetails?.list?.map(({ registrant, reward, timestamp, type }) => [
+    return RewardsDetails?.list?.map(({ registrant, reward, timestamp }) => [
       <TableContentStyle>
         {timestamp ? timestampToDateFormat(timestamp, DateType.YYMMDD, 1000) : '--'}
       </TableContentStyle>,
       <TableContentStyle
         style={{
-          width: breakpoints.sm ? '100px' : 'auto',
+          width: breakpoints.sm ? 'max-content' : 'auto',
           overflow: 'hidden',
           whiteSpace: 'nowrap',
           textOverflow: 'ellipsis',
+          textAlign: 'center',
+          margin: '0 auto',
         }}
       >{`${registrant}.aw`}</TableContentStyle>,
-      <TableContentStyle>
-        {type === 'direct' ? 'Direct referral' : 'Indirect referral'}
-      </TableContentStyle>,
+      // <TableContentStyle>
+      //   {type === 'direct' ? 'Direct referral' : 'Indirect referral'}
+      // </TableContentStyle>,
       <TableContentStyle style={{ justifyContent: 'end' }}>
         {makeDisplay(BigNumber.from(reward), undefined, 'eth', 18)}
       </TableContentStyle>,
@@ -318,19 +320,22 @@ export default function Rewards() {
               </DropdownStyle>
               <ClaimRewards _name={curName} />
               <LeftItemStyle>
-                <ContentTitleStyle>Direct Referrals</ContentTitleStyle>
-                <LeftContentStyle>{RewardsDetails?.countDirect || '0'}</LeftContentStyle>
+                <ContentTitleStyle>Referrals</ContentTitleStyle>
+                <LeftContentStyle>
+                  {RewardsDetails ? RewardsDetails.countDirect + RewardsDetails.countIndirect : '0'}
+                </LeftContentStyle>
               </LeftItemStyle>
-              <LeftItemStyle>
+              {/* <LeftItemStyle>
                 <ContentTitleStyle>Indirect Referrals</ContentTitleStyle>
                 <LeftContentStyle>{RewardsDetails?.countIndirect || '0'}</LeftContentStyle>
-              </LeftItemStyle>
+              </LeftItemStyle> */}
             </CenterLeftStyle>
             <CenterRightStyle>
               <BottomTitleStyle style={{ padding: '20px 30px' }}>Rewards Details</BottomTitleStyle>
               <StyledTable>
                 <Table
-                  labels={['Date', 'AWNS', 'Type', 'Rewards']}
+                  // labels={['Date', 'AWNS', 'Type', 'Rewards']}
+                  labels={['Date', 'AWNS', 'Rewards']}
                   rows={RewardsDetailsTableList}
                   noneBorder
                   isLoading={rewardsLoading || isFetching}

@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber'
 import { ETHRegistrarController__factory } from '@myclique/awnsjs/generated/factories/ETHRegistrarController__factory'
 import dynamic from 'next/dynamic'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import type ConfettiT from 'react-confetti'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
@@ -17,9 +17,11 @@ import { InterText } from '@app/components/@molecules/SearchInput/SearchResult'
 import { BackButton, NextButton } from '@app/components/Awns/Dialog'
 import { Card } from '@app/components/Card'
 import useSignName from '@app/hooks/names/useSignName'
+import { useGetUserImg } from '@app/hooks/requst/useGetUserImg'
 import { useNameDetails } from '@app/hooks/useNameDetails'
 import useWindowSize from '@app/hooks/useWindowSize'
 import { useTransactionFlow } from '@app/transaction-flow/TransactionFlowProvider'
+import { shortenAddress } from '@app/utils/utils'
 
 import { BigPremiumText } from '../PremiumTitle'
 import { GrayRoundRow } from './Pricing/Pricing'
@@ -67,7 +69,7 @@ const Confetti = dynamic(() =>
 export const useEthInvoice = (
   name: string,
   isMoonpayFlow: boolean,
-): { InvoiceFilled?: React.ReactNode; avatarSrc?: string } => {
+): { InvoiceFilled?: React.ReactNode; avatarSrc: string } => {
   const { t } = useTranslation('register')
   const { address } = useAccount()
   const keySuffix = `${name}-${address}`
@@ -78,9 +80,7 @@ export const useEthInvoice = (
   // const commitTxFlow = getLatestTransaction(commitKey)
   const registerTxFlow = getLatestTransaction(registerKey)
 
-  const [avatarSrc, setAvatarSrc] = useState<string | undefined>()
-
-  // const commitReceipt = commitTxFlow?.minedData
+  const { avatarSrc: _avatarSrc } = useGetUserImg(name)
 
   const registerReceipt = registerTxFlow?.minedData
   const { data } = useTransaction({
@@ -113,11 +113,9 @@ export const useEthInvoice = (
 
   const isLoading = !registerReceipt
 
-  useEffect(() => {
-    const storage = localStorage.getItem(`avatar-src-${name}`)
-    if (storage) setAvatarSrc(storage)
-  }, [name])
-
+  const avatarSrc = useMemo(() => {
+    return _avatarSrc ?? UserAvatar.src
+  }, [_avatarSrc])
   const InvoiceFilled = useMemo(() => {
     if (isLoading) return null
     const value = registrationValue || BigNumber.from(0)
@@ -236,7 +234,9 @@ const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
             />
           </UserImg>
           <PositionImg>
-            <HeadTitle $color="#fff">{name}</HeadTitle>
+            <HeadTitle $color="#fff">
+              {name.length > 30 ? shortenAddress(name, 30, 10, 10) : name}
+            </HeadTitle>
           </PositionImg>
         </Round>
         <div>
@@ -245,10 +245,12 @@ const Complete = ({ nameDetails, callback, isMoonpayFlow }: Props) => {
               Name
             </InterText>
             {data?.premium ? (
-              <BigPremiumText>{name}</BigPremiumText>
+              <BigPremiumText>
+                {name.length > 30 ? shortenAddress(name, 30, 10, 10) : name}
+              </BigPremiumText>
             ) : (
               <InterText $color="#3F5170" $size="18px" $weight={600}>
-                {name}
+                {name.length > 30 ? shortenAddress(name, 30, 10, 10) : name}
               </InterText>
             )}
           </GrayRoundRow>
