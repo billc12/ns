@@ -1,10 +1,13 @@
+import { useMemo } from 'react'
 import styled from 'styled-components'
 
 import { Typography } from '@ensdomains/thorin'
 
 import USDTImg from '@app/assets/USDT.png'
+import { EmptyData } from '@app/components/EmptyData'
 import { IResultItem } from '@app/hooks/requst/useGetTokenList'
 import { useBalanceOf } from '@app/hooks/useBalanceOf'
+import { emptyAddress } from '@app/utils/constants'
 
 // import { makeDisplay } from '@app/utils/currency'
 
@@ -57,9 +60,11 @@ const Item = ({ item, accountAddress }: { item: any; accountAddress: string }) =
         <NameStyle style={{ textAlign: 'right' }}>
           {balance} {item.symbol}
         </NameStyle>
-        <ContentTextStyle style={{ textAlign: 'right' }}>
-          ${(item.price * item.amount).toFixed(4)} USD
-        </ContentTextStyle>
+        {item.price && (
+          <ContentTextStyle style={{ textAlign: 'right' }}>
+            ${(item.price * item.amount).toFixed(4)} USD
+          </ContentTextStyle>
+        )}
       </RightStyle>
     </AssetsItemStyle>
   )
@@ -73,13 +78,28 @@ export function Tokens({
 }) {
   // const { data: tokenList } = useGetTokenList({ account: accountAddress, chain: 5 })
 
+  const defaultTokenList = useMemo(() => {
+    if (tokenList && tokenList.length) return tokenList
+    return [
+      {
+        address: emptyAddress,
+        decimals: 18,
+        name: 'ETH',
+        symbol: 'ETH',
+        logoUrl:
+          'https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png',
+      },
+    ]
+  }, [tokenList])
+
   return (
     <>
-      {tokenList &&
-        tokenList?.map((item, index) => (
+      {defaultTokenList &&
+        defaultTokenList?.map((item, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <Item key={`${item.address}-${index}`} item={item} accountAddress={accountAddress} />
         ))}
+      {!defaultTokenList?.length && <EmptyData />}
     </>
   )
 }
