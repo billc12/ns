@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
-import { useChainId } from 'wagmi'
 
 import { Button, Skeleton, mq } from '@ensdomains/thorin'
 
@@ -148,8 +147,6 @@ const GameList = ({
   nftData: any[] | undefined
   nameOwner: boolean
 }) => {
-  const chainId = useChainId()
-
   const [isPackUp, setIsPackUp] = useState<boolean>(false)
   const [isShowAll, setIsShowAll] = useState<boolean>(false)
 
@@ -169,12 +166,10 @@ const GameList = ({
     if (!deploymentMap || !nftData) return []
     let allList = []
 
-    if (chainId === 1) {
-      allList = nftData
-        .filter((t, i) => deploymentMap[i])
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        .map((i) => ({ ...i, erc_type: 'erc6551' }))
-    }
+    allList = nftData
+      .filter((t, i) => deploymentMap[i])
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      .map((i) => ({ ...i, erc_type: 'erc6551' }))
 
     if (!isShowAll) {
       if (allList?.length && allList?.length > 4) {
@@ -183,7 +178,7 @@ const GameList = ({
     }
     return allList
     // eslint-disable-next-line array-callback-return
-  }, [chainId, deploymentMap, isShowAll, nftData])
+  }, [deploymentMap, isShowAll, nftData])
   console.log('nftData123465', deploymentMap, nftData)
   const [drawerInfo, setDrawerInfo] = useState({
     open: false,
