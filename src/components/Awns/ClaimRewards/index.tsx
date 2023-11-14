@@ -81,14 +81,14 @@ const ClaimRewards = ({ _name }: { _name: string }) => {
   return (
     <>
       <ClaimStyle>
-        <ContentTitleStyle>Available rewards</ContentTitleStyle>
+        <ContentTitleStyle>Available Rewards</ContentTitleStyle>
         <Skeleton loading={loading}>
           <LeftContentStyle>{makeDisplay(vailableRewards, undefined, 'eth', 18)}</LeftContentStyle>
         </Skeleton>
         {auctionBtn}
       </ClaimStyle>
       <LeftItemStyle>
-        <ContentTitleStyle>Total rewards</ContentTitleStyle>
+        <ContentTitleStyle>Total Rewards</ContentTitleStyle>
         <Skeleton loading={loading}>
           <LeftContentStyle>
             {totalRewards ? makeDisplay(totalRewards, undefined, 'eth', 18) : '0ETH'}

@@ -78,7 +78,7 @@ const EditResolveAddress = ({ data, onDismiss, dispatch }: Props) => {
       } catch (e) {
         console.error('validation error: ', e)
       }
-      return 'ENS Name has no address record'
+      return 'AWNS Name has no address record'
     }
   }
   useEffect(() => {

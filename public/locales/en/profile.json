@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "{{name}} on ENS",
+    "title": "{{name}} on AWNS",
     "description": "{{name}}'s profile on the Ethereum Name Service"
   },
   "title": "Profile",
@@ -274,24 +274,23 @@
         }
       }
     },
-    "detail":{
-      "name":"Detail"
+    "detail": {
+      "name": "Detail"
     },
-    "assets":{
-      "name":"Assets",
-      "assets":{
-        "name":"Assets"
+    "assets": {
+      "name": "Assets",
+      "assets": {
+        "name": "Assets"
       },
-      "nft":{
-        "name":"NFT"
+      "nft": {
+        "name": "NFT"
       },
-      "history":
-      {
-        "name":"History"
+      "history": {
+        "name": "History"
       }
     },
-    "invitationCode":{
-      "name":"Invitation Code"
+    "invitationCode": {
+      "name": "Invitation Code"
     }
   },
   "details": {
@@ -305,7 +304,7 @@
       "makeOwnerDescription": "The owner can send to a new owner and change the manager",
       "makeManager": "Make manager",
       "makeManagerDescription": "The manager can change and set records.",
-      "inputPlaceholder": "Enter an Ethereum address or ENS name",
+      "inputPlaceholder": "Enter an Ethereum address or AWNS name",
       "transferSubname": "Transfer Name",
       "transferController": "Transfer Controller"
     },
@@ -317,7 +316,7 @@
       "startLabel": "Upgrade",
       "resumeLabel": "Resume Upgrade",
       "boxTitle": "Unlock new features",
-      "boxDescription": "Upgrading your name unlocks the latest functionality of ENS"
+      "boxDescription": "Upgrading your name unlocks the latest functionality of AWNS"
     },
     "descriptions": {
       "owner": "Owns and controls the name",

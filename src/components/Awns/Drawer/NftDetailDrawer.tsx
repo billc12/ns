@@ -10,11 +10,9 @@ import {
 } from '@app/components/pages/profile/nameDetail/components/nameInfo'
 import { ShowErrImg } from '@app/components/showErrImg'
 // import { erc721ContractAddress } from '@app/utils/constants'
-import { useAccountSafely } from '@app/hooks/useAccountSafely'
 import { useSBTIsDeployList } from '@app/hooks/useCheckAccountDeployment'
 import { useCreateAccount } from '@app/hooks/useCreateAccount'
 import { useGetNftOwner } from '@app/hooks/useGetNftOwner'
-import { useNameDetails } from '@app/hooks/useNameDetails'
 
 import DrawerModel from '.'
 
@@ -23,7 +21,7 @@ type Props = {
   onClose: () => void
   item: any
   accountAddress: string
-  name: string
+  nameOwner: boolean
 }
 const ImgRound = styled.div`
   width: max-content;
@@ -81,27 +79,22 @@ const switchErcType = (v: string) => {
   }
 }
 
-const NftDetailDrawer = ({ open, onClose, item, accountAddress, name }: Props) => {
-  const { address } = useAccountSafely()
-  const nameDetails = useNameDetails(name, true)
+const NftDetailDrawer = ({ open, onClose, item, accountAddress, nameOwner }: Props) => {
   const [showInput, setShowInput] = useState(false)
-  const isNameOwner = useMemo(
-    () => address === nameDetails.ownerData?.owner,
-    [address, nameDetails.ownerData?.owner],
-  )
+
   const { owner } = useGetNftOwner(item.token_id, item.contract_address)
   const isOwner = useMemo(() => {
     return (
       (owner?.toLowerCase() || item.owner?.toLowerCase()) === accountAddress.toLowerCase() &&
-      isNameOwner
+      nameOwner
     )
-  }, [accountAddress, isNameOwner, item.owner, owner])
+  }, [accountAddress, item.owner, nameOwner, owner])
   const isDeploy = useSBTIsDeployList(
     item.contract_address ? [item.contract_address] : undefined,
     item.token_id ? [item.token_id] : undefined,
   )?.[0]
 
-  console.log('isDeploy', isOwner)
+  console.log('isDeploy', owner)
   const { callback: createAccountCallback, loading } = useCreateAccount(
     item.contract_address,
     item.token_id,

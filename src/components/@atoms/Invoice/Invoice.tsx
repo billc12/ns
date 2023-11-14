@@ -95,7 +95,7 @@ type Props = {
 }
 
 export const Invoice = ({
-  totalLabel = 'Estimated total',
+  totalLabel = 'Estimated Total',
   unit = 'eth',
   items,
   discountCodeLabel,
