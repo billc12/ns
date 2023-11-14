@@ -11,6 +11,7 @@ import { Dialog } from '@ensdomains/thorin'
 
 // import { DialogStyle } from '@app/components/Awns/Dialog'
 import { useChainId } from '@app/hooks/useChainId'
+import { TransferNameStopClose } from '@app/transaction-flow/reducer'
 import { transactions } from '@app/transaction-flow/transaction'
 import { wagmiClientWithRefetch } from '@app/utils/query'
 
@@ -86,8 +87,11 @@ export const TransactionDialogManager = ({
   useResetSelectedKey(dispatch)
 
   const onDismiss = useCallback(() => {
+    if (selectedItem ? TransferNameStopClose(selectedItem) : true) {
+      return
+    }
     dispatch({ name: 'stopFlow' })
-  }, [dispatch])
+  }, [dispatch, selectedItem])
 
   const InnerComponent = useMemo(() => {
     if (selectedKey && selectedItem) {
@@ -153,11 +157,15 @@ export const TransactionDialogManager = ({
   }, [selectedKey, selectedItem, onDismiss, dispatch, t])
 
   const onDismissDialog = useCallback(() => {
+    if (selectedItem ? TransferNameStopClose(selectedItem) : true) {
+      return
+    }
+
     if (selectedItem?.disableBackgroundClick && selectedItem?.currentFlowStage === 'input') return
     dispatch({
       name: 'stopFlow',
     })
-  }, [dispatch, selectedItem?.disableBackgroundClick, selectedItem?.currentFlowStage])
+  }, [selectedItem, dispatch])
   return (
     <DialogStyle variant="closable" open={!!state.selectedKey} onDismiss={onDismissDialog}>
       {InnerComponent}

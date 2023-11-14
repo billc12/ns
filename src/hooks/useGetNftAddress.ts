@@ -10,6 +10,7 @@ import { useChainId } from './useChainId'
 import { useContractAddress } from './useContractAddress'
 import { useNameDetails } from './useNameDetails'
 
+// need .aw
 const useGetNftAddress = (_name: string) => {
   const name = _name || ''
   const chainId = useChainId()

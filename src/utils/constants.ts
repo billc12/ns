@@ -99,7 +99,7 @@ export const MOONPAY_WORKER_URL: { [key: number]: string } = {
 
 export const FAUCET_WORKER_URL = 'https://ens-faucet.ens-cf.workers.dev'
 
-export const WC_PROJECT_ID = '9b14144d470af1e03ab9d88aaa127332'
+export const WC_PROJECT_ID = '878feb10a0c5f4badac76328a9575eab'
 
 // 102% of price as buffer for fluctuations
 export const CURRENCY_FLUCTUATION_BUFFER_PERCENTAGE = 100

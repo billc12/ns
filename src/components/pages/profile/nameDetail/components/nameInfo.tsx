@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
 
-import { Button, Dropdown, mq } from '@ensdomains/thorin'
+import { Button, Dropdown, Typography, mq } from '@ensdomains/thorin'
 import { DropdownItem } from '@ensdomains/thorin/dist/types/components/molecules/Dropdown/Dropdown'
 
 import AssetsIcon from '@app/assets/AssetsIcon.svg'
@@ -217,6 +217,30 @@ const RoundTitle2 = styled.p`
   font-weight: 700;
   line-height: 20px; /* 125% */
 `
+
+const WarningStyle = styled.div`
+  width: 100%;
+  background-color: rgba(255, 186, 10, 0.18);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px;
+  padding: 10px 16px;
+  & .classbutton {
+    height: 36px;
+    width: 85px;
+    font-weight: 500;
+    color: #c5954f;
+    background-color: #fff !important;
+    border: 1px solid #f1deab !important;
+    font-size: 14px !important;
+    :hover {
+      background-color: #f5f5f5 !important;
+      color: #9f8644;
+    }
+  }
+`
+
 const ActionDropdown = ({ name, accountAddress }: { name: string; accountAddress: string }) => {
   const { address } = useAccount()
   const nameDetails = useNameDetails(name)
@@ -319,11 +343,11 @@ const NameTokenCard = ({
   avatarSrc,
   accountAddress,
   nftDataLenght,
+  name,
   nameOwner,
 }: {
   avatarSrc: string
   accountAddress: string
-  // eslint-disable-next-line react/no-unused-prop-types
   name: string
   nftDataLenght: number
   nameOwner: boolean
@@ -336,6 +360,10 @@ const NameTokenCard = ({
     account: accountAddress,
     chain: chainId === 1 ? 'eth' : chainId,
   })
+
+  const nameDetails = useNameDetails(name)
+  const abilities = useAbilities(name)
+  const { registrationStatus } = nameDetails
 
   const totalPrice = useMemo(() => {
     if (!tokenList) return 0
@@ -388,6 +416,25 @@ const NameTokenCard = ({
           <SwordIcon />0
         </AssetsItemStyle>
       </div>
+      {abilities.data.canExtend && registrationStatus === 'available' && (
+        <WarningStyle>
+          <>
+            <Typography
+              style={{ lineHeight: '16px', color: '#9F8644', fontSize: '13px', fontWeight: '500' }}
+            >
+              The current domain name has expired
+            </Typography>
+            <AuctionBtn
+              className="classbutton"
+              onClick={() => {
+                router.push(`/${name}/register`)
+              }}
+            >
+              Register
+            </AuctionBtn>
+          </>
+        </WarningStyle>
+      )}
       <div style={{ display: 'flex', gap: 5 }}>
         <ReceiveBtn accountAddress={accountAddress} />
         <Dropdown shortThrow align="left" items={actionBtn}>
@@ -422,16 +469,18 @@ const NameInfoCard = ({ avatarSrc }: { avatarSrc: string }) => {
     <div>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img style={{ width: 382, height: 382, borderRadius: 8 }} src={avatarSrc} alt="default img" />
-      <div style={{ marginTop: 20, display: 'flex', gap: 8 }}>
-        <Round>
-          <RoundTitle1>Head Armor</RoundTitle1>
-          <RoundTitle2>Linen Hood</RoundTitle2>
-        </Round>
-        <Round>
-          <RoundTitle1>Foot Armor</RoundTitle1>
-          <RoundTitle2>Shoes</RoundTitle2>
-        </Round>
-      </div>
+      {false && (
+        <div style={{ marginTop: 20, display: 'flex', gap: 8 }}>
+          <Round>
+            <RoundTitle1>Head Armor</RoundTitle1>
+            <RoundTitle2>Linen Hood</RoundTitle2>
+          </Round>
+          <Round>
+            <RoundTitle1>Foot Armor</RoundTitle1>
+            <RoundTitle2>Shoes</RoundTitle2>
+          </Round>
+        </div>
+      )}
     </div>
   )
 }
