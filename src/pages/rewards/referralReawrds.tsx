@@ -270,7 +270,7 @@ export default function Rewards() {
       //   {type === 'direct' ? 'Direct referral' : 'Indirect referral'}
       // </TableContentStyle>,
       <TableContentStyle style={{ justifyContent: 'end' }}>
-        {makeDisplay(BigNumber.from(reward), undefined, 'eth', 18)}
+        {makeDisplay(BigNumber.from(reward), undefined, 'eth', 18, undefined, 8)}
       </TableContentStyle>,
     ])
   }, [RewardsDetails?.list, breakpoints.sm])
