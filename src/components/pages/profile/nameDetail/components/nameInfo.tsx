@@ -71,7 +71,7 @@ const OmitButtonStyle = styled.div`
   cursor: pointer;
 `
 const NameStyle = styled.div`
-  width: calc(100% - 120px);
+  width: calc(100% - 95px);
   word-break: break-all;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -83,6 +83,7 @@ const NameStyle = styled.div`
   font-size: 24px;
   font-weight: 700;
   text-align: center;
+  padding: 0 5px 0 31px;
 `
 const TabIconStyle = styled.div`
   width: 58px;
@@ -661,7 +662,7 @@ const Page = ({
     <CenterLeftStyle>
       <HeaderStyle>
         <ActionDropdown name={_name} accountAddress={accountAddress} />
-        <NameStyle>{_name.length > 20 ? shortenAddress(_name, 20, 8, 8) : _name}</NameStyle>
+        <NameStyle>{_name.length > 15 ? shortenAddress(_name, 15, 6, 6) : _name}</NameStyle>
 
         <TabIconStyle>
           <ListWhiteStyled
