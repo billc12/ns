@@ -114,7 +114,7 @@ export const useEthInvoice = (
   const isLoading = !registerReceipt
 
   const avatarSrc = useMemo(() => {
-    return _avatarSrc ?? UserAvatar.src
+    return _avatarSrc || UserAvatar.src
   }, [_avatarSrc])
   const InvoiceFilled = useMemo(() => {
     if (isLoading) return null
