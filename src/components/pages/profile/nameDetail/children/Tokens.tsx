@@ -8,6 +8,7 @@ import { EmptyData } from '@app/components/EmptyData'
 import { IResultItem } from '@app/hooks/requst/useGetTokenList'
 import { useBalanceOf } from '@app/hooks/useBalanceOf'
 import { emptyAddress } from '@app/utils/constants'
+import isZero from '@app/utils/isZero'
 
 // import { makeDisplay } from '@app/utils/currency'
 
@@ -50,7 +51,14 @@ const Item = ({ item, accountAddress }: { item: any; accountAddress: string }) =
     <AssetsItemStyle>
       <LeftStyle>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={item.logoUrl || USDTImg.src} alt="eth" />
+        <img
+          src={
+            isZero(item.address)
+              ? 'https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png'
+              : item.logoUrl || USDTImg.src
+          }
+          alt="eth"
+        />
         <div style={{ display: 'grid', gap: '12px' }}>
           <NameStyle>{item.name}</NameStyle>
           <ContentTextStyle>{item.symbol}</ContentTextStyle>
@@ -77,6 +85,7 @@ export function Tokens({
   tokenList: IResultItem[] | undefined
 }) {
   // const { data: tokenList } = useGetTokenList({ account: accountAddress, chain: 5 })
+  console.log('tokenList=>', tokenList && tokenList.length)
 
   const defaultTokenList = useMemo(() => {
     if (tokenList && tokenList.length) return tokenList
