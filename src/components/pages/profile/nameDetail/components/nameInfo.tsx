@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { useAccount } from 'wagmi'
 
-import { Button, Dropdown, Typography, mq } from '@ensdomains/thorin'
+import { Button, Dropdown, Tooltip, Typography, mq } from '@ensdomains/thorin'
 import { DropdownItem } from '@ensdomains/thorin/dist/types/components/molecules/Dropdown/Dropdown'
 
 import AssetsIcon from '@app/assets/AssetsIcon.svg'
@@ -11,6 +11,8 @@ import ListWhiteIcon from '@app/assets/List-white.svg'
 import OmitIcon from '@app/assets/OmitIcon.svg'
 import SwordIcon from '@app/assets/SwordIcon.svg'
 import TestImg from '@app/assets/TestImage.png'
+import WonderHighIcon from '@app/assets/Wonder-High.svg'
+import WonderWarningIcon from '@app/assets/Wonder-Warning.svg'
 import Icon1 from '@app/assets/nameDetail/icon1.svg'
 import Icon3 from '@app/assets/nameDetail/icon3.svg'
 import Icon4 from '@app/assets/nameDetail/icon4.svg'
@@ -264,9 +266,10 @@ const ExpiredStyle = styled.div`
     font-weight: 700;
     line-height: 20px;
   }
-  .extendbutton {
+  .button {
     width: 68px;
     height: 22px;
+    padding: 0 6px;
     border-radius: 4px;
     border: 1px solid var(--button-line, #97b7ef);
     background: var(--light-bg, #f8fbff);
@@ -275,7 +278,23 @@ const ExpiredStyle = styled.div`
     font-weight: 500;
   }
 `
-// const ExpiredBoxColor = [{}]
+const WonderWarningSvg = styled(WonderWarningIcon)`
+  cursor: pointer;
+  svg {
+    path {
+      fill: #f0ac47;
+    }
+  }
+`
+
+const WonderHighSvg = styled(WonderHighIcon)`
+  cursor: pointer;
+  svg {
+    path {
+      fill: #e46767;
+    }
+  }
+`
 
 const ActionDropdown = ({ name, accountAddress }: { name: string; accountAddress: string }) => {
   const { address } = useAccount()
@@ -500,7 +519,22 @@ const NameTokenCard = ({
     </ProFileStyle>
   )
 }
-const NameInfoCard = ({ avatarSrc, name }: { avatarSrc: string; name: string }) => {
+
+enum DateStatus {
+  Normal = 1,
+  Warning = 2,
+  High = 3,
+}
+
+const NameInfoCard = ({
+  avatarSrc,
+  name,
+  nameOwner,
+}: {
+  avatarSrc: string
+  name: string
+  nameOwner: boolean
+}) => {
   const abilities = useAbilities(name)
   const { prepareDataInput } = useTransactionFlow()
   const showExtendNamesInput = prepareDataInput('AwnsExtendNames')
@@ -555,15 +589,15 @@ const NameInfoCard = ({ avatarSrc, name }: { avatarSrc: string; name: string }) 
     }
   }, [endDate, isExpire])
 
-  const dateStatus = useMemo(() => {
-    if (ExcessDays <= 365 && ExcessDays >= 31) {
-      return 1
+  const Status = useMemo(() => {
+    if (ExcessDays >= 31) {
+      return DateStatus.Normal
     }
     if (ExcessDays <= 31 && ExcessDays >= 3) {
-      return 2
+      return DateStatus.Warning
     }
     if (ExcessDays <= 3) {
-      return 3
+      return DateStatus.High
     }
   }, [ExcessDays])
 
@@ -575,24 +609,50 @@ const NameInfoCard = ({ avatarSrc, name }: { avatarSrc: string; name: string }) 
         style={{
           backgroundColor: isExpire
             ? 'rgba(228, 103, 103,0.1)'
-            : dateStatus === 3
+            : Status === DateStatus.High
             ? 'rgba(228, 103, 103,0.1)'
-            : dateStatus === 2
+            : Status === DateStatus.Warning
             ? 'rgba(240, 172, 71,0.1)'
             : 'rgba(33, 195, 49, 0.1)',
         }}
       >
-        {/* rgb(240, 172, 71) rgb(228, 103, 103) */}
-        <Typography className="title"> Expire Date</Typography>
+        <Typography className="title">
+          Expire Date
+          {Status !== DateStatus.Normal && (
+            <Tooltip
+              additionalGap={0}
+              width={334}
+              content={
+                <Typography
+                  style={{
+                    color: ' #3F5170',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    lineHeight: '18px',
+                  }}
+                >
+                  The assets in the account will be lost after the expiry date, please renew or
+                  transfer the assets in time.
+                </Typography>
+              }
+              mobilePlacement="top"
+              placement="top"
+            >
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                {Status === DateStatus.High ? <WonderHighSvg /> : <WonderWarningSvg />}
+              </div>
+            </Tooltip>
+          )}
+        </Typography>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography
             className="content"
             style={{
               color: isExpire
                 ? 'rgb(228, 103, 103)'
-                : dateStatus === 3
+                : Status === DateStatus.High
                 ? 'rgb(228, 103, 103)'
-                : dateStatus === 2
+                : Status === DateStatus.Warning
                 ? 'rgb(240, 172, 71)'
                 : 'rgb(33, 195, 49)',
             }}
@@ -604,16 +664,20 @@ const NameInfoCard = ({ avatarSrc, name }: { avatarSrc: string; name: string }) 
             <>
               {isEndGracePeriod && registrationStatus === 'available' ? (
                 <AuctionBtn
-                  className="extendbutton"
+                  className="button"
                   onClick={() => {
                     router.push(`/${name}/register`)
                   }}
                 >
                   Register
                 </AuctionBtn>
+              ) : registrationStatus === 'gracePeriod' && !nameOwner ? (
+                <AuctionBtn className="button" style={{ width: 'auto' }} disabled>
+                  Coming Soon
+                </AuctionBtn>
               ) : (
                 <AuctionBtn
-                  className="extendbutton"
+                  className="button"
                   onClick={() => {
                     handleExtend()
                   }}
@@ -687,7 +751,9 @@ const Page = ({
           avatarSrc={avatarSrc}
         />
       )}
-      {curTab === Tabs.NameInfo && <NameInfoCard avatarSrc={avatarSrc} name={_name} />}
+      {curTab === Tabs.NameInfo && (
+        <NameInfoCard avatarSrc={avatarSrc} name={_name} nameOwner={nameOwner} />
+      )}
     </CenterLeftStyle>
   )
 }
