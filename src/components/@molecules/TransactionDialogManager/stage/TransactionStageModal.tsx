@@ -562,7 +562,7 @@ export const TransactionStageModal = ({
           data-testid="transaction-modal-sent-button"
           colorStyle="accentSecondary"
         >
-          {t('action.close')}
+          {transaction.data.sendType === 'sendManager' ? t('action.next') : t('action.close')}
         </Button>
       )
     }

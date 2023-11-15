@@ -52,7 +52,7 @@ const InformationDrawer = ({ open, onClose, accountAddress, name }: Props) => {
         <AttributeLabel title="Chain" content="Ethereum" />
         <AttributeLabel isCopy title="Contract Address" content={tokenContract || ''} />
         <AttributeLabel isCopy title="Token ID" content={tokenId || ''} />
-        <AttributeLabel title="Autonomous Worlds Name Service" content="Loot (for Adventurers)" />
+        <AttributeLabel title="Collection" content="Autonomous Worlds Name Service" />
       </LabelContainer>
       <div style={{ marginTop: 15 }}>
         <Title>About</Title>

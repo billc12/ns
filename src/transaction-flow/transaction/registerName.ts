@@ -3,7 +3,7 @@ import { BaseRegistrationParams } from '@myclique/awnsjs/utils/registerHelpers'
 import type { TFunction } from 'react-i18next'
 
 import { PublicENS, Transaction, TransactionDisplayItem } from '@app/types'
-import { calculateValueWithBuffer, secondsToYears } from '@app/utils/utils'
+import { calculateValueWithBuffer, secondsToYears, shortenAddress } from '@app/utils/utils'
 
 type Data = BaseRegistrationParams & { name: string; signature: string }
 
@@ -13,7 +13,7 @@ const displayItems = (
 ): TransactionDisplayItem[] => [
   {
     label: 'name',
-    value: name,
+    value: name.length > 30 ? shortenAddress(name, 30, 10, 10) : name,
     type: 'name',
   },
   {
