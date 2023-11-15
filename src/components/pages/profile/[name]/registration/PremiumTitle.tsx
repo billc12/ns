@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import styled, { css } from 'styled-components'
 
 import { Typography, mq } from '@ensdomains/thorin'
@@ -5,6 +6,7 @@ import { Typography, mq } from '@ensdomains/thorin'
 import PremiumSvg from '@app/assets/premium-icon.svg'
 import useSignName from '@app/hooks/names/useSignName'
 import { useNameDetails } from '@app/hooks/useNameDetails'
+import { shortenAddress } from '@app/utils/utils'
 
 const Row = styled.div`
   display: flex;
@@ -61,15 +63,18 @@ const PremiumTitle = ({ nameDetails }: { nameDetails: ReturnType<typeof useNameD
   const { beautifiedName, registrationStatus, normalisedName } = nameDetails
   const { data } = useSignName({ name: normalisedName })
   const isPremium = !!data?.premium
+  const shortName = useMemo(() => {
+    return beautifiedName.length > 40 ? shortenAddress(beautifiedName, 40, 15, 15) : beautifiedName
+  }, [beautifiedName])
   return (
     <HeadName>
       {isPremium ? (
         <div style={{ display: 'flex', flex: 1, gap: 8 }}>
           <PremiumSvg />
-          <BigPremiumText>{beautifiedName}</BigPremiumText>
+          <BigPremiumText>{shortName}</BigPremiumText>
         </div>
       ) : (
-        <InterText>{beautifiedName}</InterText>
+        <InterText>{shortName}</InterText>
       )}
 
       {registrationStatus && (

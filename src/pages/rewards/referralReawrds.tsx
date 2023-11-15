@@ -265,7 +265,9 @@ export default function Rewards() {
           textAlign: 'center',
           margin: '0 auto',
         }}
-      >{`${registrant}.aw`}</TableContentStyle>,
+      >{`${
+        registrant.length > 20 ? shortenAddress(registrant, 20, 10, 10) : registrant
+      }.aw`}</TableContentStyle>,
       // <TableContentStyle>
       //   {type === 'direct' ? 'Direct referral' : 'Indirect referral'}
       // </TableContentStyle>,
